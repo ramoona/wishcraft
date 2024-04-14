@@ -1,0 +1,16 @@
+trailingComma: "all"
+arrowParens: "avoid"
+plugins:
+  - "prettier-plugin-tailwindcss"
+
+importOrder:
+  - <THIRD_PARTY_MODULES>
+  - "^(prisma|types)/(.*)$"
+  - "^(emails|types)/(.*)$"
+  - "^~/(.*)$"
+  - '^\.{1,2}(.*)\/(?!\S+\.(json|css|svg|jpg|webp)).*$'
+  - '^(.*)\.(json|css|svg|jpg|webp)$'
+importOrderSeparation: true
+importOrderSortSpecifiers: true
+importOrderCaseInsensitive: false
+printWidth: 120
