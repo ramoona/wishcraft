@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Wishlist {
+  id     String @id @default(cuid())
+  wishes Wish[]
+}
+
+model Wish {
+  id         String   @id @default(cuid())
+  name       String
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+  wishlistId String
+}
