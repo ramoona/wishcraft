@@ -8,13 +8,19 @@ datasource db {
 }
 
 model User {
+  // Next Auth columns
   id            String    @id @default(cuid())
   name          String?
+  username      String?
   email         String    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+  // App columns
+  wishlists      Wishlist[]
+  reservedWished Wish[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -59,14 +65,43 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
+enum Currency {
+  EUR
+  USD
+}
+
+enum WishStatus {
+  AVAILABLE
+  RESERVED
+  BOUGHT
+  GIFTED
+  ARCHIVED
+}
+
 model Wishlist {
-  id     String @id @default(cuid())
-  wishes Wish[]
+  id      String @id @default(cuid())
+  wishes  Wish[]
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Wish {
-  id         String   @id @default(cuid())
-  name       String
-  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
-  wishlistId String
+  id       String     @id @default(cuid())
+  name     String
+  price    Float?
+  currency Currency?
+  url      String?
+  comment  String?
+  status   WishStatus
+
+  reservedBy       User?    @relation(fields: [reservedByUserId], references: [id])
+  reservedByUserId String?
+  wishlist         Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  wishlistId       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
