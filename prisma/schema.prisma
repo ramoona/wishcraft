@@ -11,7 +11,7 @@ model User {
   // Next Auth columns
   id            String    @id @default(cuid())
   name          String?
-  username      String?
+  username      String?   @unique
   email         String    @unique
   emailVerified DateTime?
   image         String?
@@ -19,8 +19,8 @@ model User {
   sessions      Session[]
 
   // App columns
-  wishlists      Wishlist[]
-  reservedWished Wish[]
+  wishlists Wishlist[]
+  reserved  Wish[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -97,10 +97,10 @@ model Wish {
   comment  String?
   status   WishStatus
 
-  reservedBy       User?    @relation(fields: [reservedByUserId], references: [id])
-  reservedByUserId String?
-  wishlist         Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
-  wishlistId       String
+  reservedBy   User?    @relation(fields: [reservedById], references: [id])
+  reservedById String?
+  wishlist     Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  wishlistId   String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

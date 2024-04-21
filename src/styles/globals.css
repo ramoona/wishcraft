@@ -15,3 +15,16 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+
+input {
+  border: 1px solid rgba(var(--foreground-rgb), 0.4);
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+}
+
+button {
+  border: 1px solid rgba(var(--foreground-rgb), 0.4);
+  border-radius: 5px;
+  background: rgba(var(--foreground-rgb), 0.1);
+  padding: 0.2rem 0.5rem;
+}

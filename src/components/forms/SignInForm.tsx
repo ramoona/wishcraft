@@ -7,11 +7,7 @@ export function SignInForm() {
 
   return (
     <div>
-      <button
-        onClick={async () => {
-          await signIn("google");
-        }}
-      >
+      <button onClick={async () => await signIn("google")}>
         {status === "loading" ? "Checking session..." : "Sign in with Google"}
       </button>
     </div>
