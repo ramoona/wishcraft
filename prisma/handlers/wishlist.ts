@@ -15,6 +15,18 @@ export const WISH_FIELDS_SELECT = {
   reservedById: true,
 };
 
+export async function getWishlistIdByUserId(userId: string): Promise<string> {
+  const wishlist = await prisma.wishlist.findFirst({
+    where: { ownerId: userId },
+  });
+
+  if (!wishlist) {
+    throw new PrismaError("WISHLIST_NOT_FOUND");
+  }
+
+  return wishlist.id;
+}
+
 export async function getWishlistByUserId(userId: string): Promise<WishlistT> {
   const wishlist = await prisma.wishlist.findFirst({
     where: { ownerId: userId },
@@ -45,10 +57,10 @@ export function createWish(
   wishlistId: string,
   input: {
     name: string;
-    url?: string;
-    price?: number;
-    currency?: Currency;
-    comment?: string;
+    url?: string | null;
+    price?: number | null;
+    currency?: Currency | null;
+    comment?: string | null;
   },
 ) {
   return prisma.wish.create({

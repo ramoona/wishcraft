@@ -6,7 +6,7 @@ export function Price({ price, currency }: { price: number | null; currency: Cur
   }
 
   return (
-    <span>
+    <span className="text-sm text-slate-500">
       {price.toLocaleString(undefined, {
         style: "currency",
         currency,

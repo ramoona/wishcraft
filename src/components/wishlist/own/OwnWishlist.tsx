@@ -10,11 +10,12 @@ export function OwnWishlist({ data }: { data: WishlistT }) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <AddNewWish />
+      Your wishes:
       <WishItemList>
         {data.wishes.map(wish => (
-          <div key={wish.id} className="flex items-center gap-2">
+          <div key={wish.id} className="flex items-start gap-2">
             <WishItem data={wish} />
             <StatusBadge status={wish.status} />
           </div>

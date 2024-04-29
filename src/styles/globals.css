@@ -29,3 +29,7 @@ a {
   color: inherit;
   text-decoration: underline;
 }
+
+[aria-invalid="true"] {
+  box-shadow: -1px -13px 0 -10px #ff1f1f inset;
+}

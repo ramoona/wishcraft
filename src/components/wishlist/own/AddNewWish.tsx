@@ -1,27 +1,24 @@
 "use client";
 
-import { WishForm } from "~/components/wishlist/own/WishForm";
-import { useState } from "react";
-import { Button } from "~/components/ui/button";
+import { WishForm, WishFormValues } from "~/components/wishlist/own/WishForm";
+import { Slider } from "~/components/ui/slider";
+import { createWishAction } from "~/actions/wishlist";
+import { WishCreationFormData } from "~/actions/formData";
+import { useRouter } from "next/navigation";
 
 export function AddNewWish() {
-  const [showForm, setShowForm] = useState(false);
+  const router = useRouter();
+  const handleCreateWish = async (values: WishFormValues, onComplete: () => void) => {
+    await createWishAction(WishCreationFormData.fromObject(values));
+    router.refresh();
+    onComplete();
+  };
 
   return (
     <div>
-      <Button onClick={() => setShowForm(true)}>Wish something new</Button>
-      {showForm && (
-        <WishForm
-          data={{
-            id: "NEW",
-            name: "",
-            url: null,
-            comment: null,
-            price: null,
-            currency: null,
-          }}
-        />
-      )}
+      <Slider triggerText="Make a wish" header="Making a wish...">
+        {({ onClose }) => <WishForm onCancel={onClose} onSubmit={values => handleCreateWish(values, onClose)} />}
+      </Slider>
     </div>
   );
 }
