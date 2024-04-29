@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "WishStatus" ADD VALUE 'RESERVED_BY_CURRENT_USER';

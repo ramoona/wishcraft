@@ -1,10 +1,10 @@
 import { WishStatus } from "@prisma/client";
 
-export type Wishlist = {
-  wishes: Wish[];
+export type WishlistT = {
+  wishes: WishT[];
 };
 
-export type Wish = {
+export type WishT = {
   id: string;
   name: string;
   comment: string | null;

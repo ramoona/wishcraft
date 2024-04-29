@@ -2,6 +2,7 @@ import { Currency, WishStatus } from "@prisma/client";
 
 import { prisma } from "../client";
 import { PrismaError } from "../errors";
+import { WishlistT } from "~/types/wishlist";
 
 export const WISH_FIELDS_SELECT = {
   id: true,
@@ -14,12 +15,15 @@ export const WISH_FIELDS_SELECT = {
   reservedById: true,
 };
 
-export async function getWishlistByUserId(userId: string) {
+export async function getWishlistByUserId(userId: string): Promise<WishlistT> {
   const wishlist = await prisma.wishlist.findFirst({
     where: { ownerId: userId },
     select: {
       wishes: {
         select: WISH_FIELDS_SELECT,
+        orderBy: {
+          createdAt: "desc",
+        },
       },
     },
   });
@@ -73,5 +77,26 @@ export function updateWish(
 export function deleteWish(wishId: string) {
   return prisma.wish.delete({
     where: { id: wishId },
+  });
+}
+
+export async function reserveWish({ wishId, userId }: { wishId: string; userId: string }) {
+  const wish = await prisma.wish.findUnique({ where: { id: wishId } });
+
+  if (!wish) {
+    throw new PrismaError("WISH_NOT_FOUND");
+  }
+
+  if (wish.reservedById) {
+    throw new PrismaError("WISH_IS_ALREADY_RESERVED");
+  }
+
+  if (wish.status !== WishStatus.AVAILABLE) {
+    throw new PrismaError("WISH_IS_NOT_RESERVABLE");
+  }
+
+  return prisma.wish.update({
+    where: { id: wishId },
+    data: { reservedById: userId, status: WishStatus.RESERVED },
   });
 }

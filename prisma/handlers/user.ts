@@ -1,6 +1,8 @@
 import { prisma } from "../client";
 import { createWishlist, WISH_FIELDS_SELECT } from "./wishlist";
 import { PrismaError } from "../errors";
+import { omit } from "ramda";
+import { User, UserWithRelations } from "~/types/user";
 
 export async function updateUsername({ userId, username }: { userId: string; username: string }) {
   const userWithUsername = await prisma.user.findUnique({ where: { username } });
@@ -15,13 +17,12 @@ export async function updateUsername({ userId, username }: { userId: string; use
   });
 }
 
-export async function onboardUser({ userId, username }: { userId: string; username: string }) {
+export async function finalizeSignUp({ userId, username }: { userId: string; username: string }) {
   await updateUsername({ userId, username });
   await createWishlist(userId);
 }
 
-export type UserData = Awaited<ReturnType<typeof getUserByUserId>>;
-export async function getUserByUserId(id: string) {
+export async function getUserByUserId(id: string): Promise<User> {
   const user = await prisma.user.findUnique({
     where: { id },
     select: { id: true, username: true, name: true, image: true, email: true },
@@ -34,8 +35,7 @@ export async function getUserByUserId(id: string) {
   return user;
 }
 
-export type UserWithRelations = Awaited<ReturnType<typeof getUserWithRelationsByUsername>>;
-export async function getUserWithRelationsByUsername(username: string) {
+export async function getUserWithRelationsByUsername(username: string): Promise<UserWithRelations> {
   const user = await prisma.user.findUnique({
     where: { username },
     select: {
@@ -43,10 +43,17 @@ export async function getUserWithRelationsByUsername(username: string) {
       username: true,
       name: true,
       image: true,
-      email: true,
       wishlists: {
         include: {
           wishes: {
+            orderBy: {
+              createdAt: "desc",
+            },
+            where: {
+              status: {
+                notIn: ["ARCHIVED"],
+              },
+            },
             select: WISH_FIELDS_SELECT,
           },
         },
@@ -58,5 +65,13 @@ export async function getUserWithRelationsByUsername(username: string) {
     throw new PrismaError("USER_NOT_FOUND");
   }
 
-  return user;
+  if (!user.wishlists.length) {
+    throw new PrismaError("WISHLIST_NOT_FOUND");
+  }
+
+  return {
+    ...omit(["wishlists", "username"], user),
+    username: user.username!,
+    wishlist: user.wishlists[0],
+  };
 }

@@ -1,31 +1,39 @@
 "use client";
 
-import { useFormState } from "react-dom";
-import { UsernameFormState } from "~/actions/user";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { finalizeSignUpFormAction } from "~/actions/user";
+import { SignUpFormData } from "~/actions/formData";
 
-export function SetUpUsernameForm({
-  action,
-}: {
-  action: (state: UsernameFormState, formData: FormData) => Promise<UsernameFormState>;
-}) {
-  const [state, formAction] = useFormState(action, { error: undefined, success: undefined, username: undefined });
+export function SetUpUsernameForm() {
   const router = useRouter();
 
-  if (state.success && state.username) {
-    return (
-      <div>
-        <div>All set!</div>
-        <button onClick={() => router.push(`/${state.username}`)}>Create my Wishlist</button>
-      </div>
-    );
-  }
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string>();
+  const [username, setUsername] = useState("");
+
+  const triggerFinalizeSignUpFormAction = () => {
+    startTransition(async () => {
+      const { error } = await finalizeSignUpFormAction(SignUpFormData.fromObject({ username }));
+      if (error) {
+        setError(error);
+      } else {
+        router.push(`/${username}`);
+      }
+    });
+  };
 
   return (
-    <form action={formAction} className="flex gap-2">
-      <input type="text" name="username" placeholder="example" />
-      <button type="submit">Set Username</button>
-      {state.error && <p>{state.error}</p>}
+    <form action={triggerFinalizeSignUpFormAction} className="flex gap-2">
+      <input
+        type="text"
+        name="username"
+        placeholder="example"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+      />
+      <button type="submit">{isPending ? "Setting username..." : "Set Username"}</button>
+      {error && <p className="text-red-600">{error}</p>}
     </form>
   );
 }

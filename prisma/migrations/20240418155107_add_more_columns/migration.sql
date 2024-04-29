@@ -1,8 +1,8 @@
 /*
   Warnings:
 
-  - Added the required column `status` to the `Wish` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `updatedAt` to the `Wish` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `status` to the `WishForm` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `updatedAt` to the `WishForm` table without a default value. This is not possible if the table is not empty.
   - Added the required column `ownerId` to the `Wishlist` table without a default value. This is not possible if the table is not empty.
   - Added the required column `updatedAt` to the `Wishlist` table without a default value. This is not possible if the table is not empty.
 

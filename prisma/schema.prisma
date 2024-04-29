@@ -88,7 +88,7 @@ model Wishlist {
   updatedAt DateTime @updatedAt
 }
 
-model Wish {
+model WishForm {
   id       String     @id @default(cuid())
   name     String
   price    Float?

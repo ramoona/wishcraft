@@ -3,7 +3,6 @@ import { getServerSession } from "~/auth/getServerSession";
 import { redirect } from "next/navigation";
 import { SetUpUsernameForm } from "~/components/forms/SetUpUsernameForm";
 import { Layout } from "~/components/layout/Layout";
-import { setUsernameFormAction } from "~/actions/user";
 
 export default async function Home() {
   const session = await getServerSession();
@@ -21,7 +20,7 @@ export default async function Home() {
     return (
       <Layout>
         Welcome, {session.user.name}! Choose a username to continue:
-        <SetUpUsernameForm action={setUsernameFormAction(session.user.id)} />
+        <SetUpUsernameForm />
       </Layout>
     );
   }

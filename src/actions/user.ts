@@ -1,28 +1,31 @@
-import { updateUsername } from "prisma/handlers/user";
+"use server";
+
+import { finalizeSignUp } from "prisma/handlers/user";
 import { PrismaError } from "prisma/errors";
+import { getServerSession } from "~/auth/getServerSession";
+import { SignUpFormData } from "~/actions/formData";
 
-export type UsernameFormState = { username?: string; success?: boolean; error?: string };
+type ActionState = { error?: string };
 
-export const setUsernameFormAction =
-  (userId: string) =>
-  async (_currentState: UsernameFormState, formData: FormData): Promise<UsernameFormState> => {
-    "use server";
+export const finalizeSignUpFormAction = async (formData: FormData): Promise<ActionState> => {
+  const session = await getServerSession();
+  const username = SignUpFormData.toObject(formData).username;
 
-    const username = formData.get("username");
+  if (!username) {
+    return { error: "Username is required" };
+  }
 
-    if (!username) {
-      return { error: "Username is required" };
-    }
+  if (!session?.user.id) {
+    return { error: "Unauthorized" };
+  }
 
-    try {
-      await updateUsername({ username: username as string, userId });
-      return { success: true, username: username as string };
-    } catch (e) {
-      return {
-        error:
-          e instanceof PrismaError && e.errorType === "USERNAME_IS_TAKEN"
-            ? "Username is taken"
-            : "Something went wrong",
-      };
-    }
-  };
+  try {
+    await finalizeSignUp({ userId: session.user.id, username });
+    return { error: undefined };
+  } catch (e) {
+    return {
+      error:
+        e instanceof PrismaError && e.errorType === "USERNAME_IS_TAKEN" ? "Username is taken" : "Something went wrong",
+    };
+  }
+};
