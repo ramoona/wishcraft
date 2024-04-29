@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { reserveWishAction } from "~/actions/wishlist";
+import { Button } from "~/components/ui/button";
 
 export function ReserveButton({ wishId }: { wishId: string }) {
   const router = useRouter();
@@ -26,7 +27,7 @@ export function ReserveButton({ wishId }: { wishId: string }) {
 
   return (
     <div>
-      <button onClick={triggerReserveWishAction}>{isPending ? "Reserving..." : "Reserve"}</button>
+      <Button onClick={triggerReserveWishAction}>{isPending ? "Reserving..." : "Reserve"}</Button>
       <span>{error}</span>
     </div>
   );

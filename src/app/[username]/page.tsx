@@ -2,7 +2,7 @@ import { getServerSession } from "~/auth/getServerSession";
 import { getWishlistByUserId } from "prisma/handlers/wishlist";
 import { getUserWithRelationsByUsername } from "prisma/handlers/user";
 import { Layout } from "~/components/layout/Layout";
-import { OwnWishlist } from "~/components/wishlist/OwnWishlist";
+import { OwnWishlist } from "~/components/wishlist/own/OwnWishlist";
 import { ForeignWishlist } from "~/components/wishlist/foreign/ForeignWishlist";
 
 export default async function UserPage({ params }: { params: { username: string } }) {
@@ -22,7 +22,7 @@ export default async function UserPage({ params }: { params: { username: string 
   const userWithWishlist = await getUserWithRelationsByUsername(params.username);
   return (
     <Layout>
-      <h1>Wishlist of {userWithWishlist.username}</h1>
+      <h1>{`${userWithWishlist.username}'s wishlist`}</h1>
       <ForeignWishlist data={userWithWishlist.wishlist} />
     </Layout>
   );

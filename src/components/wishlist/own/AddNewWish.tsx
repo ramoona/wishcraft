@@ -1,14 +1,15 @@
 "use client";
 
-import { WishForm } from "~/components/wishlist/WishForm";
+import { WishForm } from "~/components/wishlist/own/WishForm";
 import { useState } from "react";
+import { Button } from "~/components/ui/button";
 
 export function AddNewWish() {
   const [showForm, setShowForm] = useState(false);
 
   return (
     <div>
-      <button onClick={() => setShowForm(true)}>Add new</button>
+      <Button onClick={() => setShowForm(true)}>Wish something new</Button>
       {showForm && (
         <WishForm
           data={{

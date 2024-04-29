@@ -1,4 +1,4 @@
-import { WishStatus } from "@prisma/client";
+import { Currency, WishStatus } from "@prisma/client";
 
 export type WishlistT = {
   wishes: WishT[];
@@ -10,7 +10,7 @@ export type WishT = {
   comment: string | null;
   url: string | null;
   price: number | null;
-  currency: string | null;
+  currency: Currency | null;
   reservedById: string | null;
   status: WishStatus;
 };

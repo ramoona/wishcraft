@@ -3,14 +3,9 @@ import { WishStatus } from "@prisma/client";
 import { ReserveButton } from "~/components/wishlist/foreign/ReserveButton";
 import { getServerSession } from "~/auth/getServerSession";
 import { redirect } from "next/navigation";
-
-const statusMap = {
-  [WishStatus.RESERVED]: "Reserved",
-  [WishStatus.ARCHIVED]: "Archived",
-  [WishStatus.BOUGHT]: "Bought",
-  [WishStatus.AVAILABLE]: "Available",
-  [WishStatus.GIFTED]: "Gifted",
-};
+import { WishItem } from "~/components/wishlist/WishItem";
+import { Badge } from "~/components/ui/badge";
+import { StatusBadge } from "~/components/wishlist/StatusBadge";
 
 function isWishReservable(data: WishT) {
   return data.status === WishStatus.AVAILABLE && !data.reservedById;
@@ -24,22 +19,17 @@ export async function ForeignWish({ data }: { data: WishT }) {
     redirect("/");
   }
 
-  const price = data.price !== null && data.currency ? `${data.price} ${data.currency}` : "";
   const isReservedByCurrentUser = data.reservedById === userId;
 
   return (
-    <>
-      {data.url ? (
-        <a href={data.url} target="_blank">
-          {data.name}
-        </a>
+    <div className="flex gap-2">
+      <WishItem data={data} />
+      {isReservedByCurrentUser ? (
+        <Badge variant="secondary">Reserved by you</Badge>
       ) : (
-        <span>{data.name}</span>
+        <StatusBadge status={data.status} />
       )}
-      <span>{price}</span>
-      <span>{data.comment || ""}</span>
-      <div className="p-2">{isReservedByCurrentUser ? "Reserved by you" : statusMap[data.status]}</div>
-      <div>{isWishReservable(data) && <ReserveButton wishId={data.id} />}</div>
-    </>
+      {isWishReservable(data) && <ReserveButton wishId={data.id} />}
+    </div>
   );
 }
