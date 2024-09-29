@@ -5,7 +5,7 @@ import { WishItemList } from "~/components/wishlist/WishItemList";
 import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
-import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import { Eye, EyeClosed } from "@phosphor-icons/react/dist/ssr";
 
 export function OwnWishlist({ data }: { data: WishlistT }) {
   if (!data.wishes.length) {
@@ -49,7 +49,7 @@ export function OwnWishlist({ data }: { data: WishlistT }) {
             <span className="font-medium">Fulfilled wishes</span>
             <span className="flex items-center gap-1 text-xs text-slate-500">
               everyone can see that
-              <EyeOpenIcon className="size-[14px]" />
+              <Eye className="size-[14px]" />
             </span>
           </h2>
           <WishItemList>
@@ -66,10 +66,10 @@ export function OwnWishlist({ data }: { data: WishlistT }) {
       {archived.length > 0 && (
         <div>
           <h2 className="mb-4 flex items-center gap-2 text-lg">
-            <span className="font-medium">Archived wishes</span>
+            <span className="font-medium">Archived</span>
             <span className="flex items-center gap-1 text-xs text-slate-500">
               only you can see that
-              <EyeClosedIcon className="size-[14px]" />
+              <EyeClosed className="size-[14px]" />
             </span>
           </h2>
           <WishItemList>

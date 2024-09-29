@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Currency } from "@prisma/client";
 import { Button } from "~/components/ui/button";
 import { Select } from "~/components/ui/select";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().max(255, "Oof, that's too long"),
@@ -33,7 +34,7 @@ type WishFormProps = {
 };
 
 export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { control, formState, reset, ...form } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     resetOptions: { keepValues: false, keepDirty: false, keepErrors: false },
     mode: "onBlur",
@@ -45,13 +46,26 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
       comment: data?.comment ?? null,
     },
   });
+  const { isSubmitSuccessful } = formState;
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        comment: "",
+        currency: Currency.EUR,
+        name: "",
+        price: null,
+        url: "",
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
-    <Form {...form}>
+    <Form control={control} reset={reset} formState={formState} {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full flex-col gap-4">
         <div className="flex flex-1 flex-col gap-4">
           <FormField
-            control={form.control}
+            control={control}
             name="name"
             render={({ field }) => (
               <FormItem>
@@ -64,7 +78,7 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="url"
             render={({ field }) => (
               <FormItem>
@@ -77,7 +91,7 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="price"
             render={({ field }) => (
               <FormItem>
@@ -102,7 +116,7 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="comment"
             render={({ field }) => (
               <FormItem>
