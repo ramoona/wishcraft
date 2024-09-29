@@ -7,7 +7,7 @@ import { SignUpFormData } from "~/actions/formData";
 
 type ActionState = { error?: string };
 
-export const finalizeSignUpFormAction = async (formData: FormData): Promise<ActionState> => {
+export const finalizeSignUpAction = async (formData: FormData): Promise<ActionState> => {
   const session = await getServerSession();
   const username = SignUpFormData.toObject(formData).username;
 

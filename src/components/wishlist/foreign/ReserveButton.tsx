@@ -27,7 +27,9 @@ export function ReserveButton({ wishId }: { wishId: string }) {
 
   return (
     <div>
-      <Button onClick={triggerReserveWishAction}>{isPending ? "Reserving..." : "Reserve"}</Button>
+      <Button size="xs" onClick={triggerReserveWishAction} variant="outline">
+        {isPending ? "Reserving..." : "Reserve"}
+      </Button>
       <span>{error}</span>
     </div>
   );

@@ -8,7 +8,7 @@ import { Badge } from "~/components/ui/badge";
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
 
 function isWishReservable(data: WishT) {
-  return data.status === WishStatus.AVAILABLE && !data.reservedById;
+  return data.status === WishStatus.ACTIVE && !data.reservedById;
 }
 
 export async function ForeignWish({ data }: { data: WishT }) {

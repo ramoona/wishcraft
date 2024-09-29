@@ -1,5 +1,3 @@
-"use client";
-
 import { WishT } from "~/types/wishlist";
 import { Input } from "~/components/ui/input";
 import { Form, FormLabel, FormField, FormControl, FormDescription, FormItem } from "~/components/ui/form";
@@ -8,9 +6,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Currency } from "@prisma/client";
 import { Button } from "~/components/ui/button";
+import { Select } from "~/components/ui/select";
 
 const formSchema = z.object({
-  name: z.string().max(255, "That title is too long :("),
+  name: z.string().max(255, "Oof, that's too long"),
   price: z
     .string()
     .nullable()
@@ -22,15 +21,15 @@ const formSchema = z.object({
     .url()
     .nullable()
     .transform(v => (v ? v : null)),
-  comment: z.string().nullable(),
+  comment: z.string().max(255, "Oof, that's too long").nullable(),
 });
 
 export type WishFormValues = z.infer<typeof formSchema>;
 
 type WishFormProps = {
   data?: Omit<WishT, "status" | "reservedById">;
-  onSubmit(values: WishFormValues): void;
-  onCancel(): void;
+  onSubmit: (values: WishFormValues) => void;
+  onCancel: () => void;
 };
 
 export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
@@ -46,8 +45,6 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
       comment: data?.comment ?? null,
     },
   });
-
-  console.log(form.getValues());
 
   return (
     <Form {...form}>
@@ -85,18 +82,19 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Price</FormLabel>
-                <div className="grid grid-cols-[3fr_1fr] gap-2">
+                <div className="grid grid-cols-[3fr_2fr] gap-2">
                   <FormControl>
                     <Input type="number" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormControl>
-                    <select
-                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                      {...form.register("currency")}
-                    >
-                      <option value="EUR">EUR</option>
-                      <option value="USD">USD</option>
-                    </select>
+                    <Select
+                      value={form.getValues().currency}
+                      onChange={v => form.setValue("currency", v as Currency)}
+                      options={[
+                        { value: Currency.EUR, label: "Euro" },
+                        { value: Currency.USD, label: "US Dollar" },
+                      ]}
+                    />
                   </FormControl>
                 </div>
                 <FormDescription>How much is it?</FormDescription>

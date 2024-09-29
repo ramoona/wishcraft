@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { finalizeSignUpFormAction } from "~/actions/user";
+import { finalizeSignUpAction } from "~/actions/user";
 import { SignUpFormData } from "~/actions/formData";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -16,7 +16,7 @@ export function SetUpUsernameForm() {
 
   const triggerFinalizeSignUpFormAction = () => {
     startTransition(async () => {
-      const { error } = await finalizeSignUpFormAction(SignUpFormData.fromObject({ username }));
+      const { error } = await finalizeSignUpAction(SignUpFormData.fromObject({ username }));
       if (error) {
         setError(error);
       } else {

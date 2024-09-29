@@ -71,10 +71,9 @@ enum Currency {
 }
 
 enum WishStatus {
-  AVAILABLE
+  ACTIVE
   RESERVED
-  BOUGHT
-  GIFTED
+  FULFILLED
   ARCHIVED
 }
 
@@ -88,7 +87,7 @@ model Wishlist {
   updatedAt DateTime @updatedAt
 }
 
-model WishForm {
+model Wish {
   id       String     @id @default(cuid())
   name     String
   price    Float?

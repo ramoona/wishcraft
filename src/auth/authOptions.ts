@@ -7,6 +7,7 @@ import { getUserByUserId } from "prisma/handlers/user";
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
+  pages: {},
   session: {
     strategy: "jwt",
   },

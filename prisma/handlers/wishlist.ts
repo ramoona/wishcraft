@@ -67,7 +67,7 @@ export function createWish(
     data: {
       wishlistId,
       ...input,
-      status: WishStatus.AVAILABLE,
+      status: WishStatus.ACTIVE,
     },
   });
 }
@@ -76,10 +76,10 @@ export function updateWish(
   wishId: string,
   input: {
     name?: string;
-    url?: string;
-    price?: number;
-    currency?: Currency;
-    comment?: string;
+    url?: string | null;
+    price?: number | null;
+    currency?: Currency | null;
+    comment?: string | null;
     status?: WishStatus;
   },
 ) {
@@ -103,7 +103,7 @@ export async function reserveWish({ wishId, userId }: { wishId: string; userId: 
     throw new PrismaError("WISH_IS_ALREADY_RESERVED");
   }
 
-  if (wish.status !== WishStatus.AVAILABLE) {
+  if (wish.status !== WishStatus.ACTIVE) {
     throw new PrismaError("WISH_IS_NOT_RESERVABLE");
   }
 
