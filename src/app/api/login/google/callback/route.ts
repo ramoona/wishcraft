@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
 import { prisma } from "prisma/client";
+import { reserveWish } from "prisma/handlers/wishlist";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
@@ -10,6 +11,8 @@ export async function GET(request: Request): Promise<Response> {
   const state = url.searchParams.get("state");
   const storedState = cookies().get("google_oauth_state")?.value ?? null;
   const storedCodeVerifier = cookies().get("code_verifier")?.value ?? null;
+  const wishlistOwner = cookies().get("wishlistOwner")?.value ?? null;
+  const wishId = cookies().get("wishId")?.value ?? null;
 
   if (!code || !storedCodeVerifier || !state || !storedState || state !== storedState) {
     return new Response(null, {
@@ -29,10 +32,17 @@ export async function GET(request: Request): Promise<Response> {
       const session = await lucia.createSession(existingUser.id, {});
       const sessionCookie = lucia.createSessionCookie(session.id);
       cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+      cookies().delete("wishlistOwner");
+      cookies().delete("wishId");
+
+      if (wishId) {
+        await reserveWish({ wishId, userId: existingUser.id });
+      }
+
       return new Response(null, {
         status: 302,
         headers: {
-          Location: "/",
+          Location: wishlistOwner ? `/${wishlistOwner}` : "/",
         },
       });
     }
@@ -45,27 +55,30 @@ export async function GET(request: Request): Promise<Response> {
         email: googleUser.email,
         emailVerified: googleUser.email_verified,
         image: googleUser.picture,
+        username: googleUser.email.split("@")[0],
       },
     });
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+    cookies().delete("wishlistOwner");
+    cookies().delete("wishId");
+
+    if (wishId) {
+      await reserveWish({ wishId, userId });
+    }
+
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: wishlistOwner ? `/${wishlistOwner}` : "/",
       },
     });
   } catch (e) {
     if (e instanceof OAuth2RequestError && e.message === "bad_verification_code") {
-      // invalid code
-      return new Response(null, {
-        status: 400,
-      });
+      throw new Error("OAUTH_ERROR");
     }
-    return new Response(null, {
-      status: 500,
-    });
+    throw new Error("INTERNAL_SERVER_ERROR");
   }
 }
 

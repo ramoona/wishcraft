@@ -1,14 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { reserveWishAction } from "~/actions/wishlist";
 import { Button } from "~/components/ui/button";
+import { SignInForm } from "~/components/forms/SignInForm";
+import { Slider } from "~/components/ui/slider";
 
 export function ReserveButton({ wishId }: { wishId: string }) {
   const router = useRouter();
+  const params = useParams<{ username: string }>();
 
   const [isPending, startTransition] = useTransition();
+  const [isSliderOpen, setSliderOpen] = useState(false);
   const [error, setError] = useState<string>();
 
   const triggerReserveWishAction = () => {
@@ -17,7 +21,9 @@ export function ReserveButton({ wishId }: { wishId: string }) {
 
     startTransition(async () => {
       const { error } = await reserveWishAction(formData);
-      if (error) {
+      if (error && error === "UNAUTHORIZED") {
+        setSliderOpen(true);
+      } else if (error) {
         setError(error);
       } else {
         router.refresh();
@@ -31,6 +37,9 @@ export function ReserveButton({ wishId }: { wishId: string }) {
         {isPending ? "Reserving..." : "Reserve"}
       </Button>
       <span>{error}</span>
+      <Slider isOpen={isSliderOpen} header="Who is reserving?">
+        <SignInForm wishId={wishId} wishlistOwner={params.username} />
+      </Slider>
     </div>
   );
 }

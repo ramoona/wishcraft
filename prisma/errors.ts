@@ -1,4 +1,4 @@
-export type PrismaErrorTypes =
+export type PrismaErrorType =
   | "USER_NOT_FOUND"
   | "WISHLIST_NOT_FOUND"
   | "WISH_NOT_FOUND"
@@ -7,8 +7,8 @@ export type PrismaErrorTypes =
   | "USERNAME_IS_TAKEN";
 
 export class PrismaError extends Error {
-  readonly errorType: PrismaErrorTypes;
-  constructor(errorType: PrismaErrorTypes) {
+  readonly errorType: PrismaErrorType;
+  constructor(errorType: PrismaErrorType) {
     super();
     this.name = "PrismaError";
     this.errorType = errorType;

@@ -1,0 +1,1 @@
+export type ServerErrorCode = "UNAUTHORIZED" | "UNKNOWN" | "INVALID_INPUT" | "INTERNAL_SERVER_ERROR" | "OAUTH_ERROR";

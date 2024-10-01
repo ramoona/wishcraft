@@ -28,6 +28,7 @@ export function ForeignWishlist({ data }: { data: WishlistT }) {
         <div>
           <h2 className="mb-4 flex items-center gap-2 text-lg">
             <span>Fulfilled wishes</span>
+            {/*  TODO implement hiding fulfilled wishes*/}
           </h2>
           <WishItemList>
             {fulfilled.map(wish => (
