@@ -2,25 +2,25 @@
 
 import { finalizeSignUp } from "prisma/handlers/user";
 import { PrismaError } from "prisma/errors";
-import { getServerSession } from "~/auth/getServerSession";
 import { SignUpFormData } from "~/actions/formData";
+import { getSessionUser } from "~/auth/getSessionUser";
 
 type ActionState = { error?: string };
 
 export const finalizeSignUpAction = async (formData: FormData): Promise<ActionState> => {
-  const session = await getServerSession();
+  const sessionUser = await getSessionUser();
   const username = SignUpFormData.toObject(formData).username;
 
   if (!username) {
     return { error: "Username is required" };
   }
 
-  if (!session?.user.id) {
+  if (!sessionUser) {
     return { error: "Unauthorized" };
   }
 
   try {
-    await finalizeSignUp({ userId: session.user.id, username });
+    await finalizeSignUp({ userId: sessionUser.id, username });
     return { error: undefined };
   } catch (e) {
     return {

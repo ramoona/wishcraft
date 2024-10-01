@@ -1,7 +1,6 @@
 "use server";
 
 import { createWish, deleteWish, getWishlistIdByUserId, reserveWish, updateWish } from "prisma/handlers/wishlist";
-import { getServerSession } from "~/auth/getServerSession";
 import { PrismaError } from "prisma/errors";
 import {
   WishCreationFormData,
@@ -10,23 +9,24 @@ import {
   WishUpdateFormData,
 } from "~/actions/formData";
 import { omit } from "ramda";
+import { getSessionUser } from "~/auth/getSessionUser";
 
 type ActionState = { error?: string };
 
 export const reserveWishAction = async (formData: FormData): Promise<ActionState> => {
-  const session = await getServerSession();
+  const sessionUser = await getSessionUser();
   const wishId = WishlistReservationFormData.toObject(formData).wishId;
 
   if (!wishId || typeof wishId !== "string") {
     return { error: "Wish ID is required" };
   }
 
-  if (!session?.user.id) {
+  if (!sessionUser) {
     return { error: "Unauthorized" };
   }
 
   try {
-    await reserveWish({ userId: session.user.id, wishId });
+    await reserveWish({ userId: sessionUser.id, wishId });
     return { error: undefined };
   } catch (e) {
     return { error: e instanceof PrismaError ? e.errorType : "Something went wrong" };
@@ -34,15 +34,15 @@ export const reserveWishAction = async (formData: FormData): Promise<ActionState
 };
 
 export const createWishAction = async (formData: FormData): Promise<ActionState> => {
-  const session = await getServerSession();
+  const sessionUser = await getSessionUser();
   const formEntries = WishCreationFormData.toObject(formData);
 
-  if (!session?.user.id) {
+  if (!sessionUser) {
     return { error: "Unauthorized" };
   }
 
   try {
-    const wishlistId = await getWishlistIdByUserId(session.user.id);
+    const wishlistId = await getWishlistIdByUserId(sessionUser.id);
     await createWish(wishlistId, formEntries);
     return { error: undefined };
   } catch (e) {
@@ -51,10 +51,10 @@ export const createWishAction = async (formData: FormData): Promise<ActionState>
 };
 
 export const updateWishAction = async (formData: FormData): Promise<ActionState> => {
-  const session = await getServerSession();
+  const sessionUser = await getSessionUser();
   const formEntries = WishUpdateFormData.toObject(formData);
 
-  if (!session?.user.id) {
+  if (!sessionUser) {
     return { error: "Unauthorized" };
   }
 
@@ -71,10 +71,10 @@ export const updateWishAction = async (formData: FormData): Promise<ActionState>
 };
 
 export const deleteWishAction = async (formData: FormData): Promise<ActionState> => {
-  const session = await getServerSession();
+  const sessionUser = await getSessionUser();
   const formEntries = WishDeletionFormData.toObject(formData);
 
-  if (!session?.user.id) {
+  if (!sessionUser) {
     return { error: "Unauthorized" };
   }
 

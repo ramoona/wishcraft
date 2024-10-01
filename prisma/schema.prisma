@@ -13,10 +13,11 @@ model User {
   name          String?
   username      String?   @unique
   email         String    @unique
-  emailVerified DateTime?
+  emailVerified Boolean?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  google_id     String?
 
   // App columns
   wishlists Wishlist[]
@@ -48,10 +49,10 @@ model Account {
 }
 
 model Session {
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,25 +1,18 @@
 import { WishT as WishT } from "~/types/wishlist";
 import { WishStatus } from "@prisma/client";
 import { ReserveButton } from "~/components/wishlist/foreign/ReserveButton";
-import { getServerSession } from "~/auth/getServerSession";
-import { redirect } from "next/navigation";
 import { WishItem } from "~/components/wishlist/WishItem";
 import { Badge } from "~/components/ui/badge";
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
+import { getSessionUser } from "~/auth/getSessionUser";
 
 function isWishReservable(data: WishT) {
   return data.status === WishStatus.ACTIVE && !data.reservedById;
 }
 
 export async function ForeignWish({ data }: { data: WishT }) {
-  const session = await getServerSession();
-  const userId = session?.user.id;
-
-  if (!userId) {
-    redirect("/");
-  }
-
-  const isReservedByCurrentUser = data.reservedById === userId;
+  const sessionUser = await getSessionUser();
+  const isReservedByCurrentUser = data.reservedById === sessionUser?.id;
 
   return (
     <div className="flex gap-2">

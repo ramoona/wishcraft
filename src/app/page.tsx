@@ -1,13 +1,13 @@
 import { SignInForm } from "~/components/forms/SignInForm";
-import { getServerSession } from "~/auth/getServerSession";
 import { redirect } from "next/navigation";
 import { SetUpUsernameForm } from "~/components/forms/SetUpUsernameForm";
 import { Layout } from "~/components/layout/Layout";
+import { getSessionUser } from "~/auth/getSessionUser";
 
 export default async function Home() {
-  const session = await getServerSession();
+  const sessionUser = await getSessionUser();
 
-  if (!session) {
+  if (!sessionUser) {
     return (
       <Layout>
         Log In
@@ -16,14 +16,14 @@ export default async function Home() {
     );
   }
 
-  if (!session.user.username) {
+  if (!sessionUser.username) {
     return (
       <Layout>
-        Welcome, {session.user.name}! Choose a username to continue:
+        Welcome, {sessionUser.name}! Choose a username to continue:
         <SetUpUsernameForm />
       </Layout>
     );
   }
 
-  redirect(`/${session.user.username}`);
+  redirect(`/${sessionUser.username}`);
 }
