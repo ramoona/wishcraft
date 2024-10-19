@@ -37,10 +37,8 @@ async function getAvailableUsername(username: string, attempt = 0): Promise<stri
     throw new UserError("TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME");
   }
 
-  const usernameAttempt = generateUniqueUsername();
-  const isUsernameExists = await isUserNameTaken(usernameAttempt);
-
-  return isUsernameExists ? getAvailableUsername(username, attempt + 1) : usernameAttempt;
+  const isTaken = await isUserNameTaken(username);
+  return isTaken ? getAvailableUsername(generateUniqueUsername(), attempt + 1) : username;
 }
 
 export async function createUser(input: UserInput) {
