@@ -2,9 +2,9 @@ import { prisma } from "prisma/client";
 import { createWishlist, WISH_FIELDS_SELECT } from "../wishlist";
 import { omit } from "ramda";
 import { UserWithRelations } from "~/services/user/types";
-import { generateUniqueUsername } from "~/utils";
 import { UserError } from "~/services/user/errors";
 import { WishlistError } from "~/services/wishlist/errors";
+import { generateUniqueUsername } from "~/utils/uniqueUsername";
 
 export async function updateUsername({ userId, username }: { userId: string; username: string }) {
   const isUsernameExists = await isUserNameTaken(username);

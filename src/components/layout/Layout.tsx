@@ -3,7 +3,8 @@ import { getSessionUser } from "~/services/auth";
 import { Types } from "~/services/user/types";
 import { buttonVariants } from "~/components/ui/button";
 import { SignOut } from "@phosphor-icons/react/dist/ssr";
-import { cn } from "~/utils";
+
+import { cn } from "~/utils/classnames";
 
 export async function Layout({ children }: PropsWithChildren) {
   const sessionUser = await getSessionUser();

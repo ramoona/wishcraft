@@ -2,7 +2,8 @@
 
 import { buttonVariants } from "~/components/ui/button";
 import { GoogleLogo } from "@phosphor-icons/react";
-import { cn } from "~/utils";
+
+import { cn } from "~/utils/classnames";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const queryParams = new URLSearchParams();

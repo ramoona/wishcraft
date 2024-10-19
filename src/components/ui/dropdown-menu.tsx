@@ -4,8 +4,8 @@ import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { CheckIcon, ChevronRightIcon, DotFilledIcon, DotsVerticalIcon } from "@radix-ui/react-icons";
 
-import { cn } from "~/utils";
 import { buttonVariants } from "~/components/ui/button";
+import { cn } from "~/utils/classnames";
 
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
