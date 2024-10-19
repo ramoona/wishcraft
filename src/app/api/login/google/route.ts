@@ -1,6 +1,7 @@
 import { generateState, generateCodeVerifier } from "arctic";
-import { googleAuth } from "~/auth/auth";
+import { googleAuth } from "~/services/auth";
 import { cookies } from "next/headers";
+import { ServerError } from "~/services/errors";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
@@ -55,6 +56,6 @@ export async function GET(request: Request): Promise<Response> {
     }
     return Response.redirect(redirectUrl);
   } catch {
-    throw new Error("INTERNAL_SERVER_ERROR");
+    throw new ServerError("INTERNAL_SERVER_ERROR");
   }
 }

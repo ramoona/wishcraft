@@ -1,7 +1,7 @@
 /*
   Warnings:
 
-  - The `emailVerified` column on the `User` table would be dropped and recreated. This will lead to data loss if there is data in the column.
+  - The `emailVerified` column on the `Types` table would be dropped and recreated. This will lead to data loss if there is data in the column.
 
 */
 -- AlterTable

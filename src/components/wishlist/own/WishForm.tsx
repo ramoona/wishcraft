@@ -1,4 +1,4 @@
-import { WishT } from "~/types/wishlist";
+import { WishT } from "~/services/wishlist/types";
 import { Input } from "~/components/ui/input";
 import { Form, FormLabel, FormField, FormControl, FormDescription, FormItem } from "~/components/ui/form";
 import { z } from "zod";

@@ -1,0 +1,75 @@
+import { Lucia } from "lucia";
+import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
+import { prisma } from "prisma/client";
+import { Google } from "arctic";
+import { Types } from "~/services/user/types";
+import { ServerError } from "~/services/errors";
+import { cache } from "react";
+import { cookies } from "next/headers";
+
+export const LuciaPrismaAdapter = new PrismaAdapter(prisma.session, prisma.user);
+
+export const lucia = new Lucia(LuciaPrismaAdapter, {
+  sessionCookie: {
+    // this sets cookies with super long expiration
+    // since Next.js doesn't allow Lucia to extend cookie expiration when rendering pages
+    expires: false,
+    attributes: {
+      secure: process.env.NODE_ENV === "production",
+    },
+  },
+  getUserAttributes: (attributes): Types => {
+    return {
+      id: attributes.id,
+      email: attributes.email,
+      image: attributes.image,
+      username: attributes.username,
+      firstName: attributes.firstName,
+      lastName: attributes.lastName,
+    };
+  },
+});
+
+export const googleAuth = new Google(
+  process.env.GOOGLE_CLIENT_ID!,
+  process.env.GOOGLE_CLIENT_SECRET!,
+  "http://localhost:3000/api/login/google/callback",
+);
+
+declare module "lucia" {
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: Types;
+  }
+}
+
+export const getSessionUser = cache(async () => {
+  const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+  if (!sessionId) return null;
+
+  const { user, session } = await lucia.validateSession(sessionId);
+
+  try {
+    if (session?.fresh) {
+      const sessionCookie = lucia.createSessionCookie(session.id);
+      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+    }
+    if (!session) {
+      const sessionCookie = lucia.createBlankSessionCookie();
+      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+    }
+  } catch {
+    return null;
+  }
+  return user;
+});
+
+export async function getSessionUserOrThrow() {
+  const sessionUser = await getSessionUser();
+
+  if (!sessionUser) {
+    throw new ServerError("UNAUTHORIZED");
+  }
+
+  return sessionUser;
+}

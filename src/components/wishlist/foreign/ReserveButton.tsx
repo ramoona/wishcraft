@@ -2,41 +2,54 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { reserveWishAction } from "~/actions/wishlist";
+import { reserveWishAction, releaseWishAction } from "~/services/wishlist/actions";
 import { Button } from "~/components/ui/button";
 import { SignInForm } from "~/components/forms/SignInForm";
 import { Slider } from "~/components/ui/slider";
+import { showToastWithActionResult } from "~/core/showToastWithActionResult";
+import { WishlistReservationFormData } from "~/services/wishlist/formData";
 
-export function ReserveButton({ wishId }: { wishId: string }) {
+export function ReserveButton({ wishId, isReserved }: { wishId: string; isReserved?: boolean }) {
   const router = useRouter();
   const params = useParams<{ username: string }>();
 
   const [isPending, startTransition] = useTransition();
   const [isSliderOpen, setSliderOpen] = useState(false);
-  const [error, setError] = useState<string>();
 
   const triggerReserveWishAction = () => {
-    const formData = new FormData();
-    formData.append("wishId", wishId);
-
     startTransition(async () => {
-      const { error } = await reserveWishAction(formData);
-      if (error && error === "UNAUTHORIZED") {
+      const { error } = await reserveWishAction(WishlistReservationFormData.fromObject({ wishId }));
+
+      if (error === "UNAUTHORIZED") {
         setSliderOpen(true);
-      } else if (error) {
-        setError(error);
-      } else {
-        router.refresh();
+        return;
       }
+
+      showToastWithActionResult("WISH_RESERVED", error);
+      router.refresh();
+    });
+  };
+
+  const triggerReleaseWishAction = () => {
+    startTransition(async () => {
+      const { error } = await releaseWishAction(WishlistReservationFormData.fromObject({ wishId }));
+
+      if (error === "UNAUTHORIZED") {
+        setSliderOpen(true);
+        return;
+      }
+
+      showToastWithActionResult("WISH_UNRESERVED", error);
+      router.refresh();
     });
   };
 
   return (
     <div>
-      <Button size="xs" onClick={triggerReserveWishAction} variant="outline">
-        {isPending ? "Reserving..." : "Reserve"}
+      <Button size="xs" onClick={isReserved ? triggerReleaseWishAction : triggerReserveWishAction} variant="outline">
+        {isPending && (isReserved ? "Canceling..." : "Reserving...")}
+        {!isPending && (isReserved ? "Cancel" : "Reserve")}
       </Button>
-      <span>{error}</span>
       <Slider isOpen={isSliderOpen} header="Who is reserving?">
         <SignInForm wishId={wishId} wishlistOwner={params.username} />
       </Slider>

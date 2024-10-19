@@ -2,6 +2,8 @@ import { Currency, WishStatus } from "@prisma/client";
 
 export type WishlistT = {
   wishes: WishT[];
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type WishT = {

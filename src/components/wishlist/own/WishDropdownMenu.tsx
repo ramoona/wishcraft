@@ -1,6 +1,6 @@
 "use client";
 
-import { WishT } from "~/types/wishlist";
+import { WishT } from "~/services/wishlist/types";
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -12,9 +12,10 @@ import { Slider } from "~/components/ui/slider";
 import { WishForm, WishFormValues } from "~/components/wishlist/own/WishForm";
 import * as React from "react";
 import { useState } from "react";
-import { deleteWishAction, updateWishAction } from "~/actions/wishlist";
-import { WishDeletionFormData, WishUpdateFormData } from "~/actions/formData";
+import { deleteWishAction, updateWishAction } from "~/services/wishlist/actions";
+import { WishDeletionFormData, WishUpdateFormData } from "~/services/wishlist/formData";
 import { useRouter } from "next/navigation";
+import { showToastWithActionResult } from "~/core/showToastWithActionResult";
 
 export function WishDropdownMenu({ wish }: { wish: WishT }) {
   const router = useRouter();
@@ -22,18 +23,21 @@ export function WishDropdownMenu({ wish }: { wish: WishT }) {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
 
   const handleEditWish = async (values: WishFormValues) => {
-    await updateWishAction(WishUpdateFormData.fromObject({ id: wish.id, ...values }));
+    const { error } = await updateWishAction(WishUpdateFormData.fromObject({ id: wish.id, ...values }));
+    showToastWithActionResult("UPDATED", error);
     router.refresh();
     setIsSliderOpen(false);
   };
 
   const handleUpdateWishStatus = async (status: WishStatus) => {
-    await updateWishAction(WishUpdateFormData.fromObject({ id: wish.id, status }));
+    const { error } = await updateWishAction(WishUpdateFormData.fromObject({ id: wish.id, status }));
+    showToastWithActionResult("UPDATED", error);
     router.refresh();
   };
 
   const handleDeleteWishStatus = async () => {
-    await deleteWishAction(WishDeletionFormData.fromObject({ id: wish.id }));
+    const { error } = await deleteWishAction(WishDeletionFormData.fromObject({ id: wish.id }));
+    showToastWithActionResult("DELETED", error);
     router.refresh();
   };
 

@@ -1,4 +1,4 @@
-import { WishlistT, WishT } from "~/types/wishlist";
+import { WishlistT, WishT } from "~/services/wishlist/types";
 import { ForeignWish } from "~/components/wishlist/foreign/ForeignWish";
 import { WishItemList } from "~/components/wishlist/WishItemList";
 import { groupBy } from "ramda";

@@ -1,10 +1,10 @@
-import { getWishlistByUserId } from "prisma/handlers/wishlist";
-import { getUserWithRelationsByUsername } from "prisma/handlers/user";
+import { getWishlistByUserId } from "~/services/wishlist";
+import { getUserWithRelationsByUsername } from "~/services/user";
 import { Layout } from "~/components/layout/Layout";
 import { OwnWishlist } from "~/components/wishlist/own/OwnWishlist";
 import { ForeignWishlist } from "~/components/wishlist/foreign/ForeignWishlist";
 import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
-import { getSessionUser } from "~/auth/getSessionUser";
+import { getSessionUser } from "~/services/auth";
 
 export default async function UserPage({ params }: { params: { username: string } }) {
   const sessionUser = await getSessionUser();

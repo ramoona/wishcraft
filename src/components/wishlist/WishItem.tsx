@@ -1,6 +1,6 @@
 "use client";
 
-import { WishT } from "~/types/wishlist";
+import { WishT } from "~/services/wishlist/types";
 import { Price } from "~/components/wishlist/Price";
 
 export function WishItem({ data }: { data: Omit<WishT, "status" | "reservedById"> }) {

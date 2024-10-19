@@ -1,4 +1,4 @@
-import { WishlistT, WishT } from "~/types/wishlist";
+import { WishlistT, WishT } from "~/services/wishlist/types";
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
 import { WishItem } from "~/components/wishlist/WishItem";
 import { WishItemList } from "~/components/wishlist/WishItemList";
@@ -8,6 +8,15 @@ import { WishStatus } from "@prisma/client";
 import { Eye, EyeClosed } from "@phosphor-icons/react/dist/ssr";
 
 export function OwnWishlist({ data }: { data: WishlistT }) {
+  // Brand new wishlist
+  if (data.createdAt === data.updatedAt) {
+    return (
+      <div className="flex flex-col gap-4">
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
+        <span>Let's add your first wish</span>
+      </div>
+    );
+  }
   if (!data.wishes.length) {
     return (
       <div className="flex flex-col gap-4">

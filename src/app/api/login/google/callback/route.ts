@@ -1,9 +1,10 @@
-import { googleAuth, lucia } from "~/auth/auth";
+import { googleAuth, lucia } from "~/services/auth";
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
-import { generateId } from "lucia";
 import { prisma } from "prisma/client";
-import { reserveWish } from "prisma/handlers/wishlist";
+import { reserveWish } from "~/services/wishlist";
+import { createUser } from "~/services/user";
+import { ServerError } from "~/services/errors";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
@@ -26,7 +27,7 @@ export async function GET(request: Request): Promise<Response> {
       "https://www.googleapis.com/oauth2/v3/userinfo?access_token=" + tokens.accessToken,
     );
     const googleUser: GoogleUser = await googleUserResponse.json();
-    const existingUser = await prisma.user.findFirst({ where: { google_id: googleUser.sub } });
+    const existingUser = await prisma.user.findFirst({ where: { googleId: googleUser.sub } });
 
     if (existingUser) {
       const session = await lucia.createSession(existingUser.id, {});
@@ -46,26 +47,23 @@ export async function GET(request: Request): Promise<Response> {
         },
       });
     }
-
-    const userId = generateId(15);
-    await prisma.user.create({
-      data: {
-        id: userId,
-        google_id: googleUser.sub,
-        email: googleUser.email,
-        emailVerified: googleUser.email_verified,
-        image: googleUser.picture,
-        username: googleUser.email.split("@")[0],
-      },
+    const createdUser = await createUser({
+      googleId: googleUser.sub,
+      email: googleUser.email,
+      firstName: googleUser.given_name,
+      lastName: googleUser.family_name,
+      image: googleUser.picture,
+      emailVerified: googleUser.email_verified,
     });
-    const session = await lucia.createSession(userId, {});
+
+    const session = await lucia.createSession(createdUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
     cookies().delete("wishlistOwner");
     cookies().delete("wishId");
 
     if (wishId) {
-      await reserveWish({ wishId, userId });
+      await reserveWish({ wishId, userId: createdUser.id });
     }
 
     return new Response(null, {
@@ -76,9 +74,9 @@ export async function GET(request: Request): Promise<Response> {
     });
   } catch (e) {
     if (e instanceof OAuth2RequestError && e.message === "bad_verification_code") {
-      throw new Error("OAUTH_ERROR");
+      throw new ServerError("OAUTH_ERROR");
     }
-    throw new Error("INTERNAL_SERVER_ERROR");
+    throw new ServerError("INTERNAL_SERVER_ERROR");
   }
 }
 
