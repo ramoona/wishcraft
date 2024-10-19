@@ -32,8 +32,12 @@ export function formDataToObject<T extends Record<string, string | number | null
       return;
     }
 
+    console.info("Value", key, value);
+
     obj[key] = value;
   });
+
+  console.info("Transformed values", JSON.stringify(obj));
 
   return obj as T;
 }
