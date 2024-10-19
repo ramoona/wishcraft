@@ -30,11 +30,13 @@ export const lucia = new Lucia(LuciaPrismaAdapter, {
   },
 });
 
-export const googleAuth = new Google(
-  process.env.GOOGLE_CLIENT_ID!,
-  process.env.GOOGLE_CLIENT_SECRET!,
-  "http://localhost:3000/api/auth/google/callback",
-);
+export const getGoogleAuth = (redirectUrlOrigin: string) => {
+  return new Google(
+    process.env.GOOGLE_CLIENT_ID!,
+    process.env.GOOGLE_CLIENT_SECRET!,
+    `${redirectUrlOrigin}/api/auth/google/callback`,
+  );
+};
 
 declare module "lucia" {
   interface Register {

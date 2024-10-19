@@ -1,9 +1,10 @@
 import { generateState, generateCodeVerifier } from "arctic";
-import { googleAuth } from "~/services/auth";
 import { cookies } from "next/headers";
 import { ServerError } from "~/services/errors";
+import { NextRequest } from "next/server";
+import { getGoogleAuth } from "~/services/auth";
 
-export async function GET(request: Request): Promise<Response> {
+export async function GET(request: NextRequest): Promise<Response> {
   const url = new URL(request.url);
   const wishlistOwner = url.searchParams.get("wishlistOwner");
   const wishId = url.searchParams.get("wishId");
@@ -11,7 +12,7 @@ export async function GET(request: Request): Promise<Response> {
   try {
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
-    const redirectUrl = await googleAuth.createAuthorizationURL(state, codeVerifier, {
+    const redirectUrl = await getGoogleAuth(request.nextUrl.origin).createAuthorizationURL(state, codeVerifier, {
       scopes: [
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile",

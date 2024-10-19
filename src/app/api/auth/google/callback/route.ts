@@ -1,12 +1,13 @@
-import { googleAuth, lucia } from "~/services/auth";
+import { getGoogleAuth, lucia } from "~/services/auth";
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { prisma } from "prisma/client";
 import { reserveWish } from "~/services/wishlist";
 import { createUser } from "~/services/user";
 import { ServerError } from "~/services/errors";
+import { NextRequest } from "next/server";
 
-export async function GET(request: Request): Promise<Response> {
+export async function GET(request: NextRequest): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
@@ -22,7 +23,7 @@ export async function GET(request: Request): Promise<Response> {
   }
 
   try {
-    const tokens = await googleAuth.validateAuthorizationCode(code, storedCodeVerifier);
+    const tokens = await getGoogleAuth(request.nextUrl.origin).validateAuthorizationCode(code, storedCodeVerifier);
     const googleUserResponse = await fetch(
       "https://www.googleapis.com/oauth2/v3/userinfo?access_token=" + tokens.accessToken,
     );
