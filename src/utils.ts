@@ -13,6 +13,30 @@ export function generateUniqueUsername() {
     length: 2,
   });
 }
+export function formDataToObject<T extends Record<string, string | number | null | undefined>>(formData: FormData) {
+  const formDataEntries = Object.entries(Object.fromEntries(formData));
+  // eslint-disable-next-line no-console
+  console.info("Create object entries from form data");
+
+  const obj: Record<string, string | number> = {};
+
+  formDataEntries.forEach(([key, value]) => {
+    if (value instanceof File) {
+      return;
+    }
+
+    const maybeNumber = parseFloat(value);
+
+    if (!isNaN(maybeNumber)) {
+      obj[key] = maybeNumber;
+      return;
+    }
+
+    obj[key] = value;
+  });
+
+  return obj as T;
+}
 
 export class TypedFormData<T extends Record<string, string | number | null | undefined>> {
   fromObject(obj: T): FormData {

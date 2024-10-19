@@ -7,3 +7,5 @@ export const WishUpdateFormData = new TypedFormData<
   Partial<Pick<WishT, "id" | "name" | "price" | "currency" | "url" | "comment" | "status">>
 >();
 export const WishDeletionFormData = new TypedFormData<Pick<WishT, "id">>();
+
+export type DeleteWishFormData = Pick<WishT, "id">;

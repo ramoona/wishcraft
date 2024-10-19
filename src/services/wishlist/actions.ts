@@ -9,16 +9,12 @@ import {
   updateWish,
 } from "~/services/wishlist/index";
 import { ServerError, ServerErrorCode } from "~/services/errors";
-import {
-  WishCreationFormData,
-  WishDeletionFormData,
-  WishlistReservationFormData,
-  WishUpdateFormData,
-} from "./formData";
+import { DeleteWishFormData, WishCreationFormData, WishlistReservationFormData, WishUpdateFormData } from "./formData";
 import { omit } from "ramda";
 import { WishlistError, WishlistErrorCode } from "~/services/wishlist/errors";
 import { getSessionUserOrThrow } from "~/services/auth";
 import { Prisma } from "@prisma/client";
+import { formDataToObject } from "~/utils";
 
 type ActionState = { error?: ServerErrorCode | WishlistErrorCode };
 
@@ -80,7 +76,7 @@ export const deleteWishAction = async (formData: FormData): Promise<ActionState>
     await getSessionUserOrThrow();
     // eslint-disable-next-line no-console
     console.info("Checked authentication");
-    const { id } = WishDeletionFormData.toObject(formData);
+    const { id } = formDataToObject<DeleteWishFormData>(formData);
     // eslint-disable-next-line no-console
     console.info("Converted form data to object", id);
     await deleteWish(id);
