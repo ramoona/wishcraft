@@ -23,7 +23,7 @@ export class TypedFormData<T extends Record<string, string | number | null | und
 
       const maybeNumber = parseFloat(value);
 
-      if (!isNaN(maybeNumber)) {
+      if (!isNaN(maybeNumber) && value.length === maybeNumber.toString().length) {
         obj[key] = maybeNumber;
         continue;
       }
