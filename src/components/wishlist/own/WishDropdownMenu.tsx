@@ -24,20 +24,20 @@ export function WishDropdownMenu({ wish }: { wish: WishT }) {
 
   const handleEditWish = async (values: WishFormValues) => {
     const { error } = await updateWishAction(WishUpdateFormData.fromObject({ id: wish.id, ...values }));
-    showToastWithActionResult("UPDATED", error);
+    showToastWithActionResult(error);
     router.refresh();
     setIsSliderOpen(false);
   };
 
   const handleUpdateWishStatus = async (status: WishStatus) => {
     const { error } = await updateWishAction(WishUpdateFormData.fromObject({ id: wish.id, status }));
-    showToastWithActionResult("UPDATED", error);
+    showToastWithActionResult(error);
     router.refresh();
   };
 
   const handleDeleteWishStatus = async () => {
     const { error } = await deleteWishAction(WishDeletionFormData.fromObject({ id: wish.id }));
-    showToastWithActionResult("DELETED", error);
+    showToastWithActionResult(error);
     router.refresh();
   };
 

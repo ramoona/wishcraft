@@ -25,7 +25,7 @@ export function ReserveButton({ wishId, isReserved }: { wishId: string; isReserv
         return;
       }
 
-      showToastWithActionResult("WISH_RESERVED", error);
+      showToastWithActionResult(error);
       router.refresh();
     });
   };
@@ -39,7 +39,7 @@ export function ReserveButton({ wishId, isReserved }: { wishId: string; isReserv
         return;
       }
 
-      showToastWithActionResult("WISH_UNRESERVED", error);
+      showToastWithActionResult(error);
       router.refresh();
     });
   };

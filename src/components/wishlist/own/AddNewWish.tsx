@@ -8,8 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
-import { showErrorToast, showSuccessToast } from "~/components/ui/toasts";
-import { getErrorMessage, getSuccessMessage } from "~/core/toastMessages";
+import { showToastWithActionResult } from "~/core/showToastWithActionResult";
 
 export function AddNewWish() {
   const router = useRouter();
@@ -19,9 +18,7 @@ export function AddNewWish() {
     const { error } = await createWishAction(WishCreationFormData.fromObject(values));
 
     if (error) {
-      showErrorToast(getErrorMessage(error));
-    } else {
-      showSuccessToast(getSuccessMessage("NEW_WISH_ADDED"));
+      showToastWithActionResult(error);
     }
 
     router.refresh();

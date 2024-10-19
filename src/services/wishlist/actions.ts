@@ -78,5 +78,5 @@ export const deleteWishAction = async (formData: FormData): Promise<ActionState>
 };
 
 function getErrorCode(e: unknown) {
-  return e instanceof ServerError || e instanceof WishlistError ? e.errorCode : "UNKNOWN";
+  return e instanceof ServerError || e instanceof WishlistError ? e.errorCode : (JSON.stringify(e) as ServerErrorCode);
 }
