@@ -31,12 +31,12 @@ export function formDataToObject<T extends Record<string, string | number | null
       obj[key] = maybeNumber;
       return;
     }
-
+    // eslint-disable-next-line no-console
     console.info("Value", key, value);
 
     obj[key] = value;
   });
-
+  // eslint-disable-next-line no-console
   console.info("Transformed values", JSON.stringify(obj));
 
   return obj as T;
