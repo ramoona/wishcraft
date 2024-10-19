@@ -78,7 +78,9 @@ export const updateWishAction = async (formData: FormData): Promise<ActionState>
 export const deleteWishAction = async (formData: FormData): Promise<ActionState> => {
   try {
     await getSessionUserOrThrow();
+    console.info("Checked authentication");
     const { id } = WishDeletionFormData.toObject(formData);
+    console.info("Converted form data to object", id);
     await deleteWish(id);
     return {};
   } catch (e) {
