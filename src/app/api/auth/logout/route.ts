@@ -14,7 +14,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     await lucia.invalidateSession(sessionId);
     cookies().delete(lucia.sessionCookieName);
     return Response.redirect(request.nextUrl.origin);
-  } catch (e) {
+  } catch {
     throw new ServerError("INTERNAL_SERVER_ERROR");
   }
 }
