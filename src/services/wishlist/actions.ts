@@ -102,5 +102,10 @@ function getErrorCode(e: unknown) {
     return "PRISMA_ERROR";
   }
 
+  if (e instanceof Error) {
+    // eslint-disable-next-line no-console
+    console.error("Unknown error:", e.message, e.name);
+  }
+
   return "UNKNOWN";
 }
