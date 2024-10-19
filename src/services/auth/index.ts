@@ -33,7 +33,7 @@ export const lucia = new Lucia(LuciaPrismaAdapter, {
 export const googleAuth = new Google(
   process.env.GOOGLE_CLIENT_ID!,
   process.env.GOOGLE_CLIENT_SECRET!,
-  "http://localhost:3000/api/login/google/callback",
+  "http://localhost:3000/api/auth/google/callback",
 );
 
 declare module "lucia" {
@@ -43,8 +43,12 @@ declare module "lucia" {
   }
 }
 
+export const getSessionId = cache(() => {
+  return cookies().get(lucia.sessionCookieName)?.value ?? null;
+});
+
 export const getSessionUser = cache(async () => {
-  const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+  const sessionId = getSessionId();
   if (!sessionId) return null;
 
   const { user, session } = await lucia.validateSession(sessionId);
@@ -64,7 +68,7 @@ export const getSessionUser = cache(async () => {
   return user;
 });
 
-export async function getSessionUserOrThrow() {
+export const getSessionUserOrThrow = cache(async () => {
   const sessionUser = await getSessionUser();
 
   if (!sessionUser) {
@@ -72,4 +76,4 @@ export async function getSessionUserOrThrow() {
   }
 
   return sessionUser;
-}
+});

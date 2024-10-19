@@ -1,5 +1,9 @@
 "use client";
 
+import { buttonVariants } from "~/components/ui/button";
+import { GoogleLogo } from "@phosphor-icons/react";
+import { cn } from "~/utils";
+
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const queryParams = new URLSearchParams();
 
@@ -11,5 +15,13 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
     queryParams.append("wishId", wishId);
   }
 
-  return <a href={`/api/login/google?${queryParams.toString()}`}>{"Sign in with Google"}</a>;
+  return (
+    <a
+      className={cn(buttonVariants({ variant: "outline" }), "flex items-center gap-2 no-underline")}
+      href={`/api/auth/google?${queryParams.toString()}`}
+    >
+      <GoogleLogo size={24} weight="regular" />
+      {"Sign in with Google"}
+    </a>
+  );
 }

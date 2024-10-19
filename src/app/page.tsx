@@ -10,7 +10,7 @@ export default async function Home() {
   if (!sessionUser) {
     return (
       <Layout>
-        Log In
+        Hey, Stranger 👋🏻
         <SignInForm />
       </Layout>
     );
