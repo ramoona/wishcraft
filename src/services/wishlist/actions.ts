@@ -28,6 +28,8 @@ export const reserveWishAction = async (formData: FormData): Promise<ActionState
     await reserveWish({ userId: sessionUser.id, wishId });
     return {};
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error("Wish [reserve] error:", JSON.stringify(e));
     return { error: getErrorCode(e) };
   }
 };
@@ -39,6 +41,8 @@ export const releaseWishAction = async (formData: FormData): Promise<ActionState
     await releaseWish({ userId: sessionUser.id, wishId });
     return {};
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error("Wish [release] error:", JSON.stringify(e));
     return { error: getErrorCode(e) };
   }
 };
@@ -51,6 +55,8 @@ export const createWishAction = async (formData: FormData): Promise<ActionState>
     await createWish(wishlistId, formEntries);
     return {};
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error("Wish [create] error:", JSON.stringify(e));
     return { error: getErrorCode(e) };
   }
 };
@@ -62,6 +68,8 @@ export const updateWishAction = async (formData: FormData): Promise<ActionState>
     await updateWish(formEntries.id!, omit(["id"], formEntries));
     return {};
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error("Wish [update] error:", JSON.stringify(e));
     return { error: getErrorCode(e) };
   }
 };
@@ -73,6 +81,8 @@ export const deleteWishAction = async (formData: FormData): Promise<ActionState>
     await deleteWish(id);
     return {};
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error("Wish [delete] error:", JSON.stringify(e));
     return { error: getErrorCode(e) };
   }
 };
