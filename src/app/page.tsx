@@ -1,7 +1,6 @@
 import { SignInForm } from "~/components/forms/SignInForm";
 import { redirect } from "next/navigation";
-import { SetUpUsernameForm } from "~/components/forms/SetUpUsernameForm";
-import { Layout } from "~/components/layout/Layout";
+import { SignInLayout } from "~/components/layout/Layout";
 import { getSessionUser } from "~/services/auth";
 
 export default async function Home() {
@@ -9,19 +8,9 @@ export default async function Home() {
 
   if (!sessionUser) {
     return (
-      <Layout>
-        Hey, Stranger 👋🏻
+      <SignInLayout>
         <SignInForm />
-      </Layout>
-    );
-  }
-
-  if (!sessionUser.username) {
-    return (
-      <Layout>
-        Welcome, {sessionUser.firstName}! Choose a username to continue:
-        <SetUpUsernameForm />
-      </Layout>
+      </SignInLayout>
     );
   }
 

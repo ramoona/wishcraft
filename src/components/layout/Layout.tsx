@@ -1,46 +1,57 @@
 import { PropsWithChildren } from "react";
 import { getSessionUser } from "~/services/auth";
-import { Types } from "~/services/user/types";
-import { buttonVariants } from "~/components/ui/button";
-import { SignOut } from "@phosphor-icons/react/dist/ssr";
+import { User } from "~/services/user/types";
 
-import { cn } from "~/utils/classnames";
+import { Logo } from "~/components/ui/Logo";
+import { UserMenu } from "~/components/user/UserMenu";
 
 export async function Layout({ children }: PropsWithChildren) {
   const sessionUser = await getSessionUser();
   return (
-    <>
+    <div className="relative">
       {sessionUser ? (
-        <UserHeader user={sessionUser} />
+        <AuthenticatedLayout user={sessionUser}>{children}</AuthenticatedLayout>
       ) : (
-        <header className="bg-accent px-8 py-4 text-4xl">Wishcraft</header>
+        <NonAuthenticatedLayout>{children}</NonAuthenticatedLayout>
       )}
-      <main className="flex min-h-screen flex-col items-start gap-4 p-8">{children}</main>
-    </>
+    </div>
   );
 }
 
-function UserHeader({ user }: { user: Types }) {
+function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user: User }>) {
   return (
-    <header className="flex justify-between bg-accent px-8 py-4">
-      <div className="text-4xl">Wishcraft</div>
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          {user.image ? (
-            <img className="size-8 rounded-full" src={user.image} alt="User image" />
-          ) : (
-            <span className="size-6 rounded-full bg-stone-300" />
-          )}
-          {user.firstName}
+    <div className="relative">
+      <header className="sticky left-0 top-0 flex h-16 w-screen justify-between px-8 py-4">
+        <Logo />
+        <UserMenu user={user} />
+      </header>
+      <main className="relative min-h-[calc(100vh_-_4rem)] px-8">{children}</main>
+    </div>
+  );
+}
+
+function NonAuthenticatedLayout({ children }: PropsWithChildren) {
+  return (
+    <div className="relative min-h-screen">
+      <header className="sticky left-0 top-0 flex h-16 w-screen justify-center px-8 py-4">
+        <Logo />
+      </header>
+      <main className="relative min-h-[calc(100vh_-_4rem)] px-8">{children}</main>
+    </div>
+  );
+}
+
+export function SignInLayout({ children }: PropsWithChildren) {
+  return (
+    <div className="relative min-h-screen">
+      <header className="sticky left-0 top-0 flex h-16 w-screen justify-center px-8 py-4">
+        <Logo />
+      </header>
+      <main className="relative min-h-[calc(100vh_-_4rem)] px-8">
+        <div className="fixed bottom-8 left-0 flex w-screen justify-center px-4">
+          <div className="w-full max-w-lg">{children}</div>
         </div>
-        <a
-          className={cn(buttonVariants({ variant: "outline" }), "flex items-center gap-2 no-underline")}
-          href={`/api/auth/logout`}
-        >
-          <SignOut size={24} />
-          Sign out
-        </a>
-      </div>
-    </header>
+      </main>
+    </div>
   );
 }

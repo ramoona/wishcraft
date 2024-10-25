@@ -6,22 +6,17 @@ import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
 import { Eye, EyeClosed } from "@phosphor-icons/react/dist/ssr";
+import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
 
 export function OwnWishlist({ data }: { data: WishlistT }) {
-  // Brand new wishlist
-  if (data.createdAt === data.updatedAt) {
-    return (
-      <div className="flex flex-col gap-4">
-        {/* eslint-disable-next-line react/no-unescaped-entities */}
-        <span>Let's add your first wish</span>
-      </div>
-    );
-  }
   if (!data.wishes.length) {
     return (
-      <div className="flex flex-col gap-4">
-        <span>Nothing here yet</span>
-      </div>
+      <>
+        <div className="flex min-h-[calc(100vh_-_4rem)] flex-col gap-4 pt-8 text-center">
+          <span>There are no wishes in this wishlist yet...</span>
+        </div>
+        <AddNewWish />
+      </>
     );
   }
 
@@ -42,56 +37,59 @@ export function OwnWishlist({ data }: { data: WishlistT }) {
   })(data.wishes);
 
   return (
-    <div className="flex flex-col gap-6">
-      <WishItemList>
-        {active.map(wish => (
-          <div key={wish.id} className="flex items-start gap-2">
-            <WishItem data={wish} />
-            <StatusBadge status={wish.status} />
-            <WishDropdownMenu wish={wish} />
+    <div className="relative">
+      <div className="flex min-h-[calc(100vh_-_4rem)] flex-col gap-6 pt-8">
+        <WishItemList>
+          {active.map(wish => (
+            <div key={wish.id} className="flex items-start gap-2">
+              <WishItem data={wish} />
+              <StatusBadge status={wish.status} />
+              <WishDropdownMenu wish={wish} />
+            </div>
+          ))}
+        </WishItemList>
+        {fulfilled.length > 0 && (
+          <div>
+            <h2 className="mb-4 flex items-center gap-2 text-lg">
+              <span className="font-medium">Fulfilled wishes</span>
+              <span className="flex items-center gap-1 text-xs text-slate-500">
+                everyone can see that
+                <Eye className="size-[14px]" />
+              </span>
+            </h2>
+            <WishItemList>
+              {fulfilled.map(wish => (
+                <div key={wish.id} className="flex items-start gap-2">
+                  <WishItem data={wish} />
+                  <StatusBadge status={wish.status} />
+                  <WishDropdownMenu wish={wish} />
+                </div>
+              ))}
+            </WishItemList>
           </div>
-        ))}
-      </WishItemList>
-      {fulfilled.length > 0 && (
-        <div>
-          <h2 className="mb-4 flex items-center gap-2 text-lg">
-            <span className="font-medium">Fulfilled wishes</span>
-            <span className="flex items-center gap-1 text-xs text-slate-500">
-              everyone can see that
-              <Eye className="size-[14px]" />
-            </span>
-          </h2>
-          <WishItemList>
-            {fulfilled.map(wish => (
-              <div key={wish.id} className="flex items-start gap-2">
-                <WishItem data={wish} />
-                <StatusBadge status={wish.status} />
-                <WishDropdownMenu wish={wish} />
-              </div>
-            ))}
-          </WishItemList>
-        </div>
-      )}
-      {archived.length > 0 && (
-        <div>
-          <h2 className="mb-4 flex items-center gap-2 text-lg">
-            <span className="font-medium">Archived</span>
-            <span className="flex items-center gap-1 text-xs text-slate-500">
-              only you can see that
-              <EyeClosed className="size-[14px]" />
-            </span>
-          </h2>
-          <WishItemList>
-            {archived.map(wish => (
-              <div key={wish.id} className="flex items-start gap-2">
-                <WishItem data={wish} />
-                <StatusBadge status={wish.status} />
-                <WishDropdownMenu wish={wish} />
-              </div>
-            ))}
-          </WishItemList>
-        </div>
-      )}
+        )}
+        {archived.length > 0 && (
+          <div>
+            <h2 className="mb-4 flex items-center gap-2 text-lg">
+              <span className="font-medium">Archived</span>
+              <span className="flex items-center gap-1 text-xs text-slate-500">
+                only you can see that
+                <EyeClosed className="size-[14px]" />
+              </span>
+            </h2>
+            <WishItemList>
+              {archived.map(wish => (
+                <div key={wish.id} className="flex items-start gap-2">
+                  <WishItem data={wish} />
+                  <StatusBadge status={wish.status} />
+                  <WishDropdownMenu wish={wish} />
+                </div>
+              ))}
+            </WishItemList>
+          </div>
+        )}
+      </div>
+      <AddNewWish />
     </div>
   );
 }

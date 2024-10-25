@@ -18,7 +18,7 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
 
   return (
     <a
-      className={cn(buttonVariants({ variant: "outline" }), "flex items-center gap-2 no-underline")}
+      className={cn(buttonVariants({ variant: "outline" }), "flex h-12 items-center gap-2 no-underline")}
       href={`/api/auth/google?${queryParams.toString()}`}
     >
       <GoogleLogo size={24} weight="regular" />

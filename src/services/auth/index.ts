@@ -2,7 +2,7 @@ import { Lucia } from "lucia";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { prisma } from "prisma/client";
 import { Google } from "arctic";
-import { Types } from "~/services/user/types";
+import { User } from "~/services/user/types";
 import { ServerError } from "~/services/errors";
 import { cache } from "react";
 import { cookies } from "next/headers";
@@ -18,7 +18,7 @@ export const lucia = new Lucia(LuciaPrismaAdapter, {
       secure: process.env.NODE_ENV === "production",
     },
   },
-  getUserAttributes: (attributes): Types => {
+  getUserAttributes: (attributes): User => {
     return {
       id: attributes.id,
       email: attributes.email,
@@ -41,7 +41,7 @@ export const getGoogleAuth = (redirectUrlOrigin: string) => {
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
-    DatabaseUserAttributes: Types;
+    DatabaseUserAttributes: User;
   }
 }
 

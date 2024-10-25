@@ -8,7 +8,7 @@ export function Slider({ header, children, isOpen }: PropsWithChildren<{ header:
   return (
     <div
       className={twMerge(
-        "fixed bottom-0 right-0 h-full w-[420px] translate-x-[420px] transition-transform duration-300 ease-in-out " +
+        "fixed bottom-0 right-0 h-full w-screen translate-x-[100vw] transition-transform duration-300 ease-in-out md:w-[420px] md:translate-x-[420px] " +
           "z-10 mt-24 flex flex-col border-l border-l-slate-200 bg-white p-6",
         isOpen && "translate-x-0",
       )}

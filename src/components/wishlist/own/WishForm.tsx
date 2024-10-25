@@ -31,6 +31,7 @@ type WishFormProps = {
   data?: Omit<WishT, "status" | "reservedById">;
   onSubmit: (values: WishFormValues) => void;
   onCancel: () => void;
+  isLoading: boolean;
 };
 
 export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
@@ -130,6 +131,7 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
           />
         </div>
         <div className="grid w-full grid-cols-2 gap-3">
+          {/* TODO loader */}
           <Button variant="outline" onClick={onCancel}>
             Nevermind
           </Button>

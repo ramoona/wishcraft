@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { CheckIcon, ChevronRightIcon, DotFilledIcon, DotsVerticalIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "@radix-ui/react-icons";
+import { DotsThreeOutlineVertical } from "@phosphor-icons/react";
 
 import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/utils/classnames";
@@ -152,11 +153,11 @@ const DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTML
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 
-export function DropdownMenu({ children }: { children: React.ReactNode }) {
+export function DropdownMenu({ children, trigger }: { children: React.ReactNode; trigger?: React.ReactNode }) {
   return (
     <DropdownMenuPrimitive.Root>
       <DropdownMenuPrimitive.Trigger className={buttonVariants({ variant: "ghost", size: "icon" })}>
-        <DotsVerticalIcon className="size-4" />
+        {trigger || <DotsThreeOutlineVertical size={24} />}
       </DropdownMenuPrimitive.Trigger>
       <DropdownMenuContent>{children}</DropdownMenuContent>
     </DropdownMenuPrimitive.Root>
