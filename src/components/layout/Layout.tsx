@@ -2,41 +2,42 @@ import { PropsWithChildren } from "react";
 import { getSessionUser } from "~/services/auth";
 import { User } from "~/services/user/types";
 
-import { Logo } from "~/components/ui/Logo";
+import { Logo } from "~/components/ui/logo";
 import { UserMenu } from "~/components/user/UserMenu";
+import Link from "next/link";
 
 export async function Layout({ children }: PropsWithChildren) {
   const sessionUser = await getSessionUser();
-  return (
-    <div className="relative">
-      {sessionUser ? (
-        <AuthenticatedLayout user={sessionUser}>{children}</AuthenticatedLayout>
-      ) : (
-        <NonAuthenticatedLayout>{children}</NonAuthenticatedLayout>
-      )}
-    </div>
+  return sessionUser ? (
+    <AuthenticatedLayout user={sessionUser}>{children}</AuthenticatedLayout>
+  ) : (
+    <NonAuthenticatedLayout>{children}</NonAuthenticatedLayout>
   );
 }
 
 function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user: User }>) {
   return (
-    <div className="relative">
-      <header className="sticky left-0 top-0 flex h-16 w-screen justify-between px-8 py-4">
-        <Logo />
+    <>
+      <header className="fixed left-0 top-0 flex h-24 w-screen justify-between px-8 py-4">
+        <Link href="/" className="h-fit">
+          <Logo />
+        </Link>
         <UserMenu user={user} />
       </header>
-      <main className="relative min-h-[calc(100vh_-_4rem)] px-8">{children}</main>
-    </div>
+      <main className="relative min-h-screen px-8 pt-20">{children}</main>
+    </>
   );
 }
 
 function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen">
-      <header className="sticky left-0 top-0 flex h-16 w-screen justify-center px-8 py-4">
-        <Logo />
+      <header className="fixed left-0 top-0 flex h-24 w-screen justify-center px-8 py-4">
+        <Link href="/" className="h-fit">
+          <Logo />
+        </Link>
       </header>
-      <main className="relative min-h-[calc(100vh_-_4rem)] px-8">{children}</main>
+      <main className="relative min-h-screen px-8 pt-20">{children}</main>
     </div>
   );
 }
@@ -44,10 +45,12 @@ function NonAuthenticatedLayout({ children }: PropsWithChildren) {
 export function SignInLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen">
-      <header className="sticky left-0 top-0 flex h-16 w-screen justify-center px-8 py-4">
-        <Logo />
+      <header className="fixed left-0 top-0 flex h-24 w-screen justify-center px-8 py-4">
+        <Link href="/" className="h-fit">
+          <Logo />
+        </Link>
       </header>
-      <main className="relative min-h-[calc(100vh_-_4rem)] px-8">
+      <main className="relative min-h-screen px-8 pt-20">
         <div className="fixed bottom-8 left-0 flex w-screen justify-center px-4">
           <div className="w-full max-w-lg">{children}</div>
         </div>

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "~/styles/globals.css";
 import { Toaster } from "~/components/ui/toasts";
 import { Analytics } from "@vercel/analytics/react";
+import { cn } from "~/utils/classnames";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn(inter.className, "bg-secondary-background relative")}>{children}</body>
       <Toaster position="top-right" richColors />
       <Analytics />
     </html>

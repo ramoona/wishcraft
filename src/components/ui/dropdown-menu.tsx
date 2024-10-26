@@ -156,9 +156,8 @@ DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 export function DropdownMenu({ children, trigger }: { children: React.ReactNode; trigger?: React.ReactNode }) {
   return (
     <DropdownMenuPrimitive.Root>
-      <DropdownMenuPrimitive.Trigger className={buttonVariants({ variant: "ghost", size: "icon" })}>
-        {trigger || <DotsThreeOutlineVertical size={24} />}
-      </DropdownMenuPrimitive.Trigger>
+      {/*<DropdownMenuPrimitive.Trigger className={buttonVariants({ variant: "ghost", size: trigger ? "fit" : "icon" })}>*/}
+      <DropdownMenuPrimitive.Trigger>{trigger || <DotsThreeOutlineVertical size={24} />}</DropdownMenuPrimitive.Trigger>
       <DropdownMenuContent>{children}</DropdownMenuContent>
     </DropdownMenuPrimitive.Root>
   );

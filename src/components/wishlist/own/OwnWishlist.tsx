@@ -37,7 +37,7 @@ export function OwnWishlist({ data }: { data: WishlistT }) {
   })(data.wishes);
 
   return (
-    <div className="relative">
+    <>
       <div className="flex min-h-[calc(100vh_-_4rem)] flex-col gap-6 pt-8">
         <WishItemList>
           {active.map(wish => (
@@ -90,6 +90,6 @@ export function OwnWishlist({ data }: { data: WishlistT }) {
         )}
       </div>
       <AddNewWish />
-    </div>
+    </>
   );
 }
