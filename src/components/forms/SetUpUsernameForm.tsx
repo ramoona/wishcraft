@@ -35,7 +35,9 @@ export function SetUpUsernameForm() {
         value={username}
         onChange={e => setUsername(e.target.value)}
       />
-      <Button type="submit">{isPending ? "Setting username..." : "Set Username"}</Button>
+      <Button type="submit" size="lg">
+        {isPending ? "Setting username..." : "Set Username"}
+      </Button>
     </form>
   );
 }

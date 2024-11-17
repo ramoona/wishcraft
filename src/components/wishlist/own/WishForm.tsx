@@ -1,52 +1,53 @@
-import { WishT } from "~/services/wishlist/types";
+import { WishType } from "~/services/wishlist/types";
 import { Input } from "~/components/ui/input";
-import { Form, FormLabel, FormField, FormControl, FormDescription, FormItem } from "~/components/ui/form";
+import { Form, FormLabel, FormField, FormControl, FormItem } from "~/components/ui/form";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Currency } from "@prisma/client";
 import { Button } from "~/components/ui/button";
 import { Select } from "~/components/ui/select";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import Link from "next/link";
+import { ArrowSquareOut, Gift, ShootingStar } from "@phosphor-icons/react";
+import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
+import { useCreateWish, useUpdateWish } from "~/components/wishlist/own/hooks";
+import { Badge } from "~/components/ui/badge";
 
 const formSchema = z.object({
   name: z.string().max(255, "Oof, that's too long"),
-  price: z
-    .string()
-    .nullable()
-    .transform(v => (v ? parseFloat(v) : null))
-    .default(null),
+  price: z.number({ coerce: true }).optional().nullable().default(null),
   currency: z.nativeEnum(Currency),
-  url: z
-    .string()
-    .url()
-    .nullable()
-    .transform(v => (v ? v : null)),
-  comment: z.string().max(255, "Oof, that's too long").nullable(),
+  url: z.string().url().optional().nullable(),
+  comment: z.string().max(255, "Oof, that's too long").optional().nullable(),
 });
 
 export type WishFormValues = z.infer<typeof formSchema>;
 
 type WishFormProps = {
-  data?: Omit<WishT, "status" | "reservedById">;
-  onSubmit: (values: WishFormValues) => void;
+  wish?: WishType;
   onCancel: () => void;
-  isLoading: boolean;
+  onActionSuccess?: () => void;
 };
 
-export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
+export function WishForm({ wish, onActionSuccess }: WishFormProps) {
+  const [isCreating, createWish] = useCreateWish();
+  const [isUpdating, updateWish] = useUpdateWish();
+
   const { control, formState, reset, ...form } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     resetOptions: { keepValues: false, keepDirty: false, keepErrors: false },
     mode: "onBlur",
     defaultValues: {
-      name: data?.name ?? "",
-      price: data?.price ?? null,
-      currency: data?.currency ?? Currency.EUR,
-      url: data?.url ?? null,
-      comment: data?.comment ?? null,
+      name: wish?.name ?? "",
+      price: wish?.price ?? null,
+      currency: wish?.currency ?? Currency.EUR,
+      url: wish?.url ?? null,
+      comment: wish?.comment ?? null,
     },
   });
+  const isUpdatingMode = !!wish;
+  const isReadonly = !!wish?.status && ["FULFILLED", "ARCHIVED"].includes(wish.status);
   const { isSubmitSuccessful } = formState;
 
   useEffect(() => {
@@ -61,39 +62,65 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
     }
   }, [isSubmitSuccessful, reset]);
 
+  const onSubmit = (values: WishFormValues) => {
+    if (wish) {
+      updateWish(wish.id, values, onActionSuccess);
+    } else {
+      createWish(values, onActionSuccess);
+    }
+  };
+
   return (
     <Form control={control} reset={reset} formState={formState} {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full flex-col gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full flex-col gap-8">
+        {wish?.reservedById && (
+          <div className="mt-4 flex justify-center">
+            <Badge variant="attention">
+              <Gift className="mr-2 size-5" />
+              This wish is reserved by someone
+            </Badge>
+          </div>
+        )}
         <div className="flex flex-1 flex-col gap-4">
           <FormField
             control={control}
             name="name"
+            disabled={isReadonly}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
-                <FormDescription>What is it?</FormDescription>
               </FormItem>
             )}
           />
           <FormField
             control={control}
             name="url"
+            disabled={isReadonly}
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="relative">
                 <FormLabel>Link</FormLabel>
                 <FormControl>
                   <Input {...field} value={field.value ?? ""} />
                 </FormControl>
-                <FormDescription>Where to find it?</FormDescription>
+                {isUpdatingMode && field.value && !formState.errors.url && (
+                  <Link
+                    href={field.value}
+                    target="_blank"
+                    className="absolute bottom-0 right-1 flex translate-y-full items-center gap-1"
+                  >
+                    Open link <ArrowSquareOut className="size-5" />
+                  </Link>
+                )}
               </FormItem>
             )}
           />
           <FormField
             control={control}
             name="price"
+            disabled={isReadonly}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Price</FormLabel>
@@ -112,11 +139,11 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
                     />
                   </FormControl>
                 </div>
-                <FormDescription>How much is it?</FormDescription>
               </FormItem>
             )}
           />
           <FormField
+            disabled={isReadonly}
             control={control}
             name="comment"
             render={({ field }) => (
@@ -125,19 +152,68 @@ export function WishForm({ data, onCancel, onSubmit }: WishFormProps) {
                 <FormControl>
                   <Input {...field} value={field.value ?? ""} />
                 </FormControl>
-                <FormDescription>Anything else to know about it?</FormDescription>
               </FormItem>
             )}
           />
         </div>
-        <div className="grid w-full grid-cols-2 gap-3">
-          {/* TODO loader */}
-          <Button variant="outline" onClick={onCancel}>
-            Nevermind
-          </Button>
-          <Button type="submit">Looks good</Button>
+        <div className="grid w-full grid-cols-[auto_max-content] gap-3">
+          <WishFormButtonsMobile
+            wish={wish}
+            disabled={!formState.isValid}
+            isLoading={isUpdating || isCreating}
+            onActionSuccess={onActionSuccess}
+          />
         </div>
       </form>
     </Form>
+  );
+}
+
+function WishFormButtonsMobile({
+  wish,
+  disabled,
+  isLoading,
+  onActionSuccess,
+}: {
+  wish?: WishType;
+  disabled: boolean;
+  isLoading: boolean;
+  onActionSuccess?: () => void;
+}) {
+  const [isUpdating, updateWish] = useUpdateWish();
+  if (!wish) {
+    return (
+      <Button type="submit" disabled={disabled} size="lg">
+        <div className="flex items-center justify-center gap-2">
+          <ShootingStar size={24} />
+          Make a wish
+        </div>
+      </Button>
+    );
+  }
+
+  if (wish.status === "ARCHIVED" || wish.status === "FULFILLED") {
+    return (
+      <>
+        <Button
+          type="button"
+          onClick={() => updateWish(wish.id, { status: "ACTIVE" })}
+          size="lg"
+          isLoading={isUpdating}
+        >
+          Move to Active
+        </Button>
+        <WishDropdownMenu onActionSuccess={onActionSuccess} wish={wish} isMobile />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Button type="submit" disabled={disabled} size="lg" isLoading={isLoading}>
+        Save
+      </Button>
+      <WishDropdownMenu onActionSuccess={onActionSuccess} wish={wish} isMobile />
+    </>
   );
 }

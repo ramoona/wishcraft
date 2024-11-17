@@ -1,11 +1,11 @@
 "use client";
 
-import { WishT } from "~/services/wishlist/types";
+import { WishType } from "~/services/wishlist/types";
 import { Price } from "~/components/wishlist/Price";
 
-export function WishItem({ data }: { data: Omit<WishT, "status" | "reservedById"> }) {
+export function WishDetails({ data }: { data: Omit<WishType, "status" | "reservedById"> }) {
   return (
-    <div className="flex-col gap-2">
+    <div className="w-full flex-col gap-2">
       <div className="flex items-center gap-2">
         {data.url ? (
           <a href={data.url} target="_blank">

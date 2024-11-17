@@ -1,42 +1,27 @@
-import { WishlistT, WishT } from "~/services/wishlist/types";
+import { WishlistType } from "~/services/wishlist/types";
 import { ForeignWish } from "~/components/wishlist/foreign/ForeignWish";
 import { WishItemList } from "~/components/wishlist/WishItemList";
-import { groupBy } from "ramda";
-import { WishStatus } from "@prisma/client";
 
-export function ForeignWishlist({ data }: { data: WishlistT }) {
+export function ForeignWishlist({ data, name }: { data: WishlistType; name: string }) {
   if (!data.wishes.length) {
     return <div>Nothing here yet</div>;
   }
 
-  const { active = [], fulfilled = [] } = groupBy<WishT>(wish => {
-    if (wish.status === WishStatus.FULFILLED) {
-      return "fulfilled";
-    }
-
-    return "active";
-  })(data.wishes);
+  const activeWishes = data.wishes.filter(({ status }) => status === "ACTIVE" || status === "RESERVED");
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex min-h-[calc(100vh_-_4rem)] w-full flex-col gap-4 py-8">
+      <h1 className="mb-4 text-2xl font-light">
+        <span className="font-medium">{`${name}'s`}</span> Wishlist
+      </h1>
+      <p>
+        You can <b>anonymously</b> reserve some of the wishes
+      </p>
       <WishItemList>
-        {active.map(wish => (
-          <ForeignWish data={wish} key={wish.id} />
+        {activeWishes.map(wish => (
+          <ForeignWish data={wish} key={wish.id} isMobile={true} />
         ))}
       </WishItemList>
-      {fulfilled.length > 0 && (
-        <div>
-          <h2 className="mb-4 flex items-center gap-2 text-lg">
-            <span>Fulfilled wishes</span>
-            {/*  TODO implement hiding fulfilled wishes*/}
-          </h2>
-          <WishItemList>
-            {fulfilled.map(wish => (
-              <ForeignWish data={wish} key={wish.id} />
-            ))}
-          </WishItemList>
-        </div>
-      )}
     </div>
   );
 }

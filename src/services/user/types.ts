@@ -1,4 +1,4 @@
-import { WishlistT } from "~/services/wishlist/types";
+import { WishlistType } from "~/services/wishlist/types";
 
 export type User = {
   id: string;
@@ -10,6 +10,6 @@ export type User = {
 };
 
 export type UserWithRelations = Omit<User, "email" | "username"> & {
-  wishlist: WishlistT;
+  wishlist: WishlistType;
   username: string;
 };

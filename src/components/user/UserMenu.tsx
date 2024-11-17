@@ -13,10 +13,7 @@ export function UserMenu({ user }: { user: User }) {
     <DropdownMenu
       trigger={
         <div className="flex items-center gap-2">
-          <UserPic
-            imageUrl={user.image}
-            userInitials={`${user.firstName[0].toUpperCase()}${user.lastName[0].toUpperCase()}`}
-          />
+          <UserPic imageUrl={user.image} />
         </div>
       }
     >
@@ -30,11 +27,11 @@ export function UserMenu({ user }: { user: User }) {
   );
 }
 
-function UserPic({ imageUrl, userInitials }: { imageUrl?: string | null; userInitials: string }) {
+function UserPic({ imageUrl }: { imageUrl?: string | null }) {
   return (
     <Avatar>
       <AvatarImage src={imageUrl || ""} />
-      <AvatarFallback>{userInitials}</AvatarFallback>
+      <AvatarFallback />
     </Avatar>
   );
 }

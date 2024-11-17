@@ -19,8 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-secondary-background relative")}>{children}</body>
-      <Toaster position="top-right" richColors />
+      <body className={cn(inter.className, "relative bg-background")}>
+        {children}
+        <Toaster position="top-right" richColors />
+      </body>
       <Analytics />
     </html>
   );

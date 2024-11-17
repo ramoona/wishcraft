@@ -6,13 +6,13 @@ export function Price({ price, currency }: { price: number | null; currency: Cur
   }
 
   return (
-    <span className="text-sm text-slate-500">
-      {price.toLocaleString(undefined, {
+    <span className="text-[15px] text-slate-500">
+      {price.toLocaleString("de-DE", {
         style: "currency",
         currency,
-        maximumFractionDigits: 1,
+        maximumFractionDigits: 2,
         minimumFractionDigits: 0,
-      })}{" "}
+      })}
     </span>
   );
 }

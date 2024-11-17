@@ -1,7 +1,7 @@
 import { Currency, WishStatus } from "@prisma/client";
 
 import { prisma } from "prisma/client";
-import { WishlistT } from "~/services/wishlist/types";
+import { WishlistType } from "~/services/wishlist/types";
 import { WishlistError } from "~/services/wishlist/errors";
 import { ServerError } from "~/services/errors";
 
@@ -26,7 +26,7 @@ export async function getWishlistIdByUserId(userId: string): Promise<string> {
   return wishlist.id;
 }
 
-export async function getWishlistByUserId(userId: string): Promise<WishlistT> {
+export async function getWishlistByUserId(userId: string): Promise<WishlistType> {
   const wishlist = await prisma.wishlist.findFirst({
     where: { ownerId: userId },
     select: {

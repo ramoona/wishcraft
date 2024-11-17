@@ -66,7 +66,7 @@ export const updateWishAction = async (formData: FormData): Promise<ActionState>
   try {
     await getSessionUserOrThrow();
     const formEntries = WishUpdateFormData.toObject(formData);
-    await updateWish(formEntries.id!, omit(["id"], formEntries));
+    await updateWish(formEntries.id, omit(["id"], formEntries));
     return {};
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -97,12 +97,18 @@ function getErrorCode(e: unknown) {
     return e.errorCode;
   }
   if (e instanceof Prisma.PrismaClientKnownRequestError) {
+    // eslint-disable-next-line no-console
+    console.error("Prisma error: ", e.message);
     return "PRISMA_ERROR";
   }
   if (e instanceof Prisma.PrismaClientUnknownRequestError) {
+    // eslint-disable-next-line no-console
+    console.error("Prisma error: ", e.message);
     return "PRISMA_ERROR";
   }
   if (e instanceof Prisma.PrismaClientValidationError) {
+    // eslint-disable-next-line no-console
+    console.error("Prisma error: ", e.message);
     return "PRISMA_ERROR";
   }
 

@@ -1,30 +1,24 @@
-import { WishlistT, WishT } from "~/services/wishlist/types";
-import { StatusBadge } from "~/components/wishlist/StatusBadge";
-import { WishItem } from "~/components/wishlist/WishItem";
+"use client";
+
+import { WishlistType, WishType } from "~/services/wishlist/types";
 import { WishItemList } from "~/components/wishlist/WishItemList";
-import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
-import { Eye, EyeClosed } from "@phosphor-icons/react/dist/ssr";
-import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
+import { ShootingStar, Archive, Gift } from "@phosphor-icons/react";
+import { AddNewWish, AddNewWishMobile } from "~/components/wishlist/own/AddNewWish";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { WishDrawer } from "~/components/wishlist/own/WishDrawer";
+import { StatusBadge } from "~/components/wishlist/StatusBadge";
+import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
+import { WishDetailsDesktop, WishDetailsMobile } from "~/components/wishlist/own/WishDetails";
 
-export function OwnWishlist({ data }: { data: WishlistT }) {
-  if (!data.wishes.length) {
-    return (
-      <>
-        <div className="flex min-h-[calc(100vh_-_4rem)] flex-col gap-4 pt-8 text-center">
-          <span>There are no wishes in this wishlist yet...</span>
-        </div>
-        <AddNewWish />
-      </>
-    );
-  }
-
+export function OwnWishlist({ data }: { data: WishlistType }) {
+  const isMobile = true;
   const {
     active = [],
     fulfilled = [],
     archived = [],
-  } = groupBy<WishT>(wish => {
+  } = groupBy<WishType>(wish => {
     if (wish.status === "ARCHIVED") {
       return "archived";
     }
@@ -39,57 +33,96 @@ export function OwnWishlist({ data }: { data: WishlistT }) {
   return (
     <>
       <div className="flex min-h-[calc(100vh_-_4rem)] flex-col gap-6 pt-8">
-        <WishItemList>
-          {active.map(wish => (
-            <div key={wish.id} className="flex items-start gap-2">
-              <WishItem data={wish} />
-              <StatusBadge status={wish.status} />
-              <WishDropdownMenu wish={wish} />
+        <Tabs defaultValue="active" className="w-full">
+          <TabsList className="w-full">
+            <TabsTrigger value="active" className="flex grow items-center gap-2">
+              <ShootingStar />
+              Active
+            </TabsTrigger>
+            <TabsTrigger value="fulfilled" className="flex grow items-center gap-2">
+              <Gift />
+              Fulfilled
+            </TabsTrigger>
+            <TabsTrigger value="archived" className="flex grow items-center gap-2">
+              <Archive />
+              Archived
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="active">
+            <div className="mb-4 flex w-full items-center justify-center gap-1 text-xs text-slate-500">
+              <b>Anyone</b> can see your active wishes
             </div>
-          ))}
-        </WishItemList>
-        {fulfilled.length > 0 && (
-          <div>
-            <h2 className="mb-4 flex items-center gap-2 text-lg">
-              <span className="font-medium">Fulfilled wishes</span>
-              <span className="flex items-center gap-1 text-xs text-slate-500">
-                everyone can see that
-                <Eye className="size-[14px]" />
-              </span>
-            </h2>
             <WishItemList>
-              {fulfilled.map(wish => (
-                <div key={wish.id} className="flex items-start gap-2">
-                  <WishItem data={wish} />
-                  <StatusBadge status={wish.status} />
-                  <WishDropdownMenu wish={wish} />
-                </div>
+              {active.map(wish => (
+                <WishItem key={wish.id} wish={wish} isMobile={isMobile} />
               ))}
             </WishItemList>
-          </div>
-        )}
-        {archived.length > 0 && (
-          <div>
-            <h2 className="mb-4 flex items-center gap-2 text-lg">
-              <span className="font-medium">Archived</span>
-              <span className="flex items-center gap-1 text-xs text-slate-500">
-                only you can see that
-                <EyeClosed className="size-[14px]" />
-              </span>
-            </h2>
-            <WishItemList>
-              {archived.map(wish => (
-                <div key={wish.id} className="flex items-start gap-2">
-                  <WishItem data={wish} />
-                  <StatusBadge status={wish.status} />
-                  <WishDropdownMenu wish={wish} />
-                </div>
-              ))}
-            </WishItemList>
-          </div>
-        )}
+          </TabsContent>
+          <TabsContent value="fulfilled">
+            <PrivateSectionNote type="fulfilled" />
+            {fulfilled.length > 0 ? (
+              <div>
+                <WishItemList>
+                  {fulfilled.map(wish => (
+                    <WishItem key={wish.id} wish={wish} isMobile={isMobile} />
+                  ))}
+                </WishItemList>
+              </div>
+            ) : (
+              <EmptyWishlistSection />
+            )}
+          </TabsContent>
+          <TabsContent value="archived">
+            <div>
+              <PrivateSectionNote type="archived" />
+              {archived.length > 0 ? (
+                <WishItemList>
+                  {archived.map(wish => (
+                    <WishItem key={wish.id} wish={wish} isMobile={isMobile} />
+                  ))}
+                </WishItemList>
+              ) : (
+                <EmptyWishlistSection />
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
-      <AddNewWish />
+      {isMobile ? <AddNewWishMobile /> : <AddNewWish />}
     </>
   );
+}
+
+function WishItem({ wish, isMobile }: { wish: WishType; isMobile: boolean }) {
+  if (isMobile) {
+    return (
+      <div key={wish.id} className="flex w-full items-start gap-2">
+        <WishDrawer wish={wish} mode="update">
+          <button type="button" className="w-full">
+            <WishDetailsMobile {...wish} />
+          </button>
+        </WishDrawer>
+      </div>
+    );
+  }
+
+  return (
+    <div key={wish.id} className="flex w-full items-start gap-2">
+      <WishDetailsDesktop data={wish} />
+      <StatusBadge status={wish.status} />
+      <WishDropdownMenu wish={wish} />
+    </div>
+  );
+}
+
+function PrivateSectionNote({ type }: { type: string }) {
+  return (
+    <div className="mb-4 flex w-full items-center justify-center gap-1 text-xs text-slate-500">
+      <b>Only you</b> can see your {type} wishes
+    </div>
+  );
+}
+
+function EmptyWishlistSection() {
+  return <div className="mt-16 text-center text-slate-500">There are no wished here yet...</div>;
 }

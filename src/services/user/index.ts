@@ -93,7 +93,7 @@ export async function getUserWithRelationsByUsername(username: string): Promise<
 
   return {
     ...omit(["wishlists", "username"], user),
-    username: user.username!,
+    username: user.username,
     wishlist: user.wishlists[0],
   };
 }

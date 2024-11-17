@@ -29,10 +29,10 @@ export default async function UserPage({ params }: { params: { username: string 
     );
   }
 
-  let userWithWishlist;
+  let wishlistOwner;
 
   try {
-    userWithWishlist = await getUserWithRelationsByUsername(params.username);
+    wishlistOwner = await getUserWithRelationsByUsername(params.username);
   } catch (e) {
     if (e instanceof WishlistError || e instanceof ServerError) {
       return <div>{getErrorMessage(e.errorCode)}</div>;
@@ -42,10 +42,7 @@ export default async function UserPage({ params }: { params: { username: string 
 
   return (
     <Layout>
-      <h1 className="mb-4 text-2xl font-light">
-        <span className="font-medium">{`@${userWithWishlist.username}'s`}</span> wishlist:
-      </h1>
-      <ForeignWishlist data={userWithWishlist.wishlist} />
+      <ForeignWishlist data={wishlistOwner.wishlist} name={wishlistOwner.firstName || wishlistOwner.username} />
     </Layout>
   );
 }
