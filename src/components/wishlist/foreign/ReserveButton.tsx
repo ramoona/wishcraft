@@ -87,7 +87,9 @@ export function ReserveButton({
               <DrawerTitle>Log in to reserve a wish</DrawerTitle>
               <DrawerDescription>Log in to reserve a wish</DrawerDescription>
             </VisuallyHidden>
-            <SignInForm wishId={wishId} wishlistOwner={params.username} />
+            <div className="pt-6">
+              <SignInForm wishId={wishId} wishlistOwner={params.username} />
+            </div>
             <VisuallyHidden>
               <DrawerClose>Close</DrawerClose>
             </VisuallyHidden>

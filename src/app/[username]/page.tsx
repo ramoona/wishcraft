@@ -7,6 +7,8 @@ import { getSessionUser } from "~/services/auth";
 import { WishlistError } from "~/services/wishlist/errors";
 import { getErrorMessage } from "~/core/toastMessages";
 import { ServerError } from "~/services/errors";
+import { UserError } from "~/services/user/errors";
+import { ErrorAlert, SomethingWentWrongAlert, UserNotFoundAlert } from "~/components/ui/alert";
 
 export default async function UserPage({ params }: { params: { username: string } }) {
   const sessionUser = await getSessionUser();
@@ -16,10 +18,14 @@ export default async function UserPage({ params }: { params: { username: string 
     try {
       wishlist = await getWishlistByUserId(sessionUser.id);
     } catch (e) {
-      if (e instanceof WishlistError || e instanceof ServerError) {
-        return <div>{getErrorMessage(e.errorCode)}</div>;
+      if (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") {
+        return <SomethingWentWrongAlert />;
       }
-      return <div>{getErrorMessage("UNKNOWN")}</div>;
+      return (
+        <Layout>
+          <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
+        </Layout>
+      );
     }
 
     return (
@@ -34,10 +40,17 @@ export default async function UserPage({ params }: { params: { username: string 
   try {
     wishlistOwner = await getUserWithRelationsByUsername(params.username);
   } catch (e) {
-    if (e instanceof WishlistError || e instanceof ServerError) {
-      return <div>{getErrorMessage(e.errorCode)}</div>;
+    if (
+      (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||
+      (e instanceof UserError && e.errorCode === "USER_NOT_FOUND")
+    ) {
+      return <UserNotFoundAlert username={params.username} />;
     }
-    return <div>{getErrorMessage("UNKNOWN")}</div>;
+    return (
+      <Layout>
+        <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
+      </Layout>
+    );
   }
 
   return (
@@ -45,4 +58,10 @@ export default async function UserPage({ params }: { params: { username: string 
       <ForeignWishlist data={wishlistOwner.wishlist} name={wishlistOwner.firstName || wishlistOwner.username} />
     </Layout>
   );
+}
+
+type KnownError = WishlistError | ServerError | UserError;
+
+function isErrorKnown(error: Error): error is KnownError {
+  return error instanceof WishlistError || error instanceof ServerError || error instanceof UserError;
 }

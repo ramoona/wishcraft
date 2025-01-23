@@ -32,7 +32,7 @@ function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user: User 
 function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen">
-      <header className="fixed left-0 top-0 flex h-24 w-screen justify-center px-8 py-4">
+      <header className="fixed left-0 top-0 z-10 flex h-24 w-screen justify-center px-8 py-4">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
@@ -45,7 +45,7 @@ function NonAuthenticatedLayout({ children }: PropsWithChildren) {
 export function SignInLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen">
-      <header className="fixed left-0 top-0 flex h-24 w-screen justify-center px-8 py-4">
+      <header className="fixed left-0 top-0 z-10 flex h-24 w-screen justify-center px-8 py-4">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>

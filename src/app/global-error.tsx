@@ -1,0 +1,20 @@
+"use client";
+
+import { SomethingWentWrongAlert } from "~/components/ui/alert";
+import Link from "next/link";
+import { Logo } from "~/components/ui/logo";
+
+export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
+  return (
+    <html>
+      <body>
+        <header className="fixed left-0 top-0 z-10 flex h-24 w-screen justify-center px-8 py-4">
+          <Link href="/" className="h-fit">
+            <Logo />
+          </Link>
+        </header>
+        <SomethingWentWrongAlert error={error.message} />
+      </body>
+    </html>
+  );
+}

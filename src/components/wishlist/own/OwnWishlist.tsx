@@ -124,5 +124,5 @@ function PrivateSectionNote({ type }: { type: string }) {
 }
 
 function EmptyWishlistSection() {
-  return <div className="mt-16 text-center text-slate-500">There are no wished here yet...</div>;
+  return <div className="mt-16 text-center text-slate-500">There are no wishes here yet...</div>;
 }

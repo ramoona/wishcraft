@@ -13,7 +13,7 @@ export function getErrorMessage(errorCode: ServerErrorCode | UserErrorCode | Wis
     case "OAUTH_ERROR":
       return "OAuth Error, please try again";
     case "USER_NOT_FOUND":
-      return "User not found, please verify your details";
+      return "Oops, we could not find this user";
     case "TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME":
       return "Too many unsuccessful attempts to generate a username, please try again later";
     case "USERNAME_IS_REQUIRED":
