@@ -1,10 +1,10 @@
 import { prisma } from "prisma/client";
 import { UserError } from "~/services/user/errors";
-import { generateUniqueUsername } from "~/utils/uniqueUsername";
 import { OtherUser, User, UserActionPayload, UserOnboardingStep, userOnboardingSteps } from "~/services/user/types";
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
 import { getSessionUserOrThrow } from "~/services/auth";
+import { generateUniqueUsername } from "~/utils/uniqueUsername";
 
 export async function updateUsername({
   userId,
@@ -33,16 +33,24 @@ export async function updateUsername({
   return toUser(updated);
 }
 
-export async function updateDateOfBirth({ userId, dateOfBirth }: { userId: string; dateOfBirth: string }) {
-  if (!dateOfBirth) {
+export async function updateDateOfBirth({
+  userId,
+  dayOfBirth,
+  monthOfBirth,
+}: {
+  userId: string;
+  dayOfBirth: number;
+  monthOfBirth: number;
+}) {
+  if (!dayOfBirth || !monthOfBirth) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
     where: { id: userId },
-    data: { dateOfBirth: `${dateOfBirth}T00:00:00.000Z`, completedOnboardingSteps: { push: "date-of-birth" } },
+    data: { dayOfBirth, monthOfBirth, completedOnboardingSteps: { push: "date-of-birth" } },
   });
-  await logUserAction({ action: "user-updated", changes: { dateOfBirth } });
+  await logUserAction({ action: "user-updated", changes: { dayOfBirth, monthOfBirth } });
   return toUser(updated);
 }
 
@@ -84,7 +92,7 @@ function isUserNameTaken(username: string) {
   return prisma.user.findUnique({ where: { username } });
 }
 
-async function getAvailableUsername(username: string, attempt = 0): Promise<string> {
+export async function getAvailableUsername(username: string, attempt = 0): Promise<string> {
   if (attempt > 10) {
     throw new UserError("TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME");
   }
@@ -123,7 +131,8 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
       lastName: true,
       username: true,
       image: true,
-      dateOfBirth: true,
+      dayOfBirth: true,
+      monthOfBirth: true,
       friends: { where: { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] } },
     },
   });
@@ -132,22 +141,13 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
     throw new UserError("USER_NOT_FOUND");
   }
 
-  return { ...toUserBase(user), isFriend: user.friends.length > 0 };
-}
-
-function toUserBase(
-  user: Pick<PrismaUser, "id" | "firstName" | "lastName" | "username" | "dateOfBirth" | "image">,
-): Pick<User, "id" | "firstName" | "lastName" | "username" | "dateOfBirth" | "image"> {
-  return { ...user, dateOfBirth: user.dateOfBirth?.toISOString().split("T")[0] || null };
+  return { ...user, isFriend: user.friends.length > 0 };
 }
 
 function toUser(user: PrismaUser): User {
   return {
-    ...toUserBase(user),
+    ...user,
     completedOnboardingSteps: user.completedOnboardingSteps as UserOnboardingStep[],
-    showReserved: user.showReserved,
-    defaultCurrency: user.defaultCurrency,
-    email: user.email,
   };
 }
 

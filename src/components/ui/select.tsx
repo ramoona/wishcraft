@@ -130,15 +130,19 @@ export function Select({
   options,
   onChange,
   value,
+  placeholder,
+  disabled,
 }: {
   value?: string;
   onChange: (value: string) => void;
   options: SelectOption[];
+  placeholder?: string;
+  disabled?: boolean;
 }) {
   return (
-    <SelectPrimitive.Root onValueChange={onChange} defaultValue={value}>
+    <SelectPrimitive.Root onValueChange={onChange} defaultValue={value} disabled={disabled}>
       <SelectTrigger className="w-full">
-        <SelectPrimitive.Value />
+        <SelectPrimitive.Value placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         {options.map(option => (

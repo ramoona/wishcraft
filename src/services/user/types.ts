@@ -7,13 +7,17 @@ export type User = {
   username?: string | null;
   email: string;
   image: string | null;
-  dateOfBirth: string | null;
+  dayOfBirth: number | null;
+  monthOfBirth: number | null;
   defaultCurrency?: string | null;
   showReserved?: boolean | null;
   completedOnboardingSteps: UserOnboardingStep[];
 };
 
-export type OtherUser = Pick<User, "id" | "username" | "firstName" | "lastName" | "dateOfBirth" | "image"> & {
+export type OtherUser = Pick<
+  User,
+  "id" | "username" | "firstName" | "lastName" | "dayOfBirth" | "monthOfBirth" | "image"
+> & {
   isFriend: boolean;
 };
 

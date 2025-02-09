@@ -14,7 +14,8 @@ model User {
   username                 String?   @unique
   email                    String    @unique
   emailVerified            Boolean?
-  dateOfBirth              DateTime? @db.Date
+  dayOfBirth               Int?
+  monthOfBirth             Int?
   image                    String?
   sessions                 Session[]
   completedOnboardingSteps String[]

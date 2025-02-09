@@ -16,7 +16,7 @@ const wizardStepForm = {
   ["default-currency"]: OnboardingWizardCurrencyStep,
 };
 
-export async function OnboardingWizard() {
+export async function OnboardingWizard({ initialUsername }: { initialUsername: string }) {
   try {
     const sessionUser = await getSessionUserOrThrow();
     const currentStep = getCurrentStep(sessionUser);
@@ -27,7 +27,7 @@ export async function OnboardingWizard() {
 
     const Component = wizardStepForm[currentStep];
 
-    return <Component />;
+    return <Component initialUsername={initialUsername} />;
   } catch (e) {
     return (
       <Layout>

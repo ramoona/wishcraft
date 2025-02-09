@@ -13,7 +13,7 @@ import { updateDefaultCurrencyAction } from "~/services/user/actions";
 export function OnboardingWizardCurrencyStep() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState("EUR");
 
   const trigger = () => {
     startTransition(async () => {

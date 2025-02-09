@@ -10,7 +10,8 @@ const FRIEND_FIELDS_SELECT = {
   lastName: true,
   username: true,
   image: true,
-  dateOfBirth: true,
+  dayOfBirth: true,
+  monthOfBirth: true,
 };
 
 export async function getFriendsForCurrentUser(): Promise<OtherUser[]> {
@@ -52,5 +53,5 @@ export async function removeFriend({ userId, friendId }: { userId: string; frien
 }
 
 function toFriend(user: Pick<PrismaUser, keyof typeof FRIEND_FIELDS_SELECT>): OtherUser {
-  return { ...user, dateOfBirth: user.dateOfBirth?.toISOString().split("T")[0] || null, isFriend: true };
+  return { ...user, isFriend: true };
 }

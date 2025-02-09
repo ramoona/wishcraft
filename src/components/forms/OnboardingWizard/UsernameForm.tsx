@@ -9,10 +9,10 @@ import { getErrorMessage } from "~/core/toastMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 
-export function OnboardingWizardUsernameStep() {
+export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsername: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(initialUsername);
 
   const trigger = () => {
     startTransition(async () => {
