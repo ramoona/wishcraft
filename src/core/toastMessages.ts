@@ -16,8 +16,8 @@ export function getErrorMessage(errorCode: ServerErrorCode | UserErrorCode | Wis
       return "Oops, we could not find this user";
     case "TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME":
       return "Too many unsuccessful attempts to generate a username, please try again later";
-    case "USERNAME_IS_REQUIRED":
-      return "Username is required";
+    case "INPUT_IS_REQUIRED":
+      return "Input is required";
     case "USERNAME_IS_TAKEN":
       return "The username is already taken, please choose a different one";
     case "WISH_IS_ALREADY_RESERVED":

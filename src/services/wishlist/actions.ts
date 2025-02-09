@@ -53,7 +53,10 @@ export const createWishAction = async (formData: FormData): Promise<ActionState>
     const sessionUser = await getSessionUserOrThrow();
     const formEntries = WishCreationFormData.toObject(formData);
     const wishlistId = await getWishlistIdByUserId(sessionUser.id);
-    await createWish(wishlistId, formEntries);
+    await createWish(wishlistId, {
+      ...formEntries,
+      isPrivate: formEntries.isPrivate === "yes",
+    });
     return {};
   } catch (e) {
     // eslint-disable-next-line no-console
