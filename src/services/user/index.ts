@@ -84,7 +84,6 @@ async function getAvailableUsername(username: string, attempt = 0): Promise<stri
 export async function createUser(input: UserInput) {
   const initialUsername = [input.firstName, input.lastName].join("-").toLowerCase();
   const username = await getAvailableUsername(initialUsername);
-  console.log("user");
   const user = await prisma.user.create({
     data: {
       ...input,
@@ -92,7 +91,6 @@ export async function createUser(input: UserInput) {
       wishlists: { create: {} },
     },
   });
-  console.log("user 2");
   await logUserAction({ action: "user-created", userId: user.id, email: input.email });
   return user;
 }
