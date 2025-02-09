@@ -14,6 +14,7 @@ model User {
   username      String    @unique
   email         String    @unique
   emailVerified Boolean?
+  dateOfBirth   DateTime? @db.Date
   image         String?
   sessions      Session[]
 
@@ -23,6 +24,10 @@ model User {
   // App columns
   wishlists Wishlist[]
   reserved  Wish[]
+
+  // Preferences
+  defaultCurrency String?
+  showReserved    Boolean?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -36,11 +41,6 @@ model Session {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-enum Currency {
-  EUR
-  USD
 }
 
 enum WishStatus {
@@ -61,13 +61,14 @@ model Wishlist {
 }
 
 model Wish {
-  id       String     @id @default(cuid())
-  name     String
-  price    Float?
-  currency Currency?
-  url      String?
-  comment  String?
-  status   WishStatus
+  id        String     @id @default(cuid())
+  name      String
+  price     Float?
+  currency  String?
+  url       String?
+  comment   String?
+  status    WishStatus
+  isPrivate Boolean?
 
   reservedBy   User?    @relation(fields: [reservedById], references: [id])
   reservedById String?

@@ -1,5 +1,3 @@
-import { WishlistType } from "~/services/wishlist/types";
-
 export type User = {
   id: string;
   firstName: string;
@@ -7,9 +5,7 @@ export type User = {
   username: string;
   email: string;
   image: string | null;
-};
-
-export type UserWithRelations = Omit<User, "email" | "username"> & {
-  wishlist: WishlistType;
-  username: string;
+  dateOfBirth: string | null;
+  defaultCurrency: string | null;
+  showReserved: boolean | null;
 };

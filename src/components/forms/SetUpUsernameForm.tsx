@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { finalizeSignUpAction } from "~/services/user/actions";
+import { updateUsernameAction } from "~/services/user/actions";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { SignUpFormData } from "~/services/user/formData";
+import { UsernameFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/toastMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 
@@ -17,7 +17,7 @@ export function SetUpUsernameForm() {
 
   const triggerFinalizeSignUpFormAction = () => {
     startTransition(async () => {
-      const { error } = await finalizeSignUpAction(SignUpFormData.fromObject({ username }));
+      const { error } = await updateUsernameAction(UsernameFormData.fromObject({ username }));
       if (error) {
         showErrorToast(getErrorMessage(error));
       } else {

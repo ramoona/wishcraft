@@ -1,12 +1,26 @@
 import { prisma } from "prisma/client";
-import { createWishlist, WISH_FIELDS_SELECT } from "../wishlist";
-import { omit } from "ramda";
-import { UserWithRelations } from "~/services/user/types";
 import { UserError } from "~/services/user/errors";
-import { WishlistError } from "~/services/wishlist/errors";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
+import { User } from "~/services/user/types";
+import { isNil } from "ramda";
+
+const USER_FIELDS_SELECT = {
+  id: true,
+  firstName: true,
+  lastName: true,
+  username: true,
+  email: true,
+  image: true,
+  dateOfBirth: true,
+  defaultCurrency: true,
+  showReserved: true,
+};
 
 export async function updateUsername({ userId, username }: { userId: string; username: string }) {
+  if (!username) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
   const isUsernameExists = await isUserNameTaken(username);
 
   if (isUsernameExists) {
@@ -19,13 +33,43 @@ export async function updateUsername({ userId, username }: { userId: string; use
   });
 }
 
-export async function finalizeSignUp({ userId, username }: { userId: string; username: string }) {
-  if (!username) {
-    throw new UserError("USERNAME_IS_REQUIRED");
+export async function updateDateOfBirth({ userId, dateOfBirth }: { userId: string; dateOfBirth: string }) {
+  if (!dateOfBirth) {
+    throw new UserError("INPUT_IS_REQUIRED");
   }
 
-  await updateUsername({ userId, username });
-  await createWishlist(userId);
+  await prisma.user.update({
+    where: { id: userId },
+    data: { dateOfBirth },
+  });
+}
+
+export async function updateReservedWishedVisibility({
+  userId,
+  showReserved,
+}: {
+  userId: string;
+  showReserved: boolean;
+}) {
+  if (isNil(showReserved)) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { showReserved },
+  });
+}
+
+export async function updateDefaultCurrency({ userId, currency }: { userId: string; currency: string }) {
+  if (isNil(currency)) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { defaultCurrency: currency },
+  });
 }
 
 function isUserNameTaken(username: string) {
@@ -45,57 +89,13 @@ export async function createUser(input: UserInput) {
   const initialUsername = [input.firstName, input.lastName].join("-").toLowerCase();
   const username = await getAvailableUsername(initialUsername);
 
-  const user = await prisma.user.create({
+  return prisma.user.create({
     data: {
       ...input,
       username,
+      wishlists: { create: {} },
     },
   });
-  await createWishlist(user.id);
-
-  return user;
-}
-
-export async function getUserWithRelationsByUsername(username: string): Promise<UserWithRelations> {
-  const user = await prisma.user.findUnique({
-    where: { username },
-    select: {
-      id: true,
-      username: true,
-      firstName: true,
-      lastName: true,
-      image: true,
-      wishlists: {
-        include: {
-          wishes: {
-            orderBy: {
-              createdAt: "desc",
-            },
-            where: {
-              status: {
-                notIn: ["ARCHIVED"],
-              },
-            },
-            select: WISH_FIELDS_SELECT,
-          },
-        },
-      },
-    },
-  });
-
-  if (!user) {
-    throw new UserError("USER_NOT_FOUND");
-  }
-
-  if (!user.wishlists.length) {
-    throw new WishlistError("WISHLIST_NOT_FOUND");
-  }
-
-  return {
-    ...omit(["wishlists", "username"], user),
-    username: user.username,
-    wishlist: user.wishlists[0],
-  };
 }
 
 type UserInput = {
@@ -106,3 +106,13 @@ type UserInput = {
   firstName: string;
   lastName: string;
 };
+
+export async function getUserByUserName(username: string): Promise<User> {
+  const user = await prisma.user.findUnique({ where: { username }, select: USER_FIELDS_SELECT });
+
+  if (!user) {
+    throw new UserError("USER_NOT_FOUND");
+  }
+
+  return { ...user, dateOfBirth: user.dateOfBirth?.toISOString().split("T")[0] || null };
+}

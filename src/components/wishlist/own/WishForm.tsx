@@ -4,7 +4,6 @@ import { Form, FormLabel, FormField, FormControl, FormItem } from "~/components/
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Currency } from "@prisma/client";
 import { Button } from "~/components/ui/button";
 import { Select } from "~/components/ui/select";
 import React, { useEffect } from "react";
@@ -13,11 +12,12 @@ import { ArrowSquareOut, Gift, ShootingStar } from "@phosphor-icons/react";
 import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import { useCreateWish, useUpdateWish } from "~/components/wishlist/own/hooks";
 import { Badge } from "~/components/ui/badge";
+import { currencies, currencyNames } from "~/lib/currencies";
 
 const formSchema = z.object({
   name: z.string().max(255, "Oof, that's too long"),
   price: z.number({ coerce: true }).optional().nullable().default(null),
-  currency: z.nativeEnum(Currency),
+  currency: z.string().optional().nullable(),
   url: z.string().url().optional().nullable(),
   comment: z.string().max(255, "Oof, that's too long").optional().nullable(),
 });
@@ -41,7 +41,7 @@ export function WishForm({ wish, onActionSuccess }: WishFormProps) {
     defaultValues: {
       name: wish?.name ?? "",
       price: wish?.price ?? null,
-      currency: wish?.currency ?? Currency.EUR,
+      currency: wish?.currency ?? "EUR",
       url: wish?.url ?? null,
       comment: wish?.comment ?? null,
     },
@@ -54,7 +54,7 @@ export function WishForm({ wish, onActionSuccess }: WishFormProps) {
     if (isSubmitSuccessful) {
       reset({
         comment: "",
-        currency: Currency.EUR,
+        currency: null,
         name: "",
         price: null,
         url: "",
@@ -130,12 +130,9 @@ export function WishForm({ wish, onActionSuccess }: WishFormProps) {
                   </FormControl>
                   <FormControl>
                     <Select
-                      value={form.getValues().currency}
-                      onChange={v => form.setValue("currency", v as Currency)}
-                      options={[
-                        { value: Currency.EUR, label: "Euro" },
-                        { value: Currency.USD, label: "US Dollar" },
-                      ]}
+                      value={form.getValues().currency || ""}
+                      onChange={v => form.setValue("currency", v)}
+                      options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
                     />
                   </FormControl>
                 </div>

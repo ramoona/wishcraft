@@ -1,6 +1,4 @@
-import { Currency } from "@prisma/client";
-
-export function Price({ price, currency }: { price: number | null; currency: Currency | null }) {
+export function Price({ price, currency }: { price: number | null; currency: string | null }) {
   if (!price || !currency) {
     return null;
   }
