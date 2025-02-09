@@ -15,62 +15,50 @@ import {
   ReservedWishesVisibilityFormData,
   DefaultCurrencyFormData,
 } from "~/services/user/formData";
+import { User } from "~/services/user/types";
 
-type ActionState = { error?: ServerErrorCode | UserErrorCode };
+type ActionState = { error: ServerErrorCode | UserErrorCode; user: undefined } | { error: undefined; user: User };
 
 export const updateUsernameAction = async (formData: FormData): Promise<ActionState> => {
   try {
     const sessionUser = await getSessionUserOrThrow();
-    const username = UsernameFormData.toObject(formData).username;
-
-    await updateUsername({ userId: sessionUser.id, username });
-    return { error: undefined };
+    const user = await updateUsername({ userId: sessionUser.id, ...UsernameFormData.toObject(formData) });
+    return { user, error: undefined };
   } catch (e) {
-    return {
-      error: getErrorCode(e),
-    };
+    return { error: getErrorCode(e), user: undefined };
   }
 };
 
 export const updateDateOfBirthAction = async (formData: FormData): Promise<ActionState> => {
   try {
     const sessionUser = await getSessionUserOrThrow();
-    const dateOfBirth = DateOfBirthFormData.toObject(formData).dateOfBirth;
-
-    await updateDateOfBirth({ userId: sessionUser.id, dateOfBirth });
-    return { error: undefined };
+    const user = await updateDateOfBirth({ userId: sessionUser.id, ...DateOfBirthFormData.toObject(formData) });
+    return { user, error: undefined };
   } catch (e) {
-    return {
-      error: getErrorCode(e),
-    };
+    return { error: getErrorCode(e), user: undefined };
   }
 };
 
 export const updateReservedWishesVisibilityAction = async (formData: FormData): Promise<ActionState> => {
   try {
     const sessionUser = await getSessionUserOrThrow();
-    const showReserved = ReservedWishesVisibilityFormData.toObject(formData).showReserved;
-
-    await updateReservedWishedVisibility({ userId: sessionUser.id, showReserved });
-    return { error: undefined };
+    const user = await updateReservedWishedVisibility({
+      userId: sessionUser.id,
+      ...ReservedWishesVisibilityFormData.toObject(formData),
+    });
+    return { user, error: undefined };
   } catch (e) {
-    return {
-      error: getErrorCode(e),
-    };
+    return { error: getErrorCode(e), user: undefined };
   }
 };
 
 export const updateDefaultCurrencyAction = async (formData: FormData): Promise<ActionState> => {
   try {
     const sessionUser = await getSessionUserOrThrow();
-    const currency = DefaultCurrencyFormData.toObject(formData).currency;
-
-    await updateDefaultCurrency({ userId: sessionUser.id, currency });
-    return { error: undefined };
+    const user = await updateDefaultCurrency({ userId: sessionUser.id, ...DefaultCurrencyFormData.toObject(formData) });
+    return { user, error: undefined };
   } catch (e) {
-    return {
-      error: getErrorCode(e),
-    };
+    return { error: getErrorCode(e), user: undefined };
   }
 };
 

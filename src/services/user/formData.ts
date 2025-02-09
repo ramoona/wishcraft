@@ -1,6 +1,7 @@
 import { TypedFormData } from "~/utils/formData";
 
-export const UsernameFormData = new TypedFormData<{ username: string }>();
-export const DateOfBirthFormData = new TypedFormData<{ dateOfBirth: string }>();
-export const ReservedWishesVisibilityFormData = new TypedFormData<{ showReserved: boolean }>();
-export const DefaultCurrencyFormData = new TypedFormData<{ currency: string }>();
+type OnboardingData = { onboarding?: boolean };
+export const UsernameFormData = new TypedFormData<OnboardingData & { username: string }>();
+export const DateOfBirthFormData = new TypedFormData<OnboardingData & { dateOfBirth: string }>();
+export const ReservedWishesVisibilityFormData = new TypedFormData<OnboardingData & { showReserved: boolean }>();
+export const DefaultCurrencyFormData = new TypedFormData<OnboardingData & { currency: string }>();

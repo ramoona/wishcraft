@@ -10,12 +10,21 @@ export type User = {
   dateOfBirth: string | null;
   defaultCurrency?: string | null;
   showReserved?: boolean | null;
-  isOnboarded: boolean | null;
+  completedOnboardingSteps: UserOnboardingStep[];
 };
 
 export type OtherUser = Pick<User, "id" | "username" | "firstName" | "lastName" | "dateOfBirth" | "image"> & {
   isFriend: boolean;
 };
+
+export const userOnboardingSteps = [
+  "username",
+  "date-of-birth",
+  "default-currency",
+  "reserved-wishes-visibility",
+] as const;
+
+export type UserOnboardingStep = (typeof userOnboardingSteps)[number];
 
 export type UserActionPayload =
   | {

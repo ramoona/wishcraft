@@ -1,12 +1,20 @@
 import { prisma } from "prisma/client";
 import { UserError } from "~/services/user/errors";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
-import { OtherUser, User, UserActionPayload } from "~/services/user/types";
+import { OtherUser, User, UserActionPayload, UserOnboardingStep, userOnboardingSteps } from "~/services/user/types";
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
 import { getSessionUserOrThrow } from "~/services/auth";
 
-export async function updateUsername({ userId, username }: { userId: string; username: string }) {
+export async function updateUsername({
+  userId,
+  username,
+  onboarding,
+}: {
+  userId: string;
+  username: string;
+  onboarding?: boolean;
+}): Promise<User> {
   if (!username) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
@@ -17,11 +25,12 @@ export async function updateUsername({ userId, username }: { userId: string; use
     throw new UserError("USERNAME_IS_TAKEN");
   }
 
-  await prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: userId },
-    data: { username },
+    data: { username, completedOnboardingSteps: onboarding ? { push: "username" } : undefined },
   });
   await logUserAction({ action: "user-updated", changes: { username } });
+  return toUser(updated);
 }
 
 export async function updateDateOfBirth({ userId, dateOfBirth }: { userId: string; dateOfBirth: string }) {
@@ -29,11 +38,12 @@ export async function updateDateOfBirth({ userId, dateOfBirth }: { userId: strin
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
-  await prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: userId },
-    data: { dateOfBirth },
+    data: { dateOfBirth: `${dateOfBirth}T00:00:00.000Z`, completedOnboardingSteps: { push: "date-of-birth" } },
   });
   await logUserAction({ action: "user-updated", changes: { dateOfBirth } });
+  return toUser(updated);
 }
 
 export async function updateReservedWishedVisibility({
@@ -47,12 +57,13 @@ export async function updateReservedWishedVisibility({
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
-  await prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: userId },
-    data: { showReserved },
+    data: { showReserved, completedOnboardingSteps: { push: "reserved-wishes-visibility" } },
   });
 
   await logUserAction({ action: "user-updated", changes: { showReserved } });
+  return toUser(updated);
 }
 
 export async function updateDefaultCurrency({ userId, currency }: { userId: string; currency: string }) {
@@ -60,12 +71,13 @@ export async function updateDefaultCurrency({ userId, currency }: { userId: stri
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
-  await prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: userId },
-    data: { defaultCurrency: currency },
+    data: { defaultCurrency: currency, completedOnboardingSteps: { push: "default-currency" } },
   });
 
   await logUserAction({ action: "user-updated", changes: { defaultCurrency: currency } });
+  return toUser(updated);
 }
 
 function isUserNameTaken(username: string) {
@@ -132,6 +144,16 @@ function toUserBase(
   return { ...user, dateOfBirth: user.dateOfBirth?.toISOString().split("T")[0] || null };
 }
 
+function toUser(user: PrismaUser): User {
+  return {
+    ...toUserBase(user),
+    completedOnboardingSteps: user.completedOnboardingSteps as UserOnboardingStep[],
+    showReserved: user.showReserved,
+    defaultCurrency: user.defaultCurrency,
+    email: user.email,
+  };
+}
+
 export async function logUserAction(payload: UserActionPayload) {
   if (payload.action === "user-created") {
     return prisma.userActionsLog.create({
@@ -155,4 +177,8 @@ export async function logUserAction(payload: UserActionPayload) {
       },
     },
   });
+}
+
+export function isUserOnboarded(user: User) {
+  return userOnboardingSteps.every(step => user.completedOnboardingSteps.includes(step));
 }

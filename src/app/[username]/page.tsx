@@ -5,15 +5,21 @@ import { ForeignWishlist } from "~/components/wishlist/foreign/ForeignWishlist";
 import { getSessionUser } from "~/services/auth";
 import { WishlistError } from "~/services/wishlist/errors";
 import { getErrorMessage } from "~/core/toastMessages";
-import { ServerError } from "~/services/errors";
 import { UserError } from "~/services/user/errors";
 import { ErrorAlert, SomethingWentWrongAlert, UserNotFoundAlert } from "~/components/ui/alert";
-import { getUserByUserName } from "~/services/user";
+import { getUserByUserName, isUserOnboarded } from "~/services/user";
+import { isErrorKnown, KnownError } from "~/core/errors";
+import { OnboardingWizard } from "~/components/forms/OnboardingWizard/OnboardingWizard";
 
 export default async function UserPage({ params }: { params: { username: string } }) {
   const sessionUser = await getSessionUser();
 
   let wishlist;
+
+  if (sessionUser && !isUserOnboarded(sessionUser)) {
+    return <OnboardingWizard />;
+  }
+
   if (sessionUser && sessionUser.username === params.username) {
     try {
       wishlist = await getWishlistByUserId(sessionUser.id);
@@ -59,10 +65,4 @@ export default async function UserPage({ params }: { params: { username: string 
       <ForeignWishlist data={wishlist} name={wishlistOwner.firstName || wishlistOwner.username} />
     </Layout>
   );
-}
-
-type KnownError = WishlistError | ServerError | UserError;
-
-function isErrorKnown(error: Error): error is KnownError {
-  return error instanceof WishlistError || error instanceof ServerError || error instanceof UserError;
 }
