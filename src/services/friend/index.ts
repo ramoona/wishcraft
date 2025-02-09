@@ -2,6 +2,7 @@ import { getSessionUserOrThrow } from "~/services/auth";
 import { prisma } from "prisma/client";
 import { User as PrismaUser } from "@prisma/client";
 import { OtherUser } from "~/services/user/types";
+import { logUserAction } from "~/services/user";
 
 const FRIEND_FIELDS_SELECT = {
   id: true,
@@ -29,16 +30,17 @@ export async function getFriendsForCurrentUser(): Promise<OtherUser[]> {
 }
 
 export async function addFriend({ userId, friendId }: { userId: string; friendId: string }) {
-  return prisma.friend.create({
+  await prisma.friend.create({
     data: {
       friendAId: userId,
       friendBId: friendId,
     },
   });
+  await logUserAction({ action: "friend-added", friendId });
 }
 
 export async function removeFriend({ userId, friendId }: { userId: string; friendId: string }) {
-  return prisma.friend.deleteMany({
+  await prisma.friend.deleteMany({
     where: {
       OR: [
         { friendAId: userId, friendBId: friendId },
@@ -46,6 +48,7 @@ export async function removeFriend({ userId, friendId }: { userId: string; frien
       ],
     },
   });
+  await logUserAction({ action: "friend-removed", friendId });
 }
 
 function toFriend(user: Pick<PrismaUser, keyof typeof FRIEND_FIELDS_SELECT>): OtherUser {

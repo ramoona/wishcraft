@@ -17,6 +17,7 @@ model User {
   dateOfBirth   DateTime? @db.Date
   image         String?
   sessions      Session[]
+  isOnboarded   Boolean?  @default(false)
 
   // oAuth
   googleId String?
@@ -24,7 +25,6 @@ model User {
   // Relations
   wishlists Wishlist[]
   reserved  Wish[]
-  // Many-to-many self-referencing relation
   friends   Friend[]   @relation("FriendA")
   friendOf  Friend[]   @relation("FriendB")
 
@@ -93,4 +93,10 @@ model Friend {
   updatedAt DateTime @updatedAt
 
   @@id([friendAId, friendBId])
+}
+
+model UserActionsLog {
+  id        String   @id @default(cuid())
+  payload   Json
+  createdAt DateTime @default(now())
 }

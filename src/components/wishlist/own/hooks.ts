@@ -49,12 +49,7 @@ export function useCreateWish(): [boolean, (input: WishCreateInput, onSuccess?: 
 
   const trigger = (input: WishCreateInput, onSuccess?: () => void) => {
     startUpdateTransition(async () => {
-      const { error } = await createWishAction(
-        WishCreationFormData.fromObject({
-          ...input,
-          isPrivate: input.isPrivate ? "yes" : "no",
-        }),
-      );
+      const { error } = await createWishAction(WishCreationFormData.fromObject(input));
       showToastWithActionResult(error);
       onSuccess?.();
       router.refresh();

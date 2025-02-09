@@ -29,6 +29,7 @@ export const lucia = new Lucia(LuciaPrismaAdapter, {
       dateOfBirth: attributes.dateOfBirth,
       defaultCurrency: attributes.defaultCurrency,
       showReserved: attributes.showReserved,
+      isOnboarded: attributes.isOnboarded,
     };
   },
 });

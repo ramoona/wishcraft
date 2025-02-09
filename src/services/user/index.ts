@@ -1,7 +1,7 @@
 import { prisma } from "prisma/client";
 import { UserError } from "~/services/user/errors";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
-import { OtherUser, User } from "~/services/user/types";
+import { OtherUser, User, UserActionPayload } from "~/services/user/types";
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
 import { getSessionUserOrThrow } from "~/services/auth";
@@ -21,6 +21,7 @@ export async function updateUsername({ userId, username }: { userId: string; use
     where: { id: userId },
     data: { username },
   });
+  await logUserAction({ action: "user-updated", changes: { username } });
 }
 
 export async function updateDateOfBirth({ userId, dateOfBirth }: { userId: string; dateOfBirth: string }) {
@@ -32,6 +33,7 @@ export async function updateDateOfBirth({ userId, dateOfBirth }: { userId: strin
     where: { id: userId },
     data: { dateOfBirth },
   });
+  await logUserAction({ action: "user-updated", changes: { dateOfBirth } });
 }
 
 export async function updateReservedWishedVisibility({
@@ -49,6 +51,8 @@ export async function updateReservedWishedVisibility({
     where: { id: userId },
     data: { showReserved },
   });
+
+  await logUserAction({ action: "user-updated", changes: { showReserved } });
 }
 
 export async function updateDefaultCurrency({ userId, currency }: { userId: string; currency: string }) {
@@ -60,6 +64,8 @@ export async function updateDefaultCurrency({ userId, currency }: { userId: stri
     where: { id: userId },
     data: { defaultCurrency: currency },
   });
+
+  await logUserAction({ action: "user-updated", changes: { defaultCurrency: currency } });
 }
 
 function isUserNameTaken(username: string) {
@@ -78,14 +84,17 @@ async function getAvailableUsername(username: string, attempt = 0): Promise<stri
 export async function createUser(input: UserInput) {
   const initialUsername = [input.firstName, input.lastName].join("-").toLowerCase();
   const username = await getAvailableUsername(initialUsername);
-
-  return prisma.user.create({
+  console.log("user");
+  const user = await prisma.user.create({
     data: {
       ...input,
       username,
       wishlists: { create: {} },
     },
   });
+  console.log("user 2");
+  await logUserAction({ action: "user-created", userId: user.id, email: input.email });
+  return user;
 }
 
 type UserInput = {
@@ -123,4 +132,29 @@ function toUserBase(
   user: Pick<PrismaUser, "id" | "firstName" | "lastName" | "username" | "dateOfBirth" | "image">,
 ): Pick<User, "id" | "firstName" | "lastName" | "username" | "dateOfBirth" | "image"> {
   return { ...user, dateOfBirth: user.dateOfBirth?.toISOString().split("T")[0] || null };
+}
+
+export async function logUserAction(payload: UserActionPayload) {
+  if (payload.action === "user-created") {
+    return prisma.userActionsLog.create({
+      data: {
+        payload: {
+          ...payload,
+          userId: payload.userId,
+          email: payload.email,
+        },
+      },
+    });
+  }
+
+  const sessionUser = await getSessionUserOrThrow();
+  await prisma.userActionsLog.create({
+    data: {
+      payload: {
+        ...payload,
+        userId: sessionUser.id,
+        email: sessionUser.email,
+      },
+    },
+  });
 }

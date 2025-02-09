@@ -51,7 +51,7 @@ export const updateReservedWishesVisibilityAction = async (formData: FormData): 
     const sessionUser = await getSessionUserOrThrow();
     const showReserved = ReservedWishesVisibilityFormData.toObject(formData).showReserved;
 
-    await updateReservedWishedVisibility({ userId: sessionUser.id, showReserved: showReserved === "yes" });
+    await updateReservedWishedVisibility({ userId: sessionUser.id, showReserved });
     return { error: undefined };
   } catch (e) {
     return {

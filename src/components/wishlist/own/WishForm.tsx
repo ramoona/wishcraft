@@ -20,6 +20,7 @@ const formSchema = z.object({
   currency: z.string().optional().nullable(),
   url: z.string().url().optional().nullable(),
   comment: z.string().max(255, "Oof, that's too long").optional().nullable(),
+  isPrivate: z.boolean(),
 });
 
 export type WishFormValues = z.infer<typeof formSchema>;
@@ -44,6 +45,7 @@ export function WishForm({ wish, onActionSuccess }: WishFormProps) {
       currency: wish?.currency ?? "EUR",
       url: wish?.url ?? null,
       comment: wish?.comment ?? null,
+      isPrivate: wish?.isPrivate ?? false,
     },
   });
   const isUpdatingMode = !!wish;
@@ -58,6 +60,7 @@ export function WishForm({ wish, onActionSuccess }: WishFormProps) {
         name: "",
         price: null,
         url: "",
+        isPrivate: false,
       });
     }
   }, [isSubmitSuccessful, reset]);
@@ -148,6 +151,19 @@ export function WishForm({ wish, onActionSuccess }: WishFormProps) {
                 <FormLabel>Comment</FormLabel>
                 <FormControl>
                   <Input {...field} value={field.value ?? ""} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            disabled={isReadonly}
+            control={control}
+            name="isPrivate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Private</FormLabel>
+                <FormControl>
+                  <Input {...field} type="checkbox" value={""} checked={field.value} />
                 </FormControl>
               </FormItem>
             )}
