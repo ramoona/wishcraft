@@ -1,15 +1,72 @@
-import { WishlistType } from "~/services/wishlist/types";
+import { WishType } from "~/services/wishlist/types";
 
 export type User = {
   id: string;
   firstName: string;
   lastName: string;
-  username: string;
+  username?: string | null;
   email: string;
   image: string | null;
+  dayOfBirth: number | null;
+  monthOfBirth: number | null;
+  defaultCurrency?: string | null;
+  showReserved?: boolean | null;
+  completedOnboardingSteps: UserOnboardingStep[];
 };
 
-export type UserWithRelations = Omit<User, "email" | "username"> & {
-  wishlist: WishlistType;
-  username: string;
+export type OtherUser = Pick<
+  User,
+  "id" | "username" | "firstName" | "lastName" | "dayOfBirth" | "monthOfBirth" | "image"
+> & {
+  isFriend: boolean;
 };
+
+export const userOnboardingSteps = [
+  "username",
+  "date-of-birth",
+  "default-currency",
+  "reserved-wishes-visibility",
+] as const;
+
+export type UserOnboardingStep = (typeof userOnboardingSteps)[number];
+
+export type UserActionPayload =
+  | {
+      userId: string;
+      email: string;
+      action: "user-created";
+    }
+  | {
+      action: "user-updated";
+      changes: Partial<User>;
+    }
+  | {
+      action: "friend-added";
+      friendId: string;
+    }
+  | {
+      action: "friend-removed";
+      friendId: string;
+    }
+  | {
+      action: "wish-created";
+      wish: Partial<WishType>;
+    }
+  | {
+      action: "wish-updated";
+      changes: Partial<WishType>;
+    }
+  | {
+      action: "wish-deleted";
+      wishId: string;
+    }
+  | {
+      action: "wish-reserved";
+      wishId: string;
+      reservedById: string;
+    }
+  | {
+      action: "wish-released";
+      wishId: string;
+      reservedById: string;
+    };

@@ -1,38 +1,98 @@
 import { prisma } from "prisma/client";
-import { createWishlist, WISH_FIELDS_SELECT } from "../wishlist";
-import { omit } from "ramda";
-import { UserWithRelations } from "~/services/user/types";
 import { UserError } from "~/services/user/errors";
-import { WishlistError } from "~/services/wishlist/errors";
+import { OtherUser, User, UserActionPayload, UserOnboardingStep, userOnboardingSteps } from "~/services/user/types";
+import { isNil } from "ramda";
+import { User as PrismaUser } from "@prisma/client";
+import { getSessionUserOrThrow } from "~/services/auth";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
 
-export async function updateUsername({ userId, username }: { userId: string; username: string }) {
+export async function updateUsername({
+  userId,
+  username,
+  onboarding,
+}: {
+  userId: string;
+  username: string;
+  onboarding?: boolean;
+}): Promise<User> {
+  if (!username) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
   const isUsernameExists = await isUserNameTaken(username);
 
   if (isUsernameExists) {
     throw new UserError("USERNAME_IS_TAKEN");
   }
 
-  await prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: userId },
-    data: { username },
+    data: { username, completedOnboardingSteps: onboarding ? { push: "username" } : undefined },
   });
+  await logUserAction({ action: "user-updated", changes: { username } });
+  return toUser(updated);
 }
 
-export async function finalizeSignUp({ userId, username }: { userId: string; username: string }) {
-  if (!username) {
-    throw new UserError("USERNAME_IS_REQUIRED");
+export async function updateDateOfBirth({
+  userId,
+  dayOfBirth,
+  monthOfBirth,
+}: {
+  userId: string;
+  dayOfBirth: number;
+  monthOfBirth: number;
+}) {
+  if (!dayOfBirth || !monthOfBirth) {
+    throw new UserError("INPUT_IS_REQUIRED");
   }
 
-  await updateUsername({ userId, username });
-  await createWishlist(userId);
+  const updated = await prisma.user.update({
+    where: { id: userId },
+    data: { dayOfBirth, monthOfBirth, completedOnboardingSteps: { push: "date-of-birth" } },
+  });
+  await logUserAction({ action: "user-updated", changes: { dayOfBirth, monthOfBirth } });
+  return toUser(updated);
+}
+
+export async function updateReservedWishedVisibility({
+  userId,
+  showReserved,
+}: {
+  userId: string;
+  showReserved: boolean;
+}) {
+  if (isNil(showReserved)) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
+  const updated = await prisma.user.update({
+    where: { id: userId },
+    data: { showReserved, completedOnboardingSteps: { push: "reserved-wishes-visibility" } },
+  });
+
+  await logUserAction({ action: "user-updated", changes: { showReserved } });
+  return toUser(updated);
+}
+
+export async function updateDefaultCurrency({ userId, currency }: { userId: string; currency: string }) {
+  if (isNil(currency)) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
+  const updated = await prisma.user.update({
+    where: { id: userId },
+    data: { defaultCurrency: currency, completedOnboardingSteps: { push: "default-currency" } },
+  });
+
+  await logUserAction({ action: "user-updated", changes: { defaultCurrency: currency } });
+  return toUser(updated);
 }
 
 function isUserNameTaken(username: string) {
   return prisma.user.findUnique({ where: { username } });
 }
 
-async function getAvailableUsername(username: string, attempt = 0): Promise<string> {
+export async function getAvailableUsername(username: string, attempt = 0): Promise<string> {
   if (attempt > 10) {
     throw new UserError("TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME");
   }
@@ -42,60 +102,14 @@ async function getAvailableUsername(username: string, attempt = 0): Promise<stri
 }
 
 export async function createUser(input: UserInput) {
-  const initialUsername = [input.firstName, input.lastName].join("-").toLowerCase();
-  const username = await getAvailableUsername(initialUsername);
-
   const user = await prisma.user.create({
     data: {
       ...input,
-      username,
+      wishlists: { create: {} },
     },
   });
-  await createWishlist(user.id);
-
+  await logUserAction({ action: "user-created", userId: user.id, email: input.email });
   return user;
-}
-
-export async function getUserWithRelationsByUsername(username: string): Promise<UserWithRelations> {
-  const user = await prisma.user.findUnique({
-    where: { username },
-    select: {
-      id: true,
-      username: true,
-      firstName: true,
-      lastName: true,
-      image: true,
-      wishlists: {
-        include: {
-          wishes: {
-            orderBy: {
-              createdAt: "desc",
-            },
-            where: {
-              status: {
-                notIn: ["ARCHIVED"],
-              },
-            },
-            select: WISH_FIELDS_SELECT,
-          },
-        },
-      },
-    },
-  });
-
-  if (!user) {
-    throw new UserError("USER_NOT_FOUND");
-  }
-
-  if (!user.wishlists.length) {
-    throw new WishlistError("WISHLIST_NOT_FOUND");
-  }
-
-  return {
-    ...omit(["wishlists", "username"], user),
-    username: user.username,
-    wishlist: user.wishlists[0],
-  };
 }
 
 type UserInput = {
@@ -106,3 +120,62 @@ type UserInput = {
   firstName: string;
   lastName: string;
 };
+
+export async function getUserByUserName(username: string): Promise<OtherUser> {
+  const sessionUser = await getSessionUserOrThrow();
+  const user = await prisma.user.findUnique({
+    where: { username },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      username: true,
+      image: true,
+      dayOfBirth: true,
+      monthOfBirth: true,
+      friends: { where: { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] } },
+    },
+  });
+
+  if (!user) {
+    throw new UserError("USER_NOT_FOUND");
+  }
+
+  return { ...user, isFriend: user.friends.length > 0 };
+}
+
+function toUser(user: PrismaUser): User {
+  return {
+    ...user,
+    completedOnboardingSteps: user.completedOnboardingSteps as UserOnboardingStep[],
+  };
+}
+
+export async function logUserAction(payload: UserActionPayload) {
+  if (payload.action === "user-created") {
+    return prisma.userActionsLog.create({
+      data: {
+        payload: {
+          ...payload,
+          userId: payload.userId,
+          email: payload.email,
+        },
+      },
+    });
+  }
+
+  const sessionUser = await getSessionUserOrThrow();
+  await prisma.userActionsLog.create({
+    data: {
+      payload: {
+        ...payload,
+        userId: sessionUser.id,
+        email: sessionUser.email,
+      },
+    },
+  });
+}
+
+export function isUserOnboarded(user: User) {
+  return userOnboardingSteps.every(step => user.completedOnboardingSteps.includes(step));
+}

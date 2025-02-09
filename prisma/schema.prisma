@@ -8,21 +8,30 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  firstName     String
-  lastName      String
-  username      String    @unique
-  email         String    @unique
-  emailVerified Boolean?
-  image         String?
-  sessions      Session[]
+  id                       String    @id @default(cuid())
+  firstName                String
+  lastName                 String
+  username                 String?   @unique
+  email                    String    @unique
+  emailVerified            Boolean?
+  dayOfBirth               Int?
+  monthOfBirth             Int?
+  image                    String?
+  sessions                 Session[]
+  completedOnboardingSteps String[]
 
   // oAuth
   googleId String?
 
-  // App columns
+  // Relations
   wishlists Wishlist[]
   reserved  Wish[]
+  friends   Friend[]   @relation("FriendA")
+  friendOf  Friend[]   @relation("FriendB")
+
+  // Preferences
+  defaultCurrency String?
+  showReserved    Boolean?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -36,11 +45,6 @@ model Session {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-enum Currency {
-  EUR
-  USD
 }
 
 enum WishStatus {
@@ -61,13 +65,14 @@ model Wishlist {
 }
 
 model Wish {
-  id       String     @id @default(cuid())
-  name     String
-  price    Float?
-  currency Currency?
-  url      String?
-  comment  String?
-  status   WishStatus
+  id        String     @id @default(cuid())
+  name      String
+  price     Float?
+  currency  String?
+  url       String?
+  comment   String?
+  status    WishStatus
+  isPrivate Boolean?
 
   reservedBy   User?    @relation(fields: [reservedById], references: [id])
   reservedById String?
@@ -76,4 +81,23 @@ model Wish {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Friend {
+  friendAId String
+  friendBId String
+
+  friendA User @relation("FriendA", fields: [friendAId], references: [id])
+  friendB User @relation("FriendB", fields: [friendBId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([friendAId, friendBId])
+}
+
+model UserActionsLog {
+  id        String   @id @default(cuid())
+  payload   Json
+  createdAt DateTime @default(now())
 }

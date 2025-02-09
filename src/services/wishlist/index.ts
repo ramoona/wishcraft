@@ -1,9 +1,11 @@
-import { Currency, WishStatus } from "@prisma/client";
+import { WishStatus } from "@prisma/client";
 
 import { prisma } from "prisma/client";
-import { WishlistType } from "~/services/wishlist/types";
+import { WishCreateInput, WishlistType, WishUpdateInput } from "~/services/wishlist/types";
 import { WishlistError } from "~/services/wishlist/errors";
 import { ServerError } from "~/services/errors";
+import { getSessionUserOrThrow } from "~/services/auth";
+import { logUserAction } from "~/services/user";
 
 export const WISH_FIELDS_SELECT = {
   id: true,
@@ -14,6 +16,7 @@ export const WISH_FIELDS_SELECT = {
   comment: true,
   url: true,
   reservedById: true,
+  isPrivate: true,
 };
 
 export async function getWishlistIdByUserId(userId: string): Promise<string> {
@@ -48,25 +51,8 @@ export async function getWishlistByUserId(userId: string): Promise<WishlistType>
   return wishlist;
 }
 
-export function createWishlist(userId: string) {
-  if (!userId) {
-    throw new ServerError("INVALID_INPUT");
-  }
-
-  return prisma.wishlist.create({ data: { ownerId: userId } });
-}
-
-export function createWish(
-  wishlistId: string,
-  input: {
-    name: string;
-    url?: string | null;
-    price?: number | null;
-    currency?: Currency | null;
-    comment?: string | null;
-  },
-) {
-  return prisma.wishlist.update({
+export async function createWish(wishlistId: string, input: WishCreateInput) {
+  const wish = prisma.wishlist.update({
     where: { id: wishlistId },
     data: {
       updatedAt: new Date(),
@@ -78,33 +64,28 @@ export function createWish(
       },
     },
   });
+
+  await logUserAction({ action: "wish-created", wish: input });
+  return wish;
 }
 
-export function updateWish(
-  wishId: string,
-  input: {
-    name?: string;
-    url?: string | null;
-    price?: number | null;
-    currency?: Currency | null;
-    comment?: string | null;
-    status?: WishStatus;
-  },
-) {
+export async function updateWish(wishId: string, input: Omit<WishUpdateInput, "id">) {
   // TODO: validate input with schema
   if (!wishId || !input) {
     throw new ServerError("INVALID_INPUT");
   }
 
-  return prisma.wish.update({ where: { id: wishId }, data: input });
+  await prisma.wish.update({ where: { id: wishId }, data: input });
+  await logUserAction({ action: "wish-updated", changes: input });
 }
 
-export function deleteWish(wishId: string) {
+export async function deleteWish(wishId: string) {
   if (!wishId) {
     throw new ServerError("INVALID_INPUT");
   }
 
-  return prisma.wish.delete({ where: { id: wishId } });
+  await prisma.wish.delete({ where: { id: wishId } });
+  await logUserAction({ action: "wish-deleted", wishId });
 }
 
 export async function reserveWish({ wishId, userId }: { wishId: string; userId: string }) {
@@ -126,10 +107,11 @@ export async function reserveWish({ wishId, userId }: { wishId: string; userId: 
     throw new WishlistError("WISH_IS_NOT_RESERVABLE");
   }
 
-  return prisma.wish.update({
+  await prisma.wish.update({
     where: { id: wishId },
     data: { reservedById: userId, status: WishStatus.RESERVED },
   });
+  await logUserAction({ action: "wish-reserved", wishId, reservedById: userId });
 }
 
 export async function releaseWish({ wishId, userId }: { wishId: string; userId: string }) {
@@ -151,8 +133,54 @@ export async function releaseWish({ wishId, userId }: { wishId: string; userId: 
     throw new WishlistError("WISH_IS_NOT_RESERVED");
   }
 
-  return prisma.wish.update({
+  await prisma.wish.update({
     where: { id: wishId },
     data: { reservedById: null, status: WishStatus.ACTIVE },
+  });
+
+  await logUserAction({ action: "wish-released", wishId, reservedById: userId });
+}
+
+export async function getForeignWishlistByUsername(username: string): Promise<WishlistType> {
+  const wishlist = await prisma.wishlist.findFirst({
+    where: { owner: { username } },
+    include: {
+      wishes: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        where: {
+          isPrivate: { not: true },
+          status: {
+            notIn: ["ARCHIVED"],
+          },
+        },
+        select: WISH_FIELDS_SELECT,
+      },
+    },
+  });
+
+  if (!wishlist) {
+    throw new WishlistError("WISHLIST_NOT_FOUND");
+  }
+
+  return wishlist;
+}
+
+export async function getUsersWithWishesReservedByCurrentUser() {
+  const sessionUser = await getSessionUserOrThrow();
+
+  return prisma.user.findMany({
+    where: { wishlists: { some: { wishes: { some: { reservedById: sessionUser.id } } } } },
+    select: {
+      wishlists: {
+        select: {
+          wishes: {
+            where: { reservedById: sessionUser.id },
+            select: WISH_FIELDS_SELECT,
+          },
+        },
+      },
+    },
   });
 }
