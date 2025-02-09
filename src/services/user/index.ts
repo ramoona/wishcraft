@@ -1,20 +1,10 @@
 import { prisma } from "prisma/client";
 import { UserError } from "~/services/user/errors";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
-import { User } from "~/services/user/types";
+import { OtherUser, User } from "~/services/user/types";
 import { isNil } from "ramda";
-
-const USER_FIELDS_SELECT = {
-  id: true,
-  firstName: true,
-  lastName: true,
-  username: true,
-  email: true,
-  image: true,
-  dateOfBirth: true,
-  defaultCurrency: true,
-  showReserved: true,
-};
+import { User as PrismaUser } from "@prisma/client";
+import { getSessionUserOrThrow } from "~/services/auth";
 
 export async function updateUsername({ userId, username }: { userId: string; username: string }) {
   if (!username) {
@@ -107,12 +97,30 @@ type UserInput = {
   lastName: string;
 };
 
-export async function getUserByUserName(username: string): Promise<User> {
-  const user = await prisma.user.findUnique({ where: { username }, select: USER_FIELDS_SELECT });
+export async function getUserByUserName(username: string): Promise<OtherUser> {
+  const sessionUser = await getSessionUserOrThrow();
+  const user = await prisma.user.findUnique({
+    where: { username },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      username: true,
+      image: true,
+      dateOfBirth: true,
+      friends: { where: { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] } },
+    },
+  });
 
   if (!user) {
     throw new UserError("USER_NOT_FOUND");
   }
 
+  return { ...toUserBase(user), isFriend: user.friends.length > 0 };
+}
+
+function toUserBase(
+  user: Pick<PrismaUser, "id" | "firstName" | "lastName" | "username" | "dateOfBirth" | "image">,
+): Pick<User, "id" | "firstName" | "lastName" | "username" | "dateOfBirth" | "image"> {
   return { ...user, dateOfBirth: user.dateOfBirth?.toISOString().split("T")[0] || null };
 }

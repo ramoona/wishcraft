@@ -21,9 +21,12 @@ model User {
   // oAuth
   googleId String?
 
-  // App columns
+  // Relations
   wishlists Wishlist[]
   reserved  Wish[]
+  // Many-to-many self-referencing relation
+  friends   Friend[]   @relation("FriendA")
+  friendOf  Friend[]   @relation("FriendB")
 
   // Preferences
   defaultCurrency String?
@@ -77,4 +80,17 @@ model Wish {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Friend {
+  friendAId String
+  friendBId String
+
+  friendA User @relation("FriendA", fields: [friendAId], references: [id])
+  friendB User @relation("FriendB", fields: [friendBId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([friendAId, friendBId])
 }
