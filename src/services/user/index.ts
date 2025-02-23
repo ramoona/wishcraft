@@ -123,6 +123,13 @@ type UserInput = {
 
 export async function getUserByUserName(username: string): Promise<OtherUser> {
   const sessionUser = await getSessionUserOrThrow();
+  const friends = await prisma.friend.findMany({
+    where: { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] },
+    select: {
+      friendAId: true,
+      friendBId: true,
+    },
+  });
   const user = await prisma.user.findUnique({
     where: { username },
     select: {
@@ -133,7 +140,6 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
       image: true,
       dayOfBirth: true,
       monthOfBirth: true,
-      friends: { where: { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] } },
     },
   });
 
@@ -141,7 +147,7 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
     throw new UserError("USER_NOT_FOUND");
   }
 
-  return { ...user, isFriend: user.friends.length > 0 };
+  return { ...user, isFriend: friends.length > 0 };
 }
 
 function toUser(user: PrismaUser): User {

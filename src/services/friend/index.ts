@@ -1,7 +1,7 @@
 import { getSessionUserOrThrow } from "~/services/auth";
 import { prisma } from "prisma/client";
 import { User as PrismaUser } from "@prisma/client";
-import { OtherUser } from "~/services/user/types";
+import { FriendUser } from "~/services/user/types";
 import { logUserAction } from "~/services/user";
 
 const FRIEND_FIELDS_SELECT = {
@@ -14,7 +14,7 @@ const FRIEND_FIELDS_SELECT = {
   monthOfBirth: true,
 };
 
-export async function getFriendsForCurrentUser(): Promise<OtherUser[]> {
+export async function getFriendsForCurrentUser(): Promise<FriendUser[]> {
   const sessionUser = await getSessionUserOrThrow();
 
   const friends = await prisma.friend.findMany({
@@ -52,6 +52,6 @@ export async function removeFriend({ userId, friendId }: { userId: string; frien
   await logUserAction({ action: "friend-removed", friendId });
 }
 
-function toFriend(user: Pick<PrismaUser, keyof typeof FRIEND_FIELDS_SELECT>): OtherUser {
-  return { ...user, isFriend: true };
+function toFriend(user: Pick<PrismaUser, keyof typeof FRIEND_FIELDS_SELECT>): FriendUser {
+  return user;
 }

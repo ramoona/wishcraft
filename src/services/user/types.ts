@@ -21,6 +21,11 @@ export type OtherUser = Pick<
   isFriend: boolean;
 };
 
+export type FriendUser = Pick<
+  User,
+  "id" | "username" | "firstName" | "lastName" | "dayOfBirth" | "monthOfBirth" | "image"
+>;
+
 export const userOnboardingSteps = [
   "username",
   "date-of-birth",

@@ -152,7 +152,7 @@ export async function getForeignWishlistByUsername(username: string): Promise<Wi
         where: {
           isPrivate: { not: true },
           status: {
-            notIn: ["ARCHIVED"],
+            notIn: ["ARCHIVED", "FULFILLED"],
           },
         },
         select: WISH_FIELDS_SELECT,
