@@ -165,7 +165,7 @@ export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps)
               <FormItem>
                 <FormLabel>Private</FormLabel>
                 <FormControl>
-                  <Switch checked={field.value} onChange={field.onChange} />
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
