@@ -1,5 +1,4 @@
 import { getWishlistByUserId } from "~/services/wishlist";
-import { Layout } from "~/components/layout/Layout";
 import { OwnWishlist } from "~/components/wishlist/own/OwnWishlist";
 import { getSessionUser } from "~/services/auth";
 import { WishlistError } from "~/services/wishlist/errors";
@@ -14,19 +13,13 @@ export default async function WishesPage({ params }: { params: { username: strin
   if (sessionUser && sessionUser.username === params.username) {
     try {
       const wishlist = await getWishlistByUserId(sessionUser.id);
-      return (
-        <Layout>
-          <OwnWishlist data={wishlist} />
-        </Layout>
-      );
+      return <OwnWishlist data={wishlist} />;
     } catch (e) {
       if (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") {
         return <SomethingWentWrongAlert />;
       }
       return (
-        <Layout>
-          <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
-        </Layout>
+        <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
       );
     }
   }

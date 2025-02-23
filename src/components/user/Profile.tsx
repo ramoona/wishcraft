@@ -1,29 +1,24 @@
 "use client";
 
 import { User } from "~/services/user/types";
-import { DropdownMenu, DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import { SignOut } from "@phosphor-icons/react";
-import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import Link from "next/link";
 
-export function UserMenu({ user }: { user: User }) {
-  const router = useRouter();
-
+export function Profile({ user }: { user: User }) {
   return (
-    <DropdownMenu
-      trigger={
-        <div className="flex items-center gap-2">
-          <UserPic imageUrl={user.image} />
-        </div>
-      }
-    >
-      <DropdownMenuItem onClick={() => router.push("/api/auth/logout")}>
+    <div>
+      <div>
+        <UserPic imageUrl={user.image} />
+        <div className="text-lg font-bold">{user.username}</div>
+      </div>
+      <Link href="/api/auth/logout">
         <div className="flex items-center gap-2 no-underline">
           <SignOut size={24} />
           Sign out
         </div>
-      </DropdownMenuItem>
-    </DropdownMenu>
+      </Link>
+    </div>
   );
 }
 

@@ -32,7 +32,7 @@ export function OwnWishlist({ data }: { data: WishlistType }) {
 
   return (
     <>
-      <div className="flex min-h-[calc(100vh_-_4rem)] flex-col gap-6 pt-8">
+      <div className="flex size-full flex-col gap-6">
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="w-full">
             <TabsTrigger value="active" className="flex grow items-center gap-2">
@@ -88,7 +88,7 @@ export function OwnWishlist({ data }: { data: WishlistType }) {
           </TabsContent>
         </Tabs>
       </div>
-      {isMobile ? <AddNewWishMobile /> : <AddNewWish />}
+      {/*{isMobile ? <AddNewWishMobile /> : <AddNewWish />}*/}
     </>
   );
 }

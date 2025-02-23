@@ -6,7 +6,7 @@ import { FriendActionButton } from "~/components/friends/FriendActionButton";
 
 export function ForeignWishlist({ wishlist, owner }: { wishlist: WishlistType; owner: OtherUser }) {
   return (
-    <div className="flex min-h-[calc(100vh_-_4rem)] w-full flex-col gap-4 py-8">
+    <div className="flex size-full flex-col gap-4 py-8">
       <h1 className="mb-4 text-2xl font-light">
         <span className="font-medium">{`${owner.username}'s`}</span> wishlist
       </h1>

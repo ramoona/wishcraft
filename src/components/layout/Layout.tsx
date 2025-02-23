@@ -1,35 +1,26 @@
 import { PropsWithChildren } from "react";
-import { getSessionUser } from "~/services/auth";
 import { User } from "~/services/user/types";
 
 import { Logo } from "~/components/ui/logo";
-import { UserMenu } from "~/components/user/UserMenu";
 import Link from "next/link";
+import NavBar from "~/components/layout/NavBar";
+import { isUserOnboarded } from "~/services/user";
 
-export async function Layout({ children }: PropsWithChildren) {
-  const sessionUser = await getSessionUser();
-  return sessionUser ? (
-    <AuthenticatedLayout user={sessionUser}>{children}</AuthenticatedLayout>
-  ) : (
-    <NonAuthenticatedLayout>{children}</NonAuthenticatedLayout>
-  );
-}
-
-function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user: User }>) {
+export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user: User }>) {
   return (
-    <>
-      <header className="fixed left-0 top-0 z-10 flex h-24 w-screen justify-between bg-white px-8 py-4">
+    <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
+      <header className="relative z-10 flex h-24 w-screen justify-center bg-white px-8 py-4">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
-        <UserMenu user={user} />
       </header>
-      <main className="relative min-h-screen px-4 py-20">{children}</main>
-    </>
+      <main className="relative p-4">{children}</main>
+      {isUserOnboarded(user) && <NavBar user={user} />}
+    </div>
   );
 }
 
-function NonAuthenticatedLayout({ children }: PropsWithChildren) {
+export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen">
       <header className="fixed left-0 top-0 z-10 flex h-24 w-screen justify-center px-8 py-4">

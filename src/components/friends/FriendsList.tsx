@@ -7,7 +7,7 @@ export function FriendsList({ friends }: { friends: FriendUser[] }) {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh_-_4rem)] w-full flex-col gap-4 py-8">
+    <div className="flex size-full flex-col gap-4 py-8">
       <h1>Your Friends:</h1>
       {friends.map(friend => (
         <Link href={`/${friend.username}`} key={friend.id}>

@@ -1,4 +1,3 @@
-import { Layout } from "~/components/layout/Layout";
 import { getSessionUser } from "~/services/auth";
 import { getErrorMessage } from "~/core/toastMessages";
 import { ErrorAlert } from "~/components/ui/alert";
@@ -16,17 +15,10 @@ export default async function FriendsPage() {
 
   try {
     const friends = await getFriendsForCurrentUser();
-
-    return (
-      <Layout>
-        <FriendsList friends={friends} />
-      </Layout>
-    );
+    return <FriendsList friends={friends} />;
   } catch (e) {
     return (
-      <Layout>
-        <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
-      </Layout>
+      <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
     );
   }
 }
