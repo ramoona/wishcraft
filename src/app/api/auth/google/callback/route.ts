@@ -33,7 +33,10 @@ export async function GET(request: NextRequest): Promise<Response> {
     if (existingUser) {
       const session = await lucia.createSession(existingUser.id, {});
       const sessionCookie = lucia.createSessionCookie(session.id);
-      cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+      cookies().set(sessionCookie.name, sessionCookie.value, {
+        ...sessionCookie.attributes,
+        domain: process.env.NODE_ENV === "production" ? ".mywishcraft.app" : undefined,
+      });
       cookies().delete("wishlistOwner");
       cookies().delete("wishId");
 
@@ -45,6 +48,7 @@ export async function GET(request: NextRequest): Promise<Response> {
         status: 302,
         headers: {
           Location: wishlistOwner ? `/${wishlistOwner}` : "/",
+          "Cache-Control": "no-store, max-age=0",
         },
       });
     }
@@ -59,7 +63,10 @@ export async function GET(request: NextRequest): Promise<Response> {
 
     const session = await lucia.createSession(createdUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+    cookies().set(sessionCookie.name, sessionCookie.value, {
+      ...sessionCookie.attributes,
+      domain: process.env.NODE_ENV === "production" ? ".mywishcraft.app" : undefined,
+    });
     cookies().delete("wishlistOwner");
     cookies().delete("wishId");
 
@@ -71,6 +78,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       status: 302,
       headers: {
         Location: "/",
+        "Cache-Control": "no-store, max-age=0",
       },
     });
   } catch (e) {
