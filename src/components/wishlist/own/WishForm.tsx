@@ -13,6 +13,7 @@ import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import { useCreateWish, useUpdateWish } from "~/components/wishlist/own/hooks";
 import { Badge } from "~/components/ui/badge";
 import { currencies, currencyNames } from "~/lib/currencies";
+import { Switch } from "~/components/ui/switch";
 
 const formSchema = z.object({
   name: z.string().max(255, "Oof, that's too long"),
@@ -164,7 +165,7 @@ export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps)
               <FormItem>
                 <FormLabel>Private</FormLabel>
                 <FormControl>
-                  <Input {...field} type="checkbox" value={""} checked={field.value} />
+                  <Switch checked={field.value} onChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
