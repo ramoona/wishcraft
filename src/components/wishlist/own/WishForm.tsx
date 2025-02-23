@@ -171,7 +171,7 @@ export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps)
             )}
           />
         </div>
-        <div className="grid w-full grid-cols-[auto_max-content] gap-3">
+        <div className="grid w-full grid-cols-[auto_max-content] gap-4">
           <WishFormButtonsMobile
             wish={wish}
             disabled={!formState.isValid}
