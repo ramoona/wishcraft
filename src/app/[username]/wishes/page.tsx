@@ -1,4 +1,4 @@
-import { getWishlistByUserId } from "~/services/wishlist";
+import { getWishesReservedByCurrentUser, getWishlistByUserId } from "~/services/wishlist";
 import { OwnWishlist } from "~/components/wishlist/own/OwnWishlist";
 import { getSessionUser } from "~/services/auth";
 import { WishlistError } from "~/services/wishlist/errors";
@@ -13,7 +13,8 @@ export default async function WishesPage({ params }: { params: { username: strin
   if (sessionUser && sessionUser.username === params.username) {
     try {
       const wishlist = await getWishlistByUserId(sessionUser.id);
-      return <OwnWishlist data={wishlist} />;
+      const reserved = await getWishesReservedByCurrentUser();
+      return <OwnWishlist data={wishlist} reserved={reserved} showOwnReserved={sessionUser.showReserved ?? false} />;
     } catch (e) {
       if (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") {
         return <SomethingWentWrongAlert />;

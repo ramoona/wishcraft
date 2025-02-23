@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { User } from "~/services/user/types";
 import { cn } from "~/utils/classnames";
+import { AddNewWishMobile } from "~/components/wishlist/own/AddNewWish";
 
 const navItems = [
   {
@@ -25,7 +26,8 @@ export default function NavBar({ user }: { user: User }) {
   const route = pathname.split("/")[2];
 
   return (
-    <nav className="z-10 flex h-14 w-full items-center justify-around border-t bg-background">
+    <nav className="relative flex h-14 w-full items-center justify-around border-t bg-background">
+      {route === "wishes" && <AddNewWishMobile />}
       {navItems.map(item => (
         <Link
           key={item.route}

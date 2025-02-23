@@ -17,9 +17,11 @@ export function WishDrawer({
   wish,
   mode,
   children,
+  showReserved,
 }: PropsWithChildren<{
   wish?: WishType;
   mode: "update" | "create";
+  showReserved?: boolean;
 }>) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,7 +39,12 @@ export function WishDrawer({
           <DrawerTitle>{mode === "update" ? "Update" : "Create"} your wish</DrawerTitle>
           <DrawerDescription>{mode === "update" ? "Update" : "Create"} your wish</DrawerDescription>
         </VisuallyHidden>
-        <WishForm wish={wish} onCancel={() => setIsOpen(false)} onActionSuccess={() => setIsOpen(false)} />
+        <WishForm
+          wish={wish}
+          onCancel={() => setIsOpen(false)}
+          onActionSuccess={() => setIsOpen(false)}
+          showReserved={showReserved}
+        />
         <VisuallyHidden>
           <DrawerClose>Close</DrawerClose>
         </VisuallyHidden>

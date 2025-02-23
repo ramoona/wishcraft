@@ -1,8 +1,10 @@
 import { getSessionUserOrThrow } from "~/services/auth";
 import { prisma } from "prisma/client";
-import { User as PrismaUser } from "@prisma/client";
 import { FriendUser } from "~/services/user/types";
 import { logUserAction } from "~/services/user";
+import { WISH_FIELDS_SELECT } from "~/services/wishlist";
+import { Prisma } from "@prisma/client";
+import { DateTime } from "luxon";
 
 const FRIEND_FIELDS_SELECT = {
   id: true,
@@ -12,6 +14,19 @@ const FRIEND_FIELDS_SELECT = {
   image: true,
   dayOfBirth: true,
   monthOfBirth: true,
+  wishlists: {
+    select: {
+      wishes: {
+        where: {
+          isPrivate: { not: true },
+          createdAt: {
+            gte: DateTime.now().minus({ month: 1 }).toJSDate(),
+          },
+        },
+        select: WISH_FIELDS_SELECT,
+      },
+    },
+  },
 };
 
 export async function getFriendsForCurrentUser(): Promise<FriendUser[]> {
@@ -52,6 +67,19 @@ export async function removeFriend({ userId, friendId }: { userId: string; frien
   await logUserAction({ action: "friend-removed", friendId });
 }
 
-function toFriend(user: Pick<PrismaUser, keyof typeof FRIEND_FIELDS_SELECT>): FriendUser {
-  return user;
+function toFriend(
+  user: Prisma.UserGetPayload<{
+    select: typeof FRIEND_FIELDS_SELECT;
+  }>,
+): FriendUser {
+  return {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    username: user.username,
+    image: user.image,
+    dayOfBirth: user.dayOfBirth,
+    monthOfBirth: user.monthOfBirth,
+    recentWishes: user.wishlists[0].wishes.map(wish => ({ name: wish.name })),
+  };
 }

@@ -1,6 +1,7 @@
 import { WishType } from "~/services/wishlist/types";
 import { Price } from "~/components/wishlist/Price";
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
+import React from "react";
 
 export function WishDetailsMobile({
   comment,
@@ -10,10 +11,13 @@ export function WishDetailsMobile({
   url,
   reservedById,
   reservedByCurrentUser,
-}: WishType & { reservedByCurrentUser?: boolean }) {
+  showReserved,
+  username,
+}: WishType & { reservedByCurrentUser?: boolean; showReserved?: boolean; username?: string }) {
   return (
     <div className="relative w-full rounded border p-4 text-left">
-      {reservedById && (
+      {username && <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>}
+      {showReserved && reservedById && (
         <div className="absolute -top-3 right-2">
           <StatusBadge status={reservedByCurrentUser ? "RESERVED_BY_CURRENT_USER" : "RESERVED"} />
         </div>

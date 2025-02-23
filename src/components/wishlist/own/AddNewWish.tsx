@@ -7,7 +7,7 @@ import { Button } from "~/components/ui/button";
 import * as React from "react";
 import { ShareFat, ShootingStar } from "@phosphor-icons/react";
 import { WishDrawer } from "~/components/wishlist/own/WishDrawer";
-import { ShareDrawer } from "~/components/wishlist/own/ShareDrawer";
+// import { ShareDrawer } from "~/components/wishlist/own/ShareDrawer";
 
 export function AddNewWish() {
   const [isSliderOpen, setIsSliderOpen] = useState(false);
@@ -37,11 +37,11 @@ export function AddNewWish() {
 
 export function AddNewWishMobile() {
   return (
-    <div className="fixed bottom-4 left-0 w-full px-4">
-      <div className="grid grid-cols-2 gap-4">
-        <ShareDrawer />
+    <div className="absolute -top-4 left-0 w-full -translate-y-full px-4">
+      <div className="flex items-center justify-center gap-4">
+        {/*<ShareDrawer />*/}
         <WishDrawer mode="create">
-          <Button size="lg" type="button" fullWidth>
+          <Button size="lg" type="button" variant="outline">
             <div className="flex items-center justify-center gap-2">
               <ShootingStar size={24} />
               Make a wish

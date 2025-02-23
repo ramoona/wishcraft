@@ -4,15 +4,24 @@ import { WishlistType, WishType } from "~/services/wishlist/types";
 import { WishItemList } from "~/components/wishlist/WishItemList";
 import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
-import { ShootingStar, Archive, Gift } from "@phosphor-icons/react";
-import { AddNewWish, AddNewWishMobile } from "~/components/wishlist/own/AddNewWish";
+// import { ShootingStar, Archive, Gift } from "@phosphor-icons/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WishDrawer } from "~/components/wishlist/own/WishDrawer";
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
 import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import { WishDetailsDesktop, WishDetailsMobile } from "~/components/wishlist/own/WishDetails";
+import { OtherUser } from "~/services/user/types";
+import { ForeignWishReserved } from "~/components/wishlist/own/ForeignWishReserved";
 
-export function OwnWishlist({ data }: { data: WishlistType }) {
+export function OwnWishlist({
+  data,
+  reserved,
+  showOwnReserved,
+}: {
+  data: WishlistType;
+  reserved: (WishType & { user: OtherUser })[];
+  showOwnReserved: boolean;
+}) {
   const isMobile = true;
   const {
     active = [],
@@ -36,16 +45,20 @@ export function OwnWishlist({ data }: { data: WishlistType }) {
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="w-full">
             <TabsTrigger value="active" className="flex grow items-center gap-2">
-              <ShootingStar />
+              {/*<ShootingStar />*/}
               Active
             </TabsTrigger>
             <TabsTrigger value="fulfilled" className="flex grow items-center gap-2">
-              <Gift />
+              {/*<Gift />*/}
               Fulfilled
             </TabsTrigger>
             <TabsTrigger value="archived" className="flex grow items-center gap-2">
-              <Archive />
+              {/*<Archive />*/}
               Archived
+            </TabsTrigger>
+            <TabsTrigger value="reserved" className="flex grow items-center gap-2">
+              {/*<Archive />*/}
+              Reserved
             </TabsTrigger>
           </TabsList>
           <TabsContent value="active">
@@ -54,7 +67,7 @@ export function OwnWishlist({ data }: { data: WishlistType }) {
             </div>
             <WishItemList>
               {active.map(wish => (
-                <WishItem key={wish.id} wish={wish} isMobile={isMobile} />
+                <WishItem key={wish.id} wish={wish} isMobile={isMobile} showReserved={showOwnReserved} />
               ))}
             </WishItemList>
           </TabsContent>
@@ -86,20 +99,35 @@ export function OwnWishlist({ data }: { data: WishlistType }) {
               )}
             </div>
           </TabsContent>
+          <TabsContent value="reserved">
+            <div>
+              <div className="mb-4 flex w-full items-center justify-center gap-1 text-xs text-slate-500">
+                Here you can find all the wishes you have reserved
+              </div>
+              {reserved.length > 0 ? (
+                <WishItemList>
+                  {reserved.map(wish => (
+                    <ForeignWishReserved key={wish.id} wish={wish} user={wish.user} isMobile={isMobile} />
+                  ))}
+                </WishItemList>
+              ) : (
+                <EmptyWishlistSection />
+              )}
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
-      {/*{isMobile ? <AddNewWishMobile /> : <AddNewWish />}*/}
     </>
   );
 }
 
-function WishItem({ wish, isMobile }: { wish: WishType; isMobile: boolean }) {
+function WishItem({ wish, isMobile, showReserved }: { wish: WishType; isMobile: boolean; showReserved?: boolean }) {
   if (isMobile) {
     return (
       <div key={wish.id} className="flex w-full items-start gap-2">
-        <WishDrawer wish={wish} mode="update">
+        <WishDrawer wish={wish} mode="update" showReserved={showReserved}>
           <button type="button" className="w-full">
-            <WishDetailsMobile {...wish} />
+            <WishDetailsMobile {...wish} showReserved={showReserved} />
           </button>
         </WishDrawer>
       </div>

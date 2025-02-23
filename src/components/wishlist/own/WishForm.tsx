@@ -29,9 +29,10 @@ type WishFormProps = {
   wish?: WishType;
   onCancel: () => void;
   onActionSuccess?: () => void;
+  showReserved?: boolean;
 };
 
-export function WishForm({ wish, onActionSuccess }: WishFormProps) {
+export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps) {
   const [isCreating, createWish] = useCreateWish();
   const [isUpdating, updateWish] = useUpdateWish();
 
@@ -76,7 +77,7 @@ export function WishForm({ wish, onActionSuccess }: WishFormProps) {
   return (
     <Form control={control} reset={reset} formState={formState} {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full flex-col gap-8">
-        {wish?.reservedById && (
+        {showReserved && wish?.reservedById && (
           <div className="mt-4 flex justify-center">
             <Badge variant="attention">
               <Gift className="mr-2 size-5" />

@@ -1,11 +1,12 @@
 import { WishStatus } from "@prisma/client";
 
 import { prisma } from "prisma/client";
-import { WishCreateInput, WishlistType, WishUpdateInput } from "~/services/wishlist/types";
+import { WishCreateInput, WishlistType, WishType, WishUpdateInput } from "~/services/wishlist/types";
 import { WishlistError } from "~/services/wishlist/errors";
 import { ServerError } from "~/services/errors";
 import { getSessionUserOrThrow } from "~/services/auth";
 import { logUserAction } from "~/services/user";
+import { OtherUser } from "~/services/user/types";
 
 export const WISH_FIELDS_SELECT = {
   id: true,
@@ -167,20 +168,46 @@ export async function getForeignWishlistByUsername(username: string): Promise<Wi
   return wishlist;
 }
 
-export async function getUsersWithWishesReservedByCurrentUser() {
+export async function getWishesReservedByCurrentUser(): Promise<(WishType & { user: OtherUser })[]> {
   const sessionUser = await getSessionUserOrThrow();
 
-  return prisma.user.findMany({
-    where: { wishlists: { some: { wishes: { some: { reservedById: sessionUser.id } } } } },
+  const wishes = await prisma.wish.findMany({
+    where: { reservedById: sessionUser.id },
     select: {
-      wishlists: {
-        select: {
-          wishes: {
-            where: { reservedById: sessionUser.id },
-            select: WISH_FIELDS_SELECT,
+      ...WISH_FIELDS_SELECT,
+      wishlist: {
+        include: {
+          owner: {
+            select: {
+              id: true,
+              username: true,
+              firstName: true,
+              lastName: true,
+              dayOfBirth: true,
+              monthOfBirth: true,
+              image: true,
+              friends: {
+                where: {
+                  OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }],
+                },
+              },
+            },
           },
         },
       },
     },
+  });
+
+  return wishes.map(wish => {
+    const { wishlist, ...wishData } = wish;
+    const { friends, ...user } = wishlist.owner;
+
+    return {
+      ...wishData,
+      user: {
+        ...user,
+        isFriend: friends.length > 0,
+      },
+    };
   });
 }

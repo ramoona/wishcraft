@@ -24,7 +24,9 @@ export type OtherUser = Pick<
 export type FriendUser = Pick<
   User,
   "id" | "username" | "firstName" | "lastName" | "dayOfBirth" | "monthOfBirth" | "image"
->;
+> & {
+  recentWishes: Pick<WishType, "name">[];
+};
 
 export const userOnboardingSteps = [
   "username",

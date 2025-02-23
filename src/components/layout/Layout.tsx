@@ -9,7 +9,7 @@ import { isUserOnboarded } from "~/services/user";
 export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user: User }>) {
   return (
     <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
-      <header className="relative z-10 flex h-24 w-screen justify-center bg-white px-8 py-4">
+      <header className="relative flex h-24 w-screen justify-center bg-white px-8 py-4">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
