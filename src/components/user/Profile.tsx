@@ -249,7 +249,10 @@ function Username({ username: initialValue }: { username: string }) {
           autoComplete="off"
           value={username}
           onChange={e => setUsername(e.target.value)}
-          className={clsx(isUnique === false && "border-destructive/70", isUnique === true && "border-emerald-500")}
+          className={clsx(
+            username && isUnique === false && "border-destructive/70",
+            username && isUnique === true && "border-emerald-500",
+          )}
         />
         {initialValue !== username && (
           <Button type="button" size="lg" onClick={trigger} disabled={!username || isUpdating}>
