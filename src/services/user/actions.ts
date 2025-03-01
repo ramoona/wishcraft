@@ -35,7 +35,6 @@ export const updateUsernameAction = async (formData: FormData): Promise<ActionSt
 
 export const checkUsernameUniquenessAction = async (formData: FormData): Promise<UsernameUniquenessActionState> => {
   try {
-    const sessionUser = await getSessionUserOrThrow();
     const isUnique = await checkUsernameUniqueness(UsernameFormData.toObject(formData));
     return { isUnique, error: undefined };
   } catch (e) {

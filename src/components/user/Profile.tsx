@@ -27,7 +27,6 @@ import { getErrorMessage } from "~/core/toastMessages";
 import { Select } from "~/components/ui/select";
 import { currencies, currencyNames } from "~/lib/currencies";
 import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
-import { CheckIcon, StopwatchIcon } from "@radix-ui/react-icons";
 import { clsx } from "clsx";
 
 export function Profile({ user }: { user: User }) {
@@ -236,6 +235,7 @@ function Username({ username: initialValue }: { username: string }) {
     if (deferredValue && deferredValue !== initialValue) {
       void checkUniqueness(deferredValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deferredValue]);
 
   return (

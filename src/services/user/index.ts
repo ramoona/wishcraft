@@ -15,6 +15,8 @@ export async function updateUsername({
   username: string;
   onboarding?: boolean;
 }): Promise<User> {
+  await getSessionUserOrThrow();
+
   if (!username) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
@@ -34,6 +36,8 @@ export async function updateUsername({
 }
 
 export async function checkUsernameUniqueness({ username }: { username: string }): Promise<boolean> {
+  await getSessionUserOrThrow();
+
   if (!username) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
@@ -52,6 +56,8 @@ export async function updateDateOfBirth({
   dayOfBirth: number;
   monthOfBirth: number;
 }) {
+  await getSessionUserOrThrow();
+
   if (!dayOfBirth || !monthOfBirth) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
@@ -71,6 +77,8 @@ export async function updateReservedWishedVisibility({
   userId: string;
   showReserved: boolean;
 }) {
+  await getSessionUserOrThrow();
+
   if (isNil(showReserved)) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
@@ -85,6 +93,8 @@ export async function updateReservedWishedVisibility({
 }
 
 export async function updateDefaultCurrency({ userId, currency }: { userId: string; currency: string }) {
+  await getSessionUserOrThrow();
+
   if (isNil(currency)) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
