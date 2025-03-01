@@ -33,6 +33,16 @@ export async function updateUsername({
   return toUser(updated);
 }
 
+export async function checkUsernameUniqueness({ username }: { username: string }): Promise<boolean> {
+  if (!username) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
+  const isUsernameExists = await isUserNameTaken(username);
+
+  return !isUsernameExists;
+}
+
 export async function updateDateOfBirth({
   userId,
   dayOfBirth,
@@ -88,8 +98,9 @@ export async function updateDefaultCurrency({ userId, currency }: { userId: stri
   return toUser(updated);
 }
 
-function isUserNameTaken(username: string) {
-  return prisma.user.findUnique({ where: { username } });
+async function isUserNameTaken(username: string) {
+  const taken = await prisma.user.findUnique({ where: { username } });
+  return Boolean(taken);
 }
 
 export async function getAvailableUsername(username: string, attempt = 0): Promise<string> {

@@ -31,7 +31,7 @@ export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsern
       <Input
         type="text"
         name="username"
-        placeholder="example"
+        placeholder="e.g. macro-data-refiner"
         value={username}
         onChange={e => setUsername(e.target.value)}
       />

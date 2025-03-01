@@ -5,6 +5,7 @@ import {
   updateUsername,
   updateReservedWishedVisibility,
   updateDefaultCurrency,
+  checkUsernameUniqueness,
 } from "~/services/user/index";
 import { ServerError, ServerErrorCode } from "~/services/errors";
 import { getSessionUserOrThrow } from "~/services/session";
@@ -18,6 +19,9 @@ import {
 import { User } from "~/services/user/types";
 
 type ActionState = { error: ServerErrorCode | UserErrorCode; user: undefined } | { error: undefined; user: User };
+type UsernameUniquenessActionState =
+  | { error: ServerErrorCode | UserErrorCode; isUnique: undefined }
+  | { error: undefined; isUnique: boolean };
 
 export const updateUsernameAction = async (formData: FormData): Promise<ActionState> => {
   try {
@@ -26,6 +30,16 @@ export const updateUsernameAction = async (formData: FormData): Promise<ActionSt
     return { user, error: undefined };
   } catch (e) {
     return { error: getErrorCode(e), user: undefined };
+  }
+};
+
+export const checkUsernameUniquenessAction = async (formData: FormData): Promise<UsernameUniquenessActionState> => {
+  try {
+    const sessionUser = await getSessionUserOrThrow();
+    const isUnique = await checkUsernameUniqueness(UsernameFormData.toObject(formData));
+    return { isUnique, error: undefined };
+  } catch (e) {
+    return { error: getErrorCode(e), isUnique: undefined };
   }
 };
 
