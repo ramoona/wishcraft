@@ -2,7 +2,7 @@ import { generateState, generateCodeVerifier } from "arctic";
 import { cookies } from "next/headers";
 import { ServerError } from "~/services/errors";
 import { NextRequest } from "next/server";
-import { getGoogleAuth } from "~/services/auth";
+import { getGoogleAuth } from "~/services/session";
 
 export async function GET(request: NextRequest): Promise<Response> {
   const url = new URL(request.url);

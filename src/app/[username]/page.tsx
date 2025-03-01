@@ -1,6 +1,6 @@
 import { getForeignWishlistByUsername } from "~/services/wishlist";
 import { ForeignWishlist } from "~/components/wishlist/foreign/ForeignWishlist";
-import { getSessionUser } from "~/services/auth";
+import { getSessionUser } from "~/services/session";
 import { WishlistError } from "~/services/wishlist/errors";
 import { getErrorMessage } from "~/core/toastMessages";
 import { UserError } from "~/services/user/errors";

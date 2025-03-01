@@ -2,7 +2,7 @@ import { WishType as WishT } from "~/services/wishlist/types";
 import { ReserveButton } from "~/components/wishlist/foreign/ReserveButton";
 import { WishDetails } from "~/components/wishlist/WishDetails";
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
-import { getSessionUser } from "~/services/auth";
+import { getSessionUser } from "~/services/session";
 import { WishDetailsMobile } from "~/components/wishlist/own/WishDetails";
 import React from "react";
 

@@ -17,7 +17,7 @@ import {
 } from "./formData";
 import { omit } from "ramda";
 import { WishlistError, WishlistErrorCode } from "~/services/wishlist/errors";
-import { getSessionUserOrThrow } from "~/services/auth";
+import { getSessionUserOrThrow } from "~/services/session";
 import { Prisma } from "@prisma/client";
 
 type ActionState = { error?: ServerErrorCode | WishlistErrorCode };

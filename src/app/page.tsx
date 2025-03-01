@@ -1,7 +1,7 @@
 import { SignInForm } from "~/components/forms/SignInForm";
 import { redirect } from "next/navigation";
 import { SignInLayout } from "~/components/layout/Layout";
-import { getSessionUser } from "~/services/auth";
+import { getSessionUser } from "~/services/session";
 import { getAvailableUsername, isUserOnboarded } from "~/services/user";
 import { OnboardingWizard } from "~/components/forms/OnboardingWizard/OnboardingWizard";
 import { SomethingWentWrongAlert } from "~/components/ui/alert";

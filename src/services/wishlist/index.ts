@@ -4,7 +4,7 @@ import { prisma } from "prisma/client";
 import { WishCreateInput, WishlistType, WishType, WishUpdateInput } from "~/services/wishlist/types";
 import { WishlistError } from "~/services/wishlist/errors";
 import { ServerError } from "~/services/errors";
-import { getSessionUserOrThrow } from "~/services/auth";
+import { getSessionUserOrThrow } from "~/services/session";
 import { logUserAction } from "~/services/user";
 import { OtherUser } from "~/services/user/types";
 

@@ -7,7 +7,7 @@ import {
   updateDefaultCurrency,
 } from "~/services/user/index";
 import { ServerError, ServerErrorCode } from "~/services/errors";
-import { getSessionUserOrThrow } from "~/services/auth";
+import { getSessionUserOrThrow } from "~/services/session";
 import { UserError, UserErrorCode } from "~/services/user/errors";
 import {
   DateOfBirthFormData,

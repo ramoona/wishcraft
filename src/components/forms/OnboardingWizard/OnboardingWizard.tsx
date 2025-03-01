@@ -1,4 +1,4 @@
-import { getSessionUserOrThrow } from "~/services/auth";
+import { getSessionUserOrThrow } from "~/services/session";
 import { ErrorAlert } from "~/components/ui/alert";
 import { OnboardingWizardUsernameStep } from "~/components/forms/OnboardingWizard/UsernameForm";
 import { User, userOnboardingSteps } from "~/services/user/types";

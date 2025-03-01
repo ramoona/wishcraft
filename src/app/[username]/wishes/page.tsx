@@ -1,6 +1,6 @@
 import { getWishesReservedByCurrentUser, getWishlistByUserId } from "~/services/wishlist";
 import { OwnWishlist } from "~/components/wishlist/own/OwnWishlist";
-import { getSessionUser } from "~/services/auth";
+import { getSessionUser } from "~/services/session";
 import { WishlistError } from "~/services/wishlist/errors";
 import { getErrorMessage } from "~/core/toastMessages";
 import { ErrorAlert, SomethingWentWrongAlert } from "~/components/ui/alert";

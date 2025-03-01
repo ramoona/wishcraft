@@ -1,4 +1,4 @@
-import { getGoogleAuth, lucia } from "~/services/auth";
+import { createSession, generateSessionToken, getGoogleAuth, setSessionTokenCookie } from "~/services/session";
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { prisma } from "prisma/client";
@@ -31,12 +31,10 @@ export async function GET(request: NextRequest): Promise<Response> {
     const existingUser = await prisma.user.findFirst({ where: { googleId: googleUser.sub } });
 
     if (existingUser) {
-      const session = await lucia.createSession(existingUser.id, {});
-      const sessionCookie = lucia.createSessionCookie(session.id);
-      cookies().set(sessionCookie.name, sessionCookie.value, {
-        ...sessionCookie.attributes,
-        domain: process.env.NODE_ENV === "production" ? ".mywishcraft.app" : undefined,
-      });
+      const sessionToken = generateSessionToken();
+      const session = await createSession(sessionToken, existingUser.id);
+
+      setSessionTokenCookie(sessionToken, session.expiresAt);
       cookies().delete("wishlistOwner");
       cookies().delete("wishId");
 
@@ -61,12 +59,10 @@ export async function GET(request: NextRequest): Promise<Response> {
       emailVerified: googleUser.email_verified,
     });
 
-    const session = await lucia.createSession(createdUser.id, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(sessionCookie.name, sessionCookie.value, {
-      ...sessionCookie.attributes,
-      domain: process.env.NODE_ENV === "production" ? ".mywishcraft.app" : undefined,
-    });
+    const sessionToken = generateSessionToken();
+    const session = await createSession(sessionToken, createdUser.id);
+
+    setSessionTokenCookie(sessionToken, session.expiresAt);
     cookies().delete("wishlistOwner");
     cookies().delete("wishId");
 

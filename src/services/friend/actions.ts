@@ -2,7 +2,7 @@
 
 import { addFriend, removeFriend } from "~/services/friend/index";
 import { ServerError, ServerErrorCode } from "~/services/errors";
-import { getSessionUserOrThrow } from "~/services/auth";
+import { getSessionUserOrThrow } from "~/services/session";
 import { FriendFormData } from "~/services/friend/formData";
 
 type ActionState = { error?: ServerErrorCode };

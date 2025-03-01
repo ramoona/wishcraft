@@ -3,7 +3,7 @@ import { UserError } from "~/services/user/errors";
 import { OtherUser, User, UserActionPayload, UserOnboardingStep, userOnboardingSteps } from "~/services/user/types";
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
-import { getSessionUserOrThrow } from "~/services/auth";
+import { getSessionUserOrThrow } from "~/services/session";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
 
 export async function updateUsername({
@@ -150,7 +150,7 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
   return { ...user, isFriend: friends.length > 0 };
 }
 
-function toUser(user: PrismaUser): User {
+export function toUser(user: PrismaUser): User {
   return {
     ...user,
     completedOnboardingSteps: user.completedOnboardingSteps as UserOnboardingStep[],

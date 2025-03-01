@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "~/styles/globals.css";
-import { getSessionUser } from "~/services/auth";
+import { getSessionUser } from "~/services/session";
 import { AuthenticatedLayout, NonAuthenticatedLayout } from "~/components/layout/Layout";
 
 export const metadata: Metadata = {

@@ -1,4 +1,4 @@
-import { getSessionUser } from "~/services/auth";
+import { getSessionUser } from "~/services/session";
 import { redirect } from "next/navigation";
 import { Profile } from "~/components/user/Profile";
 

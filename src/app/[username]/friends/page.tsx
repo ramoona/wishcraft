@@ -1,4 +1,4 @@
-import { getSessionUser } from "~/services/auth";
+import { getSessionUser } from "~/services/session";
 import { getErrorMessage } from "~/core/toastMessages";
 import { ErrorAlert } from "~/components/ui/alert";
 import { isErrorKnown, KnownError } from "~/core/errors";

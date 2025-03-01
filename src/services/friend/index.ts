@@ -1,4 +1,4 @@
-import { getSessionUserOrThrow } from "~/services/auth";
+import { getSessionUserOrThrow } from "~/services/session";
 import { prisma } from "prisma/client";
 import { FriendUser } from "~/services/user/types";
 import { logUserAction } from "~/services/user";
