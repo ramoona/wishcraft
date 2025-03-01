@@ -27,7 +27,7 @@ export async function GET(request: NextRequest): Promise<Response> {
   try {
     const tokens = await getGoogleAuth(request.nextUrl.origin).validateAuthorizationCode(code, storedCodeVerifier);
     const googleUserResponse = await fetch(
-      "https://www.googleapis.com/oauth2/v3/userinfo?access_token=" + tokens.accessToken,
+      "https://www.googleapis.com/oauth2/v3/userinfo?access_token=" + tokens.accessToken(),
     );
     const googleUser: GoogleUser = await googleUserResponse.json();
     const existingUser = await prisma.user.findFirst({ where: { googleId: googleUser.sub } });

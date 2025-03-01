@@ -80,7 +80,7 @@ export function generateSessionToken(): string {
   return encodeBase32LowerCaseNoPadding(crypto.getRandomValues(new Uint8Array(20)));
 }
 
-export async function createSession(token: string, userId: string): Promise<Session> {
+export function createSession(token: string, userId: string): Promise<Session> {
   const sessionId = getSessionId(token);
   return prisma.session.create({
     data: {

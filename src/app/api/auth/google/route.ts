@@ -12,13 +12,11 @@ export async function GET(request: NextRequest): Promise<Response> {
   try {
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
-    const redirectUrl = await getGoogleAuth(request.nextUrl.origin).createAuthorizationURL(state, codeVerifier, {
-      scopes: [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "openid",
-      ],
-    });
+    const redirectUrl = getGoogleAuth(request.nextUrl.origin).createAuthorizationURL(state, codeVerifier, [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "openid",
+    ]);
     const cookiesMgmt = await cookies();
 
     cookiesMgmt.set("google_oauth_state", state, {
