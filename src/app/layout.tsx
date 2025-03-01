@@ -23,9 +23,9 @@ export default function RootLayout({
       <body className={cn(inter.className, "relative bg-background")}>
         {children}
         <Toaster position="top-right" richColors />
+        <Analytics />
+        <SpeedInsights />
       </body>
-      <Analytics />
-      <SpeedInsights />
     </html>
   );
 }
