@@ -11,10 +11,12 @@ export async function GET(request: NextRequest): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
-  const storedState = cookies().get("google_oauth_state")?.value ?? null;
-  const storedCodeVerifier = cookies().get("code_verifier")?.value ?? null;
-  const wishlistOwner = cookies().get("wishlistOwner")?.value ?? null;
-  const wishId = cookies().get("wishId")?.value ?? null;
+
+  const cookiesMgmt = await cookies();
+  const storedState = cookiesMgmt.get("google_oauth_state")?.value ?? null;
+  const storedCodeVerifier = cookiesMgmt.get("code_verifier")?.value ?? null;
+  const wishlistOwner = cookiesMgmt.get("wishlistOwner")?.value ?? null;
+  const wishId = cookiesMgmt.get("wishId")?.value ?? null;
 
   if (!code || !storedCodeVerifier || !state || !storedState || state !== storedState) {
     return new Response(null, {
@@ -34,9 +36,9 @@ export async function GET(request: NextRequest): Promise<Response> {
       const sessionToken = generateSessionToken();
       const session = await createSession(sessionToken, existingUser.id);
 
-      setSessionTokenCookie(sessionToken, session.expiresAt);
-      cookies().delete("wishlistOwner");
-      cookies().delete("wishId");
+      await setSessionTokenCookie(sessionToken, session.expiresAt);
+      cookiesMgmt.delete("wishlistOwner");
+      cookiesMgmt.delete("wishId");
 
       if (wishId) {
         await reserveWish({ wishId, userId: existingUser.id });
@@ -62,9 +64,9 @@ export async function GET(request: NextRequest): Promise<Response> {
     const sessionToken = generateSessionToken();
     const session = await createSession(sessionToken, createdUser.id);
 
-    setSessionTokenCookie(sessionToken, session.expiresAt);
-    cookies().delete("wishlistOwner");
-    cookies().delete("wishId");
+    await setSessionTokenCookie(sessionToken, session.expiresAt);
+    cookiesMgmt.delete("wishlistOwner");
+    cookiesMgmt.delete("wishId");
 
     if (wishId) {
       await reserveWish({ wishId, userId: createdUser.id });

@@ -7,10 +7,11 @@ import { ErrorAlert, SomethingWentWrongAlert } from "~/components/ui/alert";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { redirect } from "next/navigation";
 
-export default async function WishesPage({ params }: { params: { username: string } }) {
+export default async function WishesPage({ params }: { params: Promise<{ username: string }> }) {
   const sessionUser = await getSessionUser();
+  const { username } = await params;
 
-  if (sessionUser && sessionUser.username === params.username) {
+  if (sessionUser && sessionUser.username === username) {
     try {
       const wishlist = await getWishlistByUserId(sessionUser.id);
       const reserved = await getWishesReservedByCurrentUser();
@@ -25,5 +26,5 @@ export default async function WishesPage({ params }: { params: { username: strin
     }
   }
 
-  redirect(`/${params.username}`);
+  redirect(`/${username}`);
 }

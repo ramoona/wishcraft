@@ -21,8 +21,9 @@ export const getGoogleAuth = (redirectUrlOrigin: string) => {
   );
 };
 
-export const getSessionToken = cache(() => {
-  return cookies().get("session")?.value ?? null;
+export const getSessionToken = cache(async () => {
+  const cookiesMgmt = await cookies();
+  return cookiesMgmt.get("session")?.value ?? null;
 });
 
 export const getSessionId = cache((token: string) => {
@@ -30,7 +31,7 @@ export const getSessionId = cache((token: string) => {
 });
 
 export const getSessionUser = cache(async () => {
-  const sessionToken = getSessionToken();
+  const sessionToken = await getSessionToken();
 
   if (!sessionToken) return null;
 
@@ -44,9 +45,9 @@ export const getSessionUser = cache(async () => {
     if (!session) {
       const token = generateSessionToken();
       const session = await createSession(token, user.id);
-      setSessionTokenCookie(sessionToken, session.expiresAt);
+      await setSessionTokenCookie(sessionToken, session.expiresAt);
     } else if (extended) {
-      setSessionTokenCookie(sessionToken, session.expiresAt);
+      await setSessionTokenCookie(sessionToken, session.expiresAt);
     }
   } catch {
     return null;
@@ -56,7 +57,7 @@ export const getSessionUser = cache(async () => {
 });
 
 export const getSession = cache(async () => {
-  const sessionToken = getSessionToken();
+  const sessionToken = await getSessionToken();
 
   if (!sessionToken) return null;
 
@@ -127,8 +128,9 @@ export async function invalidateSession(sessionId: string): Promise<void> {
   await prisma.session.delete({ where: { id: sessionId } });
 }
 
-export function setSessionTokenCookie(token: string, expiresAt: Date): void {
-  cookies().set("session", token, {
+export async function setSessionTokenCookie(token: string, expiresAt: Date) {
+  const cookiesMgmt = await cookies();
+  cookiesMgmt.set("session", token, {
     httpOnly: true,
     sameSite: "lax",
     path: "/",
@@ -138,8 +140,9 @@ export function setSessionTokenCookie(token: string, expiresAt: Date): void {
   });
 }
 
-export function deleteSessionTokenCookie(): void {
-  cookies().set("session", "", {
+export async function deleteSessionTokenCookie() {
+  const cookiesMgmt = await cookies();
+  cookiesMgmt.set("session", "", {
     httpOnly: true,
     sameSite: "lax",
     path: "/",

@@ -11,7 +11,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 
   try {
     await invalidateSession(session.id);
-    deleteSessionTokenCookie();
+    await deleteSessionTokenCookie();
     return Response.redirect(request.nextUrl.origin);
   } catch {
     throw new ServerError("INTERNAL_SERVER_ERROR");

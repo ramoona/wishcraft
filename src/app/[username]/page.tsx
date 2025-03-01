@@ -9,16 +9,17 @@ import { getUserByUserName } from "~/services/user";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { redirect } from "next/navigation";
 
-export default async function UserPage({ params }: { params: { username: string } }) {
+export default async function UserPage({ params }: { params: Promise<{ username: string }> }) {
   const sessionUser = await getSessionUser();
+  const { username } = await params;
 
-  if (sessionUser && sessionUser.username === params.username) {
-    redirect(`/${params.username}/wishes`);
+  if (sessionUser && sessionUser.username === username) {
+    redirect(`/${username}/wishes`);
   }
 
   try {
-    const wishlist = await getForeignWishlistByUsername(params.username);
-    const wishlistOwner = await getUserByUserName(params.username);
+    const wishlist = await getForeignWishlistByUsername(username);
+    const wishlistOwner = await getUserByUserName(username);
 
     return <ForeignWishlist wishlist={wishlist} owner={wishlistOwner} />;
   } catch (e) {
@@ -26,7 +27,7 @@ export default async function UserPage({ params }: { params: { username: string 
       (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||
       (e instanceof UserError && e.errorCode === "USER_NOT_FOUND")
     ) {
-      return <UserNotFoundAlert username={params.username} />;
+      return <UserNotFoundAlert username={username} />;
     }
     return (
       <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>

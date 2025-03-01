@@ -19,8 +19,9 @@ export async function GET(request: NextRequest): Promise<Response> {
         "openid",
       ],
     });
+    const cookiesMgmt = await cookies();
 
-    cookies().set("google_oauth_state", state, {
+    cookiesMgmt.set("google_oauth_state", state, {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       sameSite: "lax",
     });
 
-    cookies().set("code_verifier", codeVerifier, {
+    cookiesMgmt.set("code_verifier", codeVerifier, {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     });
 
     if (wishlistOwner) {
-      cookies().set("wishlistOwner", wishlistOwner, {
+      cookiesMgmt.set("wishlistOwner", wishlistOwner, {
         path: "/",
         secure: false,
         httpOnly: true,
@@ -47,7 +48,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     }
 
     if (wishId) {
-      cookies().set("wishId", wishId, {
+      cookiesMgmt.set("wishId", wishId, {
         path: "/",
         secure: false,
         httpOnly: true,
