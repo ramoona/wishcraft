@@ -19,7 +19,7 @@ export function Profile({ user }: { user: User }) {
             <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")}</span>
             <span className="text-sm text-foreground/70">@{user.username}</span>
           </div>
-          <Link href="/api/auth/logout" className={buttonVariants({ variant: "secondary" })}>
+          <Link href="/api/auth/logout" className={buttonVariants({ variant: "secondary" })} prefetch={false}>
             <div className="flex items-center gap-2 no-underline">
               <SignOut size={16} />
               Sign out
