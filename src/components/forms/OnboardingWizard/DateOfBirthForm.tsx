@@ -8,6 +8,7 @@ import { getErrorMessage } from "~/core/toastMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { Select } from "~/components/ui/select";
+import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
 
 export function OnboardingWizardDateOfBirthStep() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export function OnboardingWizardDateOfBirthStep() {
             setMonth(parseInt(month));
             setDay(undefined);
           }}
-          options={Array.from({ length: 12 }, (_, i) => ({ value: String(i + 1), label: months[i] }))}
+          options={Array.from({ length: 12 }, (_, i) => ({ value: String(i + 1), label: MONTHS[i] }))}
         />
         <Select
           value={day ? String(day) : ""}
@@ -49,7 +50,10 @@ export function OnboardingWizardDateOfBirthStep() {
           onChange={day => setDay(parseInt(day))}
           options={
             month
-              ? Array.from({ length: daysInMonths[month - 1] }, (_, i) => ({ value: String(i + 1), label: `${i + 1}` }))
+              ? Array.from({ length: DAYS_IN_MONTHS[month - 1] }, (_, i) => ({
+                  value: String(i + 1),
+                  label: `${i + 1}`,
+                }))
               : []
           }
         />
@@ -60,20 +64,3 @@ export function OnboardingWizardDateOfBirthStep() {
     </form>
   );
 }
-
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-const daysInMonths = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
