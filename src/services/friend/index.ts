@@ -3,7 +3,7 @@ import { prisma } from "prisma/client";
 import { FriendUser } from "~/services/user/types";
 import { logUserAction } from "~/services/user";
 import { WISH_FIELDS_SELECT } from "~/services/wishlist";
-import { Prisma } from "@prisma/client";
+import { Prisma, WishStatus } from "@prisma/client";
 import { DateTime } from "luxon";
 
 const FRIEND_FIELDS_SELECT = {
@@ -18,7 +18,8 @@ const FRIEND_FIELDS_SELECT = {
     select: {
       wishes: {
         where: {
-          isPrivate: { not: true },
+          isPrivate: false,
+          status: "ACTIVE" as WishStatus,
           createdAt: {
             gte: DateTime.now().minus({ month: 1 }).toJSDate(),
           },
