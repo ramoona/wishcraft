@@ -14,7 +14,7 @@ export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user
           <Logo />
         </Link>
       </header>
-      <main className="relative p-4">{children}</main>
+      <main className="relative overflow-auto p-4">{children}</main>
       {isUserOnboarded(user) && <NavBar user={user} />}
     </div>
   );
@@ -28,7 +28,7 @@ export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
           <Logo />
         </Link>
       </header>
-      <main className="relative min-h-screen px-4 pt-20">{children}</main>
+      <main className="relative min-h-screen overflow-auto px-4 pt-20">{children}</main>
     </div>
   );
 }
@@ -41,7 +41,7 @@ export function SignInLayout({ children }: PropsWithChildren) {
           <Logo />
         </Link>
       </header>
-      <main className="relative min-h-screen px-4 pt-20">
+      <main className="relative min-h-screen overflow-auto px-4 pt-20">
         <div className="fixed bottom-8 left-0 flex w-screen justify-center px-4">
           <div className="w-full max-w-lg">{children}</div>
         </div>

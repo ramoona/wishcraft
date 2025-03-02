@@ -1,12 +1,12 @@
 "use client";
 import { User } from "~/services/user/types";
-import { SignOut } from "@phosphor-icons/react";
+import { EyeSlash, HeartBreak, SignOut } from "@phosphor-icons/react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import Link from "next/link";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
-import { buttonVariants } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import {
@@ -24,6 +24,16 @@ import { getErrorMessage } from "~/core/toastMessages";
 import { Select } from "~/components/ui/select";
 import { currencies, currencyNames } from "~/lib/currencies";
 import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
+} from "~/components/ui/drawer";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { SignInForm } from "~/components/forms/SignInForm";
 
 export function Profile({ user }: { user: User }) {
   return (
@@ -35,12 +45,6 @@ export function Profile({ user }: { user: User }) {
             <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")}</span>
             <span className="text-sm text-foreground/70">@{user.username}</span>
           </div>
-          <Link href="/api/auth/logout" className={buttonVariants({ variant: "secondary" })} prefetch={false}>
-            <div className="flex items-center gap-2 no-underline">
-              <SignOut size={16} />
-              Sign out
-            </div>
-          </Link>
         </div>
       </div>
       <Email email={user.email} />
@@ -48,6 +52,16 @@ export function Profile({ user }: { user: User }) {
       <DateOfBirth day={user.dayOfBirth ?? undefined} month={user.monthOfBirth ?? undefined} />
       <DefaultCurrency currency={user.defaultCurrency ?? ""} />
       <ReservedWishesVisibility showReserved={user.showReserved ?? false} />
+
+      <div className="flex items-center gap-2">
+        <Link href="/api/auth/logout" className={buttonVariants({ variant: "secondary" })} prefetch={false}>
+          <div className="flex items-center gap-2 no-underline">
+            <SignOut size={16} />
+            Sign out
+          </div>
+        </Link>
+        <DeleteAccountButton />
+      </div>
     </form>
   );
 }
@@ -220,6 +234,51 @@ function Email({ email }: { email: string }) {
         <Input type="text" name="email" value={email} onChange={() => undefined} disabled />
       </div>
       <p className="pl-2 text-xs text-foreground/70">Accounts signed in with Google cannot change their email.</p>
+    </div>
+  );
+}
+
+function DeleteAccountButton() {
+  const [isSliderOpen, setSliderOpen] = useState(false);
+  return (
+    <div>
+      <Button variant="destructive" className="flex items-center gap-2" onClick={() => setSliderOpen(true)}>
+        <HeartBreak className="h-5 w-5" />
+        Delete account
+      </Button>
+      <Drawer open={isSliderOpen} onClose={() => setSliderOpen(false)} onOpenChange={open => setSliderOpen(open)}>
+        <DrawerTrigger asChild></DrawerTrigger>
+        <DrawerContent className="px-6 pb-4">
+          <VisuallyHidden>
+            <DrawerTitle>Delete account</DrawerTitle>
+            <DrawerDescription>Permanently delete your account</DrawerDescription>
+          </VisuallyHidden>
+          <div className="px-4 py-8">
+            <p className="mt-4 pl-2 text-sm text-foreground/70">
+              <span className="font-bold">This action is irreversible.</span> All your data will be permanently deleted.
+            </p>
+            <div className="mt-4 flex items-center gap-2">
+              <Button variant="destructive" className="flex items-center gap-2">
+                <HeartBreak className="h-5 w-5" />
+                Permanently delete my account
+              </Button>
+            </div>
+            <p className="mt-4 pl-2 text-sm text-foreground/70">
+              If you want to temporarily hide your profile from others, consider setting it to{" "}
+              <span className="font-semibold">private</span> instead.
+            </p>
+            <div className="mt-4 flex items-center gap-2">
+              <Button variant="secondary" className="flex items-center gap-2">
+                <EyeSlash className="h-5 w-5" />
+                Make my profile private
+              </Button>
+            </div>
+          </div>
+          <VisuallyHidden>
+            <DrawerClose>Close</DrawerClose>
+          </VisuallyHidden>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }
