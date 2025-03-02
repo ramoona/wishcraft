@@ -9,6 +9,7 @@
     "lint": "next lint --no-cache",
     "prepare": "husky",
     "typecheck": "tsc --noEmit",
+    "test": "pnpm lint && pnpm typecheck",
     "db:migrate": "npx prisma migrate dev",
     "prisma:studio": "prisma studio --browser none"
   },
