@@ -33,7 +33,6 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
-import { SignInForm } from "~/components/forms/SignInForm";
 
 export function Profile({ user }: { user: User }) {
   return (
