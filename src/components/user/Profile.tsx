@@ -10,6 +10,7 @@ import { Button, buttonVariants } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import {
+  deleteUserAccountAction,
   updateDateOfBirthAction,
   updateDefaultCurrencyAction,
   updateReservedWishesVisibilityAction,
@@ -37,13 +38,11 @@ import { VisuallyHidden } from "~/components/ui/visually-hidden";
 export function Profile({ user }: { user: User }) {
   return (
     <form className="flex flex-col gap-6" autoComplete="off">
-      <div className="items-top flex gap-4">
+      <div className="flex items-center gap-4">
         <UserPic imageUrl={user.image} />
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1 text-lg">
-            <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")}</span>
-            <span className="text-sm text-foreground/70">@{user.username}</span>
-          </div>
+        <div className="flex items-center gap-1 text-lg">
+          <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")}</span>
+          <span className="text-sm text-foreground/70">@{user.username}</span>
         </div>
       </div>
       <Email email={user.email} />
@@ -238,11 +237,34 @@ function Email({ email }: { email: string }) {
 }
 
 function DeleteAccountButton() {
+  const router = useRouter();
   const [isSliderOpen, setSliderOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const trigger = () => {
+    startTransition(async () => {
+      const { error } = await deleteUserAccountAction();
+      if (error) {
+        if (error === "UNAUTHORIZED") {
+          router.push("/");
+        } else {
+          showErrorToast(getErrorMessage(error));
+        }
+      } else {
+        router.push("/");
+      }
+    });
+  };
+
   return (
     <div>
-      <Button variant="destructive" className="flex items-center gap-2" onClick={() => setSliderOpen(true)}>
-        <HeartBreak className="h-5 w-5" />
+      <Button
+        variant="destructive"
+        className="flex items-center gap-2"
+        onClick={() => setSliderOpen(true)}
+        disabled={isPending}
+      >
+        <HeartBreak className="size-5" />
         Delete account
       </Button>
       <Drawer open={isSliderOpen} onClose={() => setSliderOpen(false)} onOpenChange={open => setSliderOpen(open)}>
@@ -257,8 +279,8 @@ function DeleteAccountButton() {
               <span className="font-bold">This action is irreversible.</span> All your data will be permanently deleted.
             </p>
             <div className="mt-4 flex items-center gap-2">
-              <Button variant="destructive" className="flex items-center gap-2">
-                <HeartBreak className="h-5 w-5" />
+              <Button variant="destructive" className="flex items-center gap-2" onClick={trigger} disabled={isPending}>
+                <HeartBreak className="size-5" />
                 Permanently delete my account
               </Button>
             </div>
@@ -268,7 +290,7 @@ function DeleteAccountButton() {
             </p>
             <div className="mt-4 flex items-center gap-2">
               <Button variant="secondary" className="flex items-center gap-2">
-                <EyeSlash className="h-5 w-5" />
+                <EyeSlash className="size-5" />
                 Make my profile private
               </Button>
             </div>

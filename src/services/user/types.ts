@@ -4,7 +4,7 @@ export type User = {
   id: string;
   firstName: string;
   lastName: string;
-  username?: string | null;
+  username: string;
   email: string;
   image: string | null;
   dayOfBirth: number | null;
@@ -76,4 +76,9 @@ export type UserActionPayload =
       action: "wish-released";
       wishId: string;
       reservedById: string;
+    }
+  | {
+      userId: string;
+      email: string;
+      action: "user-deleted";
     };

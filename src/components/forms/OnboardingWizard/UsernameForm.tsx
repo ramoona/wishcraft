@@ -13,8 +13,9 @@ import { clsx } from "clsx";
 export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsername: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
   const [username, setUsername] = useState(initialUsername);
-  const [isUnique, setIsUnique] = useState<boolean | undefined>(undefined);
+  const [isUnique, setIsUnique] = useState<boolean | undefined>(true);
 
   const deferredValue = useDeferredValue(username);
 

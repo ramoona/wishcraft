@@ -32,6 +32,9 @@ export async function GET(request: NextRequest): Promise<Response> {
     const googleUser: GoogleUser = await googleUserResponse.json();
     const existingUser = await prisma.user.findFirst({ where: { googleId: googleUser.sub } });
 
+    cookiesMgmt.delete("google_oauth_state");
+    cookiesMgmt.delete("code_verifier");
+
     if (existingUser) {
       const sessionToken = generateSessionToken();
       const session = await createSession(sessionToken, existingUser.id);
@@ -43,6 +46,9 @@ export async function GET(request: NextRequest): Promise<Response> {
       if (wishId) {
         await reserveWish({ wishId, userId: existingUser.id });
       }
+
+      cookiesMgmt.delete("wishlistOwner");
+      cookiesMgmt.delete("wishId");
 
       return new Response(null, {
         status: 302,

@@ -3,7 +3,7 @@ import { UserError } from "~/services/user/errors";
 import { OtherUser, User, UserActionPayload, UserOnboardingStep, userOnboardingSteps } from "~/services/user/types";
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
-import { getSessionUserOrThrow } from "~/services/session";
+import { deleteSessionTokenCookie, getSessionUserOrThrow } from "~/services/session";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
 
 export async function updateUsername({
@@ -119,14 +119,18 @@ export async function getAvailableUsername(username: string, attempt = 0): Promi
   }
 
   const isTaken = await isUserNameTaken(username);
+
   return isTaken ? getAvailableUsername(generateUniqueUsername(), attempt + 1) : username;
 }
 
 export async function createUser(input: UserInput) {
+  const initialUsername = [input.firstName, input.lastName].join("-").toLowerCase();
+  const username = await getAvailableUsername(initialUsername);
   const user = await prisma.user.create({
     data: {
       ...input,
       wishlists: { create: {} },
+      username,
     },
   });
   await logUserAction({ action: "user-created", userId: user.id, email: input.email });
@@ -178,8 +182,18 @@ export function toUser(user: PrismaUser): User {
   };
 }
 
+export async function deleteCurrentUser() {
+  const sessionUser = await getSessionUserOrThrow();
+  await prisma.friend.deleteMany({
+    where: { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] },
+  });
+  await prisma.user.delete({ where: { id: sessionUser.id } });
+  await logUserAction({ action: "user-deleted", email: sessionUser.email, userId: sessionUser.id });
+  await deleteSessionTokenCookie();
+}
+
 export async function logUserAction(payload: UserActionPayload) {
-  if (payload.action === "user-created") {
+  if (payload.action === "user-created" || payload.action === "user-deleted") {
     return prisma.userActionsLog.create({
       data: {
         payload: {

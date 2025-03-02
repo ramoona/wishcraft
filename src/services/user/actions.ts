@@ -6,6 +6,7 @@ import {
   updateReservedWishedVisibility,
   updateDefaultCurrency,
   checkUsernameUniqueness,
+  deleteCurrentUser,
 } from "~/services/user/index";
 import { ServerError, ServerErrorCode } from "~/services/errors";
 import { getSessionUserOrThrow } from "~/services/session";
@@ -22,6 +23,7 @@ type ActionState = { error: ServerErrorCode | UserErrorCode; user: undefined } |
 type UsernameUniquenessActionState =
   | { error: ServerErrorCode | UserErrorCode; isUnique: undefined }
   | { error: undefined; isUnique: boolean };
+type DeleteUserActionState = { error?: ServerErrorCode | UserErrorCode };
 
 export const updateUsernameAction = async (formData: FormData): Promise<ActionState> => {
   try {
@@ -72,6 +74,16 @@ export const updateDefaultCurrencyAction = async (formData: FormData): Promise<A
     return { user, error: undefined };
   } catch (e) {
     return { error: getErrorCode(e), user: undefined };
+  }
+};
+
+export const deleteUserAccountAction = async (): Promise<DeleteUserActionState> => {
+  try {
+    await getSessionUserOrThrow();
+    await deleteCurrentUser();
+    return { error: undefined };
+  } catch (e) {
+    return { error: getErrorCode(e) };
   }
 };
 
