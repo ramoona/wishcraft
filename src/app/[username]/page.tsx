@@ -18,8 +18,12 @@ export default async function UserPage({ params }: { params: Promise<{ username:
   }
 
   try {
-    const wishlist = await getForeignWishlistByUsername(username);
     const wishlistOwner = await getUserByUserName(username);
+    const wishlist = await getForeignWishlistByUsername(username);
+
+    if (wishlistOwner) {
+      return <div>{username} preferred to hide their wishes 🙈</div>;
+    }
 
     return <ForeignWishlist wishlist={wishlist} owner={wishlistOwner} />;
   } catch (e) {

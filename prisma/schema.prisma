@@ -32,6 +32,7 @@ model User {
   // Preferences
   defaultCurrency String?
   showReserved    Boolean?
+  isProfileHidden Boolean?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

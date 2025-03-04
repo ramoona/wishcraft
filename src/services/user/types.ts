@@ -12,11 +12,13 @@ export type User = {
   defaultCurrency?: string | null;
   showReserved?: boolean | null;
   completedOnboardingSteps: UserOnboardingStep[];
+  isProfileHidden?: boolean | null;
+  isOnboarded: boolean;
 };
 
 export type OtherUser = Pick<
   User,
-  "id" | "username" | "firstName" | "lastName" | "dayOfBirth" | "monthOfBirth" | "image"
+  "id" | "username" | "firstName" | "lastName" | "dayOfBirth" | "monthOfBirth" | "image" | "isProfileHidden"
 > & {
   isFriend: boolean;
 };
@@ -30,6 +32,7 @@ export type FriendUser = Pick<
 
 export const userOnboardingSteps = [
   "username",
+  "profile-visibility",
   "date-of-birth",
   "default-currency",
   "reserved-wishes-visibility",

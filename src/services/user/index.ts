@@ -7,28 +7,26 @@ import { deleteSessionTokenCookie, getSessionUserOrThrow } from "~/services/sess
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
 
 export async function updateUsername({
-  userId,
   username,
   onboarding,
 }: {
-  userId: string;
   username: string;
   onboarding?: boolean;
 }): Promise<User> {
-  await getSessionUserOrThrow();
+  const sessionUser = await getSessionUserOrThrow();
 
   if (!username) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
-  const isUsernameExists = await isUserNameTaken(username);
+  const isUsernameExists = await isUserNameTaken(username, sessionUser.id);
 
   if (isUsernameExists) {
     throw new UserError("USERNAME_IS_TAKEN");
   }
 
   const updated = await prisma.user.update({
-    where: { id: userId },
+    where: { id: sessionUser.id },
     data: { username, completedOnboardingSteps: onboarding ? { push: "username" } : undefined },
   });
   await logUserAction({ action: "user-updated", changes: { username } });
@@ -36,80 +34,105 @@ export async function updateUsername({
 }
 
 export async function checkUsernameUniqueness({ username }: { username: string }): Promise<boolean> {
-  await getSessionUserOrThrow();
+  const sessionUser = await getSessionUserOrThrow();
 
   if (!username) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
-  const isUsernameExists = await isUserNameTaken(username);
+  const isUsernameExists = await isUserNameTaken(username, sessionUser.id);
 
   return !isUsernameExists;
 }
 
 export async function updateDateOfBirth({
-  userId,
   dayOfBirth,
   monthOfBirth,
+  onboarding,
 }: {
-  userId: string;
   dayOfBirth: number;
   monthOfBirth: number;
+  onboarding?: boolean;
 }) {
-  await getSessionUserOrThrow();
+  const sessionUser = await getSessionUserOrThrow();
 
   if (!dayOfBirth || !monthOfBirth) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
-    where: { id: userId },
-    data: { dayOfBirth, monthOfBirth, completedOnboardingSteps: { push: "date-of-birth" } },
+    where: { id: sessionUser.id },
+    data: { dayOfBirth, monthOfBirth, completedOnboardingSteps: onboarding ? { push: "date-of-birth" } : undefined },
   });
   await logUserAction({ action: "user-updated", changes: { dayOfBirth, monthOfBirth } });
   return toUser(updated);
 }
 
 export async function updateReservedWishedVisibility({
-  userId,
   showReserved,
+  onboarding,
 }: {
-  userId: string;
   showReserved: boolean;
+  onboarding?: boolean;
 }) {
-  await getSessionUserOrThrow();
+  const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(showReserved)) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
-    where: { id: userId },
-    data: { showReserved, completedOnboardingSteps: { push: "reserved-wishes-visibility" } },
+    where: { id: sessionUser.id },
+    data: { showReserved, completedOnboardingSteps: onboarding ? { push: "reserved-wishes-visibility" } : undefined },
   });
 
   await logUserAction({ action: "user-updated", changes: { showReserved } });
   return toUser(updated);
 }
 
-export async function updateDefaultCurrency({ userId, currency }: { userId: string; currency: string }) {
-  await getSessionUserOrThrow();
+export async function updateDefaultCurrency({ currency, onboarding }: { currency: string; onboarding?: boolean }) {
+  const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(currency)) {
     throw new UserError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
-    where: { id: userId },
-    data: { defaultCurrency: currency, completedOnboardingSteps: { push: "default-currency" } },
+    where: { id: sessionUser.id },
+    data: {
+      defaultCurrency: currency,
+      completedOnboardingSteps: onboarding ? { push: "default-currency" } : undefined,
+    },
   });
 
   await logUserAction({ action: "user-updated", changes: { defaultCurrency: currency } });
   return toUser(updated);
 }
 
-async function isUserNameTaken(username: string) {
-  const taken = await prisma.user.findUnique({ where: { username } });
+export async function updateProfileVisibility({
+  isProfileHidden,
+  onboarding,
+}: {
+  isProfileHidden: boolean;
+  onboarding?: boolean;
+}) {
+  const sessionUser = await getSessionUserOrThrow();
+
+  if (isNil(isProfileHidden)) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
+  const updated = await prisma.user.update({
+    where: { id: sessionUser.id },
+    data: { isProfileHidden, completedOnboardingSteps: onboarding ? { push: "profile-visibility" } : undefined },
+  });
+
+  await logUserAction({ action: "user-updated", changes: { isProfileHidden } });
+  return toUser(updated);
+}
+
+async function isUserNameTaken(username: string, currentUserId?: string) {
+  const taken = await prisma.user.findFirst({ where: { username, id: { not: currentUserId } } });
   return Boolean(taken);
 }
 
@@ -165,6 +188,7 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
       image: true,
       dayOfBirth: true,
       monthOfBirth: true,
+      isProfileHidden: true,
     },
   });
 
@@ -178,6 +202,7 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
 export function toUser(user: PrismaUser): User {
   return {
     ...user,
+    isOnboarded: isUserOnboarded(user),
     completedOnboardingSteps: user.completedOnboardingSteps as UserOnboardingStep[],
   };
 }
@@ -217,6 +242,10 @@ export async function logUserAction(payload: UserActionPayload) {
   });
 }
 
-export function isUserOnboarded(user: User) {
-  return userOnboardingSteps.every(step => user.completedOnboardingSteps.includes(step));
+export function isUserOnboarded(user: PrismaUser) {
+  const stepsToComplete = userOnboardingSteps.filter(
+    step => !(step === "reserved-wishes-visibility" && user.isProfileHidden),
+  );
+
+  return stepsToComplete.every(step => user.completedOnboardingSteps.includes(step));
 }

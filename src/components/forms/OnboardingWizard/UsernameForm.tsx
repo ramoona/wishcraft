@@ -34,6 +34,8 @@ export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsern
         showErrorToast("Username is required");
       } else if (!isUnique) {
         showErrorToast("Username is already taken");
+      } else {
+        showErrorToast("Something went wrong 😱");
       }
     }
   };
@@ -59,7 +61,7 @@ export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsern
       <Input
         type="text"
         name="username"
-        placeholder="e.g. macro-data-refiner"
+        placeholder="e.g. spider-monkey"
         value={username}
         onChange={e => setUsername(e.target.value)}
         className={clsx(

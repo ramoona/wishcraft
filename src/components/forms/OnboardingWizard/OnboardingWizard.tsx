@@ -7,12 +7,14 @@ import { isErrorKnown, KnownError } from "~/core/errors";
 import { OnboardingWizardDateOfBirthStep } from "~/components/forms/OnboardingWizard/DateOfBirthForm";
 import { OnboardingWizardCurrencyStep } from "~/components/forms/OnboardingWizard/CurrencyForm";
 import { OnboardingWizardReservedWishesVisibilityStep } from "~/components/forms/OnboardingWizard/ReservedWishesVisibilityForm";
+import { OnboardingWizardProfileVisibilityStep } from "~/components/forms/OnboardingWizard/ProfileVisibilityForm";
 
 const wizardStepForm = {
   username: OnboardingWizardUsernameStep,
   ["date-of-birth"]: OnboardingWizardDateOfBirthStep,
   ["reserved-wishes-visibility"]: OnboardingWizardReservedWishesVisibilityStep,
   ["default-currency"]: OnboardingWizardCurrencyStep,
+  ["profile-visibility"]: OnboardingWizardProfileVisibilityStep,
 };
 
 export async function OnboardingWizard({ initialUsername }: { initialUsername: string }) {
@@ -21,6 +23,7 @@ export async function OnboardingWizard({ initialUsername }: { initialUsername: s
     const currentStep = getCurrentStep(sessionUser);
 
     if (!currentStep) {
+      // @FIXME: this should be a redirect
       return <div>Already onboarded</div>;
     }
 
@@ -35,5 +38,8 @@ export async function OnboardingWizard({ initialUsername }: { initialUsername: s
 }
 
 function getCurrentStep(sessionUser: User) {
-  return userOnboardingSteps.find(step => !sessionUser.completedOnboardingSteps.includes(step));
+  const stepsToComplete = userOnboardingSteps.filter(
+    step => !(step === "reserved-wishes-visibility" && sessionUser.isProfileHidden),
+  );
+  return stepsToComplete.find(step => !sessionUser.completedOnboardingSteps.includes(step));
 }

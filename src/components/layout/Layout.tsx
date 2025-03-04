@@ -4,7 +4,6 @@ import { User } from "~/services/user/types";
 import { Logo } from "~/components/ui/logo";
 import Link from "next/link";
 import NavBar from "~/components/layout/NavBar";
-import { isUserOnboarded } from "~/services/user";
 
 export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user: User }>) {
   return (
@@ -15,7 +14,7 @@ export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user
         </Link>
       </header>
       <main className="relative overflow-auto p-4">{children}</main>
-      {isUserOnboarded(user) && <NavBar user={user} />}
+      {user.isOnboarded && <NavBar user={user} />}
     </div>
   );
 }
