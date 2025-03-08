@@ -4,6 +4,7 @@ import "~/styles/globals.css";
 import { Toaster } from "~/components/ui/toasts";
 import { Analytics } from "@vercel/analytics/react";
 import { cn } from "~/utils/classnames";
+import { LanguageProvider } from "~/components/LanguageProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,11 +19,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html>
       <body className={cn(inter.className, "relative bg-background")}>
-        {children}
-        <Toaster position="top-right" richColors />
-        <Analytics />
+        <LanguageProvider>
+          {children}
+          <Toaster position="top-right" richColors />
+          <Analytics />
+        </LanguageProvider>
       </body>
     </html>
   );
