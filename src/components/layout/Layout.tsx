@@ -13,7 +13,6 @@ export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
-        <LanguageSwitcher />
       </header>
       <main className="relative overflow-auto p-4">{children}</main>
       {user.isOnboarded && <NavBar user={user} />}
@@ -24,7 +23,7 @@ export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user
 export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen">
-      <header className="fixed left-0 top-0 z-10 flex h-24 w-screen justify-between gap-4 px-8 py-4">
+      <header className="fixed left-0 top-0 z-10 flex h-24 w-screen items-center justify-between gap-4 px-8 py-4">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
@@ -38,7 +37,7 @@ export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
 export function SignInLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen">
-      <header className="fixed left-0 top-0 z-10 flex h-24 w-screen justify-between gap-4 px-8 py-4">
+      <header className="fixed left-0 top-0 z-10 flex h-24 w-screen items-center justify-between gap-4 px-8 py-4">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>

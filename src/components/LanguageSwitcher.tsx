@@ -38,5 +38,13 @@ export function LanguageSwitcher() {
     return null;
   }
 
-  return <Select value={currentLang} onChange={changeLanguage} options={languageOptions} placeholder={t("language")} />;
+  return (
+    <Select
+      value={currentLang}
+      onChange={changeLanguage}
+      options={languageOptions}
+      placeholder={t("language")}
+      contentWidth
+    />
+  );
 }

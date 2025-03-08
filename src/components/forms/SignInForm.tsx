@@ -4,9 +4,11 @@ import { buttonVariants } from "~/components/ui/button";
 import { GoogleLogo } from "@phosphor-icons/react";
 
 import { cn } from "~/utils/classnames";
+import { useTranslation } from "~/utils/useTranslation";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const queryParams = new URLSearchParams();
+  const { t } = useTranslation("common");
 
   if (wishlistOwner) {
     queryParams.append("wishlistOwner", wishlistOwner);
@@ -22,7 +24,7 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
       href={`/api/auth/google?${queryParams.toString()}`}
     >
       <GoogleLogo size={24} weight="regular" />
-      {"Sign in with Google"}
+      {t("actions.signInWithGoogle")}
     </a>
   );
 }

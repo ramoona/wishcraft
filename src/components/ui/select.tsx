@@ -132,16 +132,18 @@ export function Select({
   value,
   placeholder,
   disabled,
+  contentWidth,
 }: {
   value?: string;
   onChange: (value: string) => void;
   options: SelectOption[];
   placeholder?: string;
   disabled?: boolean;
+  contentWidth?: boolean;
 }) {
   return (
     <SelectPrimitive.Root onValueChange={onChange} defaultValue={value} disabled={disabled}>
-      <SelectTrigger className="w-full">
+      <SelectTrigger className={contentWidth ? "w-fit" : "w-full"}>
         <SelectPrimitive.Value placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

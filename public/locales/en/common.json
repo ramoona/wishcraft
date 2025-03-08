@@ -1,17 +1,14 @@
 {
-  "welcome": "Welcome to Wishcraft",
-  "language": "Language",
-  "english": "English",
-  "russian": "Russian",
   "navigation": {
-    "home": "Home",
+    "wishes": "Wishes",
     "profile": "Profile",
-    "settings": "Settings"
+    "friends": "Friends"
   },
   "actions": {
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "edit": "Edit"
+    "edit": "Edit",
+    "signInWithGoogle": "Sign in with Google"
   }
 }
