@@ -16,7 +16,7 @@ import { currencies, currencyNames } from "~/lib/currencies";
 import { Switch } from "~/components/ui/switch";
 
 const formSchema = z.object({
-  name: z.string().max(255, "Oof, that's too long"),
+  name: z.string().min(1, "Title is required").max(255, "Oof, that's too long"),
   price: z.number({ coerce: true }).optional().nullable().default(null),
   currency: z.string().optional().nullable(),
   url: z.string().url().optional().nullable(),

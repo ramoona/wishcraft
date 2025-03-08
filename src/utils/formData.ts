@@ -1,17 +1,26 @@
+import { isNil } from "ramda";
+
 export class TypedFormData<T extends Record<string, string | number | boolean | null | undefined>> {
   fromObject(obj: T): FormData {
     const formData = new FormData();
 
     Object.entries(obj).forEach(([key, value]) => {
-      if (value === null || value === undefined) {
+      if (isNil(value)) {
         return;
       }
 
-      if (typeof value === "boolean") {
-        formData.append(key, value ? "__BOOLEAN_TRUE__" : "__BOOLEAN_FALSE__");
-        return;
+      let valueType;
+
+      if (typeof value === "string") {
+        valueType = "string";
+      } else if (typeof value === "number") {
+        valueType = "number";
+      } else {
+        valueType = "boolean";
       }
+
       formData.append(key, value.toString());
+      formData.append(`${key}-type`, valueType);
     });
 
     return formData;
@@ -21,29 +30,27 @@ export class TypedFormData<T extends Record<string, string | number | boolean | 
     const obj: Record<string, string | number | boolean> = {};
 
     for (const key of formData.keys()) {
+      if (key.endsWith("-type")) {
+        continue;
+      }
+
       const value = formData.get(key);
-      if (typeof value !== "string") {
-        continue;
+      const valueType = formData.get(`${key}-type`);
+
+      switch (valueType) {
+        case "number":
+          const number = parseFloat(value as string);
+
+          if (!isNaN(number)) {
+            obj[key] = number;
+          }
+          break;
+        case "boolean":
+          obj[key] = value === "true";
+          break;
+        default:
+          obj[key] = value as string;
       }
-
-      const maybeNumber = parseFloat(value);
-
-      if (!isNaN(maybeNumber) && value.length === maybeNumber.toString().length) {
-        obj[key] = maybeNumber;
-        continue;
-      }
-
-      if (value === "__BOOLEAN_TRUE__") {
-        obj[key] = true;
-        continue;
-      }
-
-      if (value === "__BOOLEAN_FALSE__") {
-        obj[key] = false;
-        continue;
-      }
-
-      obj[key] = value;
     }
 
     return obj as T;
