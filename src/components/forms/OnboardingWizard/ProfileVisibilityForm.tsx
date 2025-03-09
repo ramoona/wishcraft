@@ -8,11 +8,13 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { updateProfileVisibilityAction } from "~/services/user/actions";
 import { Switch } from "~/components/ui/switch";
+import { useTranslation } from "~/utils/useTranslation";
 
 export function OnboardingWizardProfileVisibilityStep() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isProfileHidden, setIsProfileHidden] = useState(false);
+  const { t } = useTranslation();
 
   const trigger = () => {
     startTransition(async () => {
@@ -29,10 +31,10 @@ export function OnboardingWizardProfileVisibilityStep() {
 
   return (
     <form action={trigger} className="flex flex-col items-center gap-4 p-4">
-      <h1>Do you want your profile to be private?</h1>
+      <h1>{t("onboarding.profileVisibility.title")}</h1>
       <Switch name="isProfileHidden" checked={isProfileHidden} onCheckedChange={setIsProfileHidden} />
       <Button type="submit" size="lg">
-        {isPending ? "Saving..." : "Save"}
+        {isPending ? t("states.saving") : t("actions.save")}
       </Button>
     </form>
   );

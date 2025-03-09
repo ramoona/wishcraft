@@ -1,0 +1,20 @@
+{
+  "navigation": {
+    "wishes": "Желания",
+    "profile": "Профиль",
+    "friends": "Друзья"
+  },
+  "actions": {
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "signInWithGoogle": "Войти с Google"
+  },
+  "friends": {
+    "title": "Твои друзья",
+    "empty": "Пока нет друзей",
+    "recentWishes": "Heдавно добавлены: {{ wishes }}",
+    "moreWishes": "{{ wishes }} и ещё..."
+  }
+}

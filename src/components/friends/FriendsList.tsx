@@ -2,17 +2,20 @@ import { FriendUser } from "~/services/user/types";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { WishType } from "~/services/wishlist/types";
+import { getServerTranslations } from "~/lib/i18n/server";
 
 const MAX_RECENT_WISHES = 3;
 
-export function FriendsList({ friends }: { friends: FriendUser[] }) {
+export async function FriendsList({ friends }: { friends: FriendUser[] }) {
+  const { t } = await getServerTranslations();
+
   if (!friends.length) {
-    return <div>No friends yet</div>;
+    return <div>{t("friends.empty")}</div>;
   }
 
   return (
     <div className="flex size-full flex-col gap-4">
-      <h1>Your Friends</h1>
+      <h1>{t("friends.title")}</h1>
       {friends.map(friend => (
         <div key={friend.id}>
           <Link href={`/${friend.username}`} className="flex items-center gap-4">
@@ -27,7 +30,7 @@ export function FriendsList({ friends }: { friends: FriendUser[] }) {
           </Link>
           {friend.recentWishes.length > 0 && (
             <div className="pl-16 text-sm text-foreground/80">
-              Recently added {getRecentWishes(friend.recentWishes)}
+              {t("friends.recentWishes", { wishes: getRecentWishes(friend.recentWishes) })}
             </div>
           )}
         </div>

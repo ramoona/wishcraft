@@ -5,10 +5,12 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { addFriendAction, removeFriendAction } from "~/services/friend/actions";
 import { showToastWithActionResult } from "~/core/showToastWithActionResult";
+import { useTranslation } from "~/utils/useTranslation";
 
 export function FriendActionButton({ friendId, isFriend }: { friendId: string; isFriend: boolean }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleFriendAction = () => {
     startTransition(async () => {
@@ -29,7 +31,7 @@ export function FriendActionButton({ friendId, isFriend }: { friendId: string; i
   };
   return (
     <Button onClick={handleFriendAction} disabled={isPending}>
-      {isFriend ? "Remove Friend" : "Add Friend"}
+      {isFriend ? t("actions.removeFriend") : t("actions.addFriend")}
     </Button>
   );
 }

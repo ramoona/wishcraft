@@ -1,0 +1,1 @@
+export { getServerTranslations } from "./cache";

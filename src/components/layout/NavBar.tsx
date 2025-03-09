@@ -25,7 +25,7 @@ const navItems = [
 export default function NavBar({ user }: { user: User }) {
   const pathname = usePathname();
   const route = pathname.split("/")[2];
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
 
   return (
     <nav className="relative flex h-14 w-full items-center justify-around border-t bg-background">

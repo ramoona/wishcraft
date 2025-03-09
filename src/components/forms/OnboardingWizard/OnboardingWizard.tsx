@@ -23,8 +23,7 @@ export async function OnboardingWizard({ initialUsername }: { initialUsername: s
     const currentStep = getCurrentStep(sessionUser);
 
     if (!currentStep) {
-      // @FIXME: this should be a redirect
-      return <div>Already onboarded</div>;
+      return <ErrorAlert>{getErrorMessage("UNKNOWN")}</ErrorAlert>;
     }
 
     const Component = wizardStepForm[currentStep];

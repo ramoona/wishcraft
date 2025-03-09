@@ -9,12 +9,14 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { Select } from "~/components/ui/select";
 import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
+import { useTranslation } from "~/utils/useTranslation";
 
 export function OnboardingWizardDateOfBirthStep() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [day, setDay] = useState<number>();
   const [month, setMonth] = useState<number>();
+  const { t } = useTranslation();
 
   const trigger = () => {
     startTransition(async () => {
@@ -31,12 +33,12 @@ export function OnboardingWizardDateOfBirthStep() {
 
   return (
     <form action={trigger} className="flex flex-col items-center gap-4 p-4">
-      <h1>When is your birthday? (optional)</h1>
+      <h1>{t("onboarding.dateOfBirth.title")}</h1>
 
       <div className="grid w-full grid-cols-2 gap-4">
         <Select
           value={month ? String(month) : ""}
-          placeholder={"Select month"}
+          placeholder={t("placeholders.selectMonth")}
           onChange={month => {
             setMonth(parseInt(month));
             setDay(undefined);
@@ -45,7 +47,7 @@ export function OnboardingWizardDateOfBirthStep() {
         />
         <Select
           value={day ? String(day) : ""}
-          placeholder={"Select day"}
+          placeholder={t("placeholders.selectDay")}
           disabled={!month}
           onChange={day => setDay(parseInt(day))}
           options={
@@ -59,7 +61,7 @@ export function OnboardingWizardDateOfBirthStep() {
         />
       </div>
       <Button type="submit" size="lg">
-        {isPending ? "Saving..." : "Save"}
+        {isPending ? t("states.saving") : t("actions.save")}
       </Button>
     </form>
   );

@@ -8,7 +8,7 @@ import { useTranslation } from "~/utils/useTranslation";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const queryParams = new URLSearchParams();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
 
   if (wishlistOwner) {
     queryParams.append("wishlistOwner", wishlistOwner);

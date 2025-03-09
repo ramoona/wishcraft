@@ -8,11 +8,13 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { updateReservedWishesVisibilityAction } from "~/services/user/actions";
 import { Switch } from "~/components/ui/switch";
+import { useTranslation } from "~/utils/useTranslation";
 
 export function OnboardingWizardReservedWishesVisibilityStep() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [showReserved, setShowReserved] = useState(false);
+  const { t } = useTranslation();
 
   const trigger = () => {
     startTransition(async () => {
@@ -29,10 +31,10 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
 
   return (
     <form action={trigger} className="flex flex-col items-center gap-4 p-4">
-      <h1>Do you want to see if your wishes are reserved by someone?</h1>
+      <h1>{t("onboarding.reservedWishesVisibility.title")}</h1>
       <Switch name="showReserved" checked={showReserved} onCheckedChange={setShowReserved} />
       <Button type="submit" size="lg">
-        {isPending ? "Saving..." : "Save"}
+        {isPending ? t("states.saving") : t("actions.save")}
       </Button>
     </form>
   );

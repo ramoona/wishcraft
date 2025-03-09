@@ -9,6 +9,39 @@
     "cancel": "Отмена",
     "delete": "Удалить",
     "edit": "Редактировать",
-    "signInWithGoogle": "Войти с Google"
+    "signInWithGoogle": "Войти с Google",
+    "removeFriend": " Удалить из друзей",
+    "addFriend": "Добавить в друзья"
+  },
+  "states": {
+    "saving": "Сохраняем..."
+  },
+  "onboarding": {
+    "defaultCurrency": {
+      "title": "Выберите валюту по умолчанию"
+    },
+    "dateOfBirth": {
+      "title": "Когда у тебя день рождения?"
+    },
+    "profileVisibility": {
+      "title": "Сделать твой профиль приватным?"
+    },
+    "username": {
+      "title": "Выберите никнейм"
+    },
+    "reservedWishesVisibility": {
+      "title": "Хочешь ли ты видеть, когда твои желания зарезервированы кем-то?"
+    }
+  },
+  "placeholders": {
+    "selectDay": "Выбери день",
+    "selectMonth": "Выбери месяц",
+    "username": "например, spider-monkey"
+  },
+  "friends": {
+    "title": "Твои друзья",
+    "empty": "Пока нет друзей",
+    "recentWishes": "Heдавно добавлены: {{ wishes }}",
+    "moreWishes": "{{ wishes }} и ещё..."
   }
 }
