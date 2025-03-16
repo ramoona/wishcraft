@@ -28,8 +28,8 @@
       "description": "Birthdays are public. You can set your birthday later in your profile settings."
     },
     "profileVisibility": {
-      "title": "Do you want your profile to be private?",
-      "description": "By default all profiles are public. If you choose to make your profile private, your wishlist will not be visible to others. You can always change it in your profile settings."
+      "title": "Do you want to share your wishlist?",
+      "description": "If you choose to make your wishlist private, it won't be visible for the others. You can always change it in your profile settings."
     },
     "username": {
       "title": "First, let’s pick your unique username",

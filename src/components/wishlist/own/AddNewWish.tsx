@@ -41,11 +41,8 @@ export function AddNewWishMobile() {
       <div className="flex items-center justify-center gap-4">
         {/*<ShareDrawer />*/}
         <WishDrawer mode="create">
-          <Button size="lg" type="button" variant="outline">
-            <div className="flex items-center justify-center gap-2">
-              <ShootingStar size={24} />
-              Make a wish
-            </div>
+          <Button size="lg" type="button">
+            Make a wish
           </Button>
         </WishDrawer>
       </div>

@@ -15,7 +15,7 @@ export function WishDetailsMobile({
   username,
 }: WishType & { reservedByCurrentUser?: boolean; showReserved?: boolean; username?: string }) {
   return (
-    <div className="relative w-full rounded border p-4 text-left">
+    <div className="relative w-full bg-background p-4 text-left">
       {username && <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>}
       {showReserved && reservedById && (
         <div className="absolute -top-3 right-2">

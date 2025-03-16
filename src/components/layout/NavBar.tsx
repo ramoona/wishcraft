@@ -28,20 +28,22 @@ export default function NavBar({ user }: { user: User }) {
   const { t } = useTranslation();
 
   return (
-    <nav className="relative flex h-14 w-full items-center justify-around border-t bg-background">
+    <nav className="relative w-full bg-background">
       {route === "wishes" && <AddNewWishMobile />}
-      {navItems.map(item => (
-        <Link
-          key={item.route}
-          href={`/${user.username}/${item.route}`}
-          className={cn(
-            "flex flex-col items-center justify-center gap-1 text-sm font-medium text-muted-foreground no-underline hover:text-primary focus:text-primary",
-            route === item.route && "font-bold",
-          )}
-        >
-          {t(item.label)}
-        </Link>
-      ))}
+      <div className="mx-auto flex h-14 max-w-xl items-center justify-around">
+        {navItems.map(item => (
+          <Link
+            key={item.route}
+            href={`/${user.username}/${item.route}`}
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 text-sm no-underline",
+              route === item.route && "font-semibold",
+            )}
+          >
+            {t(item.label)}
+          </Link>
+        ))}
+      </div>
     </nav>
   );
 }

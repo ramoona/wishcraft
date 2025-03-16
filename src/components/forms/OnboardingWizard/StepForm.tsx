@@ -33,9 +33,9 @@ export function OnboardingWizardStep({
   return (
     <form
       action={isSubmissionDisabled ? undefined : onSubmit}
-      className="grid h-full grid-rows-[auto_min-content] gap-4 px-6"
+      className="grid h-full grid-rows-[auto_min-content] justify-center gap-4 px-6"
     >
-      <div className="flex flex-col items-center gap-5 pt-4">
+      <div className="flex max-w-xl flex-col items-start gap-6 pt-4">
         <TypographyH1>{title}</TypographyH1>
         {children}
       </div>

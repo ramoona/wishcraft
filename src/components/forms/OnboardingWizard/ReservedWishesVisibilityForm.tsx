@@ -6,11 +6,12 @@ import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { updateReservedWishesVisibilityAction } from "~/services/user/actions";
-import { Switch } from "~/components/ui/switch";
 import { useTranslation } from "~/utils/useTranslation";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
 import { Trans } from "react-i18next";
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import { Label } from "~/components/ui/label";
 
 export function OnboardingWizardReservedWishesVisibilityStep() {
   const router = useRouter();
@@ -39,7 +40,23 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
       step="reserved-wishes-visibility"
       onSkip={() => undefined}
     >
-      <Switch name="showReserved" checked={showReserved} onCheckedChange={setShowReserved} />
+      <div className="w-full">
+        <RadioGroup value={showReserved ? "yes" : "no"} onValueChange={value => setShowReserved(value === "yes")}>
+          <div className="flex items-center gap-2">
+            <RadioGroupItem value="yes" id="yes" />
+            <Label htmlFor="yes">
+              <span className="font-bold">Yes</span>, <span className="font-normal">I&#39;m curious</span>
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <RadioGroupItem value="no" id="no" />
+            <Label htmlFor="no">
+              <span className="font-bold">No</span>, <span className="font-normal">I like surprises</span>
+            </Label>
+          </div>
+        </RadioGroup>
+      </div>
+
       <TypographyMuted>
         <Trans
           t={t}
