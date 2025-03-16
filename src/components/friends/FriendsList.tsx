@@ -1,13 +1,15 @@
+"use client";
+
 import { FriendUser } from "~/services/user/types";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { WishType } from "~/services/wishlist/types";
-import { getServerTranslations } from "~/lib/i18n/server";
+import { useTranslation } from "~/utils/useTranslation";
 
 const MAX_RECENT_WISHES = 3;
 
-export async function FriendsList({ friends }: { friends: FriendUser[] }) {
-  const { t } = await getServerTranslations();
+export function FriendsList({ friends }: { friends: FriendUser[] }) {
+  const { t } = useTranslation();
 
   if (!friends.length) {
     return <div>{t("friends.empty")}</div>;
