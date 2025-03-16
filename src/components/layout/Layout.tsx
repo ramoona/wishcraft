@@ -37,13 +37,13 @@ export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
 export function SignInLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen bg-primary">
-      <header className="fixed left-0 top-0 z-10 flex w-screen items-center justify-between gap-4 p-8">
+      <header className="fixed left-0 top-0 z-10 flex w-screen items-center justify-center gap-4 p-8">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
       </header>
       <main className="relative min-h-screen overflow-auto px-4 pt-20">
-        <div className="fixed bottom-8 left-0 flex w-screen justify-center p-8">
+        <div className="fixed bottom-8 left-0 flex w-screen justify-center">
           <div className="w-full max-w-lg">{children}</div>
         </div>
       </main>
