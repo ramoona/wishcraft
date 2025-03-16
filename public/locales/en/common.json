@@ -52,6 +52,7 @@
     "moreWishes": "{{ wishes }} and more..."
   },
   "error": {
+    "error": "Error",
     "UNAUTHORIZED": "You are not authorized to see this page",
     "OAUTH_ERROR": "OAuth error",
     "USER_NOT_FOUND": "User is not found",

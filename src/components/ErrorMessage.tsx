@@ -31,7 +31,7 @@ export function ErrorMessage({
       <div className="w-fit">
         <Alert variant="destructive">
           <AlertTitle className="flex items-center gap-2">
-            <WarningCircle className="size-5" /> {t("error")}
+            <WarningCircle className="size-5" /> {t("error.error")}
           </AlertTitle>
           <AlertDescription>{getErrorMessage(errorCode, t, context)}</AlertDescription>
         </Alert>

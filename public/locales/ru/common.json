@@ -52,6 +52,7 @@
     "moreWishes": "{{ wishes }} и ещё..."
   },
   "error": {
+    "error": "Ощибка",
     "UNAUTHORIZED": "Ты не авторизован, чтобы видеть эту страницу",
     "OAUTH_ERROR": "Ошибка OAuth",
     "USER_NOT_FOUND": "Пользователь не найден",
