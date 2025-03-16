@@ -4,8 +4,9 @@ import { Button } from "~/components/ui/button";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { addFriendAction, removeFriendAction } from "~/services/friend/actions";
-import { showToastWithActionResult } from "~/core/showToastWithActionResult";
 import { useTranslation } from "~/utils/useTranslation";
+import { showErrorToast } from "~/components/ui/toasts";
+import { getErrorMessage } from "~/core/errorMessages";
 
 export function FriendActionButton({ friendId, isFriend }: { friendId: string; isFriend: boolean }) {
   const [isPending, startTransition] = useTransition();
@@ -24,7 +25,7 @@ export function FriendActionButton({ friendId, isFriend }: { friendId: string; i
         result = await addFriendAction(formData);
       }
       if (result.error) {
-        showToastWithActionResult(result.error);
+        showErrorToast(getErrorMessage(result.error, t));
       }
       router.refresh();
     });

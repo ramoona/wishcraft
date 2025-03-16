@@ -1,8 +1,8 @@
 "use client";
 
-import { SomethingWentWrongAlert } from "~/components/ui/alert";
 import Link from "next/link";
 import { Logo } from "~/components/ui/logo";
+import { ErrorMessage } from "~/components/ErrorMessage";
 
 export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
   return (
@@ -13,7 +13,7 @@ export default function GlobalError({ error }: { error: Error & { digest?: strin
             <Logo />
           </Link>
         </header>
-        <SomethingWentWrongAlert error={error.message} />
+        <ErrorMessage errorCode="UNKNOWN" errorMessage={error.message} />
       </body>
     </html>
   );

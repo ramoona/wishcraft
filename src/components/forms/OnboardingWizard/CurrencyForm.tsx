@@ -3,7 +3,7 @@
 import React, { useState, useTransition } from "react";
 import { Button } from "~/components/ui/button";
 import { DefaultCurrencyFormData } from "~/services/user/formData";
-import { getErrorMessage } from "~/core/toastMessages";
+import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { currencies, currencyNames } from "~/lib/currencies";
@@ -23,7 +23,7 @@ export function OnboardingWizardCurrencyStep() {
         DefaultCurrencyFormData.fromObject({ currency, onboarding: true }),
       );
       if (error) {
-        showErrorToast(getErrorMessage(error));
+        showErrorToast(getErrorMessage(error, t));
       } else {
         router.refresh();
       }

@@ -1,8 +1,7 @@
 import { getSessionUserOrThrow } from "~/services/session";
-import { ErrorAlert } from "~/components/ui/alert";
+import { ErrorMessage } from "~/components/ErrorMessage";
 import { OnboardingWizardUsernameStep } from "~/components/forms/OnboardingWizard/UsernameForm";
 import { User, userOnboardingSteps } from "~/services/user/types";
-import { getErrorMessage } from "~/core/toastMessages";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { OnboardingWizardDateOfBirthStep } from "~/components/forms/OnboardingWizard/DateOfBirthForm";
 import { OnboardingWizardCurrencyStep } from "~/components/forms/OnboardingWizard/CurrencyForm";
@@ -23,16 +22,14 @@ export async function OnboardingWizard({ initialUsername }: { initialUsername: s
     const currentStep = getCurrentStep(sessionUser);
 
     if (!currentStep) {
-      return <ErrorAlert>{getErrorMessage("UNKNOWN")}</ErrorAlert>;
+      return <ErrorMessage errorCode="UNKNOWN" />;
     }
 
     const Component = wizardStepForm[currentStep];
 
     return <Component initialUsername={initialUsername} />;
   } catch (e) {
-    return (
-      <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
-    );
+    return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
   }
 }
 

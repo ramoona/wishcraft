@@ -4,7 +4,7 @@ import React, { useState, useTransition } from "react";
 import { updateDateOfBirthAction } from "~/services/user/actions";
 import { Button } from "~/components/ui/button";
 import { DateOfBirthFormData } from "~/services/user/formData";
-import { getErrorMessage } from "~/core/toastMessages";
+import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { Select } from "~/components/ui/select";
@@ -24,7 +24,7 @@ export function OnboardingWizardDateOfBirthStep() {
         DateOfBirthFormData.fromObject({ dayOfBirth: day!, monthOfBirth: month!, onboarding: true }),
       );
       if (error) {
-        showErrorToast(getErrorMessage(error));
+        showErrorToast(getErrorMessage(error, t));
       } else {
         router.refresh();
       }

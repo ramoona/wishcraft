@@ -1,6 +1,5 @@
 import { getSessionUser } from "~/services/session";
-import { getErrorMessage } from "~/core/toastMessages";
-import { ErrorAlert } from "~/components/ui/alert";
+import { ErrorMessage } from "~/components/ErrorMessage";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { redirect } from "next/navigation";
 import { getFriendsForCurrentUser } from "~/services/friend";
@@ -17,8 +16,6 @@ export default async function FriendsPage() {
     const friends = await getFriendsForCurrentUser();
     return <FriendsList friends={friends} />;
   } catch (e) {
-    return (
-      <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
-    );
+    return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
   }
 }

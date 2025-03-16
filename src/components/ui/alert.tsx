@@ -4,8 +4,6 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "~/utils/classnames";
-import { PropsWithChildren } from "react";
-import { WarningCircle, UserCircleDashed } from "@phosphor-icons/react";
 
 const alertVariants = cva(
   "relative w-full rounded-lg border px-4 py-3 text-sm [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7",
@@ -43,48 +41,5 @@ const AlertDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttrib
   ),
 );
 AlertDescription.displayName = "AlertDescription";
-
-export function ErrorAlert({ children, title }: PropsWithChildren<{ title?: string }>) {
-  return (
-    <div className="flex items-center justify-center p-8">
-      <div className="w-fit">
-        <Alert variant="destructive">
-          <AlertTitle className="flex items-center gap-2">
-            <WarningCircle className="size-5" /> {title || "Error"}
-          </AlertTitle>
-          <AlertDescription>{children}</AlertDescription>
-        </Alert>
-      </div>
-    </div>
-  );
-}
-
-export function UserNotFoundAlert({ username }: { username: string }) {
-  return (
-    <div className="flex items-center justify-center p-8">
-      <div className="w-fit">
-        <Alert>
-          <AlertTitle className="flex items-center gap-2">
-            <UserCircleDashed className="size-5" /> User Not Found
-          </AlertTitle>
-          <AlertDescription>
-            We could not find {username}&apos;s wishlist...Is there maybe a typo in your URL?
-          </AlertDescription>
-        </Alert>
-      </div>
-    </div>
-  );
-}
-
-export function SomethingWentWrongAlert({ error }: { error?: string }) {
-  // eslint-disable-next-line no-console
-  console.error(error);
-  return (
-    <ErrorAlert title="Error">
-      Uh-oh, something went terribly wrong and to be honest, we have no clue what happened. <br />
-      But we notified someone who can figure this out so please hold tight!
-    </ErrorAlert>
-  );
-}
 
 export { Alert, AlertTitle, AlertDescription };

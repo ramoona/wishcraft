@@ -6,7 +6,6 @@ import { reserveWishAction, releaseWishAction } from "~/services/wishlist/action
 import { Button } from "~/components/ui/button";
 import { SignInForm } from "~/components/forms/SignInForm";
 import { Slider } from "~/components/ui/slider";
-import { showToastWithActionResult } from "~/core/showToastWithActionResult";
 import { WishlistReservationFormData } from "~/services/wishlist/formData";
 import {
   Drawer,
@@ -17,6 +16,9 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { showErrorToast } from "~/components/ui/toasts";
+import { getErrorMessage } from "~/core/errorMessages";
+import { useTranslation } from "~/utils/useTranslation";
 
 export function ReserveButton({
   wishId,
@@ -35,6 +37,8 @@ export function ReserveButton({
   const [isPending, startTransition] = useTransition();
   const [isSliderOpen, setSliderOpen] = useState(false);
 
+  const { t } = useTranslation();
+
   const triggerReserveWishAction = () => {
     if (!isLoggedIn) {
       setSliderOpen(true);
@@ -44,12 +48,15 @@ export function ReserveButton({
     startTransition(async () => {
       const { error } = await reserveWishAction(WishlistReservationFormData.fromObject({ wishId }));
 
-      if (error === "UNAUTHORIZED") {
-        setSliderOpen(true);
+      if (error) {
+        if (error === "UNAUTHORIZED") {
+          setSliderOpen(true);
+        } else {
+          showErrorToast(getErrorMessage(error, t));
+        }
         return;
       }
 
-      showToastWithActionResult(error);
       router.refresh();
     });
   };
@@ -63,12 +70,15 @@ export function ReserveButton({
     startTransition(async () => {
       const { error } = await releaseWishAction(WishlistReservationFormData.fromObject({ wishId }));
 
-      if (error === "UNAUTHORIZED") {
-        setSliderOpen(true);
+      if (error) {
+        if (error === "UNAUTHORIZED") {
+          setSliderOpen(true);
+        } else {
+          showErrorToast(getErrorMessage(error, t));
+        }
         return;
       }
 
-      showToastWithActionResult(error);
       router.refresh();
     });
   };

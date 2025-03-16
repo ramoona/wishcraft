@@ -23,7 +23,7 @@ import {
   ReservedWishesVisibilityFormData,
 } from "~/services/user/formData";
 import { showErrorToast, showSuccessToast } from "~/components/ui/toasts";
-import { getErrorMessage } from "~/core/toastMessages";
+import { getErrorMessage, getSuccessMessage } from "~/core/errorMessages";
 import { Select } from "~/components/ui/select";
 import { currencies, currencyNames } from "~/lib/currencies";
 import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
@@ -36,6 +36,7 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { useTranslation } from "~/utils/useTranslation";
 
 export function Profile({ user }: { user: User }) {
   return (
@@ -80,6 +81,7 @@ function ProfileVisibility({ isProfileHidden: initialValue }: { isProfileHidden?
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isProfileHidden, setIsProfileHidden] = useState(initialValue ?? false);
+  const { t } = useTranslation();
 
   const trigger = (value: boolean) => {
     setIsProfileHidden(value);
@@ -88,9 +90,9 @@ function ProfileVisibility({ isProfileHidden: initialValue }: { isProfileHidden?
         ProfileVisibilityFormData.fromObject({ isProfileHidden: value }),
       );
       if (error) {
-        showErrorToast(getErrorMessage(error));
+        showErrorToast(getErrorMessage(error, t));
       } else {
-        showSuccessToast("Saved!");
+        showSuccessToast(getSuccessMessage("SAVED", t));
         router.refresh();
       }
     });
@@ -121,6 +123,7 @@ function ReservedWishesVisibility({ showReserved: initialValue }: { showReserved
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [showReserved, setShowReserved] = useState(initialValue);
+  const { t } = useTranslation();
 
   const trigger = (value: boolean) => {
     setShowReserved(value);
@@ -129,9 +132,9 @@ function ReservedWishesVisibility({ showReserved: initialValue }: { showReserved
         ReservedWishesVisibilityFormData.fromObject({ showReserved: value }),
       );
       if (error) {
-        showErrorToast(getErrorMessage(error));
+        showErrorToast(getErrorMessage(error, t));
       } else {
-        showSuccessToast("Saved!");
+        showSuccessToast(getSuccessMessage("SAVED", t));
         router.refresh();
       }
     });
@@ -161,15 +164,16 @@ function DefaultCurrency({ currency: initialValue }: { currency: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [currency, setCurrency] = useState(initialValue);
+  const { t } = useTranslation();
 
   const trigger = () => {
     setCurrency(currency);
     startTransition(async () => {
       const { error } = await updateDefaultCurrencyAction(DefaultCurrencyFormData.fromObject({ currency }));
       if (error) {
-        showErrorToast(getErrorMessage(error));
+        showErrorToast(getErrorMessage(error, t));
       } else {
-        showSuccessToast("Saved!");
+        showSuccessToast(getSuccessMessage("SAVED", t));
         router.refresh();
       }
     });
@@ -194,6 +198,7 @@ export function DateOfBirth({ day: initialDay, month: initialMonth }: { day?: nu
   const [isPending, startTransition] = useTransition();
   const [day, setDay] = useState<number | undefined>(initialDay);
   const [month, setMonth] = useState<number | undefined>(initialMonth);
+  const { t } = useTranslation();
 
   const trigger = ({ day, month }: { day: number; month: number }) => {
     startTransition(async () => {
@@ -201,9 +206,9 @@ export function DateOfBirth({ day: initialDay, month: initialMonth }: { day?: nu
         DateOfBirthFormData.fromObject({ dayOfBirth: day, monthOfBirth: month }),
       );
       if (error) {
-        showErrorToast(getErrorMessage(error));
+        showErrorToast(getErrorMessage(error, t));
       } else {
-        showSuccessToast("Saved!");
+        showSuccessToast(getSuccessMessage("SAVED", t));
         router.refresh();
       }
     });
@@ -284,6 +289,7 @@ function DeleteAccountButton({ user }: { user: User }) {
   const router = useRouter();
   const [isSliderOpen, setSliderOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const { t } = useTranslation();
 
   const deleteAccount = () => {
     startTransition(async () => {
@@ -292,7 +298,7 @@ function DeleteAccountButton({ user }: { user: User }) {
         if (error === "UNAUTHORIZED") {
           router.push("/");
         } else {
-          showErrorToast(getErrorMessage(error));
+          showErrorToast(getErrorMessage(error, t));
         }
       } else {
         router.push("/");
@@ -306,9 +312,9 @@ function DeleteAccountButton({ user }: { user: User }) {
         ProfileVisibilityFormData.fromObject({ isProfileHidden: true }),
       );
       if (error) {
-        showErrorToast(getErrorMessage(error));
+        showErrorToast(getErrorMessage(error, t));
       } else {
-        showSuccessToast("Saved!");
+        showSuccessToast(getSuccessMessage("SAVED", t));
         router.refresh();
       }
     });

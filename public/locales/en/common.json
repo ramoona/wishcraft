@@ -43,5 +43,20 @@
     "empty": "No friends yet",
     "recentWishes": "Recently added {{ wishes }}",
     "moreWishes": "{{ wishes }} and more..."
+  },
+  "error": {
+    "UNAUTHORIZED": "You are not authorized to see this page",
+    "OAUTH_ERROR": "OAuth error",
+    "USER_NOT_FOUND": "User is not found",
+    "INPUT_IS_REQUIRED": "Input is required",
+    "USERNAME_IS_TAKEN": "Username is already taken",
+    "WISH_IS_ALREADY_RESERVED": "Wish is already reserved",
+    "WISH_IS_NOT_RESERVABLE": "Wish can not be reserved",
+    "WISH_IS_NOT_RESERVED": "Wish reservation can not be cancelled because wish is not reserved",
+    "WISH_IS_RESERVED_BY_ANOTHER_USER": "Wish is reserved by another user",
+    "WISH_NOT_FOUND": "Wish not found",
+    "INVALID_INPUT": "Invalid input",
+    "TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME": "Too many attempts to generate username",
+    "UNKNOWN": "Unknown error"
   }
 }

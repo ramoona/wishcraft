@@ -2,9 +2,8 @@ import { getForeignWishlistByUsername } from "~/services/wishlist";
 import { ForeignWishlist } from "~/components/wishlist/foreign/ForeignWishlist";
 import { getSessionUser } from "~/services/session";
 import { WishlistError } from "~/services/wishlist/errors";
-import { getErrorMessage } from "~/core/toastMessages";
 import { UserError } from "~/services/user/errors";
-import { ErrorAlert, UserNotFoundAlert } from "~/components/ui/alert";
+import { ErrorMessage } from "~/components/ErrorMessage";
 import { getUserByUserName } from "~/services/user";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { redirect } from "next/navigation";
@@ -31,10 +30,8 @@ export default async function UserPage({ params }: { params: Promise<{ username:
       (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||
       (e instanceof UserError && e.errorCode === "USER_NOT_FOUND")
     ) {
-      return <UserNotFoundAlert username={username} />;
+      return <ErrorMessage errorCode={e.errorCode} context={{ username }} />;
     }
-    return (
-      <ErrorAlert>{getErrorMessage(isErrorKnown(e as Error) ? (e as KnownError).errorCode : "UNKNOWN")}</ErrorAlert>
-    );
+    return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
   }
 }

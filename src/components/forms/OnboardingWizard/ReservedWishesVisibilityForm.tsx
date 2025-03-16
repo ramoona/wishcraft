@@ -3,7 +3,7 @@
 import React, { useState, useTransition } from "react";
 import { Button } from "~/components/ui/button";
 import { ReservedWishesVisibilityFormData } from "~/services/user/formData";
-import { getErrorMessage } from "~/core/toastMessages";
+import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { updateReservedWishesVisibilityAction } from "~/services/user/actions";
@@ -22,7 +22,7 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
         ReservedWishesVisibilityFormData.fromObject({ showReserved, onboarding: true }),
       );
       if (error) {
-        showErrorToast(getErrorMessage(error));
+        showErrorToast(getErrorMessage(error, t));
       } else {
         router.refresh();
       }

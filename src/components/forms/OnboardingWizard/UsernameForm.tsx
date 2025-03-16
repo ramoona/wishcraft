@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useDeferredValue, useEffect, useState, useTransition } from "react";
+import React, { useCallback, useDeferredValue, useEffect, useState, useTransition } from "react";
 import { checkUsernameUniquenessAction, updateUsernameAction } from "~/services/user/actions";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { UsernameFormData } from "~/services/user/formData";
-import { getErrorMessage } from "~/core/toastMessages";
+import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { clsx } from "clsx";
@@ -26,36 +26,39 @@ export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsern
       startTransition(async () => {
         const { error } = await updateUsernameAction(UsernameFormData.fromObject({ username, onboarding: true }));
         if (error) {
-          showErrorToast(getErrorMessage(error));
+          showErrorToast(getErrorMessage(error, t));
         } else {
           router.refresh();
         }
       });
     } else {
       if (!username) {
-        showErrorToast("Username is required");
+        showErrorToast(getErrorMessage("INPUT_IS_REQUIRED", t));
       } else if (!isUnique) {
-        showErrorToast("Username is already taken");
+        showErrorToast(getErrorMessage("USERNAME_IS_TAKEN", t));
       } else {
-        showErrorToast("Something went wrong 😱");
+        showErrorToast(getErrorMessage("UNKNOWN", t));
       }
     }
   };
 
-  const checkUniqueness = async (username: string) => {
-    const { error, isUnique } = await checkUsernameUniquenessAction(UsernameFormData.fromObject({ username }));
-    if (error) {
-      showErrorToast(getErrorMessage(error));
-    } else {
-      setIsUnique(isUnique);
-    }
-  };
+  const checkUniqueness = useCallback(
+    async (username: string) => {
+      const { error, isUnique } = await checkUsernameUniquenessAction(UsernameFormData.fromObject({ username }));
+      if (error) {
+        showErrorToast(getErrorMessage(error, t));
+      } else {
+        setIsUnique(isUnique);
+      }
+    },
+    [t],
+  );
 
   useEffect(() => {
     if (deferredValue && deferredValue !== initialUsername) {
       void checkUniqueness(deferredValue);
     }
-  }, [deferredValue, initialUsername]);
+  }, [checkUniqueness, deferredValue, initialUsername]);
 
   return (
     <form action={trigger} className="flex flex-col items-center gap-4 p-4">
