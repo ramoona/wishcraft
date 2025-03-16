@@ -4,7 +4,7 @@ import "~/styles/globals.css";
 import { Toaster } from "~/components/ui/toasts";
 import { Analytics } from "@vercel/analytics/react";
 import { cn } from "~/utils/classnames";
-import { LanguageProvider } from "~/components/LanguageProvider";
+// import { LanguageProvider } from "~/components/LanguageProvider";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 
@@ -21,11 +21,11 @@ export default function RootLayout({
   return (
     <html>
       <body className={cn(inter.className, "relative bg-background")}>
-        <LanguageProvider>
-          {children}
-          <Toaster position="top-right" richColors />
-          <Analytics />
-        </LanguageProvider>
+        {/*<LanguageProvider>*/}
+        {children}
+        <Toaster position="top-right" richColors />
+        <Analytics />
+        {/*</LanguageProvider>*/}
       </body>
     </html>
   );

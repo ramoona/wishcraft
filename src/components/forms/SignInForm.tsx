@@ -3,12 +3,12 @@
 import { buttonVariants } from "~/components/ui/button";
 
 import { cn } from "~/utils/classnames";
-import { useTranslation } from "~/utils/useTranslation";
+// import { useTranslation } from "~/utils/useTranslation";
 import { TypographyExtraLarge, TypographyLeadBody } from "~/components/ui/typography";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const queryParams = new URLSearchParams();
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   if (wishlistOwner) {
     queryParams.append("wishlistOwner", wishlistOwner);
@@ -33,7 +33,8 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
         )}
         href={`/api/auth/google?${queryParams.toString()}`}
       >
-        {t("actions.signInWithGoogle")}
+        {/*{t("actions.signInWithGoogle")}*/}
+        Sign in with Google
       </a>
     </div>
   );
