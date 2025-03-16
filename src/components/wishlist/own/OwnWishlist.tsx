@@ -4,7 +4,6 @@ import { WishlistType, WishType } from "~/services/wishlist/types";
 import { WishItemList } from "~/components/wishlist/WishItemList";
 import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
-// import { ShootingStar, Archive, Gift } from "@phosphor-icons/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WishDrawer } from "~/components/wishlist/own/WishDrawer";
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
@@ -45,25 +44,23 @@ export function OwnWishlist({
         <Tabs defaultValue="active" className="w-full">
           <TabsList className="w-full">
             <TabsTrigger value="active" className="flex grow items-center gap-2">
-              {/*<ShootingStar />*/}
               Active
             </TabsTrigger>
             <TabsTrigger value="fulfilled" className="flex grow items-center gap-2">
-              {/*<Gift />*/}
               Fulfilled
             </TabsTrigger>
             <TabsTrigger value="archived" className="flex grow items-center gap-2">
-              {/*<Archive />*/}
               Archived
             </TabsTrigger>
             <TabsTrigger value="reserved" className="flex grow items-center gap-2">
-              {/*<Archive />*/}
               Reserved
             </TabsTrigger>
           </TabsList>
           <TabsContent value="active">
-            <div className="mb-4 flex w-full items-center justify-center gap-1 text-xs text-slate-500">
-              <b>Anyone</b> can see your active wishes
+            <div className="mb-4 w-full text-center text-xs">
+              <b>Anyone</b> can see your Active Wishes
+              <br />
+              if they are not set to <b>Private</b>
             </div>
             <WishItemList>
               {active.map(wish => (
@@ -101,7 +98,7 @@ export function OwnWishlist({
           </TabsContent>
           <TabsContent value="reserved">
             <div>
-              <div className="mb-4 flex w-full items-center justify-center gap-1 text-xs text-slate-500">
+              <div className="mb-4 flex w-full items-center justify-center gap-1 text-xs">
                 Here you can find all the wishes you have reserved
               </div>
               {reserved.length > 0 ? (
