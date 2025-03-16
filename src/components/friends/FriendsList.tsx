@@ -40,10 +40,7 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
 }
 
 function getRecentWishes(recentWishes: Pick<WishType, "name">[]) {
-  const wishes = recentWishes.map(({ name }) => `"${name}"`);
-  if (wishes.length > MAX_RECENT_WISHES) {
-    return `${wishes.slice(0, MAX_RECENT_WISHES).join(", ")} and more...`;
-  }
+  const wishes = recentWishes.slice(0, MAX_RECENT_WISHES).map(({ name }) => `${name}`);
 
   return wishes.join(", ");
 }

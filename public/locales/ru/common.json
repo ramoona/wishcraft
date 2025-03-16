@@ -48,7 +48,7 @@
   "friends": {
     "title": "Твои друзья",
     "empty": "Пока нет друзей",
-    "recentWishes": "Heдавно добавлены: {{ wishes }}",
+    "recentWishes": "Heдавно добавлены: \"{{ wishes }}\"",
     "moreWishes": "{{ wishes }} и ещё..."
   },
   "error": {
