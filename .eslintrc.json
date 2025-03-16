@@ -17,7 +17,7 @@
     "no-duplicate-imports": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
-    "no-console": "error",
+    "no-console": "warn",
     "no-unused-expressions": "warn",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/prefer-nullish-coalescing": "off",

@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { cn } from "~/utils/classnames";
 import { LanguageProvider } from "~/components/LanguageProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Wishcraft",

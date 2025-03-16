@@ -1,3 +1,5 @@
+"use client";
+
 import { PropsWithChildren } from "react";
 import { WarningCircle } from "@phosphor-icons/react";
 import * as React from "react";

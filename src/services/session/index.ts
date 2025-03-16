@@ -1,4 +1,4 @@
-import { prisma } from "prisma/client";
+import { prisma } from "prisma/db";
 import { Google } from "arctic";
 import { User } from "~/services/user/types";
 import { ServerError } from "~/services/errors";

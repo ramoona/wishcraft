@@ -2,7 +2,6 @@
 
 import React, { useCallback, useDeferredValue, useEffect, useState, useTransition } from "react";
 import { checkUsernameUniquenessAction, updateUsernameAction } from "~/services/user/actions";
-import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { UsernameFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
@@ -10,12 +9,14 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { clsx } from "clsx";
 import { useTranslation } from "~/utils/useTranslation";
+import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
+import { TypographyMuted } from "~/components/ui/typography";
 
-export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsername: string }) {
+export function OnboardingWizardUsernameStep() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const [username, setUsername] = useState(initialUsername);
+  const [username, setUsername] = useState("");
   const [isUnique, setIsUnique] = useState<boolean | undefined>(true);
   const { t } = useTranslation();
 
@@ -55,14 +56,18 @@ export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsern
   );
 
   useEffect(() => {
-    if (deferredValue && deferredValue !== initialUsername) {
+    if (deferredValue) {
       void checkUniqueness(deferredValue);
     }
-  }, [checkUniqueness, deferredValue, initialUsername]);
+  }, [checkUniqueness, deferredValue]);
 
   return (
-    <form action={trigger} className="flex flex-col items-center gap-4 p-4">
-      <h1>{t("onboarding.username.title")}</h1>
+    <OnboardingWizardStep
+      step="username"
+      title={t("onboarding.username.title")}
+      isSubmitting={isPending}
+      onSubmit={trigger}
+    >
       <Input
         type="text"
         name="username"
@@ -74,9 +79,7 @@ export function OnboardingWizardUsernameStep({ initialUsername }: { initialUsern
           username && isUnique === true && "border-emerald-500",
         )}
       />
-      <Button type="submit" size="lg">
-        {isPending ? t("states.saving") : t("actions.save")}
-      </Button>
-    </form>
+      <TypographyMuted>{t("onboarding.username.description")}</TypographyMuted>
+    </OnboardingWizardStep>
   );
 }

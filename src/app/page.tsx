@@ -1,6 +1,6 @@
 import { SignInForm } from "~/components/forms/SignInForm";
 import { redirect } from "next/navigation";
-import { SignInLayout } from "~/components/layout/Layout";
+import { OnboardingLayout, SignInLayout } from "~/components/layout/Layout";
 import { getSessionUser } from "~/services/session";
 import { OnboardingWizard } from "~/components/forms/OnboardingWizard/OnboardingWizard";
 
@@ -16,7 +16,11 @@ export default async function Home() {
   }
 
   if (sessionUser && !sessionUser.isOnboarded) {
-    return <OnboardingWizard initialUsername={sessionUser.username} />;
+    return (
+      <OnboardingLayout>
+        <OnboardingWizard />
+      </OnboardingLayout>
+    );
   }
 
   redirect(`/${sessionUser.username}`);

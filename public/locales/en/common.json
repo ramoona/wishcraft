@@ -11,26 +11,33 @@
     "edit": "Edit",
     "signInWithGoogle": "Sign in with Google",
     "removeFriend": "Remove friend",
-    "addFriend": "Add friend"
+    "continue": "Continue",
+    "skip": "Skip"
   },
   "states": {
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "skipping": "Skipping..."
   },
   "onboarding": {
     "defaultCurrency": {
-      "title": "Choose default currency"
+      "title": "Let's select your default currency",
+      "description": "Selected currency will be used by default for your wishes. You can always change it in your profile settings."
     },
     "dateOfBirth": {
-      "title": "When is your birthday?"
+      "title": "When is your birthday?",
+      "description": "Birthdays are public. You can set your birthday later in your profile settings."
     },
     "profileVisibility": {
-      "title": "Do you want your profile to be private?"
+      "title": "Do you want your profile to be private?",
+      "description": "By default all profiles are public. If you choose to make your profile private, your wishlist will not be visible to others. You can always change it in your profile settings."
     },
     "username": {
-      "title": "Choose a username"
+      "title": "First, let’s pick your unique username",
+      "description": "Usernames are public. Choose wisely, as won't be able to change it later."
     },
     "reservedWishesVisibility": {
-      "title": "Do you want to see if your wishes are reserved by someone?"
+      "title": "Do you want to see if your wishes are reserved by someone?",
+      "description": "By default this setting is turned off. If you choose to turn it on, you will see a little <badge>reserved</badge> badge next to the wishes that are reserved by someone but you won't see by whom. You can always change it in your profile settings."
     }
   },
   "placeholders": {
@@ -58,5 +65,9 @@
     "INVALID_INPUT": "Invalid input",
     "TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME": "Too many attempts to generate username",
     "UNKNOWN": "Unknown error"
+  },
+  "success": {
+    "SAVED": "Saved!",
+    "DELETED": "Deleted!"
   }
 }

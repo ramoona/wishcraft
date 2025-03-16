@@ -1,5 +1,5 @@
 import { getSessionUserOrThrow } from "~/services/session";
-import { prisma } from "prisma/client";
+import { prisma } from "prisma/db";
 import { FriendUser } from "~/services/user/types";
 import { logUserAction } from "~/services/user";
 import { WISH_FIELDS_SELECT } from "~/services/wishlist";

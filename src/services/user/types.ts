@@ -30,7 +30,7 @@ export type FriendUser = Pick<
   recentWishes: Pick<WishType, "name">[];
 };
 
-export const userOnboardingSteps = [
+export const ONBOARDING_STEPS = [
   "username",
   "profile-visibility",
   "date-of-birth",
@@ -38,7 +38,7 @@ export const userOnboardingSteps = [
   "reserved-wishes-visibility",
 ] as const;
 
-export type UserOnboardingStep = (typeof userOnboardingSteps)[number];
+export type UserOnboardingStep = (typeof ONBOARDING_STEPS)[number];
 
 export type UserActionPayload =
   | {

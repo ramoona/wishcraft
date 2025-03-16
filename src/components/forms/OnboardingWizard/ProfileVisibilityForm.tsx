@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Button } from "~/components/ui/button";
 import { ProfileVisibilityFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
@@ -9,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { updateProfileVisibilityAction } from "~/services/user/actions";
 import { Switch } from "~/components/ui/switch";
 import { useTranslation } from "~/utils/useTranslation";
+import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
+import { TypographyMuted } from "~/components/ui/typography";
 
 export function OnboardingWizardProfileVisibilityStep() {
   const router = useRouter();
@@ -30,12 +31,15 @@ export function OnboardingWizardProfileVisibilityStep() {
   };
 
   return (
-    <form action={trigger} className="flex flex-col items-center gap-4 p-4">
-      <h1>{t("onboarding.profileVisibility.title")}</h1>
+    <OnboardingWizardStep
+      onSubmit={trigger}
+      onSkip={() => undefined}
+      step="profile-visibility"
+      title={t("onboarding.profileVisibility.title")}
+      isSubmitting={isPending}
+    >
       <Switch name="isProfileHidden" checked={isProfileHidden} onCheckedChange={setIsProfileHidden} />
-      <Button type="submit" size="lg">
-        {isPending ? t("states.saving") : t("actions.save")}
-      </Button>
-    </form>
+      <TypographyMuted>{t("onboarding.profileVisibility.description")}</TypographyMuted>
+    </OnboardingWizardStep>
   );
 }

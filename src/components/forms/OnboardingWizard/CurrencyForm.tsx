@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Button } from "~/components/ui/button";
 import { DefaultCurrencyFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
@@ -10,6 +9,8 @@ import { currencies, currencyNames } from "~/lib/currencies";
 import { Select } from "~/components/ui/select";
 import { updateDefaultCurrencyAction } from "~/services/user/actions";
 import { useTranslation } from "~/utils/useTranslation";
+import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
+import { TypographyMuted } from "~/components/ui/typography";
 
 export function OnboardingWizardCurrencyStep() {
   const router = useRouter();
@@ -31,16 +32,19 @@ export function OnboardingWizardCurrencyStep() {
   };
 
   return (
-    <form action={trigger} className="flex flex-col items-center gap-4 p-4">
-      <h1>{t("onboarding.defaultCurrency.title")}</h1>
+    <OnboardingWizardStep
+      title={t("onboarding.defaultCurrency.title")}
+      step="default-currency"
+      onSubmit={trigger}
+      isSubmitting={isPending}
+      onSkip={() => undefined}
+    >
       <Select
         value={currency}
         onChange={setCurrency}
         options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
       />
-      <Button type="submit" size="lg">
-        {isPending ? t("states.saving") : t("actions.save")}
-      </Button>
-    </form>
+      <TypographyMuted>{t("onboarding.defaultCurrency.description")}</TypographyMuted>
+    </OnboardingWizardStep>
   );
 }

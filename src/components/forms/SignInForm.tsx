@@ -1,10 +1,10 @@
 "use client";
 
 import { buttonVariants } from "~/components/ui/button";
-import { GoogleLogo } from "@phosphor-icons/react";
 
 import { cn } from "~/utils/classnames";
 import { useTranslation } from "~/utils/useTranslation";
+import { TypographyExtraLarge, TypographyLeadBody } from "~/components/ui/typography";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const queryParams = new URLSearchParams();
@@ -19,12 +19,22 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
   }
 
   return (
-    <a
-      className={cn(buttonVariants({ variant: "outline" }), "flex h-12 items-center gap-2 no-underline")}
-      href={`/api/auth/google?${queryParams.toString()}`}
-    >
-      <GoogleLogo size={24} weight="regular" />
-      {t("actions.signInWithGoogle")}
-    </a>
+    <div className="flex flex-col items-center gap-6 px-11 pb-28">
+      <div className="flex flex-col gap-2">
+        <TypographyExtraLarge>Make your wishes come true!</TypographyExtraLarge>
+        <TypographyLeadBody>
+          The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.
+        </TypographyLeadBody>
+      </div>
+      <a
+        className={cn(
+          buttonVariants({ variant: "secondary", fullWidth: false }),
+          "flex h-12 items-center gap-2 no-underline",
+        )}
+        href={`/api/auth/google?${queryParams.toString()}`}
+      >
+        {t("actions.signInWithGoogle")}
+      </a>
+    </div>
   );
 }

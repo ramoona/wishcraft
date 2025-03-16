@@ -1,7 +1,7 @@
 import { createSession, generateSessionToken, getGoogleAuth, setSessionTokenCookie } from "~/services/session";
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
-import { prisma } from "prisma/client";
+import { prisma } from "prisma/db";
 import { reserveWish } from "~/services/wishlist";
 import { createUser } from "~/services/user";
 import { ServerError } from "~/services/errors";

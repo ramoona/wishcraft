@@ -1,6 +1,6 @@
 import { WishStatus } from "@prisma/client";
 
-import { prisma } from "prisma/client";
+import { prisma } from "prisma/db";
 import { WishCreateInput, WishlistType, WishType, WishUpdateInput } from "~/services/wishlist/types";
 import { WishlistError } from "~/services/wishlist/errors";
 import { ServerError } from "~/services/errors";

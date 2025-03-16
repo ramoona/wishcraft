@@ -1,6 +1,6 @@
-import { prisma } from "prisma/client";
+import { prisma } from "prisma/db";
 import { UserError } from "~/services/user/errors";
-import { OtherUser, User, UserActionPayload, UserOnboardingStep, userOnboardingSteps } from "~/services/user/types";
+import { OtherUser, User, UserActionPayload, UserOnboardingStep, ONBOARDING_STEPS } from "~/services/user/types";
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
 import { deleteSessionTokenCookie, getSessionUserOrThrow } from "~/services/session";
@@ -243,7 +243,7 @@ export async function logUserAction(payload: UserActionPayload) {
 }
 
 export function isUserOnboarded(user: PrismaUser) {
-  const stepsToComplete = userOnboardingSteps.filter(
+  const stepsToComplete = ONBOARDING_STEPS.filter(
     step => !(step === "reserved-wishes-visibility" && user.isProfileHidden),
   );
 

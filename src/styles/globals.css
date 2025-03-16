@@ -2,35 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/*--charcoal: hsla(201, 38%, 29%, 1);*/
-/*--slate-gray: hsla(203, 17%, 51%, 1);*/
-/*--cadet-gray: hsla(203, 18%, 68%, 1);*/
-/*--timberwolf: hsla(38, 8%, 81%, 1);*/
-/*--old-gold: hsla(47, 73%, 58%, 1);*/
 :root {
-  /*--background: 30 29% 93%;*/
-  /*--foreground: 222.2 47.4% 11.2%;*/
-  /*--secondary-background: 203 17% 51%;*/
-  /*--muted: 203 18% 68%;*/
-  /*--muted-foreground: 210 40% 98%;*/
-  /*--card: 0 0% 100%;*/
-  /*--card-foreground: 222.2 47.4% 11.2%;*/
-  /*--popover: 0 0% 100%;*/
-  /*--popover-foreground: 222.2 47.4% 11.2%;*/
-  /*--border: 214.3 31.8% 91.4%;*/
-  /*--input: 214.3 31.8% 91.4%;*/
-  /*--primary: 201 38% 29%;*/
-  /*--primary-foreground: 210 40% 98%;*/
-  /*--secondary: 203 17% 51%;*/
-  /*--secondary-foreground: 222.2 47.4% 11.2%;*/
-  /*--accent: 47 73% 58%;*/
-  /*--accent-foreground: 222.2 47.4% 11.2%;*/
-  /*--destructive: 0 100% 50%;*/
-  /*--destructive-foreground: 210 40% 98%;*/
-  /*--ring: 215 20.2% 65.1%;*/
-  /*--radius: 0.5rem;*/
+  --primary: 267 100% 88%;
+  --primary-foreground: 0 0% 0%;
 
-  /* OG colors */
+  --secondary: 0 0% 0%;
+  --secondary-foreground: 267 100% 88%;
+
   --background: 0 0% 100%;
   --foreground: 222.2 47.4% 11.2%;
   --muted: 210 40% 96.1%;
@@ -41,10 +19,7 @@
   --popover-foreground: 222.2 47.4% 11.2%;
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
+
   --accent: 210 40% 96.1%;
   --accent-foreground: 222.2 47.4% 11.2%;
   --destructive: 0 100% 50%;

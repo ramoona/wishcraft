@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Button } from "~/components/ui/button";
 import { ReservedWishesVisibilityFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
@@ -9,6 +8,9 @@ import { useRouter } from "next/navigation";
 import { updateReservedWishesVisibilityAction } from "~/services/user/actions";
 import { Switch } from "~/components/ui/switch";
 import { useTranslation } from "~/utils/useTranslation";
+import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
+import { TypographyMuted } from "~/components/ui/typography";
+import { Trans } from "react-i18next";
 
 export function OnboardingWizardReservedWishesVisibilityStep() {
   const router = useRouter();
@@ -30,12 +32,23 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
   };
 
   return (
-    <form action={trigger} className="flex flex-col items-center gap-4 p-4">
-      <h1>{t("onboarding.reservedWishesVisibility.title")}</h1>
+    <OnboardingWizardStep
+      title={t("onboarding.reservedWishesVisibility.title")}
+      onSubmit={trigger}
+      isSubmitting={isPending}
+      step="reserved-wishes-visibility"
+      onSkip={() => undefined}
+    >
       <Switch name="showReserved" checked={showReserved} onCheckedChange={setShowReserved} />
-      <Button type="submit" size="lg">
-        {isPending ? t("states.saving") : t("actions.save")}
-      </Button>
-    </form>
+      <TypographyMuted>
+        <Trans
+          t={t}
+          i18nKey="onboarding.reservedWishesVisibility.description"
+          components={{
+            badge: <span className="rounded-full bg-secondary px-2 text-sm text-secondary-foreground" />,
+          }}
+        />
+      </TypographyMuted>
+    </OnboardingWizardStep>
   );
 }

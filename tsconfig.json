@@ -20,7 +20,8 @@
     "baseUrl": ".",
     "downlevelIteration": true,
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "prisma/*": ["prisma/*"]
     },
     "plugins": [
       {

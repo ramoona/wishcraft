@@ -2,7 +2,6 @@
 
 import React, { useState, useTransition } from "react";
 import { updateDateOfBirthAction } from "~/services/user/actions";
-import { Button } from "~/components/ui/button";
 import { DateOfBirthFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
@@ -10,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { Select } from "~/components/ui/select";
 import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
 import { useTranslation } from "~/utils/useTranslation";
+import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
+import { TypographyMuted } from "~/components/ui/typography";
 
 export function OnboardingWizardDateOfBirthStep() {
   const router = useRouter();
@@ -32,9 +33,14 @@ export function OnboardingWizardDateOfBirthStep() {
   };
 
   return (
-    <form action={trigger} className="flex flex-col items-center gap-4 p-4">
-      <h1>{t("onboarding.dateOfBirth.title")}</h1>
-
+    <OnboardingWizardStep
+      onSubmit={trigger}
+      step="date-of-birth"
+      isSubmitting={isPending}
+      title={t("onboarding.dateOfBirth.title")}
+      onSkip={() => undefined}
+      isSubmissionDisabled={!!month && !day}
+    >
       <div className="grid w-full grid-cols-2 gap-4">
         <Select
           value={month ? String(month) : ""}
@@ -60,9 +66,7 @@ export function OnboardingWizardDateOfBirthStep() {
           }
         />
       </div>
-      <Button type="submit" size="lg">
-        {isPending ? t("states.saving") : t("actions.save")}
-      </Button>
-    </form>
+      <TypographyMuted>{t("onboarding.dateOfBirth.description")}</TypographyMuted>
+    </OnboardingWizardStep>
   );
 }
