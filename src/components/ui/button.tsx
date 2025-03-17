@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "~/utils/classnames";
 
 const buttonVariants = cva(
-  "inline-flex w-fit min-w-[214px] items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex w-fit items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -27,10 +27,14 @@ const buttonVariants = cva(
       fullWidth: {
         true: "w-full",
       },
+      minWidth: {
+        true: "min-w-[214px]",
+      },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
+      minWidth: true,
     },
   },
 );
@@ -43,10 +47,10 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, type = "button", fullWidth, ...props }, ref) => {
+  ({ className, variant, size, type = "button", fullWidth, minWidth, ...props }, ref) => {
     return (
       <button
-        className={cn(buttonVariants({ variant, size, className, fullWidth }))}
+        className={cn(buttonVariants({ variant, size, className, fullWidth, minWidth }))}
         ref={ref}
         type={type}
         {...props}
