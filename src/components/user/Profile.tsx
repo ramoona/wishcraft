@@ -1,7 +1,6 @@
 "use client";
 import { User } from "~/services/user/types";
 import { EyeSlash, HeartBreak, SignOut } from "@phosphor-icons/react";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import Link from "next/link";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -37,17 +36,12 @@ import {
 } from "~/components/ui/drawer";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { useTranslation } from "~/utils/useTranslation";
+import { UserDetails } from "~/components/ui/user";
 
 export function Profile({ user }: { user: User }) {
   return (
     <form className="flex flex-col gap-6" autoComplete="off">
-      <div className="flex items-center gap-4">
-        <UserPic imageUrl={user.image} />
-        <div className="flex items-center gap-1 text-lg">
-          <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")}</span>
-          <span className="text-sm text-foreground/70">@{user.username}</span>
-        </div>
-      </div>
+      <UserDetails user={user} />
       <Email email={user.email} />
       <Username username={user.username ?? ""} />
       <ProfileVisibility isProfileHidden={user.isProfileHidden} />
@@ -65,15 +59,6 @@ export function Profile({ user }: { user: User }) {
         <DeleteAccountButton user={user} />
       </div>
     </form>
-  );
-}
-
-function UserPic({ imageUrl }: { imageUrl?: string | null }) {
-  return (
-    <Avatar>
-      <AvatarImage src={imageUrl || ""} />
-      <AvatarFallback />
-    </Avatar>
   );
 }
 

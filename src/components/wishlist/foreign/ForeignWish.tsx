@@ -17,11 +17,11 @@ export async function ForeignWish({ data, isMobile = true }: { data: WishT; isMo
     return (
       <div className={`relative flex w-full flex-col gap-2 ${isWishReservable ? "mb-4" : ""}`}>
         <WishDetailsMobile {...data} reservedByCurrentUser={isReservedByCurrentUser} />
-        {isWishReservable && (
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[22px]">
-            <ReserveButton wishId={data.id} isReserved={isReservedByCurrentUser} isLoggedIn={!!sessionUser} isMobile />
-          </div>
-        )}
+        {/*{isWishReservable && (*/}
+        {/*  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[22px]">*/}
+        {/*    <ReserveButton wishId={data.id} isReserved={isReservedByCurrentUser} isLoggedIn={!!sessionUser} isMobile />*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </div>
     );
   }

@@ -1,12 +1,16 @@
 import { PropsWithChildren } from "react";
-import { User } from "~/services/user/types";
+import { OtherUser, User } from "~/services/user/types";
 
 import { Logo } from "~/components/ui/logo";
 import Link from "next/link";
 import NavBar from "~/components/layout/NavBar";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
 
-export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user: User }>) {
+export function AuthenticatedLayout({
+  user,
+  children,
+  otherUser,
+}: PropsWithChildren<{ user: User; otherUser?: OtherUser }>) {
   return (
     <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
       <header className="relative flex w-screen justify-center bg-white p-8">
@@ -15,7 +19,7 @@ export function AuthenticatedLayout({ user, children }: PropsWithChildren<{ user
         </Link>
       </header>
       <main className="relative overflow-auto bg-muted">{children}</main>
-      {user.isOnboarded && <NavBar user={user} />}
+      {user.isOnboarded && <NavBar user={user} otherUser={otherUser} />}
     </div>
   );
 }

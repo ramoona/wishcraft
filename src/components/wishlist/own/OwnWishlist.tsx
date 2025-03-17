@@ -56,11 +56,11 @@ export function OwnWishlist({
           </TabsTrigger>
         </TabsList>
         <TabsContent value="active" className="mx-auto max-w-xl p-4">
-          <div className="mb-4 w-full text-center text-xs">
+          <p className="mb-4 w-full text-center text-xs">
             <b>Anyone</b> can see your Active Wishes
             <br />
             if they are not set to <b>Private</b>
-          </div>
+          </p>
           {active.length > 0 ? (
             <WishItemList>
               {active.map(wish => (
@@ -99,9 +99,7 @@ export function OwnWishlist({
         </TabsContent>
         <TabsContent value="reserved" className="mx-auto max-w-xl p-4">
           <div>
-            <div className="mb-4 flex w-full items-center justify-center gap-1 text-xs">
-              Here you can find all the wishes you have reserved
-            </div>
+            <p className="mb-4 w-full text-center text-xs">Here you can find all the wishes you have reserved</p>
             {reserved.length > 0 ? (
               <WishItemList>
                 {reserved.map(wish => (
@@ -142,9 +140,9 @@ function WishItem({ wish, isMobile, showReserved }: { wish: WishType; isMobile: 
 
 function PrivateSectionNote({ type }: { type: string }) {
   return (
-    <div className="mb-4 flex w-full items-center justify-center gap-1 text-xs text-slate-500">
+    <p className="mb-4 w-full text-center text-xs">
       <b>Only you</b> can see your {type} wishes
-    </div>
+    </p>
   );
 }
 
