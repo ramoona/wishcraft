@@ -5,6 +5,7 @@ import { Toaster } from "~/components/ui/toasts";
 import { Analytics } from "@vercel/analytics/react";
 import { cn } from "~/utils/classnames";
 import { LanguageProvider } from "~/components/LanguageProvider";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 
@@ -20,6 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      </Head>
       <body className={cn(inter.className, "relative bg-background")}>
         <LanguageProvider>
           {children}
