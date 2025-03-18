@@ -8,7 +8,7 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { Select } from "~/components/ui/select";
 import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
 

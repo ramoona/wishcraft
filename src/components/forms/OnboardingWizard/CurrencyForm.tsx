@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { currencies, currencyNames } from "~/lib/currencies";
 import { Select } from "~/components/ui/select";
 import { updateDefaultCurrencyAction } from "~/services/user/actions";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
 

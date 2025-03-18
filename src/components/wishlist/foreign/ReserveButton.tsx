@@ -18,7 +18,7 @@ import {
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 
 export function ReserveButton({
   wishId,

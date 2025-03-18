@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { WishCreateInput, WishUpdateInput } from "~/services/wishlist/types";
 import { showErrorToast } from "~/components/ui/toasts";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 import { getErrorMessage } from "~/core/errorMessages";
 
 export function useDeleteWish(): [boolean, (id: string, onSuccess?: () => void) => void] {

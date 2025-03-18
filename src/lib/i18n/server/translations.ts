@@ -11,7 +11,7 @@ const initServerI18next = async (language: string) => {
   const i18nInstance = createInstance();
   await i18nInstance
     .use(initReactI18next)
-    .use(resourcesToBackend((language: string) => import(`/public/locales/${language}/common.json`)))
+    .use(resourcesToBackend((language: string) => import(`../locales/${language}/common.json`)))
     .init({ ...getCommonI18nextOptions(), lng: language });
 
   return i18nInstance;

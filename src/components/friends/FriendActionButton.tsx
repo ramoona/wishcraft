@@ -4,7 +4,7 @@ import { Button } from "~/components/ui/button";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { addFriendAction, removeFriendAction } from "~/services/friend/actions";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
 

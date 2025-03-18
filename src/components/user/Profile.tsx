@@ -33,7 +33,7 @@ import {
   DrawerTrigger,
 } from "~/components/ui/drawer";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 import { UserDetails } from "~/components/ui/user";
 import { DropdownMenu, DropdownMenuItem } from "~/components/ui/dropdown-menu";
 

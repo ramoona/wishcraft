@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { ServerErrorCode } from "~/services/errors";
 import { UserErrorCode } from "~/services/user/errors";
 import { WishlistErrorCode } from "~/services/wishlist/errors";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 import { getErrorMessage } from "~/core/errorMessages";
 
 export function ErrorMessage({

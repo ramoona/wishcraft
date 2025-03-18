@@ -4,7 +4,7 @@ import React, { PropsWithChildren } from "react";
 
 import { Button } from "~/components/ui/button";
 
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 import { ONBOARDING_STEPS } from "~/services/user/types";
 import { TypographyH1 } from "~/components/ui/typography";
 

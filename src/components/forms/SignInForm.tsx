@@ -3,7 +3,7 @@
 import { buttonVariants } from "~/components/ui/button";
 
 import { cn } from "~/utils/classnames";
-// import { useTranslation } from "~/utils/useTranslation";
+// import { useTranslation } from "react-i18next";
 import { TypographyExtraLarge, TypographyLeadBody } from "~/components/ui/typography";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {

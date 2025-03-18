@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { OtherUser, User } from "~/services/user/types";
 import { cn } from "~/utils/classnames";
 import { AddNewWishMobile } from "~/components/wishlist/own/AddNewWish";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation } from "react-i18next";
 import { FriendActionButton } from "~/components/friends/FriendActionButton";
 import { Button } from "~/components/ui/button";
 import * as React from "react";

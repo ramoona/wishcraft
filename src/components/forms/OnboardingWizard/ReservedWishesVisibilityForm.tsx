@@ -6,10 +6,9 @@ import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { updateReservedWishesVisibilityAction } from "~/services/user/actions";
-import { useTranslation } from "~/utils/useTranslation";
+import { useTranslation, Trans } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
-import { Trans } from "react-i18next";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Label } from "~/components/ui/label";
 
