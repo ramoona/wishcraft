@@ -172,7 +172,7 @@ export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps)
           />
         </div>
         <div className="grid w-full grid-cols-[auto_max-content] gap-4">
-          <WishFormButtonsMobile
+          <WishFormButtons
             wish={wish}
             disabled={!formState.isValid}
             isLoading={isUpdating || isCreating}
@@ -184,7 +184,7 @@ export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps)
   );
 }
 
-function WishFormButtonsMobile({
+function WishFormButtons({
   wish,
   disabled,
   isLoading,
@@ -218,7 +218,7 @@ function WishFormButtonsMobile({
         >
           Move to Active
         </Button>
-        <WishDropdownMenu onActionSuccess={onActionSuccess} wish={wish} isMobile />
+        <WishDropdownMenu onActionSuccess={onActionSuccess} wish={wish} />
       </>
     );
   }
@@ -228,7 +228,7 @@ function WishFormButtonsMobile({
       <Button type="submit" disabled={disabled} size="lg" isLoading={isLoading}>
         Save
       </Button>
-      <WishDropdownMenu onActionSuccess={onActionSuccess} wish={wish} isMobile />
+      <WishDropdownMenu onActionSuccess={onActionSuccess} wish={wish} />
     </>
   );
 }

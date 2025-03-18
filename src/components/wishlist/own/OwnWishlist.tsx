@@ -6,9 +6,7 @@ import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WishDrawer } from "~/components/wishlist/own/WishDrawer";
-import { StatusBadge } from "~/components/wishlist/StatusBadge";
-import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
-import { WishDetailsDesktop, WishDetailsMobile } from "~/components/wishlist/own/WishDetails";
+import { WishDetails } from "~/components/wishlist/own/WishDetails";
 import { OtherUser } from "~/services/user/types";
 import { ForeignWishReserved } from "~/components/wishlist/own/ForeignWishReserved";
 
@@ -21,7 +19,6 @@ export function OwnWishlist({
   reserved: (WishType & { user: OtherUser })[];
   showOwnReserved: boolean;
 }) {
-  const isMobile = true;
   const {
     active = [],
     fulfilled = [],
@@ -64,7 +61,7 @@ export function OwnWishlist({
           {active.length > 0 ? (
             <WishItemList>
               {active.map(wish => (
-                <WishItem key={wish.id} wish={wish} isMobile={isMobile} showReserved={showOwnReserved} />
+                <WishItem key={wish.id} wish={wish} showReserved={showOwnReserved} />
               ))}
             </WishItemList>
           ) : (
@@ -76,7 +73,7 @@ export function OwnWishlist({
           {fulfilled.length > 0 ? (
             <WishItemList>
               {fulfilled.map(wish => (
-                <WishItem key={wish.id} wish={wish} isMobile={isMobile} />
+                <WishItem key={wish.id} wish={wish} />
               ))}
             </WishItemList>
           ) : (
@@ -89,7 +86,7 @@ export function OwnWishlist({
             {archived.length > 0 ? (
               <WishItemList>
                 {archived.map(wish => (
-                  <WishItem key={wish.id} wish={wish} isMobile={isMobile} />
+                  <WishItem key={wish.id} wish={wish} />
                 ))}
               </WishItemList>
             ) : (
@@ -103,7 +100,7 @@ export function OwnWishlist({
             {reserved.length > 0 ? (
               <WishItemList>
                 {reserved.map(wish => (
-                  <ForeignWishReserved key={wish.id} wish={wish} user={wish.user} isMobile={isMobile} />
+                  <ForeignWishReserved key={wish.id} wish={wish} user={wish.user} />
                 ))}
               </WishItemList>
             ) : (
@@ -116,24 +113,14 @@ export function OwnWishlist({
   );
 }
 
-function WishItem({ wish, isMobile, showReserved }: { wish: WishType; isMobile: boolean; showReserved?: boolean }) {
-  if (isMobile) {
-    return (
-      <div key={wish.id} className="flex w-full items-start gap-2">
-        <WishDrawer wish={wish} mode="update" showReserved={showReserved}>
-          <button type="button" className="w-full">
-            <WishDetailsMobile {...wish} showReserved={showReserved} />
-          </button>
-        </WishDrawer>
-      </div>
-    );
-  }
-
+function WishItem({ wish, showReserved }: { wish: WishType; showReserved?: boolean }) {
   return (
     <div key={wish.id} className="flex w-full items-start gap-2">
-      <WishDetailsDesktop data={wish} />
-      <StatusBadge status={wish.status} />
-      <WishDropdownMenu wish={wish} />
+      <WishDrawer wish={wish} mode="update" showReserved={showReserved}>
+        <button type="button" className="w-full">
+          <WishDetails {...wish} showReserved={showReserved} />
+        </button>
+      </WishDrawer>
     </div>
   );
 }

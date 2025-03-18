@@ -5,7 +5,6 @@ import React, { useState, useTransition } from "react";
 import { reserveWishAction, releaseWishAction } from "~/services/wishlist/actions";
 import { Button } from "~/components/ui/button";
 import { SignInForm } from "~/components/forms/SignInForm";
-import { Slider } from "~/components/ui/slider";
 import { WishlistReservationFormData } from "~/services/wishlist/formData";
 import {
   Drawer,
@@ -23,12 +22,10 @@ import { useTranslation } from "react-i18next";
 export function ReserveButton({
   wishId,
   isReserved,
-  isMobile,
   isLoggedIn,
 }: {
   wishId: string;
   isReserved?: boolean;
-  isMobile: boolean;
   isLoggedIn?: boolean;
 }) {
   const router = useRouter();
@@ -83,42 +80,27 @@ export function ReserveButton({
     });
   };
 
-  if (isMobile) {
-    return (
-      <>
-        <Button onClick={isReserved ? triggerReleaseWishAction : triggerReserveWishAction} variant="outline">
-          {isPending && (isReserved ? "Canceling..." : "Reserving...")}
-          {!isPending && (isReserved ? "Cancel reservation" : "Reserve")}
-        </Button>
-        <Drawer open={isSliderOpen} onClose={() => setSliderOpen(false)} onOpenChange={open => setSliderOpen(open)}>
-          <DrawerTrigger asChild></DrawerTrigger>
-          <DrawerContent className="px-6 pb-4">
-            <VisuallyHidden>
-              <DrawerTitle>Log in to reserve a wish</DrawerTitle>
-              <DrawerDescription>Log in to reserve a wish</DrawerDescription>
-            </VisuallyHidden>
-            <div className="pt-6">
-              <SignInForm wishId={wishId} wishlistOwner={params.username} />
-            </div>
-            <VisuallyHidden>
-              <DrawerClose>Close</DrawerClose>
-            </VisuallyHidden>
-          </DrawerContent>
-        </Drawer>
-      </>
-    );
-  }
-
   return (
     <>
       <Button onClick={isReserved ? triggerReleaseWishAction : triggerReserveWishAction} variant="outline">
         {isPending && (isReserved ? "Canceling..." : "Reserving...")}
         {!isPending && (isReserved ? "Cancel reservation" : "Reserve")}
       </Button>
-
-      <Slider isOpen={isSliderOpen} header="Who is reserving?">
-        <SignInForm wishId={wishId} wishlistOwner={params.username} />
-      </Slider>
+      <Drawer open={isSliderOpen} onClose={() => setSliderOpen(false)} onOpenChange={open => setSliderOpen(open)}>
+        <DrawerTrigger asChild></DrawerTrigger>
+        <DrawerContent className="px-6 pb-4">
+          <VisuallyHidden>
+            <DrawerTitle>Log in to reserve a wish</DrawerTitle>
+            <DrawerDescription>Log in to reserve a wish</DrawerDescription>
+          </VisuallyHidden>
+          <div className="pt-6">
+            <SignInForm wishId={wishId} wishlistOwner={params.username} />
+          </div>
+          <VisuallyHidden>
+            <DrawerClose>Close</DrawerClose>
+          </VisuallyHidden>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }

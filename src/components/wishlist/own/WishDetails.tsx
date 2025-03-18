@@ -3,48 +3,28 @@ import { Price } from "~/components/wishlist/Price";
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
 import React from "react";
 
-export function WishDetailsMobile({
-  comment,
+export function WishDetails({
   currency,
   price,
   name,
-  url,
   reservedById,
   reservedByCurrentUser,
   showReserved,
   username,
-}: WishType & { reservedByCurrentUser?: boolean; showReserved?: boolean; username?: string }) {
+  isPrivate,
+  isForeign,
+}: WishType & { reservedByCurrentUser?: boolean; showReserved?: boolean; username?: string; isForeign?: boolean }) {
   return (
-    <div className="relative w-full bg-background p-4 text-left">
-      {username && <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>}
-      {showReserved && reservedById && (
-        <div className="absolute -top-3 right-2">
+    <div className="relative flex min-h-20 w-full items-center justify-between gap-4 bg-background px-5 py-4 text-left">
+      <div className="flex flex-col items-start gap-2">
+        {username && <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>}
+        <span className="text-sm">{name}</span>
+        {isPrivate && <StatusBadge status="PRIVATE" />}
+        {!isPrivate && (showReserved || isForeign) && reservedById && (
           <StatusBadge status={reservedByCurrentUser ? "RESERVED_BY_CURRENT_USER" : "RESERVED"} />
-        </div>
-      )}
-      <div className="flex items-baseline gap-2">
-        <span className={url ? "grow text-left underline" : "grow text-left"}>{name}</span>
-        <Price price={price} currency={currency} />
-      </div>
-      {comment && <span className="mt-4 text-[15px] text-slate-500">{comment}</span>}
-    </div>
-  );
-}
-
-export function WishDetailsDesktop({ data }: { data: Omit<WishType, "status" | "reservedById"> }) {
-  return (
-    <div className="w-full flex-col gap-2">
-      <div className="flex items-center gap-2">
-        {data.url ? (
-          <a href={data.url} target="_blank">
-            {data.name}
-          </a>
-        ) : (
-          <span>{data.name}</span>
         )}
-        <Price price={data.price} currency={data.currency} />
       </div>
-      <span className="text-xs text-slate-500">{data.comment}</span>
+      <Price price={price} currency={currency} />
     </div>
   );
 }

@@ -3,8 +3,6 @@
 import { WishType } from "~/services/wishlist/types";
 import { DropdownMenu, DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import { WishStatus } from "@prisma/client";
-import { Slider } from "~/components/ui/slider";
-import { WishForm } from "~/components/wishlist/own/WishForm";
 import * as React from "react";
 import { useState } from "react";
 import { Gear, Archive, TrashSimple, Gift } from "@phosphor-icons/react";
@@ -12,16 +10,7 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/utils/classnames";
 import { useDeleteWish, useUpdateWish } from "~/components/wishlist/own/hooks";
 
-export function WishDropdownMenu({
-  wish,
-  isMobile,
-  onActionSuccess,
-}: {
-  wish: WishType;
-  isMobile?: boolean;
-  onActionSuccess?: () => void;
-}) {
-  const [isSliderOpen, setIsSliderOpen] = useState(false);
+export function WishDropdownMenu({ wish, onActionSuccess }: { wish: WishType; onActionSuccess?: () => void }) {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [isDeleting, deleteWish] = useDeleteWish();
   const [isUpdating, updateWish] = useUpdateWish();
@@ -35,7 +24,6 @@ export function WishDropdownMenu({
           </Button>
         }
       >
-        {!isMobile && <DropdownMenuItem onSelect={() => setIsSliderOpen(true)}>Edit</DropdownMenuItem>}
         {wish.status !== "FULFILLED" && (
           <DropdownMenuItem onSelect={() => updateWish(wish.id, { status: WishStatus.FULFILLED }, onActionSuccess)}>
             <Gift className="mr-1 size-5" />
@@ -65,16 +53,6 @@ export function WishDropdownMenu({
           </span>
         </DropdownMenuItem>
       </DropdownMenu>
-
-      {!isMobile && (
-        <Slider isOpen={isSliderOpen} header="Making a wish...">
-          <WishForm
-            wish={wish}
-            onCancel={() => setIsSliderOpen(false)}
-            onActionSuccess={() => setIsSliderOpen(false)}
-          />
-        </Slider>
-      )}
     </>
   );
 }

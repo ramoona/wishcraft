@@ -14,7 +14,7 @@ export function ForeignWishlist({ wishlist, owner }: { wishlist: WishlistType; o
           {wishlist.wishes.length === 0 ? (
             <div>Nothing here yet</div>
           ) : (
-            wishlist.wishes.map(wish => <ForeignWish data={wish} key={wish.id} isMobile={true} />)
+            wishlist.wishes.map(wish => <ForeignWish data={wish} key={wish.id} />)
           )}
         </WishItemList>
       </div>

@@ -2,25 +2,16 @@
 
 import { WishStatus } from "@prisma/client";
 import { Badge } from "~/components/ui/badge";
-import { Gift } from "@phosphor-icons/react";
 import React from "react";
 
-export function StatusBadge({ status }: { status: WishStatus | "RESERVED_BY_CURRENT_USER" }) {
+export function StatusBadge({ status }: { status: WishStatus | "RESERVED_BY_CURRENT_USER" | "PRIVATE" }) {
   switch (status) {
     case WishStatus.RESERVED:
-      return (
-        <Badge variant="outline">
-          <Gift className="size-4" />
-          <span className="ml-1">Reserved</span>
-        </Badge>
-      );
+      return <Badge variant="reserved">Reserved</Badge>;
     case "RESERVED_BY_CURRENT_USER":
-      return (
-        <Badge variant="attention">
-          <Gift className="size-4" />
-          <span className="ml-1">Reserved by you</span>
-        </Badge>
-      );
+      return <Badge variant="reservedByYou">Reserved by you</Badge>;
+    case "PRIVATE":
+      return <Badge variant="default">Reserved</Badge>;
     default:
       return null;
   }
