@@ -7,7 +7,6 @@ import { cn } from "~/utils/classnames";
 import Head from "next/head";
 import { Providers } from "~/app/providers";
 import { detectLanguage } from "~/lib/i18n/detect-language";
-import { getServerTranslations } from "~/lib/i18n/server";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 
@@ -22,7 +21,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const language = await detectLanguage();
-  const { t } = await getServerTranslations();
 
   return (
     <html>
@@ -31,7 +29,6 @@ export default async function RootLayout({
       </Head>
       <body className={cn(inter.className, "relative bg-background")}>
         <Providers language={language}>
-          {t("error.UNKNOWN")}
           <Toaster position="top-right" richColors />
           <Analytics />
         </Providers>

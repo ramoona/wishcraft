@@ -41,7 +41,7 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
             <Button size="lg" fullWidth>
               Share profile
             </Button>
-            <ProfileDropdownMenu user={user} />
+            <ProfileDropdownMenu />
           </div>
         </div>
       )}

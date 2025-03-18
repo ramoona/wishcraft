@@ -1,6 +1,5 @@
 "use client";
 import { User } from "~/services/user/types";
-import { EyeSlash, HeartBreak } from "@phosphor-icons/react";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 import { Button } from "~/components/ui/button";
@@ -24,18 +23,21 @@ import { getErrorMessage, getSuccessMessage } from "~/core/errorMessages";
 import { Select } from "~/components/ui/select";
 import { currencies, currencyNames } from "~/lib/currencies";
 import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-  DrawerTrigger,
-} from "~/components/ui/drawer";
-import { VisuallyHidden } from "~/components/ui/visually-hidden";
+
 import { useTranslation } from "react-i18next";
 import { UserDetails } from "~/components/ui/user";
 import { DropdownMenu, DropdownMenuItem } from "~/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 
 export function Profile({ user }: { user: User }) {
   return (
@@ -225,71 +227,10 @@ export function DateOfBirth({ day: initialDay, month: initialMonth }: { day?: nu
   );
 }
 
-// function Username({ username }: { username: string }) {
-//   return (
-//     <div className="flex flex-col gap-2">
-//       <Label className="pl-2">Username</Label>
-//       <div className="flex items-center gap-4">
-//         <Input type="text" name="username" value={`@${username}`} onChange={() => undefined} disabled />
-//       </div>
-//       <p className="pl-2 text-xs text-foreground/70">
-//         Your username is part of your personal link. Changing it will break the old link. If you still want to proceed,
-//         contact{" "}
-//         <a className="font-semibold" href="mailto:mywishcraft.app">
-//           help@mywishcraft.app
-//         </a>
-//         .
-//       </p>
-//     </div>
-//   );
-// }
-
-// function Email({ email }: { email: string }) {
-//   return (
-//     <div className="flex flex-col gap-2">
-//       <Label className="pl-2">Email</Label>
-//       <div className="flex items-center gap-4">
-//         <Input type="text" name="email" value={email} onChange={() => undefined} disabled />
-//       </div>
-//       <p className="pl-2 text-xs text-foreground/70">Accounts signed in with Google cannot change their email.</p>
-//     </div>
-//   );
-// }
-
-export function ProfileDropdownMenu({ user }: { user: User }) {
+export function ProfileDropdownMenu() {
   const router = useRouter();
-  const [isSliderOpen, setSliderOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
-  const { t } = useTranslation();
-
-  const deleteAccount = () => {
-    startTransition(async () => {
-      const { error } = await deleteUserAccountAction();
-      if (error) {
-        if (error === "UNAUTHORIZED") {
-          router.push("/");
-        } else {
-          showErrorToast(getErrorMessage(error, t));
-        }
-      } else {
-        router.push("/");
-      }
-    });
-  };
-
-  const hideProfile = () => {
-    startTransition(async () => {
-      const { error } = await updateProfileVisibilityAction(
-        ProfileVisibilityFormData.fromObject({ isProfileHidden: true }),
-      );
-      if (error) {
-        showErrorToast(getErrorMessage(error, t));
-      } else {
-        showSuccessToast(getSuccessMessage("SAVED", t));
-        router.refresh();
-      }
-    });
-  };
+  const [isDeletionSliderOpen, setDeletionSliderOpen] = useState(false);
+  const [isSupportSliderOpen, setSupportSliderOpen] = useState(false);
 
   return (
     <>
@@ -312,59 +253,74 @@ export function ProfileDropdownMenu({ user }: { user: User }) {
         <DropdownMenuItem onSelect={() => router.push("/api/auth/logout")} className="min-w-48">
           Sign out
         </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => setSupportSliderOpen(true)} className="min-w-48">
+          Support
+        </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={() => setSliderOpen(true)}
-          className="min-w-48 bg-destructive/10 text-destructive hover:bg-destructive/90"
+          onSelect={() => setDeletionSliderOpen(true)}
+          className="min-w-48 bg-destructive/10 text-destructive hover:bg-destructive/20"
         >
           Delete account
         </DropdownMenuItem>
       </DropdownMenu>
-      <Drawer open={isSliderOpen} onClose={() => setSliderOpen(false)} onOpenChange={open => setSliderOpen(open)}>
-        <DrawerTrigger asChild></DrawerTrigger>
-        <DrawerContent className="px-6 pb-4">
-          <VisuallyHidden>
-            <DrawerTitle>Delete account</DrawerTitle>
-            <DrawerDescription>Permanently delete your account</DrawerDescription>
-          </VisuallyHidden>
-          <div className="px-4 py-8">
-            <p className="mt-4 pl-2 text-sm text-foreground/70">
-              <span className="font-bold">This action is irreversible.</span> All your data will be permanently deleted.
-            </p>
-            <div className="mt-4 flex items-center gap-2">
-              <Button
-                variant="destructive"
-                className="flex items-center gap-2"
-                onClick={deleteAccount}
-                disabled={isPending}
-              >
-                <HeartBreak className="size-5" />
-                Permanently delete my account
-              </Button>
-            </div>
-            {user.isProfileHidden ? (
-              <p className="mt-4 pl-2 text-sm text-foreground/70">
-                Note that your profile is <span className="font-semibold">private</span>. No one can see your wishes.
-              </p>
-            ) : (
-              <p className="mt-4 pl-2 text-sm text-foreground/70">
-                If you want to temporarily hide your profile from others, consider setting it to{" "}
-                <span className="font-semibold">private</span> instead.
-              </p>
-            )}
-            {!user.isProfileHidden && (
-              <div className="mt-4 flex items-center gap-2">
-                <Button variant="secondary" className="flex items-center gap-2" onClick={hideProfile}>
-                  <EyeSlash className="size-5" />
-                  Make my profile private
-                </Button>
-              </div>
-            )}
-          </div>
-          <VisuallyHidden>
-            <DrawerClose>Close</DrawerClose>
-          </VisuallyHidden>
-        </DrawerContent>
-      </Drawer>
+      <AccountDeletionDialog isOpen={isDeletionSliderOpen} setOpen={setDeletionSliderOpen} />
+      <SupportDialog isOpen={isSupportSliderOpen} setOpen={setSupportSliderOpen} />
     </>
+  );
+}
+
+function SupportDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
+  return (
+    <Dialog open={isOpen} onOpenChange={open => setOpen(open)}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Need some help?</DialogTitle>
+          <DialogDescription>
+            If something is not working as expected, or you have a suggestion, please contact us at{" "}
+            <a href="mailto:help@mywishcraft.app">help@mywishcraft.app</a>.
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const { t } = useTranslation();
+
+  const deleteAccount = () => {
+    startTransition(async () => {
+      const { error } = await deleteUserAccountAction();
+      if (error) {
+        if (error === "UNAUTHORIZED") {
+          router.push("/");
+        } else {
+          showErrorToast(getErrorMessage(error, t));
+        }
+      } else {
+        router.push("/");
+      }
+    });
+  };
+
+  return (
+    <AlertDialog open={isOpen} onOpenChange={open => setOpen(open)}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your account and remove all your data.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction disabled={isPending} onClick={deleteAccount} variant="destructive">
+            Delete my account
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
