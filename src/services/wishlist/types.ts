@@ -1,4 +1,5 @@
 import { WishStatus } from "@prisma/client";
+import { WISH_COLORS } from "~/services/wishlist/consts";
 
 export type WishlistType = {
   wishes: WishType[];
@@ -16,6 +17,12 @@ export type WishType = {
   reservedById: string | null;
   status: WishStatus;
   isPrivate: boolean | null;
+  shape: WishShape;
+  mainColor: WishColor;
+  accentColor: WishColor;
+  backgroundColor: WishColor;
+  backgroundPositionX: number;
+  backgroundPositionY: number;
 };
 
 export type WishCreateInput = {
@@ -37,3 +44,6 @@ export type WishUpdateInput = {
   reservedById?: string | null;
   status?: WishStatus;
 };
+
+export type WishShape = `shape-${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`;
+export type WishColor = (typeof WISH_COLORS)[number];

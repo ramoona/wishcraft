@@ -1,0 +1,43 @@
+"use client";
+
+import { cn } from "~/utils/classnames";
+
+import { CombinedShape } from "~/components/shapes/CombinedShapes";
+import { WishType } from "~/services/wishlist/types";
+
+const backgroundUrls = {
+  gray: "/images/gray.svg",
+  black: "/images/black.svg",
+  yellow: "/images/yellow.svg",
+  purple: "/images/purple.svg",
+};
+
+export function WishSmallArtwork({
+  className,
+  shape,
+  backgroundPositionX,
+  backgroundColor,
+  backgroundPositionY,
+  mainColor,
+  accentColor,
+}: Pick<
+  WishType,
+  "shape" | "mainColor" | "accentColor" | "backgroundColor" | "backgroundPositionX" | "backgroundPositionY"
+> & {
+  className?: string;
+}) {
+  const url = backgroundUrls[backgroundColor];
+  return (
+    <div
+      className={cn("flex size-20 items-center justify-center overflow-hidden", className)}
+      style={{
+        backgroundImage: `url(${url})`,
+        backgroundSize: "400%",
+        backgroundPositionX: `${backgroundPositionX}%`,
+        backgroundPositionY: `${backgroundPositionY}%`,
+      }}
+    >
+      <CombinedShape shape={shape} accent={accentColor} color={mainColor} width="sm" />
+    </div>
+  );
+}

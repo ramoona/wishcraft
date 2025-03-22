@@ -1,12 +1,20 @@
-import { WishStatus } from "@prisma/client";
+import { WishStatus, Prisma } from "@prisma/client";
 
 import { prisma } from "prisma/db";
-import { WishCreateInput, WishlistType, WishType, WishUpdateInput } from "~/services/wishlist/types";
+import {
+  WishColor,
+  WishCreateInput,
+  WishlistType,
+  WishShape,
+  WishType,
+  WishUpdateInput,
+} from "~/services/wishlist/types";
 import { WishlistError } from "~/services/wishlist/errors";
 import { ServerError } from "~/services/errors";
 import { getSessionUserOrThrow } from "~/services/session";
 import { logUserAction } from "~/services/user";
 import { OtherUser } from "~/services/user/types";
+import { MAX_NUMBER_OF_WISH_SHAPES, WISH_COLORS } from "~/services/wishlist/consts";
 
 export const WISH_FIELDS_SELECT = {
   id: true,
@@ -18,7 +26,17 @@ export const WISH_FIELDS_SELECT = {
   url: true,
   reservedById: true,
   isPrivate: true,
+  shape: true,
+  mainColor: true,
+  accentColor: true,
+  backgroundColor: true,
+  backgroundPositionX: true,
+  backgroundPositionY: true,
 };
+
+type PrismaWish = Prisma.WishGetPayload<{
+  select: typeof WISH_FIELDS_SELECT;
+}>;
 
 export async function getWishlistIdByUserId(userId: string): Promise<string> {
   const wishlist = await prisma.wishlist.findFirst({ where: { ownerId: userId } });
@@ -49,10 +67,55 @@ export async function getWishlistByUserId(userId: string): Promise<WishlistType>
     throw new WishlistError("WISHLIST_NOT_FOUND");
   }
 
-  return wishlist;
+  for (const wish of wishlist.wishes) {
+    if (!wish.shape) {
+      const visuals = generateWishVisuals();
+      await prisma.wish.update({
+        where: { id: wish.id },
+        data: {
+          ...visuals,
+        },
+      });
+    }
+  }
+
+  return {
+    ...wishlist,
+    wishes: wishlist.wishes.map(convertWish),
+  };
+}
+
+function generateWishVisuals(): Pick<
+  WishType,
+  "shape" | "mainColor" | "accentColor" | "backgroundColor" | "backgroundPositionX" | "backgroundPositionY"
+> {
+  const MAX_BG_SHIFT = 80;
+
+  const backgroundPositionX = Math.floor(Math.random() * MAX_BG_SHIFT);
+  const backgroundPositionY = Math.floor(Math.random() * MAX_BG_SHIFT);
+  const shape = `shape-${Math.floor(Math.random() * MAX_NUMBER_OF_WISH_SHAPES + 1)}` as WishShape;
+  const mainColor = WISH_COLORS[Math.floor(Math.random() * WISH_COLORS.length)];
+
+  const accentColorOptions = WISH_COLORS.filter(color => color !== mainColor);
+  const accentColor = accentColorOptions[Math.floor(Math.random() * accentColorOptions.length)];
+
+  const backgroundColorOptions = accentColorOptions.filter(color => color !== accentColor);
+  const backgroundColor = backgroundColorOptions.filter(color => color !== mainColor && color !== accentColor)[
+    Math.floor(Math.random() * backgroundColorOptions.length)
+  ];
+
+  return {
+    shape,
+    mainColor,
+    accentColor,
+    backgroundColor,
+    backgroundPositionX,
+    backgroundPositionY,
+  };
 }
 
 export async function createWish(wishlistId: string, input: WishCreateInput) {
+  const visuals = generateWishVisuals();
   const wish = prisma.wishlist.update({
     where: { id: wishlistId },
     data: {
@@ -61,6 +124,7 @@ export async function createWish(wishlistId: string, input: WishCreateInput) {
         create: {
           ...input,
           status: WishStatus.ACTIVE,
+          ...visuals,
         },
       },
     },
@@ -165,7 +229,22 @@ export async function getForeignWishlistByUsername(username: string): Promise<Wi
     throw new WishlistError("WISHLIST_NOT_FOUND");
   }
 
-  return wishlist;
+  for (const wish of wishlist.wishes) {
+    if (!wish.shape) {
+      const visuals = generateWishVisuals();
+      await prisma.wish.update({
+        where: { id: wish.id },
+        data: {
+          ...visuals,
+        },
+      });
+    }
+  }
+
+  return {
+    ...wishlist,
+    wishes: wishlist.wishes.map(convertWish),
+  };
 }
 
 export async function getWishesReservedByCurrentUser(): Promise<(WishType & { user: OtherUser })[]> {
@@ -203,11 +282,23 @@ export async function getWishesReservedByCurrentUser(): Promise<(WishType & { us
     const { friends, ...user } = wishlist.owner;
 
     return {
-      ...wishData,
+      ...convertWish(wishData),
       user: {
         ...user,
         isFriend: friends.length > 0,
       },
     };
   });
+}
+
+function convertWish(record: PrismaWish) {
+  return {
+    ...record,
+    shape: record.shape as WishShape,
+    mainColor: record.mainColor as WishColor,
+    accentColor: record.accentColor as WishColor,
+    backgroundColor: record.backgroundColor as WishColor,
+    backgroundPositionX: record.backgroundPositionX!,
+    backgroundPositionY: record.backgroundPositionY!,
+  };
 }

@@ -80,6 +80,14 @@ model Wish {
   wishlist     Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
   wishlistId   String
 
+  // Visuals
+  shape               String?
+  mainColor           String?
+  accentColor         String?
+  backgroundColor     String?
+  backgroundPositionX Int?
+  backgroundPositionY Int?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -6,7 +6,7 @@ import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WishDrawer } from "~/components/wishlist/own/WishDrawer";
-import { WishDetails } from "~/components/wishlist/own/WishDetails";
+import { WishDetails, WishlistItemDetails } from "~/components/wishlist/own/WishDetails";
 import { OtherUser } from "~/services/user/types";
 import { ForeignWishReserved } from "~/components/wishlist/own/ForeignWishReserved";
 
@@ -61,7 +61,7 @@ export function OwnWishlist({
           {active.length > 0 ? (
             <WishItemList>
               {active.map(wish => (
-                <WishItem key={wish.id} wish={wish} showReserved={showOwnReserved} />
+                <WishItemNew key={wish.id} wish={wish} showReserved={showOwnReserved} />
               ))}
             </WishItemList>
           ) : (
@@ -109,6 +109,16 @@ export function OwnWishlist({
           </div>
         </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+function WishItemNew({ wish, showReserved }: { wish: WishType; showReserved?: boolean }) {
+  return (
+    <div key={wish.id} className="flex w-full items-start gap-2">
+      <button type="button" className="w-full">
+        <WishlistItemDetails {...wish} showReserved={showReserved} />
+      </button>
     </div>
   );
 }
