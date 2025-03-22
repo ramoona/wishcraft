@@ -11,7 +11,7 @@ export function StatusBadge({ status }: { status: WishStatus | "RESERVED_BY_CURR
     case "RESERVED_BY_CURRENT_USER":
       return <Badge variant="reservedByYou">Reserved by you</Badge>;
     case "PRIVATE":
-      return <Badge variant="default">Reserved</Badge>;
+      return <Badge variant="default">Private</Badge>;
     default:
       return null;
   }
