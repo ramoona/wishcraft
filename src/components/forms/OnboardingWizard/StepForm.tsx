@@ -6,7 +6,7 @@ import { Button } from "~/components/ui/button";
 
 import { useTranslation } from "react-i18next";
 import { ONBOARDING_STEPS } from "~/services/user/types";
-import { TypographyH1 } from "~/components/ui/typography";
+import { TypographyHeader } from "~/components/ui/typography";
 
 export function OnboardingWizardStep({
   title,
@@ -36,7 +36,7 @@ export function OnboardingWizardStep({
       className="grid h-full grid-rows-[auto_min-content] justify-center gap-4 px-6"
     >
       <div className="flex max-w-xl flex-col items-start gap-6 pt-4">
-        <TypographyH1>{title}</TypographyH1>
+        <TypographyHeader>{title}</TypographyHeader>
         {children}
       </div>
       <div className="flex flex-col items-center gap-5 pb-12">

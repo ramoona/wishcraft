@@ -2,21 +2,61 @@
 
 import { WishType } from "~/services/wishlist/types";
 import { Price } from "~/components/wishlist/Price";
+import { WishSmallArtwork } from "~/components/shapes/WishSmallArtwork";
+import React, { useState } from "react";
+import { WishStatus } from "~/components/wishlist/WishStatus";
+import { WishOverlay } from "~/components/wishlist/WishOverlay";
 
-export function WishDetails({ data }: { data: Omit<WishType, "status" | "reservedById"> }) {
+export function WishDetails({
+  reservedByCurrentUser,
+  showReserved,
+  username,
+  isForeign,
+  wish,
+  isLoggedIn,
+}: {
+  wish: WishType;
+  reservedByCurrentUser?: boolean;
+  showReserved?: boolean;
+  username?: string;
+  isForeign?: boolean;
+  isLoggedIn?: boolean;
+}) {
+  const [isSelected, setIsSelected] = useState(false);
+  const { name, isPrivate, price, currency, reservedById, ...visuals } = wish;
+
   return (
-    <div className="w-full flex-col gap-2">
-      <div className="flex items-center gap-2">
-        {data.url ? (
-          <a href={data.url} target="_blank">
-            {data.name}
-          </a>
-        ) : (
-          <span>{data.name}</span>
-        )}
-        <Price price={data.price} currency={data.currency} />
-      </div>
-      <span className="text-xs text-slate-500">{data.comment}</span>
-    </div>
+    <>
+      <button
+        type="button"
+        onClick={() => setIsSelected(true)}
+        className="relative flex h-20 w-full items-center gap-4 overflow-hidden rounded bg-background pr-5 text-left"
+      >
+        <WishSmallArtwork {...visuals} />
+        <div className="flex grow flex-col items-start gap-2 py-4">
+          {username && <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>}
+          <span className="text-sm">{name}</span>
+          <WishStatus
+            isPrivate={isPrivate}
+            showReserved={showReserved}
+            reservedById={reservedById}
+            reservedByCurrentUser={reservedByCurrentUser}
+            isForeign={isForeign}
+          />
+        </div>
+        <Price price={price} currency={currency} />
+      </button>
+      {isSelected && (
+        <WishOverlay
+          wish={wish}
+          onBack={() => setIsSelected(false)}
+          showReserved={showReserved}
+          isForeign={isForeign}
+          reservedByCurrentUser={reservedByCurrentUser}
+          username={username}
+          isLoggedIn={isLoggedIn}
+        />
+      )}
+    </>
   );
 }

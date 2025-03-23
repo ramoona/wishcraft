@@ -4,7 +4,7 @@ import { buttonVariants } from "~/components/ui/button";
 
 import { cn } from "~/utils/classnames";
 // import { useTranslation } from "react-i18next";
-import { TypographyExtraLarge, TypographyLeadBody } from "~/components/ui/typography";
+import { TypographyExtraLargeHeader, TypographyLeadBody } from "~/components/ui/typography";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const queryParams = new URLSearchParams();
@@ -21,7 +21,7 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
   return (
     <div className="flex flex-col items-center gap-6 px-11 pb-28">
       <div className="flex flex-col gap-2">
-        <TypographyExtraLarge>Make your wishes come true!</TypographyExtraLarge>
+        <TypographyExtraLargeHeader>Make your wishes come true!</TypographyExtraLargeHeader>
         <TypographyLeadBody>
           The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.
         </TypographyLeadBody>

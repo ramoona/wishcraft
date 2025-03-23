@@ -1,11 +1,23 @@
-export function Price({ price, currency }: { price: number | null; currency: string | null }) {
+import { useTranslation } from "react-i18next";
+
+export function Price({
+  price,
+  currency,
+  size = "default",
+}: {
+  price: number | null;
+  currency: string | null;
+  size?: "default" | "large";
+}) {
+  const { i18n } = useTranslation();
+
   if (!price || !currency) {
     return null;
   }
 
   return (
-    <span className="text-sm font-medium">
-      {price.toLocaleString("de-DE", {
+    <span className={size === "large" ? "font-bold" : "text-sm font-medium"}>
+      {price.toLocaleString(i18n.language || "de", {
         style: "currency",
         currency,
         maximumFractionDigits: 2,

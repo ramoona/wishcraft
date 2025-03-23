@@ -2,6 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "~/utils/classnames";
+import { omit } from "ramda";
 
 const buttonVariants = cva(
   "inline-flex w-fit items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
@@ -53,7 +54,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className, fullWidth, minWidth }))}
         ref={ref}
         type={type}
-        {...props}
+        {...omit(["isLoading"], props)}
       />
     );
   },

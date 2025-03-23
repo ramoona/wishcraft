@@ -1,0 +1,112 @@
+import { WishType } from "~/services/wishlist/types";
+import { WishLargeArtwork } from "~/components/shapes/WishLargeArtwork";
+import { Price } from "~/components/wishlist/Price";
+import { WishStatus } from "~/components/wishlist/WishStatus";
+import { TypographyH1 } from "~/components/ui/typography";
+import { Button } from "~/components/ui/button";
+import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
+import React from "react";
+import { useUpdateWish } from "~/components/wishlist/own/hooks";
+import { ReserveButton } from "~/components/wishlist/foreign/ReserveButton";
+
+export function WishCard({
+  reservedByCurrentUser,
+  showReserved,
+  username,
+  isForeign,
+  wish,
+  onEnableEditMode,
+  isLoggedIn,
+}: {
+  wish: WishType;
+  reservedByCurrentUser?: boolean;
+  showReserved?: boolean;
+  username?: string;
+  isForeign?: boolean;
+  onEnableEditMode: () => void;
+  isLoggedIn?: boolean;
+}) {
+  const { name, isPrivate, price, currency, reservedById, url, comment, ...visuals } = wish;
+
+  return (
+    <div className="mt-8 w-full rounded bg-white">
+      <WishLargeArtwork {...visuals} />
+      <div className="p-4">
+        {username && <span className="mb-2 block">{`@${username}'s wish`}</span>}
+        <div className="mb-1 flex w-full items-baseline justify-between gap-4">
+          <TypographyH1>{name}</TypographyH1>
+          <Price price={price} currency={currency} size="large" />
+        </div>
+        <WishStatus
+          isPrivate={isPrivate}
+          showReserved={showReserved}
+          reservedById={reservedById}
+          reservedByCurrentUser={reservedByCurrentUser}
+          isForeign={isForeign}
+        />
+        {(url || comment) && (
+          <div className="mt-4 space-y-2">
+            {url && (
+              <a href={url} target="_blank">
+                {url.replace(/^(?:https?:\/\/)?/, "")}
+              </a>
+            )}
+            {comment && <p>{comment}</p>}
+          </div>
+        )}
+        {isForeign ? (
+          <ForeignWishActions wish={wish} isLoggedIn={isLoggedIn} reservedByCurrentUser={reservedByCurrentUser} />
+        ) : (
+          <OwnWishActions wish={wish} enableEditMode={onEnableEditMode} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function OwnWishActions({ wish, enableEditMode }: { wish: WishType; enableEditMode: () => void }) {
+  const [isUpdating, updateWish] = useUpdateWish();
+  const isEditable = wish.status === "ACTIVE" || wish.status === "RESERVED";
+
+  return (
+    <div className="mt-10 grid grid-cols-[auto_6rem] gap-4">
+      {isEditable ? (
+        <Button size="lg" fullWidth onClick={enableEditMode}>
+          Edit Wish
+        </Button>
+      ) : (
+        <Button
+          type="button"
+          onClick={() => updateWish(wish.id, { status: "ACTIVE" })}
+          size="lg"
+          isLoading={isUpdating}
+        >
+          Move to Active
+        </Button>
+      )}
+      <WishDropdownMenu onActionSuccess={() => undefined} wish={wish} />
+    </div>
+  );
+}
+
+function ForeignWishActions({
+  wish,
+  isLoggedIn,
+  reservedByCurrentUser,
+}: {
+  wish: WishType;
+  isLoggedIn?: boolean;
+  reservedByCurrentUser?: boolean;
+}) {
+  const isWishReservable = reservedByCurrentUser || !wish.reservedById;
+
+  if (!isWishReservable) {
+    return null;
+  }
+
+  return (
+    <div className="mt-10 grid grid-cols-[auto_6rem] gap-4">
+      <ReserveButton wishId={wish.id} isReserved={!!wish.reservedById} isLoggedIn={isLoggedIn} />
+    </div>
+  );
+}

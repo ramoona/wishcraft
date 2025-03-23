@@ -1,14 +1,14 @@
 "use client";
 
 import { WishlistType, WishType } from "~/services/wishlist/types";
-import { WishItemList } from "~/components/wishlist/WishItemList";
+import { WishlistItem } from "~/components/wishlist/WishlistItem";
 import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { WishDrawer } from "~/components/wishlist/own/WishDrawer";
-import { WishDetails, WishlistItemDetails } from "~/components/wishlist/own/WishDetails";
+import { WishDetails } from "~/components/wishlist/WishDetails";
 import { OtherUser } from "~/services/user/types";
-import { ForeignWishReserved } from "~/components/wishlist/own/ForeignWishReserved";
+import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
+import * as React from "react";
 
 export function OwnWishlist({
   data,
@@ -36,7 +36,7 @@ export function OwnWishlist({
   })(data.wishes);
 
   return (
-    <div className="mx-auto flex size-full flex-col gap-6">
+    <div className="mx-auto flex size-full flex-col gap-6 pb-4">
       <Tabs defaultValue="active" className="w-full">
         <TabsList className="mx-auto flex w-full items-center justify-center bg-background px-2 py-5">
           <TabsTrigger value="active" className="max-w-28 grow">
@@ -59,11 +59,11 @@ export function OwnWishlist({
             if they are not set to <b>Private</b>
           </p>
           {active.length > 0 ? (
-            <WishItemList>
+            <WishlistItem>
               {active.map(wish => (
-                <WishItemNew key={wish.id} wish={wish} showReserved={showOwnReserved} />
+                <WishDetails key={wish.id} wish={wish} showReserved={showOwnReserved} />
               ))}
-            </WishItemList>
+            </WishlistItem>
           ) : (
             <EmptyWishlistSection />
           )}
@@ -71,11 +71,11 @@ export function OwnWishlist({
         <TabsContent value="fulfilled" className="mx-auto max-w-xl p-4">
           <PrivateSectionNote type="fulfilled" />
           {fulfilled.length > 0 ? (
-            <WishItemList>
+            <WishlistItem>
               {fulfilled.map(wish => (
-                <WishItem key={wish.id} wish={wish} />
+                <WishDetails key={wish.id} wish={wish} />
               ))}
-            </WishItemList>
+            </WishlistItem>
           ) : (
             <EmptyWishlistSection />
           )}
@@ -84,11 +84,11 @@ export function OwnWishlist({
           <div>
             <PrivateSectionNote type="archived" />
             {archived.length > 0 ? (
-              <WishItemList>
+              <WishlistItem>
                 {archived.map(wish => (
-                  <WishItem key={wish.id} wish={wish} />
+                  <WishDetails key={wish.id} wish={wish} />
                 ))}
-              </WishItemList>
+              </WishlistItem>
             ) : (
               <EmptyWishlistSection />
             )}
@@ -98,39 +98,18 @@ export function OwnWishlist({
           <div>
             <p className="mb-4 w-full text-center text-xs">Here you can find all the wishes you have reserved</p>
             {reserved.length > 0 ? (
-              <WishItemList>
+              <WishlistItem>
                 {reserved.map(wish => (
-                  <ForeignWishReserved key={wish.id} wish={wish} user={wish.user} />
+                  <WishDetails key={wish.id} wish={wish} username={wish.user.username} />
                 ))}
-              </WishItemList>
+              </WishlistItem>
             ) : (
               <EmptyWishlistSection />
             )}
           </div>
         </TabsContent>
       </Tabs>
-    </div>
-  );
-}
-
-function WishItemNew({ wish, showReserved }: { wish: WishType; showReserved?: boolean }) {
-  return (
-    <div key={wish.id} className="flex w-full items-start gap-2">
-      <button type="button" className="w-full">
-        <WishlistItemDetails {...wish} showReserved={showReserved} />
-      </button>
-    </div>
-  );
-}
-
-function WishItem({ wish, showReserved }: { wish: WishType; showReserved?: boolean }) {
-  return (
-    <div key={wish.id} className="flex w-full items-start gap-2">
-      <WishDrawer wish={wish} mode="update" showReserved={showReserved}>
-        <button type="button" className="w-full">
-          <WishDetails {...wish} showReserved={showReserved} />
-        </button>
-      </WishDrawer>
+      <AddNewWish />
     </div>
   );
 }

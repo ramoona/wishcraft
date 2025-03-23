@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { OtherUser, User } from "~/services/user/types";
 import { cn } from "~/utils/classnames";
-import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
 import { useTranslation } from "react-i18next";
 import { FriendActionButton } from "~/components/friends/FriendActionButton";
 import { Button } from "~/components/ui/button";
@@ -33,7 +32,6 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
 
   return (
     <nav className="relative w-full bg-background">
-      {route === "wishes" && <AddNewWish />}
       {otherUser && <FriendActionButton friendId={otherUser.id} isFriend={otherUser.isFriend} />}
       {route === "profile" && (
         <div className="absolute -top-4 left-0 w-full -translate-y-full px-4">

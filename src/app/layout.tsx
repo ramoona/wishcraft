@@ -7,6 +7,7 @@ import { cn } from "~/utils/classnames";
 import Head from "next/head";
 import { Providers } from "~/app/providers";
 import { detectLanguage } from "~/lib/i18n/detect-language";
+import { Shapes } from "~/app/shapes";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 
@@ -28,10 +29,14 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </Head>
       <body className={cn(inter.className, "relative bg-background")}>
+        <Shapes />
         <Providers language={language}>
           <Toaster position="top-right" richColors />
           <Analytics />
         </Providers>
+        {/*<svg viewBox="0 0 202 202" width="300">*/}
+        {/*  <use xlinkHref="#shape-1" fill="red"></use>*/}
+        {/*</svg>*/}
         {children}
       </body>
     </html>

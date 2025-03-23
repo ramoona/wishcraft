@@ -5,7 +5,6 @@ import { DropdownMenu, DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import { WishStatus } from "@prisma/client";
 import * as React from "react";
 import { useState } from "react";
-import { Gear, Archive, TrashSimple, Gift } from "@phosphor-icons/react";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/utils/classnames";
 import { useDeleteWish, useUpdateWish } from "~/components/wishlist/own/hooks";
@@ -19,24 +18,32 @@ export function WishDropdownMenu({ wish, onActionSuccess }: { wish: WishType; on
     <>
       <DropdownMenu
         trigger={
-          <Button variant="outline" size="lg" className="px-4">
-            <Gear className="size-6" />{" "}
+          <Button
+            variant="outline"
+            size="lg"
+            className="flex items-center justify-center gap-1 px-4"
+            aria-label="Profile dropdown menu"
+            minWidth={false}
+            fullWidth
+          >
+            <div className={`size-1 rounded-full bg-black`} />
+            <div className={`size-1 rounded-full bg-black`} />
+            <div className={`size-1 rounded-full bg-black`} />
           </Button>
         }
       >
         {wish.status !== "FULFILLED" && (
           <DropdownMenuItem onSelect={() => updateWish(wish.id, { status: WishStatus.FULFILLED }, onActionSuccess)}>
-            <Gift className="mr-1 size-5" />
             {isUpdating ? "Moving..." : "Move to Fulfilled"}
           </DropdownMenuItem>
         )}
         {wish.status !== "ARCHIVED" && (
           <DropdownMenuItem onSelect={() => updateWish(wish.id, { status: WishStatus.ARCHIVED }, onActionSuccess)}>
-            <Archive className="mr-1 size-5" />
             {isUpdating ? "Archiving..." : "Archive"}
           </DropdownMenuItem>
         )}
         <DropdownMenuItem
+          className="min-w-48 bg-destructive/10 text-destructive hover:bg-destructive/20"
           onSelect={e => {
             e.preventDefault();
             if (deleteConfirmation) {
@@ -47,7 +54,6 @@ export function WishDropdownMenu({ wish, onActionSuccess }: { wish: WishType; on
             setDeleteConfirmation(true);
           }}
         >
-          <TrashSimple className={cn("mr-1 size-5", deleteConfirmation && "text-red-500")} />
           <span className={cn(deleteConfirmation && "text-red-500")}>
             {isDeleting ? "Deleting..." : deleteConfirmation ? "Really delete?" : "Delete"}
           </span>

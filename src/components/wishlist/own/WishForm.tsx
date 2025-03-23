@@ -8,8 +8,7 @@ import { Button } from "~/components/ui/button";
 import { Select } from "~/components/ui/select";
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { ArrowSquareOut, Gift, ShootingStar } from "@phosphor-icons/react";
-import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
+import { ArrowSquareOut } from "@phosphor-icons/react";
 import { useCreateWish, useUpdateWish } from "~/components/wishlist/own/hooks";
 import { Badge } from "~/components/ui/badge";
 import { currencies, currencyNames } from "~/lib/currencies";
@@ -28,12 +27,12 @@ export type WishFormValues = z.infer<typeof formSchema>;
 
 type WishFormProps = {
   wish?: WishType;
-  onCancel: () => void;
   onActionSuccess?: () => void;
   showReserved?: boolean;
+  onBack?: () => void;
 };
 
-export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps) {
+export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFormProps) {
   const [isCreating, createWish] = useCreateWish();
   const [isUpdating, updateWish] = useUpdateWish();
 
@@ -77,13 +76,11 @@ export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps)
 
   return (
     <Form control={control} reset={reset} formState={formState} {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full flex-col gap-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex min-h-full flex-col gap-8">
+        <div className="bg-white text-center">{wish ? "Edit" : "Create"} Wish</div>
         {showReserved && wish?.reservedById && (
           <div className="mt-4 flex justify-center">
-            <Badge variant="attention">
-              <Gift className="mr-2 size-5" />
-              This wish is reserved by someone
-            </Badge>
+            <Badge variant="attention">This wish is reserved by someone</Badge>
           </div>
         )}
         <div className="flex flex-1 flex-col gap-4">
@@ -171,14 +168,12 @@ export function WishForm({ wish, onActionSuccess, showReserved }: WishFormProps)
             )}
           />
         </div>
-        <div className="grid w-full grid-cols-[auto_max-content] gap-4">
-          <WishFormButtons
-            wish={wish}
-            disabled={!formState.isValid}
-            isLoading={isUpdating || isCreating}
-            onActionSuccess={onActionSuccess}
-          />
-        </div>
+        <WishFormButtons
+          wish={wish}
+          disabled={!formState.isValid}
+          isLoading={isUpdating || isCreating}
+          onBack={onBack}
+        />
       </form>
     </Form>
   );
@@ -188,47 +183,21 @@ function WishFormButtons({
   wish,
   disabled,
   isLoading,
-  onActionSuccess,
+  onBack,
 }: {
   wish?: WishType;
   disabled: boolean;
   isLoading: boolean;
-  onActionSuccess?: () => void;
+  onBack?: () => void;
 }) {
-  const [isUpdating, updateWish] = useUpdateWish();
-  if (!wish) {
-    return (
-      <Button type="submit" disabled={disabled} size="lg">
-        <div className="flex items-center justify-center gap-2">
-          <ShootingStar size={24} />
-          Make a wish
-        </div>
-      </Button>
-    );
-  }
-
-  if (wish.status === "ARCHIVED" || wish.status === "FULFILLED") {
-    return (
-      <>
-        <Button
-          type="button"
-          onClick={() => updateWish(wish.id, { status: "ACTIVE" })}
-          size="lg"
-          isLoading={isUpdating}
-        >
-          Move to Active
-        </Button>
-        <WishDropdownMenu onActionSuccess={onActionSuccess} wish={wish} />
-      </>
-    );
-  }
-
   return (
-    <>
-      <Button type="submit" disabled={disabled} size="lg" isLoading={isLoading}>
-        Save
+    <div className="mt-auto grid w-full grid-cols-2 gap-4">
+      <Button size="lg" isLoading={isLoading} variant="tertiary" onClick={onBack} minWidth={false} fullWidth>
+        Back
       </Button>
-      <WishDropdownMenu onActionSuccess={onActionSuccess} wish={wish} />
-    </>
+      <Button type="submit" disabled={disabled} size="lg" isLoading={isLoading} minWidth={false} fullWidth>
+        {wish ? "Save" : "Make a wish"}
+      </Button>
+    </div>
   );
 }
