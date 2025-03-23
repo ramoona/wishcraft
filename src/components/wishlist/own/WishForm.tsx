@@ -13,6 +13,7 @@ import { useCreateWish, useUpdateWish } from "~/components/wishlist/own/hooks";
 import { Badge } from "~/components/ui/badge";
 import { currencies, currencyNames } from "~/lib/currencies";
 import { Switch } from "~/components/ui/switch";
+import { Textarea } from "~/components/ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(1, "Title is required").max(255, "Oof, that's too long"),
@@ -79,7 +80,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFo
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex min-h-full flex-col gap-8">
         <div className="bg-white text-center">{wish ? "Edit" : "Create"} Wish</div>
         {showReserved && wish?.reservedById && (
-          <div className="mt-4 flex justify-center">
+          <div className="flex justify-center">
             <Badge variant="attention">This wish is reserved by someone</Badge>
           </div>
         )}
@@ -149,7 +150,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFo
               <FormItem>
                 <FormLabel>Comment</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ""} />
+                  <Textarea {...field} value={field.value ?? ""} />
                 </FormControl>
               </FormItem>
             )}
@@ -159,8 +160,11 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFo
             control={control}
             name="isPrivate"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Private</FormLabel>
+              <FormItem className="flex items-center justify-between gap-2">
+                <div>
+                  <FormLabel>Make Private</FormLabel>
+                  <span className="text-xs text-foreground/60">Toggle if the wish should be visible to you only</span>
+                </div>
                 <FormControl>
                   <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
