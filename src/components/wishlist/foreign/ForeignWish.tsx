@@ -7,5 +7,7 @@ export async function ForeignWish({ data }: { data: WishType }) {
   const sessionUser = await getSessionUser();
   const isReservedByCurrentUser = !!data.reservedById && data.reservedById === sessionUser?.id;
 
-  return <WishDetails wish={data} reservedByCurrentUser={isReservedByCurrentUser} isForeign />;
+  return (
+    <WishDetails wish={data} reservedByCurrentUser={isReservedByCurrentUser} isLoggedIn={!!sessionUser} isForeign />
+  );
 }

@@ -24,7 +24,7 @@ export default async function UserPage({ params }: { params: Promise<{ username:
       return <div>{username} preferred to hide their wishes 🙈</div>;
     }
 
-    return <ForeignWishlist wishlist={wishlist} owner={wishlistOwner} />;
+    return <ForeignWishlist wishlist={wishlist} owner={wishlistOwner} isLoggedIn={!!sessionUser} />;
   } catch (e) {
     if (
       (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||

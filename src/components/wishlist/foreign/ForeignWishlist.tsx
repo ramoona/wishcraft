@@ -4,12 +4,22 @@ import { WishlistItem } from "~/components/wishlist/WishlistItem";
 import { OtherUser } from "~/services/user/types";
 import { UserDetails } from "~/components/ui/user";
 import * as React from "react";
+import { Scrollable } from "~/components/ui/scrollable";
+import { FriendActionButton } from "~/components/friends/FriendActionButton";
 
-export function ForeignWishlist({ wishlist, owner }: { wishlist: WishlistType; owner: OtherUser }) {
+export function ForeignWishlist({
+  wishlist,
+  owner,
+  isLoggedIn,
+}: {
+  wishlist: WishlistType;
+  owner: OtherUser;
+  isLoggedIn: boolean;
+}) {
   return (
-    <div className="flex size-full flex-col gap-4 pb-4">
-      <UserDetails user={owner} />
-      <div className="px-4">
+    <Scrollable footer={isLoggedIn ? <FriendActionButton friendId={owner.id} isFriend={owner.isFriend} /> : null}>
+      <UserDetails user={owner} sticky />
+      <div className="px-4 pt-4">
         <WishlistItem>
           {wishlist.wishes.length === 0 ? (
             <div>Nothing here yet</div>
@@ -18,6 +28,6 @@ export function ForeignWishlist({ wishlist, owner }: { wishlist: WishlistType; o
           )}
         </WishlistItem>
       </div>
-    </div>
+    </Scrollable>
   );
 }

@@ -3,18 +3,26 @@ import Link from "next/link";
 import { cva } from "class-variance-authority";
 import { User } from "~/services/user/types";
 
-const container = cva("flex items-center gap-4 bg-background p-4 no-underline");
+const container = cva("flex items-center gap-4 bg-background p-4 no-underline", {
+  variants: {
+    sticky: {
+      true: "sticky top-0 z-10",
+    },
+  },
+});
 
 export function UserDetails({
   user,
   extraContent,
   isLink,
   email,
+  sticky,
 }: {
   user: Pick<User, "username" | "firstName" | "lastName" | "image">;
   extraContent?: React.ReactNode;
   isLink?: boolean;
   email?: string;
+  sticky?: boolean;
 }) {
   const content = (
     <>
@@ -35,11 +43,11 @@ export function UserDetails({
 
   if (isLink) {
     return (
-      <Link href={`/${user.username}`} className={container()}>
+      <Link href={`/${user.username}`} className={container({ sticky })}>
         {content}
       </Link>
     );
   }
 
-  return <div className={container()}>{content}</div>;
+  return <div className={container({ sticky })}>{content}</div>;
 }

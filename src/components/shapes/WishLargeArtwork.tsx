@@ -37,7 +37,7 @@ export function WishLargeArtwork({
         backgroundPositionY: `${backgroundPositionY}%`,
       }}
     >
-      <div className="absolute bottom-4 left-4 w-32">
+      <div className="absolute bottom-4 left-4 h-[125px]">
         <CombinedShape shape={shape} accent={accentColor} color={mainColor} />
       </div>
     </div>

@@ -5,10 +5,7 @@ import { usePathname } from "next/navigation";
 import { OtherUser, User } from "~/services/user/types";
 import { cn } from "~/utils/classnames";
 import { useTranslation } from "react-i18next";
-import { FriendActionButton } from "~/components/friends/FriendActionButton";
-import { Button } from "~/components/ui/button";
 import * as React from "react";
-import { ProfileDropdownMenu } from "~/components/user/Profile";
 
 const navItems = [
   {
@@ -32,18 +29,7 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
 
   return (
     <nav className="relative w-full bg-background">
-      {otherUser && <FriendActionButton friendId={otherUser.id} isFriend={otherUser.isFriend} />}
-      {route === "profile" && (
-        <div className="absolute -top-4 left-0 w-full -translate-y-full px-4">
-          <div className="grid grid-cols-[auto_6rem] gap-4">
-            <Button size="lg" fullWidth>
-              Share profile
-            </Button>
-            <ProfileDropdownMenu />
-          </div>
-        </div>
-      )}
-      <div className="mx-auto flex h-14 max-w-xl items-center justify-around">
+      <div className="mx-auto flex h-14 max-w-lg items-center justify-around">
         {navItems.map(item => (
           <Link
             key={item.route}

@@ -44,6 +44,7 @@ const errors: Record<ServerErrorCode | UserErrorCode | WishlistErrorCode, string
   INTERNAL_SERVER_ERROR: "error.UNKNOWN",
   PRISMA_ERROR: "error.UNKNOWN",
   UNKNOWN: "error.UNKNOWN",
+  CAN_NOT_RESERVE_OWN_WISH: "error.CAN_NOT_RESERVE_OWN_WISH",
 };
 
 const successMessages: Record<SuccessMessageCode, string> = {

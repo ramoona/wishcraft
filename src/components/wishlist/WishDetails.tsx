@@ -36,13 +36,15 @@ export function WishDetails({
         <div className="flex grow flex-col items-start gap-2 py-4">
           {username && <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>}
           <span className="text-sm">{name}</span>
-          <WishStatus
-            isPrivate={isPrivate}
-            showReserved={showReserved}
-            reservedById={reservedById}
-            reservedByCurrentUser={reservedByCurrentUser}
-            isForeign={isForeign}
-          />
+          {!username && (
+            <WishStatus
+              isPrivate={isPrivate}
+              showReserved={showReserved}
+              reservedById={reservedById}
+              reservedByCurrentUser={reservedByCurrentUser}
+              isForeign={isForeign}
+            />
+          )}
         </div>
         <Price price={price} currency={currency} />
       </button>

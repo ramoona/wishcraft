@@ -67,18 +67,6 @@ export async function getWishlistByUserId(userId: string): Promise<WishlistType>
     throw new WishlistError("WISHLIST_NOT_FOUND");
   }
 
-  for (const wish of wishlist.wishes) {
-    if (!wish.shape) {
-      const visuals = generateWishVisuals();
-      await prisma.wish.update({
-        where: { id: wish.id },
-        data: {
-          ...visuals,
-        },
-      });
-    }
-  }
-
   return {
     ...wishlist,
     wishes: wishlist.wishes.map(convertWish),
@@ -159,6 +147,17 @@ export async function reserveWish({ wishId, userId }: { wishId: string; userId: 
   }
 
   const wish = await prisma.wish.findUnique({ where: { id: wishId } });
+  const wishOwner = await prisma.user.findFirst({
+    where: {
+      wishlists: {
+        some: {
+          wishes: {
+            some: { id: wishId },
+          },
+        },
+      },
+    },
+  });
 
   if (!wish) {
     throw new WishlistError("WISH_NOT_FOUND");
@@ -170,6 +169,10 @@ export async function reserveWish({ wishId, userId }: { wishId: string; userId: 
 
   if (wish.status !== WishStatus.ACTIVE) {
     throw new WishlistError("WISH_IS_NOT_RESERVABLE");
+  }
+
+  if (wishOwner?.id === userId) {
+    throw new WishlistError("CAN_NOT_RESERVE_OWN_WISH");
   }
 
   await prisma.wish.update({
@@ -227,18 +230,6 @@ export async function getForeignWishlistByUsername(username: string): Promise<Wi
 
   if (!wishlist) {
     throw new WishlistError("WISHLIST_NOT_FOUND");
-  }
-
-  for (const wish of wishlist.wishes) {
-    if (!wish.shape) {
-      const visuals = generateWishVisuals();
-      await prisma.wish.update({
-        where: { id: wish.id },
-        data: {
-          ...visuals,
-        },
-      });
-    }
   }
 
   return {

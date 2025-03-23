@@ -3,7 +3,7 @@ import { UserError } from "~/services/user/errors";
 import { OtherUser, User, UserActionPayload, UserOnboardingStep, ONBOARDING_STEPS } from "~/services/user/types";
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
-import { deleteSessionTokenCookie, getSessionUserOrThrow } from "~/services/session";
+import { deleteSessionTokenCookie, getSessionUser, getSessionUserOrThrow } from "~/services/session";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
 
 export async function updateUsername({
@@ -170,9 +170,9 @@ type UserInput = {
 };
 
 export async function getUserByUserName(username: string): Promise<OtherUser> {
-  const sessionUser = await getSessionUserOrThrow();
+  const sessionUser = await getSessionUser();
   const friends = await prisma.friend.findMany({
-    where: { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] },
+    where: sessionUser ? { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] } : undefined,
     select: {
       friendAId: true,
       friendBId: true,

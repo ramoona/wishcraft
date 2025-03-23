@@ -29,36 +29,38 @@ export function WishCard({
   const { name, isPrivate, price, currency, reservedById, url, comment, ...visuals } = wish;
 
   return (
-    <div className="mt-8 w-full rounded bg-white">
-      <WishLargeArtwork {...visuals} />
-      <div className="p-4">
-        {username && <span className="mb-2 block">{`@${username}'s wish`}</span>}
-        <div className="mb-1 flex w-full items-baseline justify-between gap-4">
-          <TypographyH1>{name}</TypographyH1>
-          <Price price={price} currency={currency} size="large" />
-        </div>
-        <WishStatus
-          isPrivate={isPrivate}
-          showReserved={showReserved}
-          reservedById={reservedById}
-          reservedByCurrentUser={reservedByCurrentUser}
-          isForeign={isForeign}
-        />
-        {(url || comment) && (
-          <div className="mt-4 space-y-2">
-            {url && (
-              <a href={url} target="_blank">
-                {url.replace(/^(?:https?:\/\/)?/, "")}
-              </a>
-            )}
-            {comment && <p>{comment}</p>}
+    <div className="mx-auto mt-8 w-full max-w-xl px-4">
+      <div className="rounded bg-background">
+        <WishLargeArtwork {...visuals} />
+        <div className="p-4">
+          {username && <span className="mb-2 block">{`@${username}'s wish`}</span>}
+          <div className="mb-1 flex w-full items-baseline justify-between gap-4">
+            <TypographyH1>{name}</TypographyH1>
+            <Price price={price} currency={currency} size="large" />
           </div>
-        )}
-        {isForeign ? (
-          <ForeignWishActions wish={wish} isLoggedIn={isLoggedIn} reservedByCurrentUser={reservedByCurrentUser} />
-        ) : (
-          <OwnWishActions wish={wish} enableEditMode={onEnableEditMode} />
-        )}
+          <WishStatus
+            isPrivate={isPrivate}
+            showReserved={showReserved}
+            reservedById={reservedById}
+            reservedByCurrentUser={reservedByCurrentUser}
+            isForeign={isForeign}
+          />
+          {(url || comment) && (
+            <div className="mt-4 space-y-2">
+              {url && (
+                <a href={url} target="_blank">
+                  {url.replace(/^(?:https?:\/\/)?/, "")}
+                </a>
+              )}
+              {comment && <p>{comment}</p>}
+            </div>
+          )}
+          {isForeign ? (
+            <ForeignWishActions wish={wish} isLoggedIn={isLoggedIn} reservedByCurrentUser={reservedByCurrentUser} />
+          ) : (
+            <OwnWishActions wish={wish} enableEditMode={onEnableEditMode} />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -105,7 +107,7 @@ function ForeignWishActions({
   }
 
   return (
-    <div className="mt-10 grid grid-cols-[auto_6rem] gap-4">
+    <div className="mt-10 flex justify-center">
       <ReserveButton wishId={wish.id} isReserved={!!wish.reservedById} isLoggedIn={isLoggedIn} />
     </div>
   );

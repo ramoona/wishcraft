@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import { reserveWishAction, releaseWishAction } from "~/services/wishlist/actions";
 import { Button } from "~/components/ui/button";
-import { SignInForm } from "~/components/forms/SignInForm";
+import { SignInButton } from "~/components/forms/SignInForm";
 import { WishlistReservationFormData } from "~/services/wishlist/formData";
 import {
   Drawer,
@@ -82,7 +82,7 @@ export function ReserveButton({
 
   return (
     <>
-      <Button onClick={isReserved ? triggerReleaseWishAction : triggerReserveWishAction} variant="outline">
+      <Button onClick={isReserved ? triggerReleaseWishAction : triggerReserveWishAction} size="lg">
         {isPending && (isReserved ? "Canceling..." : "Reserving...")}
         {!isPending && (isReserved ? "Cancel reservation" : "Reserve")}
       </Button>
@@ -94,7 +94,7 @@ export function ReserveButton({
             <DrawerDescription>Log in to reserve a wish</DrawerDescription>
           </VisuallyHidden>
           <div className="pt-6">
-            <SignInForm wishId={wishId} wishlistOwner={params.username} />
+            <SignInButton wishId={wishId} wishlistOwner={params.username} />
           </div>
           <VisuallyHidden>
             <DrawerClose>Close</DrawerClose>

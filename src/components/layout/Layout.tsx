@@ -13,12 +13,12 @@ export function AuthenticatedLayout({
 }: PropsWithChildren<{ user: User; otherUser?: OtherUser }>) {
   return (
     <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
-      <header className="relative flex w-screen justify-center bg-white p-8">
+      <header className="relative flex w-screen justify-center bg-background p-8">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
       </header>
-      <main className="relative overflow-auto bg-muted">{children}</main>
+      <main className="relative bg-muted">{children}</main>
       {user.isOnboarded && <NavBar user={user} otherUser={otherUser} />}
     </div>
   );
@@ -26,14 +26,14 @@ export function AuthenticatedLayout({
 
 export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
-    <div className="relative min-h-screen">
-      <header className="fixed left-0 top-0 z-10 flex w-screen items-center justify-between gap-4 p-8">
+    <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
+      <header className="relative flex w-screen items-center justify-between bg-background p-8">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
         <LanguageSwitcher />
       </header>
-      <main className="relative min-h-screen overflow-auto px-4 pt-20">{children}</main>
+      <main className="relative bg-muted">{children}</main>
     </div>
   );
 }
@@ -58,7 +58,7 @@ export function SignInLayout({ children }: PropsWithChildren) {
 export function OnboardingLayout({ children }: PropsWithChildren) {
   return (
     <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
-      <header className="relative flex w-screen items-center justify-between gap-4 bg-white p-8">
+      <header className="relative flex w-screen items-center justify-between gap-4 bg-background p-8">
         <Link href="/" className="h-fit">
           <Logo />
         </Link>

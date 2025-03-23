@@ -15,7 +15,6 @@ export async function GET(request: NextRequest): Promise<Response> {
   const cookiesMgmt = await cookies();
   const storedState = cookiesMgmt.get("google_oauth_state")?.value ?? null;
   const storedCodeVerifier = cookiesMgmt.get("code_verifier")?.value ?? null;
-  const wishlistOwner = cookiesMgmt.get("wishlistOwner")?.value ?? null;
   const wishId = cookiesMgmt.get("wishId")?.value ?? null;
 
   if (!code || !storedCodeVerifier || !state || !storedState || state !== storedState) {
@@ -53,7 +52,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       return new Response(null, {
         status: 302,
         headers: {
-          Location: wishlistOwner ? `/${wishlistOwner}` : "/",
+          Location: wishId ? `/wishes/${existingUser.username}?tab=reserved` : "/",
           "Cache-Control": "no-store, max-age=0",
         },
       });
@@ -81,7 +80,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: wishId ? `/wishes/${createdUser.username}?tab=reserved` : "/",
         "Cache-Control": "no-store, max-age=0",
       },
     });

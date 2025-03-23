@@ -14,6 +14,7 @@ import { Badge } from "~/components/ui/badge";
 import { currencies, currencyNames } from "~/lib/currencies";
 import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
+import { Scrollable } from "~/components/ui/scrollable";
 
 const formSchema = z.object({
   name: z.string().min(1, "Title is required").max(255, "Oof, that's too long"),
@@ -77,107 +78,116 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFo
 
   return (
     <Form control={control} reset={reset} formState={formState} {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex min-h-full flex-col gap-8">
-        <div className="bg-white text-center">{wish ? "Edit" : "Create"} Wish</div>
-        {showReserved && wish?.reservedById && (
-          <div className="flex justify-center">
-            <Badge variant="attention">This wish is reserved by someone</Badge>
-          </div>
-        )}
-        <div className="flex flex-1 flex-col gap-4">
-          <FormField
-            control={control}
-            name="name"
-            disabled={isReadonly}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-              </FormItem>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
+        <Scrollable
+          footer={
+            <WishFormButtons
+              wish={wish}
+              disabled={!formState.isValid}
+              isLoading={isUpdating || isCreating}
+              onBack={onBack}
+            />
+          }
+        >
+          <div className="mx-auto max-w-xl px-4">
+            <h1 className="sticky top-0 bg-background text-center">{wish ? "Edit" : "Make a"} Wish</h1>
+            {showReserved && wish?.reservedById && (
+              <div className="flex justify-center">
+                <Badge variant="attention">This wish is reserved by someone</Badge>
+              </div>
             )}
-          />
-          <FormField
-            control={control}
-            name="url"
-            disabled={isReadonly}
-            render={({ field }) => (
-              <FormItem className="relative">
-                <FormLabel>Link</FormLabel>
-                <FormControl>
-                  <Input {...field} value={field.value ?? ""} />
-                </FormControl>
-                {isUpdatingMode && field.value && !formState.errors.url && (
-                  <Link
-                    href={field.value}
-                    target="_blank"
-                    className="absolute bottom-0 right-1 flex translate-y-full items-center gap-1"
-                  >
-                    Open link <ArrowSquareOut className="size-5" />
-                  </Link>
+            <div className="flex flex-1 flex-col gap-4">
+              <FormField
+                control={control}
+                name="name"
+                disabled={isReadonly}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
                 )}
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={control}
-            name="price"
-            disabled={isReadonly}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <div className="grid grid-cols-[3fr_2fr] gap-2">
-                  <FormControl>
-                    <Input type="number" {...field} value={field.value ?? ""} />
-                  </FormControl>
-                  <FormControl>
-                    <Select
-                      value={form.getValues().currency || ""}
-                      onChange={v => form.setValue("currency", v)}
-                      options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
-                    />
-                  </FormControl>
-                </div>
-              </FormItem>
-            )}
-          />
-          <FormField
-            disabled={isReadonly}
-            control={control}
-            name="comment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Comment</FormLabel>
-                <FormControl>
-                  <Textarea {...field} value={field.value ?? ""} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            disabled={isReadonly}
-            control={control}
-            name="isPrivate"
-            render={({ field }) => (
-              <FormItem className="flex items-center justify-between gap-2">
-                <div>
-                  <FormLabel>Make Private</FormLabel>
-                  <span className="text-xs text-foreground/60">Toggle if the wish should be visible to you only</span>
-                </div>
-                <FormControl>
-                  <Switch checked={field.value} onCheckedChange={field.onChange} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </div>
-        <WishFormButtons
-          wish={wish}
-          disabled={!formState.isValid}
-          isLoading={isUpdating || isCreating}
-          onBack={onBack}
-        />
+              />
+              <FormField
+                control={control}
+                name="url"
+                disabled={isReadonly}
+                render={({ field }) => (
+                  <FormItem className="relative">
+                    <FormLabel>Link</FormLabel>
+                    <FormControl>
+                      <Input {...field} value={field.value ?? ""} />
+                    </FormControl>
+                    {isUpdatingMode && field.value && !formState.errors.url && (
+                      <Link
+                        href={field.value}
+                        target="_blank"
+                        className="absolute bottom-0 right-1 flex translate-y-full items-center gap-1"
+                      >
+                        Open link <ArrowSquareOut className="size-5" />
+                      </Link>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="price"
+                disabled={isReadonly}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price</FormLabel>
+                    <div className="grid grid-cols-[3fr_2fr] gap-2">
+                      <FormControl>
+                        <Input type="number" {...field} value={field.value ?? ""} />
+                      </FormControl>
+                      <FormControl>
+                        <Select
+                          value={form.getValues().currency || ""}
+                          onChange={v => form.setValue("currency", v)}
+                          options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
+                        />
+                      </FormControl>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                disabled={isReadonly}
+                control={control}
+                name="comment"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Comment</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} value={field.value ?? ""} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                disabled={isReadonly}
+                control={control}
+                name="isPrivate"
+                render={({ field }) => (
+                  <FormItem className="flex items-center justify-between gap-2">
+                    <div>
+                      <FormLabel>Make Private</FormLabel>
+                      <span className="text-xs text-foreground/60">
+                        Toggle if the wish should be visible to you only
+                      </span>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+        </Scrollable>
       </form>
     </Form>
   );
@@ -195,12 +205,12 @@ function WishFormButtons({
   onBack?: () => void;
 }) {
   return (
-    <div className="mt-auto grid w-full grid-cols-2 gap-4">
-      <Button size="lg" isLoading={isLoading} variant="tertiary" onClick={onBack} minWidth={false} fullWidth>
-        Back
+    <div className="mx-auto flex w-full flex-col items-center gap-4 px-4">
+      <Button size="lg" isLoading={isLoading} variant="outline" onClick={onBack}>
+        Cancel
       </Button>
-      <Button type="submit" disabled={disabled} size="lg" isLoading={isLoading} minWidth={false} fullWidth>
-        {wish ? "Save" : "Make a wish"}
+      <Button type="submit" disabled={disabled} size="lg" isLoading={isLoading}>
+        {wish ? "Save" : "Make a Wish"}
       </Button>
     </div>
   );

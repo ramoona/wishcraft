@@ -1,0 +1,20 @@
+import { PropsWithChildren, ReactNode } from "react";
+import { cn } from "~/utils/classnames";
+
+export function Scrollable({
+  children,
+  footer,
+  backgroundColor,
+}: PropsWithChildren<{ footer: ReactNode; backgroundColor?: string }>) {
+  return (
+    <div
+      className={cn(
+        "relative grid h-full w-screen grid-rows-[auto_max-content] gap-4 overflow-y-auto",
+        backgroundColor,
+      )}
+    >
+      <div className="pb-4">{children}</div>
+      <div className="sticky bottom-4 flex justify-center">{footer}</div>
+    </div>
+  );
+}

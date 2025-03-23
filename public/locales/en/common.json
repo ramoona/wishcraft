@@ -66,6 +66,7 @@
     "WISH_NOT_FOUND": "Wish not found",
     "INVALID_INPUT": "Invalid input",
     "TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME": "Too many attempts to generate username",
+    "CAN_NOT_RESERVE_OWN_WISH": "Can not reserve own wish",
     "UNKNOWN": "Unknown error"
   },
   "success": {

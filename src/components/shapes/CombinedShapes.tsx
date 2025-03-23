@@ -60,7 +60,7 @@ function CombinedShape1({ color, accent, width }: ConcreteShapeProps) {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 202 202"
       fill="none"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path1 fill={color} />
       <mask id="mask1" width="202" height="202" x="0" y="0" maskUnits="userSpaceOnUse" style={{ maskType: "alpha" }}>
@@ -84,7 +84,7 @@ function CombinedShape2({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 208 208"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path1Rotated fill={color} />
       <mask id="mask2" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="208" height="208">
@@ -108,7 +108,7 @@ function CombinedShape3({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 207 208"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path1Rotated fill={color} />
       <mask id="mask3" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="2" y="0" width="207" height="208">
@@ -132,7 +132,7 @@ function CombinedShape4({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 214 196"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path2 fill={color} />
       <mask id="mask4" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
@@ -156,7 +156,7 @@ function CombinedShape5({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 214 196"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path2Rotated fill={color} />
       <mask id="mask5" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
@@ -180,7 +180,7 @@ function CombinedShape6({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 214 196"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path2Rotated fill={color} />
       <mask id="mask6" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
@@ -204,7 +204,7 @@ function CombinedShape7({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 184 218"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path3 fill={color} />
       <mask id="mask7" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
@@ -228,7 +228,7 @@ function CombinedShape8({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 184 218"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path3Rotated fill={color} />
       <mask id="mask8" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
@@ -252,7 +252,7 @@ function CombinedShape9({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 184 218"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path3Rotated fill={color} />
       <mask id="mask9" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
@@ -276,7 +276,7 @@ function CombinedShape10({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 172 209"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path4 fill={color} />
       <mask id="mask10" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">
@@ -300,7 +300,7 @@ function CombinedShape11({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 172 209"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path4Rotated fill={color} />
       <mask id="mask11" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">
@@ -324,7 +324,7 @@ function CombinedShape12({ color, accent, width }: ConcreteShapeProps) {
       viewBox="0 0 172 209"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={width === "sm" ? "w-14" : "w-full"}
+      className={width === "sm" ? "w-14" : "h-full"}
     >
       <Path4Rotated fill={color} />
       <mask id="mask12" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">

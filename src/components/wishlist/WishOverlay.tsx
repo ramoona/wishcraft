@@ -4,6 +4,7 @@ import { useState } from "react";
 import { WishForm } from "~/components/wishlist/own/WishForm";
 import { WishCard } from "~/components/wishlist/WishCard";
 import { cn } from "~/utils/classnames";
+import { Scrollable } from "~/components/ui/scrollable";
 
 export function WishOverlay({
   onBack,
@@ -21,36 +22,38 @@ export function WishOverlay({
 }) {
   const [editMode, setEditMode] = useState(!wish);
 
+  if (editMode || !wish) {
+    return (
+      <div className={cn("absolute left-0 top-0 z-20 flex size-full flex-col items-center bg-background")}>
+        <WishForm
+          {...props}
+          wish={wish}
+          onActionSuccess={() => {
+            setEditMode(false);
+            onBack();
+          }}
+          onBack={() => {
+            setEditMode(false);
+            onBack();
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={cn(
-        "absolute left-0 top-0 z-10 flex size-full flex-col items-center",
-        editMode ? "bg-white" : "bg-muted",
-      )}
-    >
-      <div className="flex min-h-full flex-col items-center gap-4 p-4">
-        {editMode || !wish ? (
-          <WishForm
-            {...props}
-            wish={wish}
-            onActionSuccess={() => {
-              setEditMode(false);
-              onBack();
-            }}
-            onBack={() => {
-              setEditMode(false);
-              onBack();
-            }}
-          />
-        ) : (
-          <WishCard {...props} wish={wish} onEnableEditMode={() => setEditMode(true)} isLoggedIn={isLoggedIn} />
-        )}
-        {!editMode && (
-          <Button onClick={onBack} variant="tertiary" size="lg" className="mt-auto">
+    <div className={cn("absolute left-0 top-0 z-20 flex size-full flex-col items-center bg-muted")}>
+      <Scrollable
+        footer={
+          <Button onClick={onBack} variant="outline" size="lg" className="mt-auto">
             Back to Wishes
           </Button>
-        )}
-      </div>
+        }
+      >
+        <div>
+          <WishCard {...props} wish={wish} onEnableEditMode={() => setEditMode(true)} isLoggedIn={isLoggedIn} />
+        </div>
+      </Scrollable>
     </div>
   );
 }

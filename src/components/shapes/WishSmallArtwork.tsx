@@ -29,7 +29,7 @@ export function WishSmallArtwork({
   const url = backgroundUrls[backgroundColor];
   return (
     <div
-      className={cn("flex size-20 items-center justify-center overflow-hidden", className)}
+      className={cn("flex size-20 shrink-0 items-center justify-center overflow-hidden", className)}
       style={{
         backgroundImage: `url(${url})`,
         backgroundSize: "400%",
