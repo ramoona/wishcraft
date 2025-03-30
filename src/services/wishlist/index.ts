@@ -242,7 +242,7 @@ export async function getWishesReservedByCurrentUser(): Promise<(WishType & { us
   const sessionUser = await getSessionUserOrThrow();
 
   const wishes = await prisma.wish.findMany({
-    where: { reservedById: sessionUser.id },
+    where: { reservedById: sessionUser.id, isPrivate: false },
     select: {
       ...WISH_FIELDS_SELECT,
       wishlist: {

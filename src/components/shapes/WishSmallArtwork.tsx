@@ -12,6 +12,13 @@ const backgroundUrls = {
   purple: "/images/purple.svg",
 };
 
+const colors = {
+  gray: "#D8D6D6",
+  black: "#000000",
+  yellow: "#FFF5A2",
+  purple: "#DDC2FF",
+};
+
 export function WishSmallArtwork({
   className,
   shape,
@@ -35,6 +42,7 @@ export function WishSmallArtwork({
         backgroundSize: "400%",
         backgroundPositionX: `${backgroundPositionX}%`,
         backgroundPositionY: `${backgroundPositionY}%`,
+        backgroundColor: colors[backgroundColor],
       }}
     >
       <CombinedShape shape={shape} accent={accentColor} color={mainColor} width="sm" />

@@ -30,10 +30,10 @@ export function WishDetails({
       <button
         type="button"
         onClick={() => setIsSelected(true)}
-        className="relative grid h-20 w-full grid-cols-[max-content_auto_max-content] items-center gap-4 overflow-hidden rounded bg-background pr-5 text-left"
+        className="relative grid h-20 w-full grid-cols-[max-content_auto_max-content] items-center gap-4 rounded bg-background pr-5 text-left"
       >
         <WishSmallArtwork {...visuals} />
-        <div className="flex flex-col items-start gap-2 py-4">
+        <div className="grid justify-start space-y-2 py-4">
           {username && <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>}
           <span className="max-h-8 truncate text-sm">{name}</span>
           {!username && (

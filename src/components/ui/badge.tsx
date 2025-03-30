@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "~/utils/classnames";
 
-const badgeVariants = cva("rounded-full px-2.5 py-0.5 text-center text-xs", {
+const badgeVariants = cva("rounded-full px-2.5 py-0.5 text-center text-xs block w-fit", {
   variants: {
     variant: {
       default: "bg-[#FFEFB3] text-primary-foreground hover:bg-[#FFEFB3CD]",
