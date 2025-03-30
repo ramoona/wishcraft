@@ -3,11 +3,17 @@ import { getSessionUser } from "~/services/session";
 import { WishDetails } from "~/components/wishlist/WishDetails";
 import React from "react";
 
-export async function ForeignWish({ data }: { data: WishType }) {
+export async function ForeignWish({ data, username }: { data: WishType; username: string }) {
   const sessionUser = await getSessionUser();
   const isReservedByCurrentUser = !!data.reservedById && data.reservedById === sessionUser?.id;
 
   return (
-    <WishDetails wish={data} reservedByCurrentUser={isReservedByCurrentUser} isLoggedIn={!!sessionUser} isForeign />
+    <WishDetails
+      wish={data}
+      reservedByCurrentUser={isReservedByCurrentUser}
+      isLoggedIn={!!sessionUser}
+      username={username}
+      isForeign
+    />
   );
 }

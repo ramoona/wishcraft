@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Select } from "~/components/ui/select";
 import { useEffect, useState } from "react";
 
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ contentWidth }: { contentWidth?: boolean }) {
   const { i18n } = useTranslation();
   const [currentLang, setCurrentLang] = useState("en");
   const [isMounted, setIsMounted] = useState(false);
@@ -38,5 +38,5 @@ export function LanguageSwitcher() {
     return null;
   }
 
-  return <Select value={currentLang} onChange={changeLanguage} options={languageOptions} contentWidth />;
+  return <Select value={currentLang} onChange={changeLanguage} options={languageOptions} contentWidth={contentWidth} />;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { WishlistType, WishType } from "~/services/wishlist/types";
-import { WishlistItem } from "~/components/wishlist/WishlistItem";
+import { WishlistItems } from "~/components/wishlist/WishlistItems";
 import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -63,18 +63,18 @@ export function OwnWishlist({
               Reserved
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="active" className="mx-auto h-full w-screen max-w-lg p-4">
+          <TabsContent value="active" className="mx-auto max-w-lg p-4">
             <p className="mb-4 w-full text-center text-xs">
               <b>Anyone</b> can see your Active Wishes
               <br />
               if they are not set to <b>Private</b>
             </p>
             {active.length > 0 ? (
-              <WishlistItem>
+              <WishlistItems>
                 {active.map(wish => (
                   <WishDetails key={wish.id} wish={wish} showReserved={showOwnReserved} />
                 ))}
-              </WishlistItem>
+              </WishlistItems>
             ) : (
               <EmptyWishlistSection />
             )}
@@ -82,11 +82,11 @@ export function OwnWishlist({
           <TabsContent value="fulfilled" className="mx-auto max-w-lg p-4">
             <PrivateSectionNote type="fulfilled" />
             {fulfilled.length > 0 ? (
-              <WishlistItem>
+              <WishlistItems>
                 {fulfilled.map(wish => (
                   <WishDetails key={wish.id} wish={wish} />
                 ))}
-              </WishlistItem>
+              </WishlistItems>
             ) : (
               <EmptyWishlistSection />
             )}
@@ -95,11 +95,11 @@ export function OwnWishlist({
             <div>
               <PrivateSectionNote type="archived" />
               {archived.length > 0 ? (
-                <WishlistItem>
+                <WishlistItems>
                   {archived.map(wish => (
                     <WishDetails key={wish.id} wish={wish} />
                   ))}
-                </WishlistItem>
+                </WishlistItems>
               ) : (
                 <EmptyWishlistSection />
               )}
@@ -109,7 +109,7 @@ export function OwnWishlist({
             <div>
               <p className="mb-4 w-full text-center text-xs">Here you can find all the wishes you have reserved</p>
               {reserved.length > 0 ? (
-                <WishlistItem>
+                <WishlistItems>
                   {reserved.map(wish => (
                     <WishDetails
                       key={wish.id}
@@ -118,9 +118,10 @@ export function OwnWishlist({
                       isForeign
                       reservedByCurrentUser
                       isLoggedIn
+                      showUsernameInDetails
                     />
                   ))}
-                </WishlistItem>
+                </WishlistItems>
               ) : (
                 <EmptyWishlistSection />
               )}

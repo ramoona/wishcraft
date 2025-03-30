@@ -41,7 +41,10 @@ export function WishOverlay({
   }
 
   return (
-    <div className="fixed left-0 top-20 z-20 bg-muted" style={{ height: "calc(100dvh - 10rem)" }}>
+    <div
+      className="fixed left-0 top-20 z-20 bg-muted"
+      style={{ height: isLoggedIn ? "calc(100dvh - 10rem)" : "calc(100dvh - 5rem)" }}
+    >
       <Scrollable
         footer={
           <Button onClick={onBack} variant="outline" size="lg" className="mt-auto">

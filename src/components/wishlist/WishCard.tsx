@@ -56,7 +56,12 @@ export function WishCard({
             </div>
           )}
           {isForeign ? (
-            <ForeignWishActions wish={wish} isLoggedIn={isLoggedIn} reservedByCurrentUser={reservedByCurrentUser} />
+            <ForeignWishActions
+              wish={wish}
+              isLoggedIn={isLoggedIn}
+              reservedByCurrentUser={reservedByCurrentUser}
+              username={username}
+            />
           ) : (
             <OwnWishActions wish={wish} enableEditMode={onEnableEditMode} />
           )}
@@ -95,10 +100,12 @@ function ForeignWishActions({
   wish,
   isLoggedIn,
   reservedByCurrentUser,
+  username,
 }: {
   wish: WishType;
   isLoggedIn?: boolean;
   reservedByCurrentUser?: boolean;
+  username?: string;
 }) {
   const isWishReservable = reservedByCurrentUser || !wish.reservedById;
 
@@ -108,7 +115,7 @@ function ForeignWishActions({
 
   return (
     <div className="mt-10 flex justify-center">
-      <ReserveButton wishId={wish.id} isReserved={!!wish.reservedById} isLoggedIn={isLoggedIn} />
+      <ReserveButton wishId={wish.id} isReserved={!!wish.reservedById} isLoggedIn={isLoggedIn} username={username} />
     </div>
   );
 }

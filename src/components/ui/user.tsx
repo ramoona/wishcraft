@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cva } from "class-variance-authority";
 import { User } from "~/services/user/types";
 
-const container = cva("flex items-center gap-4 rounded bg-background p-4 no-underline", {
+const container = cva("rounded bg-background no-underline", {
   variants: {
     sticky: {
       true: "sticky top-0 z-10",
@@ -25,7 +25,7 @@ export function UserDetails({
   sticky?: boolean;
 }) {
   const content = (
-    <>
+    <div className="mx-auto flex max-w-lg items-center gap-4 p-4">
       <Avatar className="size-16">
         <AvatarImage src={user.image || ""} />
         <AvatarFallback />
@@ -38,7 +38,7 @@ export function UserDetails({
         </span>
         {extraContent}
       </div>
-    </>
+    </div>
   );
 
   if (isLink) {

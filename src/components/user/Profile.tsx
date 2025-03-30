@@ -38,19 +38,21 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { LanguageSwitcher } from "~/components/LanguageSwitcher";
 
 export function Profile({ user }: { user: User }) {
   return (
     <>
       <div className="bg-background">
+        <UserDetails user={user} email={user.email} />
         <div className="mx-auto max-w-lg px-4">
-          <UserDetails user={user} email={user.email} />
           <form className="flex flex-col gap-4" autoComplete="off">
-            <div className="flex flex-col gap-6 px-4">
+            <div className="flex flex-col gap-6">
               <DateOfBirth day={user.dayOfBirth ?? undefined} month={user.monthOfBirth ?? undefined} />
               <DefaultCurrency currency={user.defaultCurrency ?? ""} />
               <ProfileVisibility isProfileHidden={user.isProfileHidden} />
               <ReservedWishesVisibility showReserved={user.showReserved ?? false} />
+              <PreferredLanguage />
             </div>
           </form>
         </div>
@@ -336,5 +338,14 @@ function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: 
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+  );
+}
+
+function PreferredLanguage() {
+  return (
+    <div className="flex flex-col gap-2">
+      <Label className="pl-2">Preferred Language</Label>
+      <LanguageSwitcher />
+    </div>
   );
 }

@@ -14,6 +14,7 @@ export function WishDetails({
   isForeign,
   wish,
   isLoggedIn,
+  showUsernameInDetails = false,
 }: {
   wish: WishType;
   reservedByCurrentUser?: boolean;
@@ -21,6 +22,7 @@ export function WishDetails({
   username?: string;
   isForeign?: boolean;
   isLoggedIn?: boolean;
+  showUsernameInDetails?: boolean;
 }) {
   const [isSelected, setIsSelected] = useState(false);
   const { name, isPrivate, price, currency, reservedById, ...visuals } = wish;
@@ -34,7 +36,9 @@ export function WishDetails({
       >
         <WishSmallArtwork {...visuals} />
         <div className="grid justify-start space-y-2 py-4">
-          {username && <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>}
+          {showUsernameInDetails && username && (
+            <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>
+          )}
           <span className="max-h-8 truncate text-sm">{name}</span>
           {!username && (
             <WishStatus

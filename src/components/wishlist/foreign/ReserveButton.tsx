@@ -6,39 +6,34 @@ import { reserveWishAction, releaseWishAction } from "~/services/wishlist/action
 import { Button } from "~/components/ui/button";
 import { SignInButton } from "~/components/forms/SignInForm";
 import { WishlistReservationFormData } from "~/services/wishlist/formData";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-  DrawerTrigger,
-} from "~/components/ui/drawer";
-import { VisuallyHidden } from "~/components/ui/visually-hidden";
+
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
 import { useTranslation } from "react-i18next";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 
 export function ReserveButton({
   wishId,
   isReserved,
   isLoggedIn,
+  username,
 }: {
   wishId: string;
   isReserved?: boolean;
   isLoggedIn?: boolean;
+  username?: string;
 }) {
   const router = useRouter();
   const params = useParams<{ username: string }>();
 
   const [isPending, startTransition] = useTransition();
-  const [isSliderOpen, setSliderOpen] = useState(false);
+  const [isAuthDialogOpen, setAuthDialogOpen] = useState(false);
 
   const { t } = useTranslation();
 
   const triggerReserveWishAction = () => {
     if (!isLoggedIn) {
-      setSliderOpen(true);
+      setAuthDialogOpen(true);
       return;
     }
 
@@ -47,7 +42,7 @@ export function ReserveButton({
 
       if (error) {
         if (error === "UNAUTHORIZED") {
-          setSliderOpen(true);
+          setAuthDialogOpen(true);
         } else {
           showErrorToast(getErrorMessage(error, t));
         }
@@ -60,7 +55,7 @@ export function ReserveButton({
 
   const triggerReleaseWishAction = () => {
     if (!isLoggedIn) {
-      setSliderOpen(true);
+      setAuthDialogOpen(true);
       return;
     }
 
@@ -69,7 +64,7 @@ export function ReserveButton({
 
       if (error) {
         if (error === "UNAUTHORIZED") {
-          setSliderOpen(true);
+          setAuthDialogOpen(true);
         } else {
           showErrorToast(getErrorMessage(error, t));
         }
@@ -86,21 +81,22 @@ export function ReserveButton({
         {isPending && (isReserved ? "Canceling..." : "Reserving...")}
         {!isPending && (isReserved ? "Cancel reservation" : "Reserve")}
       </Button>
-      <Drawer open={isSliderOpen} onClose={() => setSliderOpen(false)} onOpenChange={open => setSliderOpen(open)}>
-        <DrawerTrigger asChild></DrawerTrigger>
-        <DrawerContent className="px-6 pb-4">
-          <VisuallyHidden>
-            <DrawerTitle>Log in to reserve a wish</DrawerTitle>
-            <DrawerDescription>Log in to reserve a wish</DrawerDescription>
-          </VisuallyHidden>
-          <div className="pt-6">
-            <SignInButton wishId={wishId} wishlistOwner={params.username} />
-          </div>
-          <VisuallyHidden>
-            <DrawerClose>Close</DrawerClose>
-          </VisuallyHidden>
-        </DrawerContent>
-      </Drawer>
+      <Dialog open={isAuthDialogOpen} onOpenChange={open => setAuthDialogOpen(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Please sign in to continue</DialogTitle>
+            <DialogDescription asChild>
+              <div className="mt-4">
+                To keep track of who reserved what we are kindly asking you to sign in. Don&#39;t worry, we won&#39;t
+                tell {username ? `@${username}` : "wishlist owner"} that it was you.
+                <div className="mt-8 flex justify-center">
+                  <SignInButton wishId={wishId} wishlistOwner={params.username} />
+                </div>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

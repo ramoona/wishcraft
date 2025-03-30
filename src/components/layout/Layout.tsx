@@ -25,12 +25,14 @@ export function AuthenticatedLayout({
 
 export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
-    <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
-      <header className="relative flex w-screen items-center justify-between bg-background p-8">
-        <Link href="/" className="h-fit">
-          <Logo />
-        </Link>
-        <LanguageSwitcher />
+    <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content]">
+      <header className="relative h-20 w-screen bg-background">
+        <div className="mx-auto flex h-full max-w-lg items-center justify-between px-4">
+          <Link href="/" className="h-fit">
+            <Logo />
+          </Link>
+          <LanguageSwitcher contentWidth />
+        </div>
       </header>
       <main className="relative bg-muted">{children}</main>
     </div>
@@ -61,7 +63,7 @@ export function OnboardingLayout({ children }: PropsWithChildren) {
         <Link href="/" className="h-fit">
           <Logo />
         </Link>
-        <LanguageSwitcher />
+        <LanguageSwitcher contentWidth />
       </header>
       <main className="relative overflow-auto">{children}</main>
     </div>
