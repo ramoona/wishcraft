@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { DefaultCurrencyFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { currencies, currencyNames } from "~/lib/currencies";
 import { Select } from "~/components/ui/select";
-import { updateDefaultCurrencyAction } from "~/services/user/actions";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
+import { processOnboardingStepAction } from "~/services/onboarding/actions";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
 
 export function OnboardingWizardCurrencyStep() {
   const router = useRouter();
@@ -20,8 +20,8 @@ export function OnboardingWizardCurrencyStep() {
 
   const trigger = () => {
     startTransition(async () => {
-      const { error } = await updateDefaultCurrencyAction(
-        DefaultCurrencyFormData.fromObject({ currency, onboarding: true }),
+      const { error } = await processOnboardingStepAction(
+        ProcessOnboardingStepFormData.fromObject({ type: "default-currency", currency }),
       );
       if (error) {
         showErrorToast(getErrorMessage(error, t));
@@ -37,7 +37,7 @@ export function OnboardingWizardCurrencyStep() {
       step="default-currency"
       onSubmit={trigger}
       isSubmitting={isPending}
-      onSkip={() => undefined}
+      isSkippable
     >
       <Select
         value={currency}

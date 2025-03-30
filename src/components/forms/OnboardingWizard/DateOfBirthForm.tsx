@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { updateDateOfBirthAction } from "~/services/user/actions";
-import { DateOfBirthFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
@@ -11,6 +9,8 @@ import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
+import { processOnboardingStepAction } from "~/services/onboarding/actions";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
 
 export function OnboardingWizardDateOfBirthStep() {
   const router = useRouter();
@@ -21,8 +21,8 @@ export function OnboardingWizardDateOfBirthStep() {
 
   const trigger = () => {
     startTransition(async () => {
-      const { error } = await updateDateOfBirthAction(
-        DateOfBirthFormData.fromObject({ dayOfBirth: day!, monthOfBirth: month!, onboarding: true }),
+      const { error } = await processOnboardingStepAction(
+        ProcessOnboardingStepFormData.fromObject({ type: "date-of-birth", dayOfBirth: day!, monthOfBirth: month! }),
       );
       if (error) {
         showErrorToast(getErrorMessage(error, t));
@@ -38,8 +38,8 @@ export function OnboardingWizardDateOfBirthStep() {
       step="date-of-birth"
       isSubmitting={isPending}
       title={t("onboarding.dateOfBirth.title")}
-      onSkip={() => undefined}
       isSubmissionDisabled={!!month && !day}
+      isSkippable
     >
       <div className="grid w-full grid-cols-2 gap-4">
         <Select

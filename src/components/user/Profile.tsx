@@ -4,7 +4,7 @@ import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import {
   deleteUserAccountAction,
   updateDateOfBirthAction,
@@ -41,6 +41,32 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
 
 export function Profile({ user }: { user: User }) {
+  const [copied, setCopied] = useState(false);
+  const timeout = useRef<number | null>(null);
+
+  const link = `https://mywishcraft.app/${user.username}`;
+
+  const copyLink = async () => {
+    if (typeof window !== "undefined") {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+      timeout.current = setTimeout(() => {
+        setCopied(false);
+      }, 3000) as unknown as number;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+    };
+  }, []);
+
   return (
     <>
       <div className="bg-background">
@@ -59,8 +85,8 @@ export function Profile({ user }: { user: User }) {
       </div>
       <div className="w-full bg-background p-4 pt-6">
         <div className="mx-auto grid max-w-lg grid-cols-[auto_6rem] gap-4">
-          <Button size="lg" fullWidth>
-            Share profile
+          <Button size="lg" onClick={copyLink} fullWidth>
+            {copied ? "Link copied!" : "Share Wishlist"}
           </Button>
           <ProfileDropdownMenu />
         </div>
@@ -293,7 +319,7 @@ function SupportDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: b
           <DialogTitle>Need some help?</DialogTitle>
           <DialogDescription>
             If something is not working as expected, or you have a suggestion, please contact us at{" "}
-            <a href="mailto:help@mywishcraft.app">help@mywishcraft.app</a>.
+            <a href="mailto:support@mywishcraft.app">support@mywishcraft.app</a>.
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

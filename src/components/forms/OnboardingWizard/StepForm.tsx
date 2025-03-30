@@ -1,48 +1,65 @@
 "use client";
 
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useTransition } from "react";
 
 import { Button } from "~/components/ui/button";
 
 import { useTranslation } from "react-i18next";
 import { ONBOARDING_STEPS } from "~/services/user/types";
 import { TypographyHeader } from "~/components/ui/typography";
+import { useRouter } from "next/navigation";
+import { skipOnboardingStepAction } from "~/services/onboarding/actions";
+import { SkipOnboardingStepFormData } from "~/services/onboarding/formData";
+import { showErrorToast } from "~/components/ui/toasts";
+import { getErrorMessage } from "~/core/errorMessages";
 
 export function OnboardingWizardStep({
   title,
   onSubmit,
-  onSkip,
   isSubmitting,
-  isSkipping,
   step,
   children,
   isSubmissionDisabled,
+  isSkippable,
 }: PropsWithChildren<{
   title: string;
   onSubmit: () => void;
-  onSkip?: () => void;
   isSubmitting: boolean;
-  isSkipping?: boolean;
   isSubmissionDisabled?: boolean;
   step: (typeof ONBOARDING_STEPS)[number];
+  isSkippable?: boolean;
 }>) {
   const { t } = useTranslation();
 
   const currentStepIdx = ONBOARDING_STEPS.indexOf(step);
 
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const trigger = () => {
+    startTransition(async () => {
+      const { error } = await skipOnboardingStepAction(SkipOnboardingStepFormData.fromObject({ type: step }));
+      if (error) {
+        showErrorToast(getErrorMessage(error, t));
+      } else {
+        router.refresh();
+      }
+    });
+  };
+
   return (
     <form
       action={isSubmissionDisabled ? undefined : onSubmit}
-      className="grid h-full grid-rows-[auto_min-content] justify-center gap-4 px-6"
+      className="grid h-full grid-rows-[auto_min-content] justify-center gap-4"
     >
-      <div className="flex max-w-lg flex-col items-start gap-6 pt-4">
+      <div className="flex max-w-lg flex-col items-start gap-6 px-4 pt-4">
         <TypographyHeader>{title}</TypographyHeader>
         {children}
       </div>
       <div className="flex flex-col items-center gap-5 pb-12">
-        {onSkip && (
-          <Button size="lg" onClick={onSkip} variant="ghost">
-            {isSkipping ? t("states.skipping") : t("actions.skip")}
+        {isSkippable && (
+          <Button size="lg" onClick={trigger} variant="ghost">
+            {isPending ? t("states.skipping") : t("actions.skip")}
           </Button>
         )}
         <Button type="submit" size="lg" disabled={isSubmissionDisabled}>

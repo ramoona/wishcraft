@@ -6,13 +6,7 @@ import { User as PrismaUser } from "@prisma/client";
 import { deleteSessionTokenCookie, getSessionUser, getSessionUserOrThrow } from "~/services/session";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
 
-export async function updateUsername({
-  username,
-  onboarding,
-}: {
-  username: string;
-  onboarding?: boolean;
-}): Promise<User> {
+export async function updateUsername(username: string): Promise<User> {
   const sessionUser = await getSessionUserOrThrow();
 
   if (!username) {
@@ -27,7 +21,7 @@ export async function updateUsername({
 
   const updated = await prisma.user.update({
     where: { id: sessionUser.id },
-    data: { username, completedOnboardingSteps: onboarding ? { push: "username" } : undefined },
+    data: { username },
   });
   await logUserAction({ action: "user-updated", changes: { username } });
   return toUser(updated);
@@ -45,15 +39,7 @@ export async function checkUsernameUniqueness({ username }: { username: string }
   return !isUsernameExists;
 }
 
-export async function updateDateOfBirth({
-  dayOfBirth,
-  monthOfBirth,
-  onboarding,
-}: {
-  dayOfBirth: number;
-  monthOfBirth: number;
-  onboarding?: boolean;
-}) {
+export async function updateDateOfBirth({ dayOfBirth, monthOfBirth }: { dayOfBirth: number; monthOfBirth: number }) {
   const sessionUser = await getSessionUserOrThrow();
 
   if (!dayOfBirth || !monthOfBirth) {
@@ -62,19 +48,13 @@ export async function updateDateOfBirth({
 
   const updated = await prisma.user.update({
     where: { id: sessionUser.id },
-    data: { dayOfBirth, monthOfBirth, completedOnboardingSteps: onboarding ? { push: "date-of-birth" } : undefined },
+    data: { dayOfBirth, monthOfBirth },
   });
   await logUserAction({ action: "user-updated", changes: { dayOfBirth, monthOfBirth } });
   return toUser(updated);
 }
 
-export async function updateReservedWishedVisibility({
-  showReserved,
-  onboarding,
-}: {
-  showReserved: boolean;
-  onboarding?: boolean;
-}) {
+export async function updateReservedWishedVisibility(showReserved: boolean) {
   const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(showReserved)) {
@@ -83,14 +63,14 @@ export async function updateReservedWishedVisibility({
 
   const updated = await prisma.user.update({
     where: { id: sessionUser.id },
-    data: { showReserved, completedOnboardingSteps: onboarding ? { push: "reserved-wishes-visibility" } : undefined },
+    data: { showReserved },
   });
 
   await logUserAction({ action: "user-updated", changes: { showReserved } });
   return toUser(updated);
 }
 
-export async function updateDefaultCurrency({ currency, onboarding }: { currency: string; onboarding?: boolean }) {
+export async function updateDefaultCurrency(currency: string) {
   const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(currency)) {
@@ -99,23 +79,14 @@ export async function updateDefaultCurrency({ currency, onboarding }: { currency
 
   const updated = await prisma.user.update({
     where: { id: sessionUser.id },
-    data: {
-      defaultCurrency: currency,
-      completedOnboardingSteps: onboarding ? { push: "default-currency" } : undefined,
-    },
+    data: { defaultCurrency: currency },
   });
 
   await logUserAction({ action: "user-updated", changes: { defaultCurrency: currency } });
   return toUser(updated);
 }
 
-export async function updateProfileVisibility({
-  isProfileHidden,
-  onboarding,
-}: {
-  isProfileHidden: boolean;
-  onboarding?: boolean;
-}) {
+export async function updateProfileVisibility(isProfileHidden: boolean) {
   const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(isProfileHidden)) {
@@ -124,7 +95,7 @@ export async function updateProfileVisibility({
 
   const updated = await prisma.user.update({
     where: { id: sessionUser.id },
-    data: { isProfileHidden, completedOnboardingSteps: onboarding ? { push: "profile-visibility" } : undefined },
+    data: { isProfileHidden },
   });
 
   await logUserAction({ action: "user-updated", changes: { isProfileHidden } });

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useDeferredValue, useEffect, useState, useTransition } from "react";
-import { checkUsernameUniquenessAction, updateUsernameAction } from "~/services/user/actions";
+import { checkUsernameUniquenessAction } from "~/services/user/actions";
 import { Input } from "~/components/ui/input";
 import { UsernameFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
@@ -11,6 +11,8 @@ import { clsx } from "clsx";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
+import { processOnboardingStepAction } from "~/services/onboarding/actions";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
 
 export function OnboardingWizardUsernameStep() {
   const router = useRouter();
@@ -25,7 +27,9 @@ export function OnboardingWizardUsernameStep() {
   const trigger = () => {
     if (username && isUnique) {
       startTransition(async () => {
-        const { error } = await updateUsernameAction(UsernameFormData.fromObject({ username, onboarding: true }));
+        const { error } = await processOnboardingStepAction(
+          ProcessOnboardingStepFormData.fromObject({ type: "username", username }),
+        );
         if (error) {
           showErrorToast(getErrorMessage(error, t));
         } else {
@@ -67,6 +71,7 @@ export function OnboardingWizardUsernameStep() {
       title={t("onboarding.username.title")}
       isSubmitting={isPending}
       onSubmit={trigger}
+      isSubmissionDisabled={!username || !isUnique}
     >
       <Input
         type="text"

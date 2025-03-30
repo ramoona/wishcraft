@@ -23,7 +23,10 @@ export function WishOverlay({
 
   if (editMode || !wish) {
     return (
-      <div className="fixed left-0 top-20 z-20 bg-background" style={{ height: "calc(100dvh - 10rem)" }}>
+      <div
+        className="fixed left-0 top-20 z-20 bg-background"
+        style={{ height: isLoggedIn ? "calc(100dvh - 10rem)" : "calc(100dvh - 5rem)" }}
+      >
         <WishForm
           {...props}
           wish={wish}

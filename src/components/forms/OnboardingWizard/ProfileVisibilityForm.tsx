@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { ProfileVisibilityFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
-import { updateProfileVisibilityAction } from "~/services/user/actions";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
 import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import { processOnboardingStepAction } from "~/services/onboarding/actions";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
 
 export function OnboardingWizardProfileVisibilityStep() {
   const router = useRouter();
@@ -20,8 +20,8 @@ export function OnboardingWizardProfileVisibilityStep() {
 
   const trigger = () => {
     startTransition(async () => {
-      const { error } = await updateProfileVisibilityAction(
-        ProfileVisibilityFormData.fromObject({ isProfileHidden, onboarding: true }),
+      const { error } = await processOnboardingStepAction(
+        ProcessOnboardingStepFormData.fromObject({ type: "profile-visibility", isProfileHidden }),
       );
       if (error) {
         showErrorToast(getErrorMessage(error, t));
@@ -34,10 +34,10 @@ export function OnboardingWizardProfileVisibilityStep() {
   return (
     <OnboardingWizardStep
       onSubmit={trigger}
-      onSkip={() => undefined}
       step="profile-visibility"
       title={t("onboarding.profileVisibility.title")}
       isSubmitting={isPending}
+      isSkippable
     >
       <div className="w-full">
         <RadioGroup

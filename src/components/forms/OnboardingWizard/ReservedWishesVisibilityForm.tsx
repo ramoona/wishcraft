@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { ReservedWishesVisibilityFormData } from "~/services/user/formData";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
-import { updateReservedWishesVisibilityAction } from "~/services/user/actions";
 import { useTranslation, Trans } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Label } from "~/components/ui/label";
+import { processOnboardingStepAction } from "~/services/onboarding/actions";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
 
 export function OnboardingWizardReservedWishesVisibilityStep() {
   const router = useRouter();
@@ -20,8 +20,8 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
 
   const trigger = () => {
     startTransition(async () => {
-      const { error } = await updateReservedWishesVisibilityAction(
-        ReservedWishesVisibilityFormData.fromObject({ showReserved, onboarding: true }),
+      const { error } = await processOnboardingStepAction(
+        ProcessOnboardingStepFormData.fromObject({ type: "reserved-wishes-visibility", showReserved }),
       );
       if (error) {
         showErrorToast(getErrorMessage(error, t));
@@ -37,7 +37,7 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
       onSubmit={trigger}
       isSubmitting={isPending}
       step="reserved-wishes-visibility"
-      onSkip={() => undefined}
+      isSkippable
     >
       <div className="w-full">
         <RadioGroup value={showReserved ? "yes" : "no"} onValueChange={value => setShowReserved(value === "yes")}>

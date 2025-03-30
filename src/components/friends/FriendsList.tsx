@@ -2,6 +2,7 @@ import { FriendUser } from "~/services/user/types";
 import { WishType } from "~/services/wishlist/types";
 import { getServerTranslations } from "~/lib/i18n/server";
 import { UserDetails } from "~/components/ui/user";
+import { Empty } from "~/components/ui/empty";
 
 const MAX_RECENT_WISHES = 3;
 
@@ -9,7 +10,12 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
   const { t } = await getServerTranslations();
 
   if (!friends.length) {
-    return <div>{t("friends.empty")}</div>;
+    return (
+      <div className="grid grid-rows-[max-content_auto]">
+        <h1 className="sticky top-0 z-10 bg-background pb-8 pt-4 text-center">{t("friends.title")}</h1>
+        <Empty>{t("friends.empty")}</Empty>
+      </div>
+    );
   }
 
   return (

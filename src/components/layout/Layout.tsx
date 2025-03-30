@@ -59,13 +59,15 @@ export function SignInLayout({ children }: PropsWithChildren) {
 export function OnboardingLayout({ children }: PropsWithChildren) {
   return (
     <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
-      <header className="relative flex w-screen items-center justify-between gap-4 bg-background p-8">
-        <Link href="/" className="h-fit">
-          <Logo />
-        </Link>
-        <LanguageSwitcher contentWidth />
+      <header className="relative h-20 w-screen bg-background">
+        <div className="mx-auto flex h-full max-w-lg items-center justify-between px-4">
+          <Link href="/" className="h-fit">
+            <Logo />
+          </Link>
+          <LanguageSwitcher contentWidth />
+        </div>
       </header>
-      <main className="relative overflow-auto">{children}</main>
+      <main className="relative">{children}</main>
     </div>
   );
 }
