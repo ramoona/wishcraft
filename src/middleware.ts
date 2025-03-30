@@ -74,6 +74,13 @@ export function middleware(request: NextRequest) {
     });
   }
 
+  const url = request.nextUrl;
+  if (url.pathname.startsWith("/images")) {
+    const response = NextResponse.next();
+    response.headers.set("Cache-Control", "public, max-age=31536000, immutable"); // 1 year caching for static images
+    return response;
+  }
+
   return response;
 }
 
