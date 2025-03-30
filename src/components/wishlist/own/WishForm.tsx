@@ -205,7 +205,7 @@ function WishFormButtons({
   onBack?: () => void;
 }) {
   return (
-    <div className="mx-auto grid w-full grid-cols-[1fr_2fr] items-center gap-4 px-4">
+    <div className="mx-auto grid w-full max-w-lg grid-cols-[1fr_2fr] items-center gap-4 px-4">
       <Button isLoading={isLoading} variant="outline" onClick={onBack} fullWidth minWidth={false}>
         Cancel
       </Button>
