@@ -29,7 +29,7 @@ export function WishCard({
   const { name, isPrivate, price, currency, reservedById, url, comment, ...visuals } = wish;
 
   return (
-    <div className="mx-auto mt-8 w-full max-w-xl px-4">
+    <div className="mx-auto mt-8 w-full max-w-lg px-4">
       <div className="rounded bg-background">
         <WishLargeArtwork {...visuals} />
         <div className="p-4">
@@ -73,7 +73,7 @@ function OwnWishActions({ wish, enableEditMode }: { wish: WishType; enableEditMo
   return (
     <div className="mt-10 grid grid-cols-[auto_6rem] gap-4">
       {isEditable ? (
-        <Button size="lg" fullWidth onClick={enableEditMode}>
+        <Button size="lg" fullWidth onClick={enableEditMode} minWidth={false}>
           Edit Wish
         </Button>
       ) : (

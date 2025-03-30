@@ -18,3 +18,15 @@ export function Scrollable({
     </div>
   );
 }
+
+export function WithStickyFooter({
+  children,
+  footer,
+}: PropsWithChildren<{ footer: ReactNode; backgroundColor?: string }>) {
+  return (
+    <>
+      <div className="pb-4">{children}</div>
+      <div className="sticky bottom-4 flex justify-center">{footer}</div>
+    </>
+  );
+}

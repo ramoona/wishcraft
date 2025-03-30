@@ -13,9 +13,9 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
   }
 
   return (
-    <div className="flex size-full flex-col gap-4">
-      <h1 className="rounded bg-background pb-8 pt-4 text-center">{t("friends.title")}</h1>
-      <div className="mx-auto w-full max-w-lg px-4 pb-4">
+    <div>
+      <h1 className="sticky top-0 z-10 bg-background pb-8 pt-4 text-center">{t("friends.title")}</h1>
+      <div className="mx-auto my-4 w-full max-w-lg px-4 pb-4">
         {friends.map(friend => {
           return (
             <UserDetails

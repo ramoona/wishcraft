@@ -3,7 +3,6 @@ import { WishType } from "~/services/wishlist/types";
 import { useState } from "react";
 import { WishForm } from "~/components/wishlist/own/WishForm";
 import { WishCard } from "~/components/wishlist/WishCard";
-import { cn } from "~/utils/classnames";
 import { Scrollable } from "~/components/ui/scrollable";
 
 export function WishOverlay({
@@ -24,7 +23,7 @@ export function WishOverlay({
 
   if (editMode || !wish) {
     return (
-      <div className={cn("absolute left-0 top-0 z-20 flex size-full flex-col items-center bg-background")}>
+      <div className="fixed left-0 top-20 z-20 bg-background" style={{ height: "calc(100dvh - 10rem)" }}>
         <WishForm
           {...props}
           wish={wish}
@@ -42,7 +41,7 @@ export function WishOverlay({
   }
 
   return (
-    <div className={cn("absolute left-0 top-0 z-20 flex size-full flex-col items-center bg-muted")}>
+    <div className="fixed left-0 top-20 z-20 bg-muted" style={{ height: "calc(100dvh - 10rem)" }}>
       <Scrollable
         footer={
           <Button onClick={onBack} variant="outline" size="lg" className="mt-auto">

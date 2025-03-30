@@ -38,31 +38,32 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
-import { Scrollable } from "~/components/ui/scrollable";
 
 export function Profile({ user }: { user: User }) {
   return (
-    <Scrollable
-      backgroundColor="bg-background"
-      footer={
-        <div className="grid w-full grid-cols-[auto_6rem] gap-4 px-4">
+    <>
+      <div className="bg-background">
+        <div className="mx-auto max-w-lg px-4">
+          <UserDetails user={user} email={user.email} />
+          <form className="flex flex-col gap-4" autoComplete="off">
+            <div className="flex flex-col gap-6 px-4">
+              <DateOfBirth day={user.dayOfBirth ?? undefined} month={user.monthOfBirth ?? undefined} />
+              <DefaultCurrency currency={user.defaultCurrency ?? ""} />
+              <ProfileVisibility isProfileHidden={user.isProfileHidden} />
+              <ReservedWishesVisibility showReserved={user.showReserved ?? false} />
+            </div>
+          </form>
+        </div>
+      </div>
+      <div className="w-full bg-background p-4 pt-6">
+        <div className="mx-auto grid max-w-lg grid-cols-[auto_6rem] gap-4">
           <Button size="lg" fullWidth>
             Share profile
           </Button>
           <ProfileDropdownMenu />
         </div>
-      }
-    >
-      <UserDetails user={user} email={user.email} sticky />
-      <form className="flex flex-col gap-4" autoComplete="off">
-        <div className="flex flex-col gap-6 px-4">
-          <DateOfBirth day={user.dayOfBirth ?? undefined} month={user.monthOfBirth ?? undefined} />
-          <DefaultCurrency currency={user.defaultCurrency ?? ""} />
-          <ProfileVisibility isProfileHidden={user.isProfileHidden} />
-          <ReservedWishesVisibility showReserved={user.showReserved ?? false} />
-        </div>
-      </form>
-    </Scrollable>
+      </div>
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import { Logo } from "~/components/ui/logo";
 import Link from "next/link";
 import NavBar from "~/components/layout/NavBar";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
+import { LogoLink } from "~/components/layout/LogoLink";
 
 export function AuthenticatedLayout({
   user,
@@ -12,13 +13,11 @@ export function AuthenticatedLayout({
   otherUser,
 }: PropsWithChildren<{ user: User; otherUser?: OtherUser }>) {
   return (
-    <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
-      <header className="relative flex w-screen justify-center bg-background p-8">
-        <Link href="/" className="h-fit">
-          <Logo />
-        </Link>
+    <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content]">
+      <header className="sticky top-0 flex h-20 w-screen items-center justify-center bg-background px-4">
+        <LogoLink />
       </header>
-      <main className="relative bg-muted">{children}</main>
+      <main className="relative grid grid-rows-[auto_min-content] overflow-y-auto bg-muted">{children}</main>
       {user.isOnboarded && <NavBar user={user} otherUser={otherUser} />}
     </div>
   );

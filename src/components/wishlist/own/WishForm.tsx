@@ -89,7 +89,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFo
             />
           }
         >
-          <div className="mx-auto max-w-xl px-4">
+          <div className="mx-auto max-w-lg px-4">
             <h1 className="sticky top-0 bg-background text-center">{wish ? "Edit" : "Make a"} Wish</h1>
             {showReserved && wish?.reservedById && (
               <div className="flex justify-center">
@@ -205,11 +205,11 @@ function WishFormButtons({
   onBack?: () => void;
 }) {
   return (
-    <div className="mx-auto flex w-full flex-col items-center gap-4 px-4">
-      <Button size="lg" isLoading={isLoading} variant="outline" onClick={onBack}>
+    <div className="mx-auto grid w-full grid-cols-[1fr_2fr] items-center gap-4 px-4">
+      <Button isLoading={isLoading} variant="outline" onClick={onBack} fullWidth minWidth={false}>
         Cancel
       </Button>
-      <Button type="submit" disabled={disabled} size="lg" isLoading={isLoading}>
+      <Button type="submit" disabled={disabled} isLoading={isLoading} fullWidth minWidth={false}>
         {wish ? "Save" : "Make a Wish"}
       </Button>
     </div>

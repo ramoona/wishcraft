@@ -9,7 +9,7 @@ import { WishDetails } from "~/components/wishlist/WishDetails";
 import { OtherUser } from "~/services/user/types";
 import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
 import * as React from "react";
-import { Scrollable } from "~/components/ui/scrollable";
+import { WithStickyFooter } from "~/components/ui/scrollable";
 import { useState } from "react";
 import { WishOverlay } from "~/components/wishlist/WishOverlay";
 import { useSearchParams } from "next/navigation";
@@ -46,24 +46,24 @@ export function OwnWishlist({
   })(data.wishes);
 
   return (
-    <div className="mx-auto flex size-full flex-col gap-6">
-      <Scrollable footer={<AddNewWish onOpenNewWishForm={() => setNewWishFormVisible(true)} />}>
+    <WithStickyFooter footer={<AddNewWish onOpenNewWishForm={() => setNewWishFormVisible(true)} />}>
+      {!newWishFormVisible && (
         <Tabs className="w-full" value={tab} onValueChange={setTab}>
           <TabsList className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center bg-background px-2 py-5">
-            <TabsTrigger value="active" className="max-w-28 grow">
+            <TabsTrigger value="active" className="max-w-28 grow text-xs">
               Active
             </TabsTrigger>
-            <TabsTrigger value="fulfilled" className="max-w-28 grow">
+            <TabsTrigger value="fulfilled" className="max-w-28 grow text-xs">
               Fulfilled
             </TabsTrigger>
-            <TabsTrigger value="archived" className="max-w-28 grow">
+            <TabsTrigger value="archived" className="max-w-28 grow text-xs">
               Archived
             </TabsTrigger>
-            <TabsTrigger value="reserved" className="max-w-28 grow">
+            <TabsTrigger value="reserved" className="max-w-28 grow text-xs">
               Reserved
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="active" className="mx-auto h-full max-w-lg p-4">
+          <TabsContent value="active" className="mx-auto h-full w-screen max-w-lg p-4">
             <p className="mb-4 w-full text-center text-xs">
               <b>Anyone</b> can see your Active Wishes
               <br />
@@ -127,7 +127,7 @@ export function OwnWishlist({
             </div>
           </TabsContent>
         </Tabs>
-      </Scrollable>
+      )}
       {newWishFormVisible && (
         <WishOverlay
           onBack={() => {
@@ -136,7 +136,7 @@ export function OwnWishlist({
           }}
         />
       )}
-    </div>
+    </WithStickyFooter>
   );
 }
 

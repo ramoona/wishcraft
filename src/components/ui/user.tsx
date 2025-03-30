@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cva } from "class-variance-authority";
 import { User } from "~/services/user/types";
 
-const container = cva("flex items-center gap-4 bg-background p-4 no-underline", {
+const container = cva("flex items-center gap-4 rounded bg-background p-4 no-underline", {
   variants: {
     sticky: {
       true: "sticky top-0 z-10",

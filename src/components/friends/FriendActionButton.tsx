@@ -31,8 +31,12 @@ export function FriendActionButton({ friendId, isFriend }: { friendId: string; i
     });
   };
   return (
-    <Button onClick={handleFriendAction} variant={isFriend ? "tertiary" : "default"} size="lg" disabled={isPending}>
-      {isFriend ? t("actions.removeFriend") : t("actions.addFriend")}
-    </Button>
+    <div className="mt-auto px-4">
+      <div className="flex items-center justify-center gap-4">
+        <Button onClick={handleFriendAction} variant={isFriend ? "tertiary" : "default"} size="lg" disabled={isPending}>
+          {isFriend ? t("actions.removeFriend") : t("actions.addFriend")}
+        </Button>
+      </div>
+    </div>
   );
 }
