@@ -7,6 +7,7 @@ import { OnboardingWizardDateOfBirthStep } from "~/components/forms/OnboardingWi
 import { OnboardingWizardCurrencyStep } from "~/components/forms/OnboardingWizard/CurrencyForm";
 import { OnboardingWizardReservedWishesVisibilityStep } from "~/components/forms/OnboardingWizard/ReservedWishesVisibilityForm";
 import { OnboardingWizardProfileVisibilityStep } from "~/components/forms/OnboardingWizard/ProfileVisibilityForm";
+import { OnboardingWizardFirstWishStep } from "~/components/forms/OnboardingWizard/FirstWish";
 
 const wizardStepForm = {
   username: OnboardingWizardUsernameStep,
@@ -14,9 +15,10 @@ const wizardStepForm = {
   ["reserved-wishes-visibility"]: OnboardingWizardReservedWishesVisibilityStep,
   ["default-currency"]: OnboardingWizardCurrencyStep,
   ["profile-visibility"]: OnboardingWizardProfileVisibilityStep,
+  ["first-wish"]: OnboardingWizardFirstWishStep,
 };
 
-export async function OnboardingWizard() {
+export async function OnboardingWizard({ username }: { username: string }) {
   try {
     const sessionUser = await getSessionUserOrThrow();
     const currentStep = getCurrentStep(sessionUser);
@@ -27,7 +29,7 @@ export async function OnboardingWizard() {
 
     const Component = wizardStepForm[currentStep];
 
-    return <Component />;
+    return <Component username={username} />;
   } catch (e) {
     return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
   }

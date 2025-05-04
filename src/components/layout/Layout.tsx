@@ -36,7 +36,7 @@ export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
           <LanguageSwitcher contentWidth />
         </div>
       </header>
-      <main className="relative mx-auto mb-4 w-full max-w-lg bg-muted sm:rounded">{children}</main>
+      <main className="relative mx-auto w-full max-w-lg bg-muted sm:mb-4 sm:rounded">{children}</main>
     </div>
   );
 }
@@ -50,7 +50,7 @@ export function SignInLayout({ children }: PropsWithChildren) {
         </Link>
       </header>
       <main className="relative min-h-screen overflow-auto px-4 pt-20">
-        <div className="fixed bottom-8 left-0 flex w-screen justify-center">
+        <div className="flex w-screen justify-center">
           <div className="w-full max-w-lg">{children}</div>
         </div>
       </main>

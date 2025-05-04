@@ -36,6 +36,7 @@ export const ONBOARDING_STEPS = [
   "date-of-birth",
   "default-currency",
   "reserved-wishes-visibility",
+  "first-wish",
 ] as const;
 
 export type UserOnboardingStep = (typeof ONBOARDING_STEPS)[number];

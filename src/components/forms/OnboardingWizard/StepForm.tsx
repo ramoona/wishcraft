@@ -12,6 +12,7 @@ import { skipOnboardingStepAction } from "~/services/onboarding/actions";
 import { SkipOnboardingStepFormData } from "~/services/onboarding/formData";
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
+import { cn } from "~/utils/classnames";
 
 export function OnboardingWizardStep({
   title,
@@ -50,7 +51,19 @@ export function OnboardingWizardStep({
   return (
     <form
       action={isSubmissionDisabled ? undefined : onSubmit}
-      className="grid h-full grid-rows-[auto_min-content] justify-center gap-4"
+      className={cn(
+        "grid h-full grid-rows-[auto_min-content] justify-center gap-4",
+        step === "first-wish" && "bg-primary bg-[length:120vw] bg-no-repeat pt-4 sm:bg-[length:400px]",
+      )}
+      style={
+        step === "first-wish"
+          ? {
+              backgroundImage: `url("/images/art-3.png")`,
+              backgroundPositionY: "110%",
+              backgroundPositionX: "center",
+            }
+          : undefined
+      }
     >
       <div className="flex max-w-lg flex-col items-start gap-6 px-4 pt-4">
         <TypographyHeader>{title}</TypographyHeader>
@@ -62,18 +75,25 @@ export function OnboardingWizardStep({
             {isPending ? t("states.skipping") : t("actions.skip")}
           </Button>
         )}
-        <Button type="submit" size="lg" disabled={isSubmissionDisabled}>
+        <Button
+          type="submit"
+          size="lg"
+          variant={step === "first-wish" ? "secondary" : "default"}
+          disabled={isSubmissionDisabled}
+        >
           {isSubmitting ? t("states.saving") : t("actions.continue")}
         </Button>
-        <div className="mt-6 flex items-center justify-center gap-2">
-          {ONBOARDING_STEPS.map((stepItem, idx) => (
-            <div
-              key={stepItem}
-              className={`size-2 rounded-full ${idx <= currentStepIdx ? "bg-black" : "bg-gray-300"}`}
-              aria-label={`Step ${idx + 1} of ${ONBOARDING_STEPS.length}`}
-            />
-          ))}
-        </div>
+        {step !== "first-wish" && (
+          <div className="mt-6 flex items-center justify-center gap-2">
+            {ONBOARDING_STEPS.map((stepItem, idx) => (
+              <div
+                key={stepItem}
+                className={`size-2 rounded-full ${idx <= currentStepIdx ? "bg-black" : "bg-gray-300"}`}
+                aria-label={`Step ${idx + 1} of ${ONBOARDING_STEPS.length}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </form>
   );

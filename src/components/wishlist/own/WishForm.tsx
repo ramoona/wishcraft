@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "~/components/ui/button";
 import { Select } from "~/components/ui/select";
-import React, { useEffect } from "react";
+import React, { useEffect, useTransition } from "react";
 import Link from "next/link";
 import { ArrowSquareOut } from "@phosphor-icons/react";
 import { useCreateWish, useUpdateWish } from "~/components/wishlist/own/hooks";
@@ -15,6 +15,12 @@ import { currencies, currencyNames } from "~/lib/currencies";
 import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
 import { Scrollable } from "~/components/ui/scrollable";
+import { skipOnboardingStepAction } from "~/services/onboarding/actions";
+import { SkipOnboardingStepFormData } from "~/services/onboarding/formData";
+import { showErrorToast } from "~/components/ui/toasts";
+import { getErrorMessage } from "~/core/errorMessages";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 const formSchema = z.object({
   name: z.string().min(1, "Title is required").max(150, "Oof, that's too long"),
@@ -32,16 +38,17 @@ type WishFormProps = {
   onActionSuccess?: () => void;
   showReserved?: boolean;
   onBack?: () => void;
+  firstWish?: boolean;
 };
 
-export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFormProps) {
-  const [isCreating, createWish] = useCreateWish();
+export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWish }: WishFormProps) {
+  const [isCreating, createWish] = useCreateWish(firstWish);
   const [isUpdating, updateWish] = useUpdateWish();
 
   const { control, formState, reset, ...form } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     resetOptions: { keepValues: false, keepDirty: false, keepErrors: false },
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: {
       name: wish?.name ?? "",
       price: wish?.price ?? null,
@@ -81,16 +88,24 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFo
       <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
         <Scrollable
           footer={
-            <WishFormButtons
-              wish={wish}
-              disabled={!formState.isValid}
-              isLoading={isUpdating || isCreating}
-              onBack={onBack}
-            />
+            firstWish ? (
+              <FirstWishFormButtons wish={wish} disabled={!formState.isValid} isLoading={isUpdating || isCreating} />
+            ) : (
+              <WishFormButtons
+                wish={wish}
+                disabled={!formState.isValid}
+                isLoading={isUpdating || isCreating}
+                onBack={onBack}
+              />
+            )
           }
         >
           <div className="mx-auto max-w-lg px-4">
-            <h1 className="sticky top-0 bg-background text-center">{wish ? "Edit" : "Make a"} Wish</h1>
+            {firstWish ? (
+              <h1 className="sticky top-0 bg-background text-center">Make your first Wish</h1>
+            ) : (
+              <h1 className="sticky top-0 bg-background text-center">{wish ? "Edit" : "Make a"} Wish</h1>
+            )}
             {showReserved && wish?.reservedById && (
               <div className="flex justify-center">
                 <Badge variant="attention">This wish is reserved by someone</Badge>
@@ -208,6 +223,42 @@ function WishFormButtons({
     <div className="mx-auto grid w-full max-w-lg grid-cols-[1fr_2fr] items-center gap-4 px-4">
       <Button isLoading={isLoading} variant="outline" onClick={onBack} fullWidth minWidth={false}>
         Cancel
+      </Button>
+      <Button type="submit" disabled={disabled} isLoading={isLoading} fullWidth minWidth={false}>
+        {wish ? "Save" : "Make a Wish"}
+      </Button>
+    </div>
+  );
+}
+
+function FirstWishFormButtons({
+  wish,
+  disabled,
+  isLoading,
+}: {
+  wish?: WishType;
+  disabled: boolean;
+  isLoading: boolean;
+}) {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const [isPending, startTransition] = useTransition();
+
+  const skip = () => {
+    startTransition(async () => {
+      const { error } = await skipOnboardingStepAction(SkipOnboardingStepFormData.fromObject({ type: "first-wish" }));
+      if (error) {
+        showErrorToast(getErrorMessage(error, t));
+      } else {
+        router.refresh();
+      }
+    });
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-5 pb-12">
+      <Button size="lg" onClick={skip} variant="ghost">
+        {isPending ? t("states.skipping") : t("actions.skip")}
       </Button>
       <Button type="submit" disabled={disabled} isLoading={isLoading} fullWidth minWidth={false}>
         {wish ? "Save" : "Make a Wish"}

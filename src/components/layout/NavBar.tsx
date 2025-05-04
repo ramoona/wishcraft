@@ -42,7 +42,7 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
               key={item.route}
               href={`/${user.username}/${item.route}`}
               className={cn(
-                "flex flex-col items-center justify-center gap-2 text-sm font-medium text-stone-500 no-underline",
+                "flex flex-col items-center justify-center gap-2 rounded text-sm font-medium text-stone-500 no-underline ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 isSelected && "text-black",
               )}
             >

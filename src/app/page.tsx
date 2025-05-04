@@ -18,7 +18,7 @@ export default async function Home() {
   if (sessionUser && !sessionUser.isOnboarded) {
     return (
       <OnboardingLayout>
-        <OnboardingWizard />
+        <OnboardingWizard username={sessionUser.username} />
       </OnboardingLayout>
     );
   }

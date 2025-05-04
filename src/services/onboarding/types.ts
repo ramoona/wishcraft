@@ -3,14 +3,16 @@ export type OnboardingStepType =
   | "date-of-birth"
   | "reserved-wishes-visibility"
   | "default-currency"
-  | "profile-visibility";
+  | "profile-visibility"
+  | "first-wish";
 
 export type OnboardingStepInput =
   | UsernameInput
   | DateOfBirthInput
   | ReservedWishesVisibilityInput
   | DefaultCurrencyInput
-  | ProfileVisibilityInput;
+  | ProfileVisibilityInput
+  | FirstWishInput;
 
 type UsernameInput = {
   type: "username";
@@ -36,6 +38,10 @@ type DefaultCurrencyInput = {
 type ProfileVisibilityInput = {
   type: "profile-visibility";
   isProfileHidden: boolean;
+};
+
+type FirstWishInput = {
+  type: "first-wish";
 };
 
 export function isUsernameInput(input: OnboardingStepInput): input is UsernameInput {

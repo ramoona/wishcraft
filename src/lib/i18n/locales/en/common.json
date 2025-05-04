@@ -39,6 +39,10 @@
     "reservedWishesVisibility": {
       "title": "Do you want to see if your wishes are reserved by someone?",
       "description": "By default this setting is turned off. If you choose to turn it on, you will see a little <badge>reserved</badge> badge next to the wishes that are reserved by someone but you won't see by whom. You can always change it in your profile settings."
+    },
+    "fistWish": {
+      "title": "You are all set!",
+      "subTitle": "Now let’s create your first wish."
     }
   },
   "placeholders": {

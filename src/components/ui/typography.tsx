@@ -12,6 +12,10 @@ export function TypographyH1({ children }: PropsWithChildren) {
   return <h1 className="text-xl font-bold">{children}</h1>;
 }
 
+export function TypographyH2({ children }: PropsWithChildren) {
+  return <h1 className="text-lg font-bold">{children}</h1>;
+}
+
 export function TypographyLeadBody({ children }: PropsWithChildren) {
   return <p className="leading-7">{children}</p>;
 }

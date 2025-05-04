@@ -3,7 +3,10 @@ import { Logo } from "~/components/ui/logo";
 
 export function LogoLink() {
   return (
-    <Link href="/" className="h-fit">
+    <Link
+      href="/"
+      className="h-fit rounded ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
       <Logo />
     </Link>
   );
