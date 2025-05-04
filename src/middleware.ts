@@ -60,7 +60,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (process.env.NODE_ENV === "production") {
+  const sessionCookie = request.cookies.get("session")?.value;
+
+  // Only track authenticated users
+  if (sessionCookie) {
     const userAgent = request.headers.get("user-agent");
     const parser = new UAParser();
     const result = parser.setUA(userAgent || "").getResult();
@@ -68,11 +71,11 @@ export async function middleware(request: NextRequest) {
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
     const ipHash = ip ? await hashIP(ip) : undefined;
 
-    await fetch("/api/track", {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/track`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(process.env.API_KEY && { "x-api-key": process.env.API_KEY }),
+        ...(process.env.OWN_API_KEY && { "x-api-key": process.env.OWN_API_KEY }),
       },
       body: JSON.stringify({
         deviceType: result.device.type,

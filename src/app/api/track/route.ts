@@ -2,7 +2,7 @@ import { prisma } from "prisma/db";
 
 export async function POST(req: Request) {
   const apiKey = req.headers.get("x-api-key");
-  if (apiKey !== process.env.API_KEY) {
+  if (apiKey !== process.env.OWN_API_KEY) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 403 });
   }
 
