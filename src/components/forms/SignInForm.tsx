@@ -5,7 +5,6 @@ import { buttonVariants } from "~/components/ui/button";
 import { cn } from "~/utils/classnames";
 import { useTranslation } from "react-i18next";
 import { TypographyExtraLargeHeader } from "~/components/ui/typography";
-import Image from "next/image";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -23,23 +22,33 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
   const [isTermsOfServiceOpen, setIsTermsOfServiceOpen] = useState(false);
 
   return (
-    <div className="flex flex-col items-center gap-6 px-11">
-      <Image src="/images/art-3.png" alt="Art" width={306} height={284} className="mt-4" />
+    <div className="flex h-full flex-col items-center gap-[2vw] pb-4">
+      <div
+        className="w-full grow sm:mt-10 sm:h-[284px] sm:w-[306px] sm:grow-0 sm:p-0"
+        style={{
+          backgroundImage: "url('/images/art-3.png')",
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
       <div className="flex flex-col gap-2 sm:text-center">
         <TypographyExtraLargeHeader>Make your wishes come true!</TypographyExtraLargeHeader>
       </div>
-      <p className="mt-6 text-sm text-foreground/80 sm:text-center">
-        By signing in, you agree to{" "}
-        <button className="underline" onClick={() => setIsTermsOfServiceOpen(true)}>
-          Terms of Service
-        </button>{" "}
-        and{" "}
-        <button className="underline" onClick={() => setIsPrivacyPolicyOpen(true)}>
-          Privacy Policy
-        </button>
-        .
-      </p>
-      <SignInButton wishlistOwner={wishlistOwner} wishId={wishId} />
+      <div className="flex flex-col items-center">
+        <p className="mb-4 mt-6 text-sm text-foreground/80 sm:text-center">
+          By signing in, you agree to{" "}
+          <button className="underline" onClick={() => setIsTermsOfServiceOpen(true)}>
+            Terms of Service
+          </button>{" "}
+          and{" "}
+          <button className="underline" onClick={() => setIsPrivacyPolicyOpen(true)}>
+            Privacy Policy
+          </button>
+          .
+        </p>
+        <SignInButton wishlistOwner={wishlistOwner} wishId={wishId} />
+      </div>
       <Preview
         title="Privacy Policy"
         description={<PrivacyPolicy />}

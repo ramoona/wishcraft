@@ -49,10 +49,8 @@ export function SignInLayout({ children }: PropsWithChildren) {
           <Logo />
         </Link>
       </header>
-      <main className="relative min-h-screen overflow-auto px-4 pt-20">
-        <div className="flex w-screen justify-center">
-          <div className="w-full max-w-lg">{children}</div>
-        </div>
+      <main className="relative h-screen overflow-auto px-4 pt-20">
+        <div className="mx-auto size-full max-w-lg">{children}</div>
       </main>
     </div>
   );

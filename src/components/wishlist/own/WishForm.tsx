@@ -91,12 +91,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
             firstWish ? (
               <FirstWishFormButtons wish={wish} disabled={!formState.isValid} isLoading={isUpdating || isCreating} />
             ) : (
-              <WishFormButtons
-                wish={wish}
-                disabled={!formState.isValid}
-                isLoading={isUpdating || isCreating}
-                onBack={onBack}
-              />
+              <WishFormButtons wish={wish} isLoading={isUpdating || isCreating} onBack={onBack} />
             )
           }
         >
@@ -177,7 +172,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                   <FormItem>
                     <FormLabel>Comment</FormLabel>
                     <FormControl>
-                      <Textarea {...field} value={field.value ?? ""} className="h-40" />
+                      <Textarea {...field} value={field.value ?? ""} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -208,23 +203,13 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
   );
 }
 
-function WishFormButtons({
-  wish,
-  disabled,
-  isLoading,
-  onBack,
-}: {
-  wish?: WishType;
-  disabled: boolean;
-  isLoading: boolean;
-  onBack?: () => void;
-}) {
+function WishFormButtons({ wish, isLoading, onBack }: { wish?: WishType; isLoading: boolean; onBack?: () => void }) {
   return (
     <div className="mx-auto grid w-full max-w-lg grid-cols-[1fr_2fr] items-center gap-4 px-4">
       <Button isLoading={isLoading} variant="outline" onClick={onBack} fullWidth minWidth={false}>
         Cancel
       </Button>
-      <Button type="submit" disabled={disabled} isLoading={isLoading} fullWidth minWidth={false}>
+      <Button type="submit" isLoading={isLoading} fullWidth minWidth={false}>
         {wish ? "Save" : "Make a Wish"}
       </Button>
     </div>

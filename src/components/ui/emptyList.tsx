@@ -2,13 +2,13 @@ import { Shape1, Shape2, Shape3, Shape4 } from "~/components/shapes/BaseShape";
 import { PropsWithChildren } from "react";
 import { cn } from "~/utils/classnames";
 
-export function EmptyList({ children, shape }: PropsWithChildren<{ shape: "1" | "2" | "3" | "4" }>) {
+export function EmptyList({ shape }: PropsWithChildren<{ shape: "1" | "2" | "3" | "4" }>) {
   const Shape = shapes[shape];
   return (
     <div className="relative flex grow items-center justify-center px-8">
-      <Shape fill="#FFFFFF" className="max-w-80" />
+      <Shape fill="#FFFFFF" className="max-w-64 sm:max-w-80" />
       <div className="absolute flex size-full items-center justify-center">
-        <span className={cn("text-foreground/50", offset[shape])}>{children}</span>
+        <span className={cn("text-foreground/50", offset[shape])}>Empty</span>
       </div>
     </div>
   );

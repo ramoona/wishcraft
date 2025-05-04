@@ -75,10 +75,12 @@ export function Profile({ user }: { user: User }) {
           <form className="flex flex-col gap-4" autoComplete="off">
             <div className="flex flex-col gap-6">
               <DateOfBirth day={user.dayOfBirth ?? undefined} month={user.monthOfBirth ?? undefined} />
-              <DefaultCurrency currency={user.defaultCurrency ?? ""} />
+              <div className="grid w-full grid-cols-2 gap-4">
+                <DefaultCurrency currency={user.defaultCurrency ?? ""} />
+                <PreferredLanguage />
+              </div>
               <ProfileVisibility isProfileHidden={user.isProfileHidden} />
               <ReservedWishesVisibility showReserved={user.showReserved ?? false} />
-              <PreferredLanguage />
             </div>
           </form>
         </div>
