@@ -24,7 +24,7 @@ export function WishOverlay({
   if (editMode || !wish) {
     return (
       <div
-        className="fixed left-0 top-20 z-20 bg-background"
+        className="fixed left-1/2 top-0 z-20 w-screen max-w-lg -translate-x-1/2 bg-background pt-10"
         style={{ height: isLoggedIn ? "calc(100dvh - 10rem)" : "calc(100dvh - 5rem)" }}
       >
         <WishForm
@@ -45,19 +45,17 @@ export function WishOverlay({
 
   return (
     <div
-      className="fixed left-0 top-20 z-20 bg-muted"
-      style={{ height: isLoggedIn ? "calc(100dvh - 10rem)" : "calc(100dvh - 5rem)" }}
+      className="fixed left-1/2 top-0 z-20 w-screen max-w-lg -translate-x-1/2 bg-muted sm:w-full sm:rounded-b"
+      style={{ height: isLoggedIn ? "calc(100dvh - 5rem)" : "100dvh" }}
     >
       <Scrollable
         footer={
           <Button onClick={onBack} variant="outline" size="lg" className="mt-auto">
-            Back to Wishes
+            Back
           </Button>
         }
       >
-        <div>
-          <WishCard {...props} wish={wish} onEnableEditMode={() => setEditMode(true)} isLoggedIn={isLoggedIn} />
-        </div>
+        <WishCard {...props} wish={wish} onEnableEditMode={() => setEditMode(true)} isLoggedIn={isLoggedIn} />
       </Scrollable>
     </div>
   );

@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "~/styles/globals.css";
 import { Toaster } from "~/components/ui/toasts";
 import { Analytics } from "@vercel/analytics/react";
 import { cn } from "~/utils/classnames";
-import Head from "next/head";
+import type { Metadata, Viewport } from "next";
 import { Providers } from "~/app/providers";
 import { detectLanguage } from "~/lib/i18n/detect-language";
 import { Shapes } from "~/app/shapes";
@@ -16,6 +15,13 @@ export const metadata: Metadata = {
   description: "A place for all your wishes",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -25,9 +31,6 @@ export default async function RootLayout({
 
   return (
     <html>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-      </Head>
       <body className={cn(inter.className, "relative bg-background")}>
         <Shapes />
         <Providers language={language}>

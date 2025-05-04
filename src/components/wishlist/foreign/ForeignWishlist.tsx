@@ -4,7 +4,7 @@ import { WishlistItems } from "~/components/wishlist/WishlistItems";
 import { OtherUser } from "~/services/user/types";
 import { UserDetails } from "~/components/ui/user";
 import * as React from "react";
-import { FriendActionButton } from "~/components/friends/FriendActionButton";
+import { FriendActionButtons } from "~/components/friends/FriendActionButtons";
 
 export function ForeignWishlist({
   wishlist,
@@ -19,7 +19,7 @@ export function ForeignWishlist({
     <>
       <div>
         <UserDetails user={owner} sticky />
-        <div className="mx-auto max-w-lg px-4 pt-4">
+        <div className="mx-auto w-full max-w-lg bg-muted px-4 pt-4 shadow-[0_-10px_0_5px_#fff] sm:rounded-t">
           <WishlistItems>
             {wishlist.wishes.length === 0 ? (
               <div>Nothing here yet</div>
@@ -29,11 +29,7 @@ export function ForeignWishlist({
           </WishlistItems>
         </div>
       </div>
-      <div className="my-4 px-4">
-        <div className="flex items-center justify-center gap-4">
-          {isLoggedIn ? <FriendActionButton friendId={owner.id} isFriend={owner.isFriend} /> : null}
-        </div>
-      </div>
+      {isLoggedIn ? <FriendActionButtons friendId={owner.id} isFriend={owner.isFriend} /> : null}
     </>
   );
 }

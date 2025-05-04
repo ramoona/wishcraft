@@ -17,7 +17,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { Scrollable } from "~/components/ui/scrollable";
 
 const formSchema = z.object({
-  name: z.string().min(1, "Title is required").max(255, "Oof, that's too long"),
+  name: z.string().min(1, "Title is required").max(150, "Oof, that's too long"),
   price: z.number({ coerce: true }).optional().nullable().default(null),
   currency: z.string().optional().nullable(),
   url: z.string().url().optional().nullable(),
@@ -162,7 +162,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack }: WishFo
                   <FormItem>
                     <FormLabel>Comment</FormLabel>
                     <FormControl>
-                      <Textarea {...field} value={field.value ?? ""} />
+                      <Textarea {...field} value={field.value ?? ""} className="h-40" />
                     </FormControl>
                   </FormItem>
                 )}

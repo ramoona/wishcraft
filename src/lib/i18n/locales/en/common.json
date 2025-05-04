@@ -48,7 +48,7 @@
   },
   "friends": {
     "title": "Your Friends",
-    "empty": "You don't have friends yet",
+    "empty": "No friends yet...",
     "recentWishes": "Recently added \"{{ wishes }}\"",
     "moreWishes": "{{ wishes }} and more..."
   },

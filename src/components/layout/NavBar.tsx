@@ -46,7 +46,7 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
                 isSelected && "text-black",
               )}
             >
-              <Icon className="" fill={isSelected ? "fill-black" : "fill-stone-500"} />
+              <Icon fill={isSelected ? "fill-black" : "fill-active"} />
               {t(item.label)}
             </Link>
           );

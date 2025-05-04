@@ -3,34 +3,34 @@
 @tailwind utilities;
 
 :root {
-  --primary: 267 100% 88%;
-  --primary-foreground: 0 0% 0%;
+  --primary: 221 194 255;
+  --primary-foreground: 0 0 0;
 
-  --secondary: 0 0% 0%;
-  --secondary-foreground: 267 100% 88%;
+  --secondary: 0 0 0;
+  --secondary-foreground: 221 194 255;
 
-  --tertiary: 203 17% 51%;
-  --tertiary-foreground: 0 0% 0%;
+  --tertiary: 97 114 123;
+  --tertiary-foreground: 0 0 0;
 
-  --muted: 0 0% 95%;
+  --muted: 242 242 242;
 
-  --background: 0 0% 100%;
-  --foreground: 222.2 47.4% 11.2%;
-  /*--muted: 210 40% 96.1%;*/
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 47.4% 11.2%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 47.4% 11.2%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
+  --background: 255 255 255;
+  --foreground: 24 28 43;
 
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 100% 50%;
-  --destructive-foreground: 210 40% 98%;
-  --ring: 215 20.2% 65.1%;
-  --radius: 0.5rem;
+  --muted-foreground: 136 139 150;
+  --card: 255 255 255;
+  --card-foreground: 24 28 43;
+  --popover: 255 255 255;
+  --popover-foreground: 24 28 43;
+  --border: 217 217 217;
+  --input: 217 217 217;
+
+  --accent: 232 240 253;
+  --accent-foreground: 24 28 43;
+  --destructive: 255 0 0;
+  --destructive-foreground: 245 248 255;
+  --ring: 162 174 199;
+  --active: 119 118 118 /*--radius: 0.5rem;*/;
 }
 
 a {
@@ -40,4 +40,8 @@ a {
 
 [aria-invalid="true"] {
   box-shadow: -1px -13px 0 -10px #ff1f1f inset;
+}
+
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none !important;
 }

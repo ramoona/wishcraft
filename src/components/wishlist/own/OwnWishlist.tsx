@@ -13,6 +13,7 @@ import { WithStickyFooter } from "~/components/ui/scrollable";
 import { useState } from "react";
 import { WishOverlay } from "~/components/wishlist/WishOverlay";
 import { useSearchParams } from "next/navigation";
+import { EmptyList } from "~/components/ui/emptyList";
 
 export function OwnWishlist({
   data,
@@ -48,89 +49,96 @@ export function OwnWishlist({
   return (
     <WithStickyFooter footer={<AddNewWish onOpenNewWishForm={() => setNewWishFormVisible(true)} />}>
       {!newWishFormVisible && (
-        <Tabs className="w-full" value={tab} onValueChange={setTab}>
-          <TabsList className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center bg-background px-2 py-5">
-            <TabsTrigger value="active" className="max-w-28 grow text-xs">
+        <Tabs className="flex size-full flex-col" value={tab} onValueChange={setTab}>
+          <TabsList className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center bg-background px-4 py-5">
+            <TabsTrigger value="active" className="grow text-sm">
               Active
             </TabsTrigger>
-            <TabsTrigger value="fulfilled" className="max-w-28 grow text-xs">
+            <TabsTrigger value="fulfilled" className="grow text-sm">
               Fulfilled
             </TabsTrigger>
-            <TabsTrigger value="archived" className="max-w-28 grow text-xs">
+            <TabsTrigger value="archived" className="grow text-sm">
               Archived
             </TabsTrigger>
-            <TabsTrigger value="reserved" className="max-w-28 grow text-xs">
+            <TabsTrigger value="reserved" className="grow text-sm">
               Reserved
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="active" className="mx-auto max-w-lg p-4">
+          <TabsContent
+            value="active"
+            className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
+          >
             <p className="mb-4 w-full text-center text-xs">
-              <b>Anyone</b> can see your Active Wishes
-              <br />
-              if they are not set to <b>Private</b>
+              <b>Anyone</b> can see your non-private active wishes
             </p>
             {active.length > 0 ? (
               <WishlistItems>
                 {active.map(wish => (
-                  <WishDetails key={wish.id} wish={wish} showReserved={showOwnReserved} />
+                  <WishDetails key={wish.id} wish={wish} showReserved={showOwnReserved} isLoggedIn />
                 ))}
               </WishlistItems>
             ) : (
-              <EmptyWishlistSection />
+              <EmptyWishlistSection shape="1" />
             )}
           </TabsContent>
-          <TabsContent value="fulfilled" className="mx-auto max-w-lg p-4">
+          <TabsContent
+            value="fulfilled"
+            className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
+          >
             <PrivateSectionNote type="fulfilled" />
             {fulfilled.length > 0 ? (
               <WishlistItems>
                 {fulfilled.map(wish => (
-                  <WishDetails key={wish.id} wish={wish} />
+                  <WishDetails key={wish.id} wish={wish} isLoggedIn />
                 ))}
               </WishlistItems>
             ) : (
-              <EmptyWishlistSection />
+              <EmptyWishlistSection shape="2" />
             )}
           </TabsContent>
-          <TabsContent value="archived" className="mx-auto max-w-lg p-4">
-            <div>
-              <PrivateSectionNote type="archived" />
-              {archived.length > 0 ? (
-                <WishlistItems>
-                  {archived.map(wish => (
-                    <WishDetails key={wish.id} wish={wish} />
-                  ))}
-                </WishlistItems>
-              ) : (
-                <EmptyWishlistSection />
-              )}
-            </div>
+          <TabsContent
+            value="archived"
+            className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
+          >
+            <PrivateSectionNote type="archived" />
+            {archived.length > 0 ? (
+              <WishlistItems>
+                {archived.map(wish => (
+                  <WishDetails key={wish.id} wish={wish} isLoggedIn />
+                ))}
+              </WishlistItems>
+            ) : (
+              <EmptyWishlistSection shape="3" />
+            )}
           </TabsContent>
-          <TabsContent value="reserved" className="mx-auto max-w-lg p-4">
-            <div>
-              <p className="mb-4 w-full text-center text-xs">Here you can find all the wishes you have reserved</p>
-              {reserved.length > 0 ? (
-                <WishlistItems>
-                  {reserved.map(wish => (
-                    <WishDetails
-                      key={wish.id}
-                      wish={wish}
-                      username={wish.user.username}
-                      isForeign
-                      reservedByCurrentUser
-                      isLoggedIn
-                      showUsernameInDetails
-                    />
-                  ))}
-                </WishlistItems>
-              ) : (
-                <EmptyWishlistSection />
-              )}
-            </div>
+          <TabsContent
+            value="reserved"
+            className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
+          >
+            <PrivateSectionNote type="reserved" />
+            {reserved.length > 0 ? (
+              <WishlistItems>
+                {reserved.map(wish => (
+                  <WishDetails
+                    key={wish.id}
+                    wish={wish}
+                    username={wish.user.username}
+                    isForeign
+                    reservedByCurrentUser
+                    isLoggedIn
+                    showUsernameInDetails
+                  />
+                ))}
+              </WishlistItems>
+            ) : (
+              <EmptyWishlistSection shape="4" />
+            )}
           </TabsContent>
         </Tabs>
       )}
       {newWishFormVisible && (
         <WishOverlay
+          isLoggedIn
           onBack={() => {
             setNewWishFormVisible(false);
             setTab("active");
@@ -142,6 +150,14 @@ export function OwnWishlist({
 }
 
 function PrivateSectionNote({ type }: { type: string }) {
+  if (type === "reserved") {
+    return (
+      <p className="mb-4 w-full text-center text-xs">
+        <b>Only you</b> can see your wishes that you have reserved
+      </p>
+    );
+  }
+
   return (
     <p className="mb-4 w-full text-center text-xs">
       <b>Only you</b> can see your {type} wishes
@@ -149,6 +165,6 @@ function PrivateSectionNote({ type }: { type: string }) {
   );
 }
 
-function EmptyWishlistSection() {
-  return <div className="mt-16 text-center text-slate-500">There are no wishes here yet...</div>;
+function EmptyWishlistSection({ shape }: { shape: "1" | "2" | "3" | "4" }) {
+  return <EmptyList shape={shape}>No wishes yet...</EmptyList>;
 }

@@ -17,7 +17,9 @@ export function AuthenticatedLayout({
       <header className="sticky top-0 flex h-20 w-screen items-center justify-center bg-background px-4">
         <LogoLink />
       </header>
-      <main className="relative grid grid-rows-[auto_min-content] overflow-y-auto bg-muted">{children}</main>
+      <main className="relative mx-auto grid w-full max-w-lg grid-rows-[auto_min-content] overflow-y-auto bg-muted sm:rounded">
+        {children}
+      </main>
       {user.isOnboarded && <NavBar user={user} otherUser={otherUser} />}
     </div>
   );
@@ -34,7 +36,7 @@ export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
           <LanguageSwitcher contentWidth />
         </div>
       </header>
-      <main className="relative bg-muted">{children}</main>
+      <main className="relative mx-auto mb-4 w-full max-w-lg bg-muted sm:rounded">{children}</main>
     </div>
   );
 }
