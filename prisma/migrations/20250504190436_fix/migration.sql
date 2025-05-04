@@ -1,0 +1,9 @@
+-- AlterTable
+ALTER TABLE "AnalyticsEvents" ADD COLUMN     "browserVersion" TEXT,
+ADD COLUMN     "osVersion" TEXT,
+ALTER COLUMN "url" DROP NOT NULL,
+ALTER COLUMN "userAgent" DROP NOT NULL,
+ALTER COLUMN "browser" DROP NOT NULL,
+ALTER COLUMN "os" DROP NOT NULL,
+ALTER COLUMN "deviceType" DROP NOT NULL,
+ALTER COLUMN "ipHash" DROP NOT NULL;

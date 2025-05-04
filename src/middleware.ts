@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { UAParser } from "ua-parser-js";
+import { prisma } from "prisma/db";
 
 // The default locale to use if no locale is detected
 export const defaultLocale = "en";
@@ -49,7 +51,7 @@ function parseAcceptLanguage(header: string): string | null {
   }
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Skip middleware for static assets and API routes
   if (
     request.nextUrl.pathname.startsWith("/_next") ||
@@ -57,6 +59,27 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/locales")
   ) {
     return NextResponse.next();
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    const userAgent = request.headers.get("user-agent");
+    const parser = new UAParser();
+    const result = parser.setUA(userAgent || "").getResult();
+
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+    const ipHash = ip ? await hashIP(ip) : undefined;
+
+    await prisma.analyticsEvents.create({
+      data: {
+        deviceType: result.device.type,
+        os: result.os.name,
+        osVersion: result.os.version,
+        browser: result.browser.name,
+        browserVersion: result.browser.version,
+        url: request.url,
+        ipHash: ipHash,
+      },
+    });
   }
 
   // Get the locale from the request
@@ -87,3 +110,13 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|locales).*)"],
 };
+
+async function hashIP(ip: string) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(ip + process.env.NEXT_PUBLIC_HASH_SALT);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+
+  // Convert ArrayBuffer to hex manually
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
