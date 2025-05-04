@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { UAParser } from "ua-parser-js";
-import { prisma } from "prisma/db";
 
 // The default locale to use if no locale is detected
 export const defaultLocale = "en";
@@ -69,8 +68,13 @@ export async function middleware(request: NextRequest) {
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
     const ipHash = ip ? await hashIP(ip) : undefined;
 
-    await prisma.analyticsEvents.create({
-      data: {
+    await fetch("/api/track", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(process.env.API_KEY && { "x-api-key": process.env.API_KEY }),
+      },
+      body: JSON.stringify({
         deviceType: result.device.type,
         os: result.os.name,
         osVersion: result.os.version,
@@ -78,7 +82,7 @@ export async function middleware(request: NextRequest) {
         browserVersion: result.browser.version,
         url: request.url,
         ipHash: ipHash,
-      },
+      }),
     });
   }
 
@@ -113,7 +117,7 @@ export const config = {
 
 async function hashIP(ip: string) {
   const encoder = new TextEncoder();
-  const data = encoder.encode(ip + process.env.NEXT_PUBLIC_HASH_SALT);
+  const data = encoder.encode(ip + process.env.HASH_SALT);
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
 
   // Convert ArrayBuffer to hex manually
