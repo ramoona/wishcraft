@@ -70,7 +70,7 @@ export function Profile({ user }: { user: User }) {
   return (
     <>
       <div className="bg-background">
-        <UserDetails user={user} email={user.email} />
+        <UserDetails user={user} email={user.email} context="profile" />
         <div className="mx-auto max-w-lg px-4">
           <form className="flex flex-col gap-4" autoComplete="off">
             <div className="flex flex-col gap-6">

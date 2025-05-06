@@ -13,6 +13,7 @@ const badgeVariants = cva("block w-fit rounded-full px-3.5 py-0.5 text-center te
       outline: "bg-background text-foreground",
       reserved: "bg-secondary text-[#FFEFB3] hover:bg-secondary/80",
       reservedByYou: "bg-secondary text-primary hover:bg-secondary/80",
+      birthday: "flex items-center gap-1 bg-[#FFF5A2] text-primary-foreground",
     },
   },
   defaultVariants: {

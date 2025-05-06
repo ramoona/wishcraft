@@ -150,7 +150,7 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
     },
   });
   const user = await prisma.user.findUnique({
-    where: { username },
+    where: { username, isProfileHidden: false },
     select: {
       id: true,
       firstName: true,

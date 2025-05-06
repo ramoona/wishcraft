@@ -19,7 +19,6 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false,
 };
 
 export default async function RootLayout({
@@ -30,7 +29,7 @@ export default async function RootLayout({
   const language = await detectLanguage();
 
   return (
-    <html>
+    <html lang={language}>
       <body className={cn(inter.className, "relative bg-background")}>
         <Shapes />
         <Providers language={language}>

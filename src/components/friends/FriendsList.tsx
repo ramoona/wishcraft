@@ -29,6 +29,7 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
             <UserDetails
               key={friend.id}
               user={friend}
+              context="friends"
               extraContent={
                 friend.recentWishes.length > 0 ? (
                   <div className="mt-1 text-xs text-foreground/60">

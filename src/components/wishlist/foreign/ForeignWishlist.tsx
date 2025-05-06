@@ -19,7 +19,7 @@ export function ForeignWishlist({
   return (
     <>
       <div className="flex flex-col">
-        <UserDetails user={owner} sticky />
+        <UserDetails user={owner} context="wishlist" sticky />
         <div className="mx-auto w-full max-w-lg grow bg-muted px-4 pt-4 shadow-[0_-10px_0_5px_#fff] sm:rounded-t">
           {wishlist.wishes.length === 0 ? (
             <div className="mx-auto flex h-full items-center justify-center">

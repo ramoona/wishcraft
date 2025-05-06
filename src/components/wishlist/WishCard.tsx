@@ -30,7 +30,7 @@ export function WishCard({
 
   return (
     <div className="w-full max-w-[100vw] px-4 sm:max-w-lg">
-      <div className="flex h-20 items-center justify-center text-center text-sm">{name}</div>
+      <div className="flex h-16 items-center justify-center text-center text-sm">{name}</div>
       <div className="mt-8 flex min-h-[400px] flex-col rounded bg-background">
         <WishLargeArtwork {...visuals} />
         <div className="flex grow flex-col gap-10 p-4">

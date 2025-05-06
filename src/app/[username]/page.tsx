@@ -20,10 +20,6 @@ export default async function UserPage({ params }: { params: Promise<{ username:
     const wishlistOwner = await getUserByUserName(username);
     const wishlist = await getForeignWishlistByUsername(username);
 
-    if (wishlistOwner.isProfileHidden) {
-      return <div>{username} preferred to hide their wishes 🙈</div>;
-    }
-
     return <ForeignWishlist wishlist={wishlist} owner={wishlistOwner} isLoggedIn={!!sessionUser} />;
   } catch (e) {
     if (
