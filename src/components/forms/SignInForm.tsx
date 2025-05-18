@@ -3,7 +3,7 @@
 import { buttonVariants } from "~/components/ui/button";
 
 import { cn } from "~/utils/classnames";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { TypographyExtraLargeHeader } from "~/components/ui/typography";
 import {
   AlertDialog,
@@ -18,6 +18,7 @@ import React, { useState } from "react";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
+  const { t } = useTranslation();
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
   const [isTermsOfServiceOpen, setIsTermsOfServiceOpen] = useState(false);
 
@@ -33,29 +34,29 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
         }}
       />
       <div className="mt-6 sm:text-center">
-        <TypographyExtraLargeHeader>Make your wishes come true!</TypographyExtraLargeHeader>
+        <TypographyExtraLargeHeader>{t("login.heading")}</TypographyExtraLargeHeader>
       </div>
       <div className="mt-6 flex flex-col items-center">
         <SignInButton wishlistOwner={wishlistOwner} wishId={wishId} />
         <p className="mt-4 text-center text-sm text-foreground/80">
-          By signing in, you agree to{" "}
-          <button className="underline" onClick={() => setIsTermsOfServiceOpen(true)}>
-            Terms of Service
-          </button>{" "}
-          and{" "}
-          <button className="underline" onClick={() => setIsPrivacyPolicyOpen(true)}>
-            Privacy Policy
-          </button>
+          <Trans
+            t={t}
+            i18nKey="login.loginAgreement"
+            components={{
+              terms: <button className="underline" onClick={() => setIsTermsOfServiceOpen(true)} />,
+              privacy: <button className="underline" onClick={() => setIsPrivacyPolicyOpen(true)} />,
+            }}
+          />
         </p>
       </div>
       <Preview
-        title="Privacy Policy"
+        title={t("login.privacyPolicy")}
         description={<PrivacyPolicy />}
         isOpen={isPrivacyPolicyOpen}
         onOpenChange={setIsPrivacyPolicyOpen}
       />
       <Preview
-        title="Terms of Service"
+        title={t("login.termsOfService")}
         description={<TermsOfService />}
         isOpen={isTermsOfServiceOpen}
         onOpenChange={setIsTermsOfServiceOpen}

@@ -39,7 +39,7 @@ export function ErrorMessage({
       </header>
       <main className="relative mx-auto w-full max-w-lg px-4 sm:text-center">
         <div className="flex flex-col items-center gap-6 px-11">
-          <Image src="/images/art-2.png" alt="Art" width={314} height={268} className="mt-4" />
+          <Image src="/images/art-2.png" alt="Art" width={314} height={268} className="mt-4" priority />
         </div>
         <div className="mt-10 flex flex-col gap-2">
           <TypographyExtraLargeHeader>{t("error.error")}</TypographyExtraLargeHeader>
@@ -60,7 +60,7 @@ export function ErrorMessage({
             "mx-auto mt-10 flex h-12 items-center gap-2 no-underline",
           )}
         >
-          Back to safety
+          {t("buttons.backToSafety")}
         </Link>
       </main>
     </div>

@@ -1,3 +1,5 @@
+import { TFunction } from "i18next";
+
 export const currencies = [
   "USD", // US Dollar
   "EUR", // Euro
@@ -43,3 +45,31 @@ export const currencyNames: Record<(typeof currencies)[number], string> = {
   BRL: "Brazilian Real",
   TRY: "Turkish Lira",
 };
+
+const currencyTranslationMap: Record<string, string> = {
+  USD: "currency.usd",
+  EUR: "currency.eur",
+  GBP: "currency.gbp",
+  JPY: "currency.jpy",
+  AUD: "currency.aud",
+  CAD: "currency.cad",
+  CHF: "currency.chf",
+  CNY: "currency.cny",
+  HKD: "currency.hkd",
+  NZD: "currency.nzd",
+  SEK: "currency.sek",
+  KRW: "currency.krw",
+  SGD: "currency.sgd",
+  NOK: "currency.nok",
+  MXN: "currency.mxn",
+  INR: "currency.inr",
+  RUB: "currency.rub",
+  ZAR: "currency.zar",
+  BRL: "currency.brl",
+  TRY: "currency.try",
+};
+
+export function getTranslatedCurrency(currency: string, t: TFunction) {
+  const translationKey = currencyTranslationMap[currency];
+  return translationKey ? t(translationKey) : currency;
+}

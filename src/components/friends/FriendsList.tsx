@@ -9,7 +9,7 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
   if (!friends.length) {
     return (
       <div className="relative flex items-center justify-center bg-muted px-8 shadow-[0_-10px_0_5px_#fff] sm:rounded">
-        <EmptyList shape="4">{t("friends.empty")}</EmptyList>
+        <EmptyList shape="4" />
       </div>
     );
   }
@@ -26,7 +26,7 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
               extraContent={
                 friend.recentWishes.length > 0 ? (
                   <div className="mt-1 truncate text-xs text-foreground/60">
-                    {t("friends.recentWishes", { wishes: friend.recentWishes.length })}
+                    {t("friends.recentWishes", { count: friend.recentWishes.length })}
                   </div>
                 ) : undefined
               }

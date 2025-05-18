@@ -4,7 +4,7 @@ import React, { useState, useTransition } from "react";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
-import { currencies, currencyNames } from "~/lib/currencies";
+import { currencies, getTranslatedCurrency } from "~/lib/i18n/currencies";
 import { Select } from "~/components/ui/select";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
@@ -42,7 +42,7 @@ export function OnboardingWizardCurrencyStep() {
       <Select
         value={currency}
         onChange={setCurrency}
-        options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
+        options={currencies.map(currency => ({ value: currency, label: getTranslatedCurrency(currency, t) }))}
       />
       <TypographyMuted>{t("onboarding.defaultCurrency.description")}</TypographyMuted>
     </OnboardingWizardStep>

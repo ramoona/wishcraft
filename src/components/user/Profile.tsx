@@ -21,10 +21,10 @@ import {
 import { showErrorToast, showSuccessToast } from "~/components/ui/toasts";
 import { getErrorMessage, getSuccessMessage } from "~/core/errorMessages";
 import { Select } from "~/components/ui/select";
-import { currencies, currencyNames } from "~/lib/currencies";
-import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
+import { currencies, getTranslatedCurrency } from "~/lib/i18n/currencies";
+import { DAYS_IN_MONTHS } from "~/core/consts";
 
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { UserDetails } from "~/components/ui/user";
 import { DropdownMenu, DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import {
@@ -39,6 +39,7 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
+import { getTranslatedMonth } from "~/lib/i18n/months";
 
 export function Profile({ user }: { user: User }) {
   const [copied, setCopied] = useState(false);
@@ -121,16 +122,20 @@ function ProfileVisibility({ isProfileHidden: initialValue }: { isProfileHidden?
   return (
     <div className="flex items-center justify-between gap-2">
       <div>
-        <Label className="pl-2">Private wishlist</Label>
+        <Label className="pl-2">{t("profile.privateWishlist")}</Label>
         <div className="pl-2 text-xs text-foreground/60">
           {isProfileHidden ? (
-            <span>
-              Your wishlist is <span className="font-semibold">private</span>. Others can&#39;t see your wishes.
-            </span>
+            <Trans
+              t={t}
+              i18nKey="profile.publicWishlistEnabled"
+              components={{ bold: <span className="font-semibold" /> }}
+            />
           ) : (
-            <span>
-              Your wishlist is <span className="font-semibold">public</span>. Others can see your wishes.
-            </span>
+            <Trans
+              t={t}
+              i18nKey="profile.publicWishlistDisabled"
+              components={{ bold: <span className="font-semibold" /> }}
+            />
           )}
         </div>
       </div>
@@ -163,12 +168,12 @@ function ReservedWishesVisibility({ showReserved: initialValue }: { showReserved
   return (
     <div className="flex items-center justify-between gap-2">
       <div>
-        <Label className="pl-2">Show reservation status</Label>
+        <Label className="pl-2">{t("profile.reservationStatus")}</Label>
         <div className="pl-2 text-xs text-foreground/60">
           {showReserved ? (
-            <span>You will see whether your wishes are reserved, but not by whom</span>
+            <span>{t("profile.reservationStatusEnabled")}</span>
           ) : (
-            <span>You will not see whether your wishes are reserved.</span>
+            <span>{t("profile.reservationStatusDisabled")}</span>
           )}
         </div>
       </div>
@@ -198,13 +203,13 @@ function DefaultCurrency({ currency: initialValue }: { currency: string }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <Label className="pl-2">Default currency</Label>
+      <Label className="pl-2">{t("profile.preferredCurrency")}</Label>
       <Select
         value={currency}
         onChange={trigger}
         disabled={isPending}
         placeholder="Select currency"
-        options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
+        options={currencies.map(currency => ({ value: currency, label: getTranslatedCurrency(currency, t) }))}
       />
     </div>
   );
@@ -233,22 +238,25 @@ export function DateOfBirth({ day: initialDay, month: initialMonth }: { day?: nu
 
   return (
     <div className="flex flex-col gap-2">
-      <Label className="pl-2">Birthday</Label>
+      <Label className="pl-2">{t("profile.birthday")}</Label>
       <div className="grid w-full grid-cols-2 gap-4">
         <Select
           value={month ? String(month) : ""}
-          placeholder={"Select month"}
+          placeholder={t("placeholders.selectMonth")}
           onChange={month => {
             setMonth(parseInt(month));
             setDay(undefined);
           }}
-          options={Array.from({ length: 12 }, (_, i) => ({ value: String(i + 1), label: MONTHS[i] }))}
+          options={Array.from({ length: 12 }, (_, i) => ({
+            value: String(i + 1),
+            label: getTranslatedMonth(i + 1, t),
+          }))}
           disabled={isPending}
         />
         <Select
           key={month}
           value={day ? String(day) : ""}
-          placeholder={"Select day"}
+          placeholder={t("placeholders.selectDay")}
           disabled={!month || isPending}
           onChange={day => {
             setDay(parseInt(day));
@@ -275,21 +283,22 @@ export function ProfileDropdownMenu() {
   const router = useRouter();
   const [isDeletionSliderOpen, setDeletionSliderOpen] = useState(false);
   const [isSupportSliderOpen, setSupportSliderOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
       <DropdownMenu ariaLabel="Profile menu">
         <DropdownMenuItem onSelect={() => router.push("/api/auth/logout")} className="min-w-48">
-          Sign out
+          {t("profile.menu.signOut")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => setSupportSliderOpen(true)} className="min-w-48">
-          Support
+          {t("profile.menu.support")}
         </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={() => setDeletionSliderOpen(true)}
           className="min-w-48 bg-destructive/10 text-destructive hover:bg-destructive/20"
         >
-          Delete account
+          {t("profile.menu.deleteAccount")}
         </DropdownMenuItem>
       </DropdownMenu>
       <AccountDeletionDialog isOpen={isDeletionSliderOpen} setOpen={setDeletionSliderOpen} />
@@ -299,14 +308,18 @@ export function ProfileDropdownMenu() {
 }
 
 function SupportDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
+  const { t } = useTranslation();
   return (
     <Dialog open={isOpen} onOpenChange={open => setOpen(open)}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Need some help?</DialogTitle>
+          <DialogTitle>{t("profile.supportModal.title")}</DialogTitle>
           <DialogDescription>
-            If something is not working as expected, or you have a suggestion, please contact us at{" "}
-            <a href="mailto:support@mywishcraft.app">support@mywishcraft.app</a>.
+            <Trans
+              t={t}
+              i18nKey="profile.supportModal.description"
+              components={{ email: <a href="mailto:support@mywishcraft.app" /> }}
+            />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
@@ -338,15 +351,13 @@ function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: 
     <AlertDialog open={isOpen} onOpenChange={open => setOpen(open)}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your account and remove all your data.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t("profile.deleteAccountModal.title")}</AlertDialogTitle>
+          <AlertDialogDescription>{t("profile.deleteAccountModal.description")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t("actions.cancel")}</AlertDialogCancel>
           <AlertDialogAction disabled={isPending} onClick={deleteAccount} variant="destructive">
-            Delete my account
+            {t("profile.deleteAccountModal.confirmButton")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -355,9 +366,10 @@ function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: 
 }
 
 function PreferredLanguage() {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-2">
-      <Label className="pl-2">Preferred language</Label>
+      <Label className="pl-2">{t("profile.preferredLanguage")}</Label>
       <LanguageSwitcher />
     </div>
   );

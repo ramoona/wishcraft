@@ -28,7 +28,7 @@ export function ForeignWishlist({
         <div className="mx-auto w-full max-w-lg grow bg-muted px-4 pt-4 shadow-[0_-10px_0_5px_#fff] sm:rounded-t">
           {wishlist.wishes.length === 0 ? (
             <div className="mx-auto flex h-full items-center justify-center">
-              <EmptyList shape="4">No wishes yet...</EmptyList>
+              <EmptyList shape="4" />
             </div>
           ) : (
             <WishlistItems>

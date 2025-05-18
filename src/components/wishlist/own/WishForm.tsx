@@ -11,7 +11,7 @@ import Link from "next/link";
 import { ArrowSquareOut } from "@phosphor-icons/react";
 import { useCreateWish, useUpdateWish } from "~/components/wishlist/own/hooks";
 import { Badge } from "~/components/ui/badge";
-import { currencies, currencyNames } from "~/lib/currencies";
+import { currencies, currencyNames } from "~/lib/i18n/currencies";
 import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
 import { Scrollable } from "~/components/ui/scrollable";

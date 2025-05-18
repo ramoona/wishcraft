@@ -44,13 +44,15 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
           <div className="flex items-center gap-2">
             <RadioGroupItem value="yes" id="yes" />
             <Label htmlFor="yes">
-              <span className="font-bold">Yes</span>, <span className="font-normal">I&#39;m curious</span>
+              <span className="font-bold">{t("general.yes")}</span>,{" "}
+              <span className="font-normal">{t("onboarding.reservedWishesVisibility.showReservedOptionLabel")}</span>
             </Label>
           </div>
           <div className="flex items-center gap-2">
             <RadioGroupItem value="no" id="no" />
             <Label htmlFor="no">
-              <span className="font-bold">No</span>, <span className="font-normal">I like surprises</span>
+              <span className="font-bold">{t("general.no")}</span>,{" "}
+              <span className="font-normal">{t("onboarding.reservedWishesVisibility.hideReservedOptionLabel")}</span>
             </Label>
           </div>
         </RadioGroup>

@@ -5,9 +5,10 @@ import Link from "next/link";
 import { cva } from "class-variance-authority";
 import { User } from "~/services/user/types";
 import { Badge } from "~/components/ui/badge";
-import { MONTHS } from "~/core/consts";
 import { Cake } from "@phosphor-icons/react";
 import { cn } from "~/utils/classnames";
+import { useTranslation } from "react-i18next";
+import { DateTime } from "luxon";
 
 const container = cva("rounded bg-background no-underline", {
   variants: {
@@ -33,6 +34,15 @@ export function UserDetails({
   context: "friends" | "profile" | "wishlist";
 }) {
   const daysUntilBirthday = getDaysUntilBirthday(user);
+  const { t, i18n } = useTranslation();
+
+  const birthday =
+    user.dayOfBirth && user.monthOfBirth
+      ? DateTime.fromObject({ day: user.dayOfBirth, month: user.monthOfBirth })
+          .setLocale(i18n.language)
+          .toLocaleString({ month: "long", day: "2-digit" })
+      : null;
+
   const content = (
     <div className="mx-auto flex max-w-lg items-center gap-4 p-4">
       <Avatar className="size-16">
@@ -47,13 +57,11 @@ export function UserDetails({
             {email && <span className="text-xs text-foreground/70">{email}</span>}
           </span>
           {context === "friends" && daysUntilBirthday && daysUntilBirthday < 31 && (
-            <Badge variant="birthday">
-              Birthday in {daysUntilBirthday} {daysUntilBirthday === 1 ? "day" : "days"}
-            </Badge>
+            <Badge variant="birthday">{t("friends.birthdayIn", { count: daysUntilBirthday })}</Badge>
           )}
-          {context === "wishlist" && user.monthOfBirth && user.dayOfBirth && (
+          {context === "wishlist" && birthday && (
             <Badge variant="birthday">
-              <Cake className="size-4" /> {MONTHS[user.monthOfBirth - 1]} {user.dayOfBirth}
+              <Cake className="size-4" /> {birthday}
             </Badge>
           )}
         </span>

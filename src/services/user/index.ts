@@ -149,8 +149,9 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
       friendBId: true,
     },
   });
+
   const user = await prisma.user.findUnique({
-    where: { username, isProfileHidden: false },
+    where: { username },
     select: {
       id: true,
       firstName: true,
@@ -162,6 +163,10 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
       isProfileHidden: true,
     },
   });
+
+  if (user?.isProfileHidden && sessionUser?.username !== username && friends.length === 0) {
+    throw new UserError("USER_NOT_FOUND");
+  }
 
   if (!user) {
     throw new UserError("USER_NOT_FOUND");

@@ -5,12 +5,13 @@ import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { Select } from "~/components/ui/select";
-import { DAYS_IN_MONTHS, MONTHS } from "~/core/consts";
+import { DAYS_IN_MONTHS } from "~/core/consts";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { TypographyMuted } from "~/components/ui/typography";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
 import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
+import { getTranslatedMonth } from "~/lib/i18n/months";
 
 export function OnboardingWizardDateOfBirthStep() {
   const router = useRouter();
@@ -49,7 +50,10 @@ export function OnboardingWizardDateOfBirthStep() {
             setMonth(parseInt(month));
             setDay(undefined);
           }}
-          options={Array.from({ length: 12 }, (_, i) => ({ value: String(i + 1), label: MONTHS[i] }))}
+          options={Array.from({ length: 12 }, (_, i) => ({
+            value: String(i + 1),
+            label: getTranslatedMonth(i + 1, t),
+          }))}
         />
         <Select
           value={day ? String(day) : ""}

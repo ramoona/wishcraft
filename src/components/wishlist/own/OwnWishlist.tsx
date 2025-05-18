@@ -166,5 +166,5 @@ function PrivateSectionNote({ type }: { type: string }) {
 }
 
 function EmptyWishlistSection({ shape }: { shape: "1" | "2" | "3" | "4" }) {
-  return <EmptyList shape={shape}>No wishes yet...</EmptyList>;
+  return <EmptyList shape={shape} />;
 }

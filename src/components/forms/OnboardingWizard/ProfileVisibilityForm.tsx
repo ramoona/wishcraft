@@ -47,14 +47,14 @@ export function OnboardingWizardProfileVisibilityStep() {
           <div className="flex items-center gap-2">
             <RadioGroupItem value="public" id="public" />
             <Label htmlFor="publice">
-              <span className="font-bold">Yes</span>
+              <span className="font-bold">{t("general.yes")}</span>
             </Label>
           </div>
           <div className="flex items-center gap-2">
             <RadioGroupItem value="private" id="private" />
             <Label htmlFor="private">
-              <span className="font-bold">No</span>,{" "}
-              <span className="font-normal">I want my wishlist to be private</span>
+              <span className="font-bold">{t("general.no")}</span>,{" "}
+              <span className="font-normal">{t("onboarding.profileVisibility.privateProfileOptionLabel")}</span>
             </Label>
           </div>
         </RadioGroup>

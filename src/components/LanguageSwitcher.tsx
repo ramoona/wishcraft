@@ -5,7 +5,7 @@ import { Select } from "~/components/ui/select";
 import { useEffect, useState } from "react";
 
 export function LanguageSwitcher({ contentWidth }: { contentWidth?: boolean }) {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [currentLang, setCurrentLang] = useState("en");
   const [isMounted, setIsMounted] = useState(false);
 
@@ -44,7 +44,7 @@ export function LanguageSwitcher({ contentWidth }: { contentWidth?: boolean }) {
       onChange={changeLanguage}
       options={languageOptions}
       contentWidth={contentWidth}
-      placeholder="Select language"
+      placeholder={t("placeholders.selectLanguage")}
     />
   );
 }
