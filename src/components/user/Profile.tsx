@@ -372,7 +372,7 @@ function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: 
 function PreferredLanguage() {
   return (
     <div className="flex flex-col gap-2">
-      <Label className="pl-2">Preferred Language</Label>
+      <Label className="pl-2">Preferred language</Label>
       <LanguageSwitcher />
     </div>
   );

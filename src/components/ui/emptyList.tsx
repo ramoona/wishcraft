@@ -8,7 +8,7 @@ export function EmptyList({ shape }: PropsWithChildren<{ shape: "1" | "2" | "3" 
     <div className="relative flex grow items-center justify-center px-8">
       <Shape fill="#FFFFFF" className="max-w-64 sm:max-w-80" />
       <div className="absolute flex size-full items-center justify-center">
-        <span className={cn("text-foreground/50", offset[shape])}>Empty</span>
+        <span className={cn("text-[#A7A7A7]", offset[shape])}>Empty</span>
       </div>
     </div>
   );

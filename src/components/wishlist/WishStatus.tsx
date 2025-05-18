@@ -8,14 +8,16 @@ export function WishStatus({
   isForeign,
   reservedByCurrentUser,
   reservedById,
+  username,
 }: Pick<WishType, "isPrivate" | "reservedById"> & {
   reservedByCurrentUser?: boolean;
   showReserved?: boolean;
   isForeign?: boolean;
+  username?: string;
 }) {
   const showReservedBadge = !isPrivate && (showReserved || isForeign) && reservedById;
 
-  if (isPrivate) {
+  if (isPrivate && !username) {
     return <StatusBadge status="PRIVATE" />;
   }
 

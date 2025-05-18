@@ -40,15 +40,14 @@ export function WishDetails({
             <span className="text-sm text-foreground/70">{`@${username}'s wish`}</span>
           )}
           <span className="max-h-8 truncate text-sm">{name}</span>
-          {!username && (
-            <WishStatus
-              isPrivate={isPrivate}
-              showReserved={showReserved}
-              reservedById={reservedById}
-              reservedByCurrentUser={reservedByCurrentUser}
-              isForeign={isForeign}
-            />
-          )}
+          <WishStatus
+            username={username}
+            isPrivate={isPrivate}
+            showReserved={showReserved}
+            reservedById={reservedById}
+            reservedByCurrentUser={reservedByCurrentUser}
+            isForeign={isForeign}
+          />
         </div>
         <Price price={price} currency={currency} />
       </button>

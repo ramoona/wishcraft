@@ -22,7 +22,7 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
   const [isTermsOfServiceOpen, setIsTermsOfServiceOpen] = useState(false);
 
   return (
-    <div className="flex h-full flex-col items-center gap-[2vw] pb-4">
+    <div className="flex h-full flex-col items-center pb-4">
       <div
         className="w-full grow sm:mt-10 sm:h-[284px] sm:w-[306px] sm:grow-0 sm:p-0"
         style={{
@@ -32,11 +32,11 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
           backgroundRepeat: "no-repeat",
         }}
       />
-      <div className="flex flex-col gap-2 sm:text-center">
+      <div className="mt-6 sm:text-center">
         <TypographyExtraLargeHeader>Make your wishes come true!</TypographyExtraLargeHeader>
       </div>
-      <div className="flex flex-col items-center">
-        <p className="mb-4 mt-6 text-sm text-foreground/80 sm:text-center">
+      <div className="mt-6 flex flex-col items-center">
+        <p className="mb-4 text-sm text-foreground/80 sm:text-center">
           By signing in, you agree to{" "}
           <button className="underline" onClick={() => setIsTermsOfServiceOpen(true)}>
             Terms of Service
@@ -80,8 +80,8 @@ export function SignInButton({ wishlistOwner, wishId }: { wishlistOwner?: string
   return (
     <a
       className={cn(
-        buttonVariants({ variant: "secondary", fullWidth: false }),
-        "flex h-12 items-center gap-2 no-underline",
+        buttonVariants({ variant: "secondary", fullWidth: false, size: "lg" }),
+        "flex items-center gap-2 no-underline",
       )}
       href={`/api/auth/google?${queryParams.toString()}`}
     >

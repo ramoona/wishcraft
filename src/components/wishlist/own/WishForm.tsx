@@ -96,11 +96,6 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
           }
         >
           <div className="mx-auto max-w-lg px-4">
-            {firstWish ? (
-              <h1 className="sticky top-0 bg-background text-center">Make your first Wish</h1>
-            ) : (
-              <h1 className="sticky top-0 bg-background text-center">{wish ? "Edit" : "Make a"} Wish</h1>
-            )}
             {showReserved && wish?.reservedById && (
               <div className="flex justify-center">
                 <Badge variant="attention">This wish is reserved by someone</Badge>
@@ -206,10 +201,10 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
 function WishFormButtons({ wish, isLoading, onBack }: { wish?: WishType; isLoading: boolean; onBack?: () => void }) {
   return (
     <div className="mx-auto grid w-full max-w-lg grid-cols-[1fr_2fr] items-center gap-4 px-4">
-      <Button isLoading={isLoading} variant="outline" onClick={onBack} fullWidth minWidth={false}>
+      <Button isLoading={isLoading} variant="outline" onClick={onBack} fullWidth size="lg" minWidth={false}>
         Cancel
       </Button>
-      <Button type="submit" isLoading={isLoading} fullWidth minWidth={false}>
+      <Button type="submit" isLoading={isLoading} fullWidth minWidth={false} size="lg">
         {wish ? "Save" : "Make a Wish"}
       </Button>
     </div>
@@ -245,7 +240,7 @@ function FirstWishFormButtons({
       <Button size="lg" onClick={skip} variant="ghost">
         {isPending ? t("states.skipping") : t("actions.skip")}
       </Button>
-      <Button type="submit" disabled={disabled} isLoading={isLoading} fullWidth minWidth={false}>
+      <Button type="submit" disabled={disabled} isLoading={isLoading} size="lg" fullWidth minWidth={false}>
         {wish ? "Save" : "Make a Wish"}
       </Button>
     </div>

@@ -34,7 +34,18 @@ export function OnboardingWizardFirstWishStep({ username }: { username: string }
       isSubmitting={false}
       isSkippable
     >
-      <TypographyHeader>{t("onboarding.fistWish.subTitle")}</TypographyHeader>
+      <div className="flex h-full flex-col items-center pb-4">
+        <TypographyHeader>{t("onboarding.fistWish.subTitle")}</TypographyHeader>
+        <div
+          className="w-full grow sm:mt-10 sm:h-[284px] sm:w-[306px] sm:grow-0 sm:p-0"
+          style={{
+            backgroundImage: "url('/images/art-3.png')",
+            backgroundSize: "contain",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+      </div>
     </OnboardingWizardStep>
   );
 }

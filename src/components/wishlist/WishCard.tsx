@@ -29,9 +29,8 @@ export function WishCard({
   const { name, isPrivate, price, currency, reservedById, url, comment, ...visuals } = wish;
 
   return (
-    <div className="w-full max-w-[100vw] px-4 sm:max-w-lg">
-      <div className="flex h-16 items-center justify-center text-center text-sm">{name}</div>
-      <div className="mt-8 flex min-h-[400px] flex-col rounded bg-background">
+    <div className="w-full max-w-[100vw] px-6 sm:max-w-lg">
+      <div className="mt-12 flex min-h-[400px] flex-col rounded bg-background">
         <WishLargeArtwork {...visuals} />
         <div className="flex grow flex-col gap-10 p-4">
           <div className="grow">

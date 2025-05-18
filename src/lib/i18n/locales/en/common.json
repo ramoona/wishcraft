@@ -34,7 +34,7 @@
     },
     "username": {
       "title": "First, let’s pick your unique username",
-      "description": "Usernames are public. Choose wisely, as won't be able to change it later."
+      "description": "Usernames are public. Choose wisely, as you won't be able to change it later."
     },
     "reservedWishesVisibility": {
       "title": "Do you want to see if your wishes are reserved by someone?",

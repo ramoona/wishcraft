@@ -53,17 +53,8 @@ export function OnboardingWizardStep({
       action={isSubmissionDisabled ? undefined : onSubmit}
       className={cn(
         "grid h-full grid-rows-[auto_min-content] justify-center gap-4",
-        step === "first-wish" && "bg-primary bg-[length:120vw] bg-no-repeat pt-4 sm:bg-[length:400px]",
+        step === "first-wish" && "z-1 fixed left-0 top-0 h-dvh w-screen bg-primary px-11 pt-4",
       )}
-      style={
-        step === "first-wish"
-          ? {
-              backgroundImage: `url("/images/art-3.png")`,
-              backgroundPositionY: "110%",
-              backgroundPositionX: "center",
-            }
-          : undefined
-      }
     >
       <div className="flex max-w-lg flex-col items-start gap-6 px-4 pt-4">
         <TypographyHeader>{title}</TypographyHeader>
