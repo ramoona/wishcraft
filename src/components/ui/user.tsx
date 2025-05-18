@@ -42,9 +42,9 @@ export function UserDetails({
       <div className="flex grow flex-col">
         <span className="text-sm text-foreground/70">@{user.username}</span>
         <span className={cn("flex items-center gap-1", context === "friends" && "justify-between")}>
-          <span className="text-sm">
-            {[user.firstName, user.lastName].filter(Boolean).join(" ")}{" "}
-            {email ? <span className="text-xs text-foreground/70">{`(${email})`}</span> : ""}
+          <span className="flex flex-col text-sm">
+            <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")} </span>
+            {email && <span className="text-xs text-foreground/70">{email}</span>}
           </span>
           {context === "friends" && daysUntilBirthday && daysUntilBirthday < 31 && (
             <Badge variant="birthday">

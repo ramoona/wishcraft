@@ -32,7 +32,7 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
   const { t } = useTranslation();
 
   return (
-    <nav className="sticky bottom-0 h-20 w-full bg-background">
+    <nav className="sticky bottom-0 h-20 w-full border-t border-t-muted bg-background sm:border-t-0">
       <div className="mx-auto flex h-full max-w-lg items-center justify-around">
         {navItems.map(item => {
           const Icon = item.icon;
@@ -42,7 +42,7 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
               key={item.route}
               href={`/${user.username}/${item.route}`}
               className={cn(
-                "flex flex-col items-center justify-center gap-2 rounded text-sm font-medium text-stone-500 no-underline ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                "flex flex-col items-center justify-center gap-2 rounded text-sm font-medium text-stone-500 no-underline ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
                 isSelected && "text-black",
               )}
             >

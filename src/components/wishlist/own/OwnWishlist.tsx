@@ -50,7 +50,7 @@ export function OwnWishlist({
     <WithStickyFooter footer={<AddNewWish onOpenNewWishForm={() => setNewWishFormVisible(true)} />}>
       {!newWishFormVisible && (
         <Tabs className="flex size-full flex-col" value={tab} onValueChange={setTab}>
-          <TabsList className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center bg-background px-4 py-5">
+          <TabsList className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
             <TabsTrigger value="active" className="grow text-sm">
               Active
             </TabsTrigger>

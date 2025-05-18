@@ -36,7 +36,8 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
         <TypographyExtraLargeHeader>Make your wishes come true!</TypographyExtraLargeHeader>
       </div>
       <div className="mt-6 flex flex-col items-center">
-        <p className="mb-4 text-sm text-foreground/80 sm:text-center">
+        <SignInButton wishlistOwner={wishlistOwner} wishId={wishId} />
+        <p className="mt-4 text-center text-sm text-foreground/80">
           By signing in, you agree to{" "}
           <button className="underline" onClick={() => setIsTermsOfServiceOpen(true)}>
             Terms of Service
@@ -45,9 +46,7 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
           <button className="underline" onClick={() => setIsPrivacyPolicyOpen(true)}>
             Privacy Policy
           </button>
-          .
         </p>
-        <SignInButton wishlistOwner={wishlistOwner} wishId={wishId} />
       </div>
       <Preview
         title="Privacy Policy"

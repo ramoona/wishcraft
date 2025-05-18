@@ -53,7 +53,7 @@
   "friends": {
     "title": "Your Friends",
     "empty": "No friends yet...",
-    "recentWishes": "Recently added \"{{ wishes }}\"",
+    "recentWishes": "Recently added {{ wishes }} new wishes",
     "moreWishes": "{{ wishes }} and more..."
   },
   "error": {

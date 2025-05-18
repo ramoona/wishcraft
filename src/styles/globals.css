@@ -39,9 +39,31 @@ a {
 }
 
 [aria-invalid="true"] {
-  box-shadow: -1px -13px 0 -10px #ff1f1f inset;
+  box-shadow:
+    0 0 0 1px rgb(var(--background) / 1),
+    0 0 0 3px rgb(var(--destructive) / 1);
+}
+
+[aria-invalid="true"]:focus-visible {
+  box-shadow:
+    0 0 0 1px rgb(var(--background) / 1),
+    0 0 0 3px rgb(var(--destructive) / 1) !important;
 }
 
 [hidden]:where(:not([hidden="until-found"])) {
   display: none !important;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-sizing: border-box;
+  padding-right: 2rem !important;
+  background-image: url("/images/chevrons-up-down.svg");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

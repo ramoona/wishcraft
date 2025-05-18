@@ -30,8 +30,9 @@ export function WishCard({
 
   return (
     <div className="w-full max-w-[100vw] px-6 sm:max-w-lg">
-      <div className="mt-12 flex min-h-[400px] flex-col rounded bg-background">
+      <div className="relative mt-12 flex min-h-[400px] flex-col rounded bg-background">
         <WishLargeArtwork {...visuals} />
+        {!isForeign && <WishDropdownMenu onActionSuccess={() => undefined} wish={wish} />}
         <div className="flex grow flex-col gap-10 p-4">
           <div className="grow">
             {username && <span className="mb-2 block">{`@${username}'s wish`}</span>}
@@ -79,22 +80,16 @@ function OwnWishActions({ wish, enableEditMode }: { wish: WishType; enableEditMo
   const isEditable = wish.status === "ACTIVE" || wish.status === "RESERVED";
 
   return (
-    <div className="grid grid-cols-[auto_6rem] gap-4">
+    <div className="flex justify-center">
       {isEditable ? (
-        <Button size="lg" fullWidth onClick={enableEditMode} minWidth={false}>
+        <Button size="lg" onClick={enableEditMode}>
           Edit Wish
         </Button>
       ) : (
-        <Button
-          type="button"
-          onClick={() => updateWish(wish.id, { status: "ACTIVE" })}
-          size="lg"
-          isLoading={isUpdating}
-        >
+        <Button onClick={() => updateWish(wish.id, { status: "ACTIVE" })} size="lg" isLoading={isUpdating}>
           Move to Active
         </Button>
       )}
-      <WishDropdownMenu onActionSuccess={() => undefined} wish={wish} />
     </div>
   );
 }

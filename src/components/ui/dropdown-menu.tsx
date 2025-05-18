@@ -3,9 +3,9 @@
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "@radix-ui/react-icons";
-import { DotsThreeVertical } from "@phosphor-icons/react";
 
 import { cn } from "~/utils/classnames";
+import { buttonVariants } from "~/components/ui/button";
 
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.SubTrigger>,
@@ -154,12 +154,19 @@ const DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTML
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
 
-export function DropdownMenu({ children, trigger }: { children: React.ReactNode; trigger?: React.ReactNode }) {
+export function DropdownMenu({ children, ariaLabel }: { children: React.ReactNode; ariaLabel: string }) {
   return (
     <DropdownMenuPrimitive.Root>
-      {/*<DropdownMenuPrimitive.Trigger className={buttonVariants({ variant: "ghost", size: trigger ? "fit" : "icon" })}>*/}
-      <DropdownMenuPrimitive.Trigger asChild={!!trigger}>
-        {trigger || <DotsThreeVertical size={24} />}
+      <DropdownMenuPrimitive.Trigger
+        aria-label={ariaLabel}
+        className={cn(
+          buttonVariants({ variant: "outline", minWidth: false, fullWidth: false }),
+          "flex size-10 items-center justify-center gap-1 rounded-full bg-white px-0 hover:bg-[#D8D6D6]",
+        )}
+      >
+        <div className={`size-1 rounded-full bg-black`} />
+        <div className={`size-1 rounded-full bg-black`} />
+        <div className={`size-1 rounded-full bg-black`} />
       </DropdownMenuPrimitive.Trigger>
       <DropdownMenuContent>{children}</DropdownMenuContent>
     </DropdownMenuPrimitive.Root>

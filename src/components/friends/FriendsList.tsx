@@ -1,10 +1,7 @@
 import { FriendUser } from "~/services/user/types";
-import { WishType } from "~/services/wishlist/types";
 import { getServerTranslations } from "~/lib/i18n/server";
 import { UserDetails } from "~/components/ui/user";
 import { EmptyList } from "~/components/ui/emptyList";
-
-const MAX_RECENT_WISHES = 3;
 
 export async function FriendsList({ friends }: { friends: FriendUser[] }) {
   const { t } = await getServerTranslations();
@@ -28,8 +25,8 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
               context="friends"
               extraContent={
                 friend.recentWishes.length > 0 ? (
-                  <div className="mt-1 text-xs text-foreground/60">
-                    {t("friends.recentWishes", { wishes: getRecentWishes(friend.recentWishes) })}
+                  <div className="mt-1 truncate text-xs text-foreground/60">
+                    {t("friends.recentWishes", { wishes: friend.recentWishes.length })}
                   </div>
                 ) : undefined
               }
@@ -40,10 +37,4 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
       </div>
     </div>
   );
-}
-
-function getRecentWishes(recentWishes: Pick<WishType, "name">[]) {
-  const wishes = recentWishes.slice(0, MAX_RECENT_WISHES).map(({ name }) => `${name}`);
-
-  return wishes.join(", ");
 }

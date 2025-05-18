@@ -38,5 +38,13 @@ export function LanguageSwitcher({ contentWidth }: { contentWidth?: boolean }) {
     return null;
   }
 
-  return <Select value={currentLang} onChange={changeLanguage} options={languageOptions} contentWidth={contentWidth} />;
+  return (
+    <Select
+      value={currentLang}
+      onChange={changeLanguage}
+      options={languageOptions}
+      contentWidth={contentWidth}
+      placeholder="Select language"
+    />
+  );
 }

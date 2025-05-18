@@ -83,7 +83,7 @@ const FormLabel = React.forwardRef<
   return (
     <div className="flex items-center justify-between gap-2">
       <Label ref={ref} className={className} htmlFor={formItemId} {...props} />
-      <span className="mr-2 text-xs text-destructive">{error ? `● ${String(error?.message)}` : null}</span>
+      <span className="mr-2 text-xs text-destructive">{error ? String(error?.message) : null}</span>
     </div>
   );
 });

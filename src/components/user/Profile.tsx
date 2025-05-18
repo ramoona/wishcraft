@@ -70,7 +70,10 @@ export function Profile({ user }: { user: User }) {
   return (
     <>
       <div className="bg-background">
-        <UserDetails user={user} email={user.email} context="profile" />
+        <div className="grid w-full grid-cols-[auto_max-content] items-center pr-4">
+          <UserDetails user={user} email={user.email} context="profile" />
+          <ProfileDropdownMenu />
+        </div>
         <div className="mx-auto max-w-lg px-4">
           <form className="flex flex-col gap-4" autoComplete="off">
             <div className="flex flex-col gap-6">
@@ -85,13 +88,10 @@ export function Profile({ user }: { user: User }) {
           </form>
         </div>
       </div>
-      <div className="w-full bg-background p-4 pt-6">
-        <div className="mx-auto grid max-w-lg grid-cols-[auto_6rem] gap-4">
-          <Button size="lg" onClick={copyLink} fullWidth>
-            {copied ? "Link copied!" : "Share Wishlist"}
-          </Button>
-          <ProfileDropdownMenu />
-        </div>
+      <div className="flex w-full justify-center bg-background p-4 pt-6">
+        <Button size="lg" onClick={copyLink}>
+          {copied ? "Link copied!" : "Share Wishlist"}
+        </Button>
       </div>
     </>
   );
@@ -183,7 +183,7 @@ function DefaultCurrency({ currency: initialValue }: { currency: string }) {
   const [currency, setCurrency] = useState(initialValue);
   const { t } = useTranslation();
 
-  const trigger = () => {
+  const trigger = (currency: string) => {
     setCurrency(currency);
     startTransition(async () => {
       const { error } = await updateDefaultCurrencyAction(DefaultCurrencyFormData.fromObject({ currency }));
@@ -278,22 +278,7 @@ export function ProfileDropdownMenu() {
 
   return (
     <>
-      <DropdownMenu
-        trigger={
-          <Button
-            variant="outline"
-            size="lg"
-            className="flex items-center justify-center gap-1 px-4"
-            aria-label="Profile dropdown menu"
-            minWidth={false}
-            fullWidth
-          >
-            <div className={`size-1 rounded-full bg-black`} />
-            <div className={`size-1 rounded-full bg-black`} />
-            <div className={`size-1 rounded-full bg-black`} />
-          </Button>
-        }
-      >
+      <DropdownMenu ariaLabel="Profile menu">
         <DropdownMenuItem onSelect={() => router.push("/api/auth/logout")} className="min-w-48">
           Sign out
         </DropdownMenuItem>

@@ -48,7 +48,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
   const { control, formState, reset, ...form } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     resetOptions: { keepValues: false, keepDirty: false, keepErrors: false },
-    mode: "onChange",
+    mode: "onTouched",
     defaultValues: {
       name: wish?.name ?? "",
       price: wish?.price ?? null,
@@ -101,7 +101,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                 <Badge variant="attention">This wish is reserved by someone</Badge>
               </div>
             )}
-            <div className="flex flex-1 flex-col gap-4">
+            <div className="flex flex-1 flex-col gap-5">
               <FormField
                 control={control}
                 name="name"
@@ -137,28 +137,40 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                   </FormItem>
                 )}
               />
-              <FormField
-                control={control}
-                name="price"
-                disabled={isReadonly}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price</FormLabel>
-                    <div className="grid grid-cols-[3fr_2fr] gap-2">
+              <div className="grid grid-cols-[3fr_2fr] gap-2">
+                <FormField
+                  control={control}
+                  name="price"
+                  disabled={isReadonly}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price</FormLabel>
                       <FormControl>
                         <Input type="number" {...field} value={field.value ?? ""} />
                       </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="currency"
+                  disabled={isReadonly || !form.getValues().price}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Currency</FormLabel>
                       <FormControl>
                         <Select
-                          value={form.getValues().currency || ""}
-                          onChange={v => form.setValue("currency", v)}
+                          {...field}
+                          value={String(field.value) ?? undefined}
                           options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
+                          placeholder="Select currency"
                         />
                       </FormControl>
-                    </div>
-                  </FormItem>
-                )}
-              />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
               <FormField
                 disabled={isReadonly}
                 control={control}

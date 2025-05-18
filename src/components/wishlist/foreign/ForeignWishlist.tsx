@@ -4,8 +4,10 @@ import { WishlistItems } from "~/components/wishlist/WishlistItems";
 import { OtherUser } from "~/services/user/types";
 import { UserDetails } from "~/components/ui/user";
 import * as React from "react";
-import { FriendActionButtons } from "~/components/friends/FriendActionButtons";
+import { AddFriendButton } from "~/components/friends/AddFriendButton";
 import { EmptyList } from "~/components/ui/emptyList";
+import { FriendDropdownMenu } from "~/components/friends/FriendDropdownMenu";
+import { WithStickyFooter } from "~/components/ui/scrollable";
 
 export function ForeignWishlist({
   wishlist,
@@ -17,9 +19,12 @@ export function ForeignWishlist({
   isLoggedIn: boolean;
 }) {
   return (
-    <>
-      <div className="flex flex-col">
-        <UserDetails user={owner} context="wishlist" sticky />
+    <WithStickyFooter footer={isLoggedIn && !owner.isFriend ? <AddFriendButton friendId={owner.id} /> : null}>
+      <div className="flex flex-col pb-4">
+        <div className="sticky top-0 z-10 grid w-full grid-cols-[auto_max-content] items-center bg-background pr-4">
+          <UserDetails user={owner} context="wishlist" />
+          {isLoggedIn && owner.isFriend && <FriendDropdownMenu friendId={owner.id} />}
+        </div>
         <div className="mx-auto w-full max-w-lg grow bg-muted px-4 pt-4 shadow-[0_-10px_0_5px_#fff] sm:rounded-t">
           {wishlist.wishes.length === 0 ? (
             <div className="mx-auto flex h-full items-center justify-center">
@@ -34,7 +39,6 @@ export function ForeignWishlist({
           )}
         </div>
       </div>
-      {isLoggedIn ? <FriendActionButtons friendId={owner.id} isFriend={owner.isFriend} /> : null}
-    </>
+    </WithStickyFooter>
   );
 }
