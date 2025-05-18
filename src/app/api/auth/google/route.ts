@@ -4,10 +4,19 @@ import { ServerError } from "~/services/errors";
 import { NextRequest } from "next/server";
 import { getGoogleAuth } from "~/services/session";
 
+const cookieSettings = {
+  path: "/",
+  secure: process.env.NODE_ENV === "production",
+  httpOnly: true,
+  maxAge: 60 * 10,
+  sameSite: "lax",
+} as const;
+
 export async function GET(request: NextRequest): Promise<Response> {
   const url = new URL(request.url);
   const wishlistOwner = url.searchParams.get("wishlistOwner");
   const wishId = url.searchParams.get("wishId");
+  const language = url.searchParams.get("language");
 
   try {
     const state = generateState();
@@ -19,40 +28,19 @@ export async function GET(request: NextRequest): Promise<Response> {
     ]);
     const cookiesMgmt = await cookies();
 
-    cookiesMgmt.set("google_oauth_state", state, {
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      maxAge: 60 * 10,
-      sameSite: "lax",
-    });
+    cookiesMgmt.set("google_oauth_state", state, cookieSettings);
+    cookiesMgmt.set("code_verifier", codeVerifier, cookieSettings);
 
-    cookiesMgmt.set("code_verifier", codeVerifier, {
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      maxAge: 60 * 10,
-      sameSite: "lax",
-    });
+    if (language) {
+      cookiesMgmt.set("language", language, cookieSettings);
+    }
 
     if (wishlistOwner) {
-      cookiesMgmt.set("wishlistOwner", wishlistOwner, {
-        path: "/",
-        secure: false,
-        httpOnly: true,
-        maxAge: 60,
-        sameSite: "lax",
-      });
+      cookiesMgmt.set("wishlistOwner", wishlistOwner, cookieSettings);
     }
 
     if (wishId) {
-      cookiesMgmt.set("wishId", wishId, {
-        path: "/",
-        secure: false,
-        httpOnly: true,
-        maxAge: 60,
-        sameSite: "lax",
-      });
+      cookiesMgmt.set("wishId", wishId, cookieSettings);
     }
     return Response.redirect(redirectUrl);
   } catch {

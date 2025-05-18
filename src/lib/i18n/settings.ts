@@ -1,7 +1,8 @@
 import { InitOptions } from "i18next/typescript/options";
 
 export const fallbackLanguage = "en";
-export const languages = [fallbackLanguage, "ru"];
+export const languages = [fallbackLanguage, "ru"] as const;
+export type SupportedLanguages = (typeof languages)[number];
 
 export function getCommonI18nextOptions(): InitOptions {
   return {

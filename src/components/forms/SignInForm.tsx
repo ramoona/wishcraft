@@ -67,7 +67,9 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
 
 export function SignInButton({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const queryParams = new URLSearchParams();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  queryParams.append("language", i18n.language);
 
   if (wishlistOwner) {
     queryParams.append("wishlistOwner", wishlistOwner);

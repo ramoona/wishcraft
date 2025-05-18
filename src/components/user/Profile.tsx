@@ -9,12 +9,14 @@ import {
   deleteUserAccountAction,
   updateDateOfBirthAction,
   updateDefaultCurrencyAction,
+  updateLanguageAction,
   updateProfileVisibilityAction,
   updateReservedWishesVisibilityAction,
 } from "~/services/user/actions";
 import {
   DateOfBirthFormData,
   DefaultCurrencyFormData,
+  LanguageFormData,
   ProfileVisibilityFormData,
   ReservedWishesVisibilityFormData,
 } from "~/services/user/formData";
@@ -40,6 +42,7 @@ import {
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
 import { getTranslatedMonth } from "~/lib/i18n/months";
+import { SupportedLanguages } from "~/lib/i18n/settings";
 
 export function Profile({ user }: { user: User }) {
   const [copied, setCopied] = useState(false);
@@ -367,10 +370,22 @@ function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: 
 
 function PreferredLanguage() {
   const { t } = useTranslation();
+  const router = useRouter();
+
+  const trigger = async (value: SupportedLanguages) => {
+    const { error } = await updateLanguageAction(LanguageFormData.fromObject({ language: value }));
+    if (error) {
+      showErrorToast(getErrorMessage(error, t));
+    } else {
+      showSuccessToast(getSuccessMessage("SAVED", t));
+      router.refresh();
+    }
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <Label className="pl-2">{t("profile.preferredLanguage")}</Label>
-      <LanguageSwitcher />
+      <LanguageSwitcher onChange={trigger} />
     </div>
   );
 }

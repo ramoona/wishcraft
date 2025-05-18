@@ -5,6 +5,7 @@ import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
 import { deleteSessionTokenCookie, getSessionUser, getSessionUserOrThrow } from "~/services/session";
 import { generateUniqueUsername } from "~/utils/uniqueUsername";
+import { SupportedLanguages } from "~/lib/i18n/settings";
 
 export async function updateUsername(username: string): Promise<User> {
   const sessionUser = await getSessionUserOrThrow();
@@ -102,6 +103,22 @@ export async function updateProfileVisibility(isProfileHidden: boolean) {
   return toUser(updated);
 }
 
+export async function updateLanguage(language: SupportedLanguages) {
+  const sessionUser = await getSessionUserOrThrow();
+
+  if (isNil(language)) {
+    throw new UserError("INPUT_IS_REQUIRED");
+  }
+
+  const updated = await prisma.user.update({
+    where: { id: sessionUser.id },
+    data: { language },
+  });
+
+  await logUserAction({ action: "user-updated", changes: { language } });
+  return toUser(updated);
+}
+
 async function isUserNameTaken(username: string, currentUserId?: string) {
   const taken = await prisma.user.findFirst({ where: { username, id: { not: currentUserId } } });
   return Boolean(taken);
@@ -138,6 +155,7 @@ type UserInput = {
   image: string;
   firstName: string;
   lastName: string;
+  language: SupportedLanguages | null;
 };
 
 export async function getUserByUserName(username: string): Promise<OtherUser> {
@@ -161,6 +179,7 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
       dayOfBirth: true,
       monthOfBirth: true,
       isProfileHidden: true,
+      language: true,
     },
   });
 
@@ -180,6 +199,7 @@ export function toUser(user: PrismaUser): User {
     ...user,
     isOnboarded: isUserOnboarded(user),
     completedOnboardingSteps: user.completedOnboardingSteps as UserOnboardingStep[],
+    language: (user.language as SupportedLanguages) ?? undefined,
   };
 }
 

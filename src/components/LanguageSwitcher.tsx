@@ -3,8 +3,15 @@
 import { useTranslation } from "react-i18next";
 import { Select } from "~/components/ui/select";
 import { useEffect, useState } from "react";
+import { SupportedLanguages } from "~/lib/i18n/settings";
 
-export function LanguageSwitcher({ contentWidth }: { contentWidth?: boolean }) {
+export function LanguageSwitcher({
+  contentWidth,
+  onChange,
+}: {
+  contentWidth?: boolean;
+  onChange?: (lang: SupportedLanguages) => void;
+}) {
   const { i18n, t } = useTranslation();
   const [currentLang, setCurrentLang] = useState("en");
   const [isMounted, setIsMounted] = useState(false);
@@ -26,7 +33,10 @@ export function LanguageSwitcher({ contentWidth }: { contentWidth?: boolean }) {
     return () => i18n.off("languageChanged", handleLanguageChanged);
   }, [i18n]);
 
-  const changeLanguage = (language: string) => i18n.changeLanguage(language);
+  const changeLanguage = async (language: string) => {
+    await i18n.changeLanguage(language);
+    onChange?.(language as SupportedLanguages);
+  };
 
   const languageOptions = [
     { value: "en", label: "English" },

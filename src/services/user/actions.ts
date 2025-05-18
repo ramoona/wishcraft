@@ -8,6 +8,7 @@ import {
   checkUsernameUniqueness,
   deleteCurrentUser,
   updateProfileVisibility,
+  updateLanguage,
 } from "~/services/user/index";
 import { ServerError, ServerErrorCode } from "~/services/errors";
 import { getSessionUserOrThrow } from "~/services/session";
@@ -18,6 +19,7 @@ import {
   ReservedWishesVisibilityFormData,
   DefaultCurrencyFormData,
   ProfileVisibilityFormData,
+  LanguageFormData,
 } from "~/services/user/formData";
 import { User } from "~/services/user/types";
 
@@ -75,6 +77,15 @@ export const updateDefaultCurrencyAction = async (formData: FormData): Promise<A
 export const updateProfileVisibilityAction = async (formData: FormData): Promise<ActionState> => {
   try {
     const user = await updateProfileVisibility(ProfileVisibilityFormData.toObject(formData).isProfileHidden);
+    return { user, error: undefined };
+  } catch (e) {
+    return { error: getErrorCode(e), user: undefined };
+  }
+};
+
+export const updateLanguageAction = async (formData: FormData): Promise<ActionState> => {
+  try {
+    const user = await updateLanguage(LanguageFormData.toObject(formData).language);
     return { user, error: undefined };
   } catch (e) {
     return { error: getErrorCode(e), user: undefined };

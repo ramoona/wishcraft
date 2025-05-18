@@ -1,4 +1,5 @@
 import { WishType } from "~/services/wishlist/types";
+import { SupportedLanguages } from "~/lib/i18n/settings";
 
 export type User = {
   id: string;
@@ -14,6 +15,7 @@ export type User = {
   completedOnboardingSteps: UserOnboardingStep[];
   isProfileHidden?: boolean | null;
   isOnboarded: boolean;
+  language?: SupportedLanguages;
 };
 
 export type OtherUser = Pick<

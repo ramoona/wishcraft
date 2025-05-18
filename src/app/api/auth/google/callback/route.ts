@@ -6,6 +6,7 @@ import { reserveWish } from "~/services/wishlist";
 import { createUser } from "~/services/user";
 import { ServerError } from "~/services/errors";
 import { NextRequest } from "next/server";
+import { SupportedLanguages } from "~/lib/i18n/settings";
 
 export async function GET(request: NextRequest): Promise<Response> {
   const url = new URL(request.url);
@@ -16,6 +17,7 @@ export async function GET(request: NextRequest): Promise<Response> {
   const storedState = cookiesMgmt.get("google_oauth_state")?.value ?? null;
   const storedCodeVerifier = cookiesMgmt.get("code_verifier")?.value ?? null;
   const wishId = cookiesMgmt.get("wishId")?.value ?? null;
+  const language = cookiesMgmt.get("language")?.value ?? null;
 
   if (!code || !storedCodeVerifier || !state || !storedState || state !== storedState) {
     return new Response(null, {
@@ -48,6 +50,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 
       cookiesMgmt.delete("wishlistOwner");
       cookiesMgmt.delete("wishId");
+      cookiesMgmt.delete("language");
 
       return new Response(null, {
         status: 302,
@@ -64,6 +67,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       lastName: googleUser.family_name,
       image: googleUser.picture,
       emailVerified: googleUser.email_verified,
+      language: language as SupportedLanguages | null,
     });
 
     const sessionToken = generateSessionToken();
@@ -76,6 +80,10 @@ export async function GET(request: NextRequest): Promise<Response> {
     if (wishId) {
       await reserveWish({ wishId, userId: createdUser.id });
     }
+
+    cookiesMgmt.delete("wishlistOwner");
+    cookiesMgmt.delete("wishId");
+    cookiesMgmt.delete("language");
 
     return new Response(null, {
       status: 302,
