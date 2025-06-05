@@ -45,6 +45,7 @@ import { getTranslatedMonth } from "~/lib/i18n/months";
 import { SupportedLanguages } from "~/lib/i18n/settings";
 
 export function Profile({ user }: { user: User }) {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const timeout = useRef<number | null>(null);
 
@@ -94,7 +95,7 @@ export function Profile({ user }: { user: User }) {
       </div>
       <div className="flex w-full justify-center bg-background p-4 pt-6">
         <Button size="lg" onClick={copyLink}>
-          {copied ? "Link copied!" : "Share Wishlist"}
+          {copied ? t("profile.shareWishlist.linkCopied") : t("profile.shareWishlist.copyLink")}
         </Button>
       </div>
     </>

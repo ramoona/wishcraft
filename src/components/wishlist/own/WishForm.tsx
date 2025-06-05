@@ -21,17 +21,19 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 
-const formSchema = z.object({
-  name: z.string().min(1, "Title is required").max(150, "Oof, that's too long"),
-  price: z.number({ coerce: true }).optional().nullable().default(null),
-  currency: z.string().optional().nullable(),
-  url: z.string().url().optional().nullable(),
-  comment: z.string().max(255, "Oof, that's too long").optional().nullable(),
-  isPrivate: z.boolean(),
-});
+const formSchema = (t: TFunction) =>
+  z.object({
+    name: z.string().min(1, t("validation.titleRequired")).max(150, t("validation.titleTooLong")),
+    price: z.number({ coerce: true }).optional().nullable().default(null),
+    currency: z.string().optional().nullable(),
+    url: z.string().url().optional().nullable(),
+    comment: z.string().max(255, t("validation.commentTooLong")).optional().nullable(),
+    isPrivate: z.boolean(),
+  });
 
-export type WishFormValues = z.infer<typeof formSchema>;
+export type WishFormValues = z.infer<ReturnType<typeof formSchema>>;
 
 type WishFormProps = {
   wish?: WishType;
@@ -44,9 +46,10 @@ type WishFormProps = {
 export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWish }: WishFormProps) {
   const [isCreating, createWish] = useCreateWish(firstWish);
   const [isUpdating, updateWish] = useUpdateWish();
+  const { t } = useTranslation();
 
-  const { control, formState, reset, ...form } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { control, formState, reset, ...form } = useForm<z.infer<ReturnType<typeof formSchema>>>({
+    resolver: zodResolver(formSchema(t)),
     resetOptions: { keepValues: false, keepDirty: false, keepErrors: false },
     mode: "onTouched",
     defaultValues: {
@@ -98,7 +101,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
           <div className="mx-auto max-w-lg px-4">
             {showReserved && wish?.reservedById && (
               <div className="flex justify-center">
-                <Badge variant="attention">This wish is reserved by someone</Badge>
+                <Badge variant="attention">{t("wishForm.reservedHint")}</Badge>
               </div>
             )}
             <div className="flex flex-1 flex-col gap-5">
@@ -108,7 +111,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                 disabled={isReadonly}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>{t("wishForm.labels.title")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -121,7 +124,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                 disabled={isReadonly}
                 render={({ field }) => (
                   <FormItem className="relative">
-                    <FormLabel>Link</FormLabel>
+                    <FormLabel>{t("wishForm.labels.link")}</FormLabel>
                     <FormControl>
                       <Input {...field} value={field.value ?? ""} />
                     </FormControl>
@@ -129,9 +132,9 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                       <Link
                         href={field.value}
                         target="_blank"
-                        className="absolute bottom-0 right-1 flex translate-y-full items-center gap-1"
+                        className="absolute -top-2 right-1 flex items-center gap-1 text-sm"
                       >
-                        Open link <ArrowSquareOut className="size-5" />
+                        {t("actions.openLink")} <ArrowSquareOut className="size-5" />
                       </Link>
                     )}
                   </FormItem>
@@ -144,7 +147,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                   disabled={isReadonly}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Price</FormLabel>
+                      <FormLabel>{t("wishForm.labels.price")}</FormLabel>
                       <FormControl>
                         <Input type="number" {...field} value={field.value ?? ""} />
                       </FormControl>
@@ -157,13 +160,13 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                   disabled={isReadonly || !form.getValues().price}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Currency</FormLabel>
+                      <FormLabel>{t("wishForm.labels.currency")}</FormLabel>
                       <FormControl>
                         <Select
                           {...field}
                           value={String(field.value) ?? undefined}
                           options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
-                          placeholder="Select currency"
+                          placeholder={t("placeholders.selectCurrency")}
                         />
                       </FormControl>
                     </FormItem>
@@ -177,7 +180,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                 name="comment"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Comment</FormLabel>
+                    <FormLabel>{t("wishForm.labels.comment")}</FormLabel>
                     <FormControl>
                       <Textarea {...field} value={field.value ?? ""} />
                     </FormControl>
@@ -191,10 +194,8 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                 render={({ field }) => (
                   <FormItem className="flex items-center justify-between gap-2">
                     <div>
-                      <FormLabel>Make Private</FormLabel>
-                      <span className="text-xs text-foreground/60">
-                        Toggle if the wish should be visible to you only
-                      </span>
+                      <FormLabel>{t("wishForm.labels.privacy")}</FormLabel>
+                      <span className="text-xs text-foreground/60">{t("wishForm.labels.makePrivate")}</span>
                     </div>
                     <FormControl>
                       <Switch checked={field.value} onCheckedChange={field.onChange} />
@@ -211,13 +212,14 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
 }
 
 function WishFormButtons({ wish, isLoading, onBack }: { wish?: WishType; isLoading: boolean; onBack?: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="mx-auto grid w-full max-w-lg grid-cols-[1fr_2fr] items-center gap-4 px-4">
       <Button isLoading={isLoading} variant="outline" onClick={onBack} fullWidth size="lg" minWidth={false}>
-        Cancel
+        {t("actions.cancel")}
       </Button>
       <Button type="submit" isLoading={isLoading} fullWidth minWidth={false} size="lg">
-        {wish ? "Save" : "Make a Wish"}
+        {wish ? t("actions.save") : t("actions.addWish")}
       </Button>
     </div>
   );
@@ -253,7 +255,7 @@ function FirstWishFormButtons({
         {isPending ? t("states.skipping") : t("actions.skip")}
       </Button>
       <Button type="submit" disabled={disabled} isLoading={isLoading} size="lg" fullWidth minWidth={false}>
-        {wish ? "Save" : "Make a Wish"}
+        {wish ? t("actions.save") : t("actions.addWish")}
       </Button>
     </div>
   );

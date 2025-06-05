@@ -4,6 +4,7 @@ import { useState } from "react";
 import { WishForm } from "~/components/wishlist/own/WishForm";
 import { WishCard } from "~/components/wishlist/WishCard";
 import { Scrollable } from "~/components/ui/scrollable";
+import { useTranslation } from "react-i18next";
 
 export function WishOverlay({
   onBack,
@@ -22,6 +23,7 @@ export function WishOverlay({
   firstWish?: boolean;
 }) {
   const [creationMode, setCreationMode] = useState(!wish);
+  const { t } = useTranslation();
 
   if (creationMode || !wish) {
     return (
@@ -58,7 +60,7 @@ export function WishOverlay({
       <Scrollable
         footer={
           <Button onClick={onBack} variant="outline" size="lg" className="mt-auto">
-            Back
+            {t("actions.back")}
           </Button>
         }
       >

@@ -8,16 +8,26 @@
     "save": "Сохранить",
     "cancel": "Отмена",
     "delete": "Удалить",
+    "reallyDelete": "Точно удалить?",
     "edit": "Редактировать",
     "signInWithGoogle": "Войти через Google",
     "removeFriend": "Удалить из друзей",
     "addFriend": "Добавить в друзья",
     "continue": "Продолжить",
-    "skip": "Пропустить"
+    "skip": "Пропустить",
+    "addWish": "Загадать желание",
+    "moveWishToActive": "Переместить в активные",
+    "moveWishToFulfilled": "Переместить в исполненные",
+    "archive": "Архивировать",
+    "back": "Назад",
+    "openLink": "Открыть ссылку"
   },
   "states": {
     "saving": "Сохраняем...",
-    "skipping": "Пропускаем..."
+    "skipping": "Пропускаем...",
+    "deleting": "Удаляем...",
+    "moving": "Перемещаем...",
+    "archiving": "Архивируем..."
   },
   "onboarding": {
     "defaultCurrency": {
@@ -143,8 +153,8 @@
     "reservationStatus": "Показывать статус бронирования",
     "reservationStatusEnabled": "Ты будешь видеть, зарезервировано ли желание, но не кем конкретно.",
     "reservationStatusDisabled": "Ты не будешь видеть, зарезервировано ли желание.",
-    "preferredLanguage": "Предпочитаемый язык",
-    "preferredCurrency": "Предпочитаемая валюта",
+    "preferredLanguage": "Язык",
+    "preferredCurrency": "Валюта по умолчанию",
     "birthday": "День рождения",
     "menu": {
       "signOut": "Выйти",
@@ -156,9 +166,50 @@
       "description": "Если что-то не работает или хочешь предложить идею, напиши нам: <email>support@mywishcraft.app</email>"
     },
     "deleteAccountModal": {
-      "title": "Ты точно уверен?",
+      "title": "Ты точно хочешь удалить свой аккаунт?",
       "description": "Это действие необратимо. Твой аккаунт и все данные будут удалены навсегда.",
       "confirmButton": "Удалить мой аккаунт"
+    },
+    "shareWishlist": {
+      "copyLink": "Поделиться вишлистом",
+      "linkCopied": "Ссылка скопирована!"
     }
+  },
+  "wishlist": {
+    "tabs": {
+      "active": "Активные",
+      "fulfilled": "Исполненные",
+      "reserved": "Зарезервированные тобой",
+      "archived": "Архив"
+    },
+    "tabHints": {
+      "active": "<b>Другие</b> видят твои активные не-приватные желания",
+      "fulfilled": "<b>Только ты</b> видишь свои выполненные желания",
+      "reserved": "<b>Только ты</b> видишь зарезервированные тобой желания",
+      "archived": "<b>Только ты</b> видишь свои архивные желания"
+    },
+    "wishOwner": "Желание @{{ username }}",
+    "wishStatus": {
+      "reserved": "Зарезервировано",
+      "reservedByYou": "Зарезервировано тобой",
+      "private": "Приватное"
+    }
+  },
+  "wishForm": {
+    "reservedHint": "Это желание кем-то зарезервировано",
+    "labels": {
+      "title": "Название",
+      "comment": "Комментарий",
+      "price": "Стоимость",
+      "link": "Ссылка",
+      "currency": "Валюта",
+      "privacy": "Приватность",
+      "makePrivate": "Включи, чтобы сделать желание приватным"
+    }
+  },
+  "validation": {
+    "titleRequired": "Название обязательно",
+    "titleTooLong": "Слишком длинное название",
+    "commentTooLong": "Слишком длинный комментарий"
   }
 }

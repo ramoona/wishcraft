@@ -7,23 +7,25 @@ import * as React from "react";
 import { useState } from "react";
 import { cn } from "~/utils/classnames";
 import { useDeleteWish, useUpdateWish } from "~/components/wishlist/own/hooks";
+import { useTranslation } from "react-i18next";
 
 export function WishDropdownMenu({ wish, onActionSuccess }: { wish: WishType; onActionSuccess?: () => void }) {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [isDeleting, deleteWish] = useDeleteWish();
   const [isUpdating, updateWish] = useUpdateWish();
+  const { t } = useTranslation();
 
   return (
     <div className="absolute right-4 top-4 z-10">
       <DropdownMenu ariaLabel="Wish menu">
         {wish.status !== "FULFILLED" && (
           <DropdownMenuItem onSelect={() => updateWish(wish.id, { status: WishStatus.FULFILLED }, onActionSuccess)}>
-            {isUpdating ? "Moving..." : "Move to Fulfilled"}
+            {isUpdating ? t("states.moving") : t("actions.moveWishToFulfilled")}
           </DropdownMenuItem>
         )}
         {wish.status !== "ARCHIVED" && (
           <DropdownMenuItem onSelect={() => updateWish(wish.id, { status: WishStatus.ARCHIVED }, onActionSuccess)}>
-            {isUpdating ? "Archiving..." : "Archive"}
+            {isUpdating ? t("states.archiving") : t("actions.archive")}
           </DropdownMenuItem>
         )}
         <DropdownMenuItem
@@ -39,7 +41,7 @@ export function WishDropdownMenu({ wish, onActionSuccess }: { wish: WishType; on
           }}
         >
           <span className={cn(deleteConfirmation && "text-red-500")}>
-            {isDeleting ? "Deleting..." : deleteConfirmation ? "Really delete?" : "Delete"}
+            {isDeleting ? t("states.deleting") : deleteConfirmation ? t("actions.reallyDelete") : t("actions.delete")}
           </span>
         </DropdownMenuItem>
       </DropdownMenu>

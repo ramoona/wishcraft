@@ -8,6 +8,7 @@ import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import React from "react";
 import { useUpdateWish } from "~/components/wishlist/own/hooks";
 import { ReserveButton } from "~/components/wishlist/foreign/ReserveButton";
+import { useTranslation } from "react-i18next";
 
 export function WishCard({
   reservedByCurrentUser,
@@ -78,16 +79,17 @@ export function WishCard({
 function OwnWishActions({ wish, enableEditMode }: { wish: WishType; enableEditMode: () => void }) {
   const [isUpdating, updateWish] = useUpdateWish();
   const isEditable = wish.status === "ACTIVE" || wish.status === "RESERVED";
+  const { t } = useTranslation();
 
   return (
     <div className="flex justify-center">
       {isEditable ? (
         <Button size="lg" onClick={enableEditMode}>
-          Edit Wish
+          {t("actions.edit")}
         </Button>
       ) : (
         <Button onClick={() => updateWish(wish.id, { status: "ACTIVE" })} size="lg" isLoading={isUpdating}>
-          Move to Active
+          {t("actions.moveWishToActive")}
         </Button>
       )}
     </div>

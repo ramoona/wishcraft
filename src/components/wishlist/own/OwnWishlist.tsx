@@ -14,6 +14,7 @@ import { useState } from "react";
 import { WishOverlay } from "~/components/wishlist/WishOverlay";
 import { useSearchParams } from "next/navigation";
 import { EmptyList } from "~/components/ui/emptyList";
+import { Trans, useTranslation } from "react-i18next";
 
 export function OwnWishlist({
   data,
@@ -26,6 +27,7 @@ export function OwnWishlist({
 }) {
   const [newWishFormVisible, setNewWishFormVisible] = useState(false);
   const queryParams = useSearchParams();
+  const { t } = useTranslation();
   const initialTab = queryParams.get("tab");
   const [tab, setTab] = useState(
     initialTab && ["active", "fulfilled", "archived", "reserved"].includes(initialTab) ? initialTab : "active",
@@ -52,25 +54,23 @@ export function OwnWishlist({
         <Tabs className="flex size-full flex-col" value={tab} onValueChange={setTab}>
           <TabsList className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
             <TabsTrigger value="active" className="grow text-sm">
-              Active
+              {t("wishlist.tabs.active")}
             </TabsTrigger>
             <TabsTrigger value="fulfilled" className="grow text-sm">
-              Fulfilled
+              {t("wishlist.tabs.fulfilled")}
             </TabsTrigger>
             <TabsTrigger value="archived" className="grow text-sm">
-              Archived
+              {t("wishlist.tabs.archived")}
             </TabsTrigger>
             <TabsTrigger value="reserved" className="grow text-sm">
-              Reserved
+              {t("wishlist.tabs.reserved")}
             </TabsTrigger>
           </TabsList>
           <TabsContent
             value="active"
             className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
           >
-            <p className="mb-4 w-full text-center text-xs">
-              <b>Anyone</b> can see your non-private active wishes
-            </p>
+            <TabHint type="active" />
             {active.length > 0 ? (
               <WishlistItems>
                 {active.map(wish => (
@@ -85,7 +85,7 @@ export function OwnWishlist({
             value="fulfilled"
             className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
           >
-            <PrivateSectionNote type="fulfilled" />
+            <TabHint type="fulfilled" />
             {fulfilled.length > 0 ? (
               <WishlistItems>
                 {fulfilled.map(wish => (
@@ -100,7 +100,7 @@ export function OwnWishlist({
             value="archived"
             className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
           >
-            <PrivateSectionNote type="archived" />
+            <TabHint type="archived" />
             {archived.length > 0 ? (
               <WishlistItems>
                 {archived.map(wish => (
@@ -115,7 +115,7 @@ export function OwnWishlist({
             value="reserved"
             className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
           >
-            <PrivateSectionNote type="reserved" />
+            <TabHint type="reserved" />
             {reserved.length > 0 ? (
               <WishlistItems>
                 {reserved.map(wish => (
@@ -149,18 +149,13 @@ export function OwnWishlist({
   );
 }
 
-function PrivateSectionNote({ type }: { type: string }) {
-  if (type === "reserved") {
-    return (
-      <p className="mb-4 w-full text-center text-xs">
-        <b>Only you</b> can see your wishes that you have reserved
-      </p>
-    );
-  }
+function TabHint({ type }: { type: "active" | "fulfilled" | "archived" | "reserved" }) {
+  const { t } = useTranslation();
+  const i18nKey = tabHintTranslations[type];
 
   return (
     <p className="mb-4 w-full text-center text-xs">
-      <b>Only you</b> can see your {type} wishes
+      <Trans t={t} i18nKey={i18nKey} components={{ b: <span className="font-bold" /> }} />
     </p>
   );
 }
@@ -168,3 +163,10 @@ function PrivateSectionNote({ type }: { type: string }) {
 function EmptyWishlistSection({ shape }: { shape: "1" | "2" | "3" | "4" }) {
   return <EmptyList shape={shape} />;
 }
+
+const tabHintTranslations = {
+  active: "wishlist.tabHints.active",
+  fulfilled: "wishlist.tabHints.fulfilled",
+  archived: "wishlist.tabHints.archived",
+  reserved: "wishlist.tabHints.reserved",
+};

@@ -8,16 +8,26 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
+    "reallyDelete": "Really delete?",
     "edit": "Edit",
     "signInWithGoogle": "Sign in with Google",
     "removeFriend": "Remove friend",
     "addFriend": "Add friend",
     "continue": "Continue",
-    "skip": "Skip"
+    "skip": "Skip",
+    "addWish": "Make a wish",
+    "moveWishToActive": "Move to Active",
+    "moveWishToFulfilled": "Move to Fulfilled",
+    "archive": "Archive",
+    "back": "Back",
+    "openLink": "Open link"
   },
   "states": {
     "saving": "Saving...",
-    "skipping": "Skipping..."
+    "skipping": "Skipping...",
+    "deleting": "Deleting...",
+    "moving": "Moving...",
+    "archiving": "Archiving..."
   },
   "onboarding": {
     "defaultCurrency": {
@@ -52,7 +62,8 @@
     "selectDay": "Select day",
     "selectMonth": "Select month",
     "username": "e.g. spider-monkey",
-    "selectLanguage": "Select language"
+    "selectLanguage": "Select language",
+    "selectCurrency": "Select currency"
   },
   "friends": {
     "title": "Your friends",
@@ -157,6 +168,47 @@
       "title": "Are you absolutely sure?",
       "description": "This action cannot be undone. This will permanently delete your account and remove all your data.",
       "confirmButton": "Delete my account"
+    },
+    "shareWishlist": {
+      "copyLink": "Share wishlist",
+      "linkCopied": "Link copied!"
     }
+  },
+  "wishlist": {
+    "tabs": {
+      "active": "Active",
+      "fulfilled": "Fulfilled",
+      "reserved": "Reserved by you",
+      "archived": "Archived"
+    },
+    "tabHints": {
+      "active": "<b>Anyone</b> can see your non-private active wishes",
+      "fulfilled": "<b>Only you</b> can see your fulfilled wishes",
+      "reserved": "<b>Only you</b> can see your wishes that you have reserved",
+      "archived": "<b>Only you</b> can see your archived wishes"
+    },
+    "wishOwner": "@{{ username }}'s wish",
+    "wishStatus": {
+      "reserved": "Reserved",
+      "reservedByYou": "Reserved by you",
+      "private": "Private"
+    }
+  },
+  "wishForm": {
+    "reservedHint": "This wish is reserved by someone else",
+    "labels": {
+      "title": "Title",
+      "comment": "Comment",
+      "price": "Price",
+      "link": "Link",
+      "currency": "Currency",
+      "privacy": "Privacy",
+      "makePrivate": "Toggle if the wish should be visible to you only"
+    }
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "titleTooLong": "Title is too long",
+    "commentTooLong": "Comment is too long"
   }
 }
