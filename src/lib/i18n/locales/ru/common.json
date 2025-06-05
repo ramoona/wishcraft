@@ -55,7 +55,7 @@
     "selectLanguage": "Выбери язык"
   },
   "friends": {
-    "title": "Друзья",
+    "title": "Твои друзья",
     "recentWishes_one": "Недавно добавлено {{ count }} новое желание",
     "recentWishes_few": "Недавно добавлены {{ count }} новых желания",
     "recentWishes_many": "Недавно добавлены {{ count }} новых желаний",

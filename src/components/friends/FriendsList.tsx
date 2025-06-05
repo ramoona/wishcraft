@@ -8,14 +8,18 @@ export async function FriendsList({ friends }: { friends: FriendUser[] }) {
 
   if (!friends.length) {
     return (
-      <div className="relative flex items-center justify-center bg-muted px-8 shadow-[0_-10px_0_5px_#fff] sm:rounded">
-        <EmptyList shape="4" />
+      <div className="grid grid-rows-[max-content_auto]">
+        <h1 className="sticky top-0 z-10 bg-background pb-8 pt-4 text-center">{t("friends.title")}</h1>
+        <div className="relative flex items-center justify-center bg-muted px-8 shadow-[0_-10px_0_5px_#fff] sm:rounded">
+          <EmptyList shape="4" />
+        </div>
       </div>
     );
   }
 
   return (
     <div>
+      <h1 className="sticky top-0 z-10 bg-background pb-8 pt-4 text-center">{t("friends.title")}</h1>
       <div className="mx-auto my-4 flex w-full max-w-lg flex-col gap-4 px-4 pb-4">
         {friends.map(friend => {
           return (

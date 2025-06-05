@@ -20,7 +20,7 @@ export function ForeignWishlist({
 }) {
   return (
     <WithStickyFooter footer={isLoggedIn && !owner.isFriend ? <AddFriendButton friendId={owner.id} /> : null}>
-      <div className="flex flex-col pb-4">
+      <div className="flex h-full flex-col pb-4">
         <div className="sticky top-0 z-10 grid w-full grid-cols-[auto_max-content] items-center bg-background pr-4">
           <UserDetails user={owner} context="wishlist" />
           {isLoggedIn && owner.isFriend && <FriendDropdownMenu friendId={owner.id} />}
