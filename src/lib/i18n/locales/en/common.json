@@ -70,7 +70,11 @@
     "recentWishes_one": "Recently added {{ count }} new wish",
     "recentWishes_other": "Recently added {{ count }} new wishes",
     "birthdayIn_one": "Birthday in {{ count }} day",
-    "birthdayIn_other": "Birthday in {{ count }} days"
+    "birthdayIn_other": "Birthday in {{ count }} days",
+    "tabs": {
+      "friends": "Friends",
+      "reservedWishes": "Reserved wishes"
+    }
   },
   "friends.recentWishes_one": "Recently added {{ count }} new wish",
   "friends.recentWishes_other": "Recently added {{ count }} new wishes",
@@ -178,13 +182,11 @@
     "tabs": {
       "active": "Active",
       "fulfilled": "Fulfilled",
-      "reserved": "Reserved by you",
       "archived": "Archived"
     },
     "tabHints": {
       "active": "<b>Anyone</b> can see your non-private active wishes",
       "fulfilled": "<b>Only you</b> can see your fulfilled wishes",
-      "reserved": "<b>Only you</b> can see your wishes that you have reserved",
       "archived": "<b>Only you</b> can see your archived wishes"
     },
     "wishOwner": "@{{ username }}'s wish",

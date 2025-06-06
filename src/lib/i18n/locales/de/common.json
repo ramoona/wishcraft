@@ -70,7 +70,11 @@
     "recentWishes_one": "Hat gerade {{ count }} neuen Wunsch hinzugefügt",
     "recentWishes_other": "Hat gerade {{ count }} neue Wünsche hinzugefügt",
     "birthdayIn_one": "Hat in {{ count }} Tag Geburtstag",
-    "birthdayIn_other": "Hat in {{ count }} Tagen Geburtstag"
+    "birthdayIn_other": "Hat in {{ count }} Tagen Geburtstag",
+    "tabs": {
+      "friends": "Freunde",
+      "reservedWishes": "Reservierte Wünsche"
+    }
   },
   "error": {
     "error": "Fehler",
@@ -176,13 +180,11 @@
     "tabs": {
       "active": "Aktiv",
       "fulfilled": "Erfüllt",
-      "reserved": "Von dir reserviert",
       "archived": "Archiviert"
     },
     "tabHints": {
       "active": "<b>Alle</b> können deine öffentlichen, aktiven Wünsche sehen",
       "fulfilled": "<b>Nur du</b> siehst deine erfüllten Wünsche",
-      "reserved": "<b>Nur du</b> siehst die Wünsche, die du reserviert hast",
       "archived": "<b>Nur du</b> siehst deine archivierten Wünsche"
     },
     "wishOwner": "Wunsch von @{{ username }}",

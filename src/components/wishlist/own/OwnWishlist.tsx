@@ -6,7 +6,6 @@ import { groupBy } from "ramda";
 import { WishStatus } from "@prisma/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WishDetails } from "~/components/wishlist/WishDetails";
-import { OtherUser } from "~/services/user/types";
 import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
 import * as React from "react";
 import { WithStickyFooter } from "~/components/ui/scrollable";
@@ -16,15 +15,7 @@ import { useSearchParams } from "next/navigation";
 import { EmptyList } from "~/components/ui/emptyList";
 import { Trans, useTranslation } from "react-i18next";
 
-export function OwnWishlist({
-  data,
-  reserved,
-  showOwnReserved,
-}: {
-  data: WishlistType;
-  reserved: (WishType & { user: OtherUser })[];
-  showOwnReserved: boolean;
-}) {
+export function OwnWishlist({ data, showOwnReserved }: { data: WishlistType; showOwnReserved: boolean }) {
   const [newWishFormVisible, setNewWishFormVisible] = useState(false);
   const queryParams = useSearchParams();
   const { t } = useTranslation();
@@ -61,9 +52,6 @@ export function OwnWishlist({
             </TabsTrigger>
             <TabsTrigger value="archived" className="grow text-sm">
               {t("wishlist.tabs.archived")}
-            </TabsTrigger>
-            <TabsTrigger value="reserved" className="grow text-sm">
-              {t("wishlist.tabs.reserved")}
             </TabsTrigger>
           </TabsList>
           <TabsContent
@@ -111,29 +99,6 @@ export function OwnWishlist({
               <EmptyWishlistSection shape="3" />
             )}
           </TabsContent>
-          <TabsContent
-            value="reserved"
-            className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
-          >
-            <TabHint type="reserved" />
-            {reserved.length > 0 ? (
-              <WishlistItems>
-                {reserved.map(wish => (
-                  <WishDetails
-                    key={wish.id}
-                    wish={wish}
-                    username={wish.user.username}
-                    isForeign
-                    reservedByCurrentUser
-                    isLoggedIn
-                    showUsernameInDetails
-                  />
-                ))}
-              </WishlistItems>
-            ) : (
-              <EmptyWishlistSection shape="4" />
-            )}
-          </TabsContent>
         </Tabs>
       )}
       {newWishFormVisible && (
@@ -149,7 +114,7 @@ export function OwnWishlist({
   );
 }
 
-function TabHint({ type }: { type: "active" | "fulfilled" | "archived" | "reserved" }) {
+function TabHint({ type }: { type: "active" | "fulfilled" | "archived" }) {
   const { t } = useTranslation();
   const i18nKey = tabHintTranslations[type];
 
@@ -168,5 +133,4 @@ const tabHintTranslations = {
   active: "wishlist.tabHints.active",
   fulfilled: "wishlist.tabHints.fulfilled",
   archived: "wishlist.tabHints.archived",
-  reserved: "wishlist.tabHints.reserved",
 };
