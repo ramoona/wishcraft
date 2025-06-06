@@ -1,0 +1,212 @@
+{
+  "navigation": {
+    "wishes": "Wünsche",
+    "profile": "Profil",
+    "friends": "Freunde"
+  },
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "reallyDelete": "Wirklich löschen?",
+    "edit": "Bearbeiten",
+    "signInWithGoogle": "Mit Google anmelden",
+    "removeFriend": "Freund entfernen",
+    "addFriend": "Freund hinzufügen",
+    "continue": "Weiter",
+    "skip": "Überspringen",
+    "addWish": "Wunsch hinzufügen",
+    "moveWishToActive": "Zu Aktiv verschieben",
+    "moveWishToFulfilled": "Zu Erfüllt verschieben",
+    "archive": "Archivieren",
+    "back": "Zurück",
+    "openLink": "Link öffnen"
+  },
+  "states": {
+    "saving": "Speichere...",
+    "skipping": "Überspringe...",
+    "deleting": "Lösche...",
+    "moving": "Verschiebe...",
+    "archiving": "Archiviere..."
+  },
+  "onboarding": {
+    "defaultCurrency": {
+      "title": "Lass uns deine Standardwährung festlegen",
+      "description": "Diese Währung wird standardmäßig für deine Wünsche genutzt. Du kannst das später im Profil ändern."
+    },
+    "dateOfBirth": {
+      "title": "Wann hast du Geburtstag?",
+      "description": "Geburtstage sind öffentlich. Du kannst ihn später im Profil eintragen."
+    },
+    "profileVisibility": {
+      "title": "Möchtest du deine Wunschliste öffentlich machen?",
+      "description": "Öffentliche Listen sind für alle sichtbar, private nur für deine Freunde. Kannst du später jederzeit ändern.",
+      "privateProfileOptionLabel": "Ich will meine Liste privat halten"
+    },
+    "username": {
+      "title": "Lass uns zuerst deinen Nutzernamen festlegen",
+      "description": "Der Name ist öffentlich. Überleg's dir gut – du kannst ihn später nicht mehr ändern."
+    },
+    "reservedWishesVisibility": {
+      "title": "Willst du sehen, ob jemand deine Wünsche reserviert hat?",
+      "description": "Standardmäßig ist das aus. Wenn du’s anschaltest, siehst du ein kleines <badge>Reserviert</badge>-Label bei reservierten Wünschen – aber nicht, von wem. Später im Profil änderbar.",
+      "showReservedOptionLabel": "Bin neugierig",
+      "hideReservedOptionLabel": "Mag Überraschungen"
+    },
+    "fistWish": {
+      "title": "Alles startklar!",
+      "subTitle": "Jetzt kannst du deinen ersten Wunsch erstellen."
+    }
+  },
+  "placeholders": {
+    "selectDay": "Tag auswählen",
+    "selectMonth": "Monat auswählen",
+    "username": "z.B. spider-monkey",
+    "selectLanguage": "Sprache auswählen",
+    "selectCurrency": "Währung auswählen"
+  },
+  "friends": {
+    "title": "Deine Freunde",
+    "recentWishes_one": "Hat gerade {{ count }} neuen Wunsch hinzugefügt",
+    "recentWishes_other": "Hat gerade {{ count }} neue Wünsche hinzugefügt",
+    "birthdayIn_one": "Hat in {{ count }} Tag Geburtstag",
+    "birthdayIn_other": "Hat in {{ count }} Tagen Geburtstag"
+  },
+  "error": {
+    "error": "Fehler",
+    "UNAUTHORIZED": "Ups, du darfst diese Seite nicht sehen",
+    "OAUTH_ERROR": "Ups, da lief was schief beim Anmelden. Versuch’s bitte nochmal.",
+    "USER_NOT_FOUND": "Ups, wir haben uns echt Mühe gegeben, aber diese Seite gibt's wohl nicht… Vielleicht ein Tippfehler?",
+    "INPUT_IS_REQUIRED": "Eingabe wird benötigt",
+    "USERNAME_IS_TAKEN": "Der Nutzername ist schon vergeben",
+    "WISH_IS_ALREADY_RESERVED": "Wunsch ist schon reserviert",
+    "WISH_IS_NOT_RESERVABLE": "Wunsch kann nicht reserviert werden",
+    "WISH_IS_NOT_RESERVED": "Wunsch ist nicht reserviert – kann also nicht freigegeben werden",
+    "WISH_IS_RESERVED_BY_ANOTHER_USER": "Wunsch wurde von jemand anderem reserviert",
+    "WISH_NOT_FOUND": "Wunsch nicht gefunden",
+    "INVALID_INPUT": "Ungültige Eingabe",
+    "TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME": "Zu viele Versuche, einen Nutzernamen zu erstellen",
+    "UNKNOWN": "Irgendwas ist schiefgelaufen – wir wissen auch nicht genau was :( Versuch’s einfach nochmal.",
+    "persistingErrorHint": "Wenn der Fehler bleibt, schreib uns gern an <email>support@mywishcraft.app</email>."
+  },
+  "success": {
+    "SAVED": "Gespeichert!",
+    "DELETED": "Gelöscht!"
+  },
+  "currency": {
+    "usd": "US-Dollar",
+    "eur": "Euro",
+    "gbp": "Britisches Pfund",
+    "jpy": "Japanischer Yen",
+    "aud": "Australischer Dollar",
+    "cad": "Kanadischer Dollar",
+    "chf": "Schweizer Franken",
+    "cny": "Chinesischer Yuan",
+    "hkd": "Hongkong-Dollar",
+    "nzd": "Neuseeland-Dollar",
+    "sek": "Schwedische Krone",
+    "krw": "Südkoreanischer Won",
+    "sgd": "Singapur-Dollar",
+    "nok": "Norwegische Krone",
+    "mxn": "Mexikanischer Peso",
+    "inr": "Indische Rupie",
+    "rub": "Russischer Rubel",
+    "zar": "Südafrikanischer Rand",
+    "brl": "Brasilianischer Real",
+    "try": "Türkische Lira"
+  },
+  "general": {
+    "yes": "Ja",
+    "no": "Nein",
+    "empty": "Leer"
+  },
+  "months": {
+    "january": "Januar",
+    "february": "Februar",
+    "march": "März",
+    "april": "April",
+    "may": "Mai",
+    "june": "Juni",
+    "july": "Juli",
+    "august": "August",
+    "september": "September",
+    "october": "Oktober",
+    "november": "November",
+    "december": "Dezember"
+  },
+  "login": {
+    "heading": "Mach deine Wünsche wahr!",
+    "loginAgreement": "Mit der Anmeldung stimmst du unseren <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzrichtlinie</privacy> zu.",
+    "privacyPolicy": "Datenschutz",
+    "termsOfService": "Nutzungsbedingungen"
+  },
+  "buttons": {
+    "backToSafety": "Zurück zur Übersicht"
+  },
+  "profile": {
+    "privateWishlist": "Private Wunschliste",
+    "publicWishlistEnabled": "Deine Liste ist <bold>privat</bold>. Nur deine Freunde sehen sie.",
+    "publicWishlistDisabled": "Deine Liste ist <bold>öffentlich</bold>. Jeder kann sie sehen.",
+    "reservationStatus": "Reservierungsstatus anzeigen",
+    "reservationStatusEnabled": "Du siehst, ob Wünsche reserviert sind – aber nicht von wem.",
+    "reservationStatusDisabled": "Du siehst nicht, ob Wünsche reserviert sind.",
+    "preferredLanguage": "Bevorzugte Sprache",
+    "preferredCurrency": "Bevorzugte Währung",
+    "birthday": "Geburtstag",
+    "menu": {
+      "signOut": "Abmelden",
+      "support": "Support",
+      "deleteAccount": "Konto löschen"
+    },
+    "supportModal": {
+      "title": "Brauchst du Hilfe?",
+      "description": "Wenn was nicht läuft oder du eine Idee hast – schreib uns einfach: <email>support@mywishcraft.app</email>"
+    },
+    "deleteAccountModal": {
+      "title": "Bist du dir ganz sicher?",
+      "description": "Das lässt sich nicht rückgängig machen. Dein Konto und alle Daten werden gelöscht.",
+      "confirmButton": "Konto löschen"
+    },
+    "shareWishlist": {
+      "copyLink": "Wunschliste teilen",
+      "linkCopied": "Link kopiert!"
+    }
+  },
+  "wishlist": {
+    "tabs": {
+      "active": "Aktiv",
+      "fulfilled": "Erfüllt",
+      "reserved": "Von dir reserviert",
+      "archived": "Archiviert"
+    },
+    "tabHints": {
+      "active": "<b>Alle</b> können deine öffentlichen, aktiven Wünsche sehen",
+      "fulfilled": "<b>Nur du</b> siehst deine erfüllten Wünsche",
+      "reserved": "<b>Nur du</b> siehst die Wünsche, die du reserviert hast",
+      "archived": "<b>Nur du</b> siehst deine archivierten Wünsche"
+    },
+    "wishOwner": "Wunsch von @{{ username }}",
+    "wishStatus": {
+      "reserved": "Reserviert",
+      "reservedByYou": "Von dir reserviert",
+      "private": "Privat"
+    }
+  },
+  "wishForm": {
+    "reservedHint": "Dieser Wunsch wurde schon von jemand anderem reserviert",
+    "labels": {
+      "title": "Titel",
+      "comment": "Kommentar",
+      "price": "Preis",
+      "link": "Link",
+      "currency": "Währung",
+      "privacy": "Privatsphäre",
+      "makePrivate": "Anschalten, wenn nur du den Wunsch sehen sollst"
+    }
+  },
+  "validation": {
+    "titleRequired": "Titel wird benötigt",
+    "titleTooLong": "Titel ist zu lang",
+    "commentTooLong": "Kommentar ist zu lang"
+  }
+}

@@ -17,6 +17,10 @@ const resources = {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     common: require("./locales/ru/common.json"),
   },
+  de: {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    common: require("./locales/de/common.json"),
+  },
 };
 
 export function I18nProvider({ children, language }: React.PropsWithChildren<{ language: string }>) {

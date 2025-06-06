@@ -13,24 +13,11 @@ export function LanguageSwitcher({
   onChange?: (lang: SupportedLanguages) => void;
 }) {
   const { i18n, t } = useTranslation();
-  const [currentLang, setCurrentLang] = useState("en");
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     // Mark component as mounted
     setIsMounted(true);
-
-    // Update the current language state when i18n is initialized
-    setCurrentLang(i18n.language);
-
-    // Listen for language changes
-    const handleLanguageChanged = (lng: string) => {
-      setCurrentLang(lng);
-    };
-
-    i18n.on("languageChanged", handleLanguageChanged);
-
-    return () => i18n.off("languageChanged", handleLanguageChanged);
   }, [i18n]);
 
   const changeLanguage = async (language: string) => {
@@ -41,6 +28,7 @@ export function LanguageSwitcher({
   const languageOptions = [
     { value: "en", label: "English" },
     { value: "ru", label: "Русский" },
+    { value: "de", label: "Deutsch" },
   ];
 
   // Don't render anything until the component has mounted on the client
@@ -50,7 +38,7 @@ export function LanguageSwitcher({
 
   return (
     <Select
-      value={currentLang}
+      value={i18n.language}
       onChange={changeLanguage}
       options={languageOptions}
       contentWidth={contentWidth}
