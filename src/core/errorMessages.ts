@@ -47,7 +47,7 @@ const errors: Record<ServerErrorCode | UserErrorCode | WishlistErrorCode, string
   CAN_NOT_RESERVE_OWN_WISH: "error.CAN_NOT_RESERVE_OWN_WISH",
 };
 
-const successMessages: Record<SuccessMessageCode, string> = {
+export const successMessages: Record<SuccessMessageCode, string> = {
   SAVED: "success.SAVED",
   DELETED: "success.DELETED",
 };

@@ -22,14 +22,15 @@ import { getErrorMessage } from "~/core/errorMessages";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
+import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 
 const formSchema = (t: TFunction) =>
   z.object({
-    name: z.string().min(1, t("validation.titleRequired")).max(150, t("validation.titleTooLong")),
+    name: z.string().min(1, t("validation.titleRequired")).max(80, t("validation.titleTooLong")),
     price: z.number({ coerce: true }).optional().nullable().default(null),
     currency: z.string().optional().nullable(),
     url: z.string().url().optional().nullable(),
-    comment: z.string().max(255, t("validation.commentTooLong")).optional().nullable(),
+    comment: z.string().max(150, t("validation.commentTooLong")).optional().nullable(),
     isPrivate: z.boolean(),
   });
 
@@ -214,13 +215,20 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
 function WishFormButtons({ wish, isLoading, onBack }: { wish?: WishType; isLoading: boolean; onBack?: () => void }) {
   const { t } = useTranslation();
   return (
-    <div className="mx-auto grid w-full max-w-lg grid-cols-[1fr_2fr] items-center gap-4 px-4">
+    <div className="mx-auto grid w-full max-w-lg grid-cols-[1fr_2fr] items-center justify-end gap-4 px-4 lg:mt-8 lg:grid-cols-[min-content_min-content]">
       <Button isLoading={isLoading} variant="outline" onClick={onBack} fullWidth size="lg" minWidth={false}>
         {t("actions.cancel")}
       </Button>
-      <Button type="submit" isLoading={isLoading} fullWidth minWidth={false} size="lg">
-        {wish ? t("actions.save") : t("actions.addWish")}
-      </Button>
+      <MobileOnly>
+        <Button type="submit" isLoading={isLoading} fullWidth minWidth={false} size="lg">
+          {wish ? t("actions.save") : t("actions.addWish")}
+        </Button>
+      </MobileOnly>
+      <DesktopOnly>
+        <Button type="submit" isLoading={isLoading} size="lg">
+          {wish ? t("actions.save") : t("actions.addWish")}
+        </Button>
+      </DesktopOnly>
     </div>
   );
 }

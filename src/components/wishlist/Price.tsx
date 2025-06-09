@@ -16,7 +16,13 @@ export function Price({
   }
 
   return (
-    <span className={size === "large" ? "shrink-0 font-bold" : "shrink-0 text-sm font-medium"}>
+    <span
+      className={
+        size === "large"
+          ? "shrink-0 font-bold lg:rounded lg:bg-background/50 lg:px-1 lg:py-0.5"
+          : "shrink-0 text-sm font-medium"
+      }
+    >
       {price.toLocaleString(i18n.language || "de", {
         style: "currency",
         currency,

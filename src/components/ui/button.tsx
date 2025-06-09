@@ -29,7 +29,7 @@ const buttonVariants = cva(
         true: "w-full",
       },
       minWidth: {
-        true: "min-w-[214px]",
+        true: "min-w-[214px] lg:min-w-fit",
         false: "min-w-min",
       },
     },

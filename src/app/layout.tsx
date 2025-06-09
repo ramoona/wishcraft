@@ -31,7 +31,7 @@ export default async function RootLayout({
     <html lang={language}>
       <body className={cn(inter.className, "relative bg-background")}>
         <Providers language={language}>
-          <Toaster position="top-right" />
+          <Toaster position="top-right" theme="light" />
           <Analytics />
         </Providers>
         {/*<svg viewBox="0 0 202 202" width="300">*/}

@@ -14,8 +14,25 @@ import { WishOverlay } from "~/components/wishlist/WishOverlay";
 import { useSearchParams } from "next/navigation";
 import { EmptyList } from "~/components/ui/emptyList";
 import { Trans, useTranslation } from "react-i18next";
+import { WishCard } from "~/components/wishlist/WishCard";
+import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { WishForm } from "~/components/wishlist/own/WishForm";
 
 export function OwnWishlist({ data, showOwnReserved }: { data: WishlistType; showOwnReserved: boolean }) {
+  return (
+    <>
+      <DesktopOnly>
+        <OwnWishlistDesktop data={data} showOwnReserved={showOwnReserved} />
+      </DesktopOnly>
+      <MobileOnly>
+        <OwnWishlistMobile data={data} showOwnReserved={showOwnReserved} />
+      </MobileOnly>
+    </>
+  );
+}
+
+function OwnWishlistMobile({ data, showOwnReserved }: { data: WishlistType; showOwnReserved: boolean }) {
   const [newWishFormVisible, setNewWishFormVisible] = useState(false);
   const queryParams = useSearchParams();
   const { t } = useTranslation();
@@ -114,12 +131,101 @@ export function OwnWishlist({ data, showOwnReserved }: { data: WishlistType; sho
   );
 }
 
+function OwnWishlistDesktop({ data, showOwnReserved }: { data: WishlistType; showOwnReserved: boolean }) {
+  const [newWishFormVisible, setNewWishFormVisible] = useState(false);
+  const queryParams = useSearchParams();
+  const { t } = useTranslation();
+  const initialTab = queryParams.get("tab");
+  const [tab, setTab] = useState(
+    initialTab && ["active", "fulfilled", "archived", "reserved"].includes(initialTab) ? initialTab : "active",
+  );
+  const {
+    active = [],
+    fulfilled = [],
+    archived = [],
+  } = groupBy<WishType>(wish => {
+    if (wish.status === "ARCHIVED") {
+      return "archived";
+    }
+
+    if (wish.status === WishStatus.FULFILLED) {
+      return "fulfilled";
+    }
+
+    return "active";
+  })(data.wishes);
+
+  return (
+    <>
+      <Tabs className="grid grid-cols-[min-content_auto] gap-8 px-8" value={tab} onValueChange={setTab}>
+        <TabsList className="sticky left-0 top-0 flex h-fit min-w-48 flex-col gap-3 pt-8">
+          <TabsTrigger value="active" className="w-full grow justify-start px-4 text-left text-sm">
+            {t("wishlist.tabs.active")}
+          </TabsTrigger>
+          <TabsTrigger value="fulfilled" className="w-full grow justify-start px-4 text-left text-sm">
+            {t("wishlist.tabs.fulfilled")}
+          </TabsTrigger>
+          <TabsTrigger value="archived" className="w-full grow justify-start px-4 text-left text-sm">
+            {t("wishlist.tabs.archived")}
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="active" className="mx-auto flex w-full grow flex-col">
+          {active.length > 0 ? (
+            <WishlistItems wishes={active}>
+              {active.map(wish => (
+                <WishCard key={wish.id} wish={wish} showReserved={showOwnReserved} isLoggedIn />
+              ))}
+            </WishlistItems>
+          ) : (
+            <EmptyWishlistSection shape="1" />
+          )}
+          <TabHint type="active" />
+        </TabsContent>
+        <TabsContent value="fulfilled" className="mx-auto flex w-full grow flex-col">
+          {fulfilled.length > 0 ? (
+            <WishlistItems wishes={fulfilled}>
+              {fulfilled.map(wish => (
+                <WishCard key={wish.id} wish={wish} isLoggedIn />
+              ))}
+            </WishlistItems>
+          ) : (
+            <EmptyWishlistSection shape="2" />
+          )}
+          <TabHint type="fulfilled" />
+        </TabsContent>
+        <TabsContent value="archived" className="mx-auto flex w-full grow flex-col">
+          {archived.length > 0 ? (
+            <WishlistItems>
+              {archived.map(wish => (
+                <WishCard key={wish.id} wish={wish} isLoggedIn />
+              ))}
+            </WishlistItems>
+          ) : (
+            <EmptyWishlistSection shape="3" />
+          )}
+          <TabHint type="archived" />
+        </TabsContent>
+      </Tabs>
+      <Dialog open={newWishFormVisible} onOpenChange={open => setNewWishFormVisible(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add new wish</DialogTitle>
+            <DialogDescription>
+              <WishForm />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
 function TabHint({ type }: { type: "active" | "fulfilled" | "archived" }) {
   const { t } = useTranslation();
   const i18nKey = tabHintTranslations[type];
 
   return (
-    <p className="mb-4 w-full text-center text-xs">
+    <p className="mb-4 w-full text-center text-xs lg:mt-12">
       <Trans t={t} i18nKey={i18nKey} components={{ b: <span className="font-bold" /> }} />
     </p>
   );

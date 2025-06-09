@@ -8,16 +8,37 @@ import { useState } from "react";
 import { cn } from "~/utils/classnames";
 import { useDeleteWish, useUpdateWish } from "~/components/wishlist/own/hooks";
 import { useTranslation } from "react-i18next";
+import { DesktopOnly } from "~/components/MediaComponents";
 
-export function WishDropdownMenu({ wish, onActionSuccess }: { wish: WishType; onActionSuccess?: () => void }) {
+export function WishDropdownMenu({
+  wish,
+  onActionSuccess,
+  onEdit,
+}: {
+  wish: WishType;
+  onActionSuccess?: () => void;
+  onEdit?: () => void;
+}) {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [isDeleting, deleteWish] = useDeleteWish();
   const [isUpdating, updateWish] = useUpdateWish();
   const { t } = useTranslation();
 
   return (
-    <div className="absolute right-4 top-4 z-10">
-      <DropdownMenu ariaLabel="Wish menu">
+    <div className="absolute right-4 top-4 z-10 lg:top-[22px]">
+      <DropdownMenu ariaLabel="Wish menu" color={wish.backgroundColor === "black" ? "white" : "black"}>
+        {wish.status === "ACTIVE" && (
+          <DesktopOnly>
+            <DropdownMenuItem onSelect={onEdit}>{t("actions.edit")}</DropdownMenuItem>
+          </DesktopOnly>
+        )}
+        {wish.status !== "ACTIVE" && (
+          <DesktopOnly>
+            <DropdownMenuItem onSelect={() => updateWish(wish.id, { status: WishStatus.ACTIVE }, onActionSuccess)}>
+              {t("actions.moveWishToActive")}
+            </DropdownMenuItem>
+          </DesktopOnly>
+        )}
         {wish.status !== "FULFILLED" && (
           <DropdownMenuItem onSelect={() => updateWish(wish.id, { status: WishStatus.FULFILLED }, onActionSuccess)}>
             {isUpdating ? t("states.moving") : t("actions.moveWishToFulfilled")}

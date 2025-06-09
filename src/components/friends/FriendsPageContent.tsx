@@ -29,24 +29,28 @@ export function FriendsPageContent({
 
   return (
     <WithStickyFooter footer={null}>
-      <Tabs className="flex size-full flex-col" value={tab} onValueChange={setTab}>
-        <TabsList className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center gap-2 border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
-          <TabsTrigger value="friends" className="grow text-sm">
+      <Tabs
+        className="flex size-full flex-col lg:grid lg:grid-cols-[min-content_auto] lg:gap-8 lg:px-8"
+        value={tab}
+        onValueChange={setTab}
+      >
+        <TabsList className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center gap-2 border-b border-b-muted bg-background px-4 py-5 sm:border-b-0 lg:size-fit lg:flex-col lg:gap-3 lg:border-b-0 lg:px-0 lg:pt-8">
+          <TabsTrigger value="friends" className="grow text-sm lg:w-full lg:justify-start lg:px-4 lg:text-left">
             {t("friends.tabs.friends")}
           </TabsTrigger>
-          <TabsTrigger value="reserved-wishes" className="grow text-sm">
+          <TabsTrigger value="reserved-wishes" className="grow text-sm lg:w-full lg:justify-start lg:px-4 lg:text-left">
             {t("friends.tabs.reservedWishes")}
           </TabsTrigger>
         </TabsList>
         <TabsContent
           value="friends"
-          className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
+          className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded lg:bg-transparent"
         >
           <FriendsList friends={friends} />
         </TabsContent>
         <TabsContent
           value="reserved-wishes"
-          className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded"
+          className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded lg:bg-transparent"
         >
           {reservedWishes.length > 0 ? (
             <WishlistItems>

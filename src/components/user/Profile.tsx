@@ -74,7 +74,7 @@ export function Profile({ user }: { user: User }) {
 
   return (
     <>
-      <div className="bg-background">
+      <div className="space-y-4 bg-background">
         <div className="grid w-full grid-cols-[auto_max-content] items-center pr-4">
           <UserDetails user={user} email={user.email} context="profile" />
           <ProfileDropdownMenu />
