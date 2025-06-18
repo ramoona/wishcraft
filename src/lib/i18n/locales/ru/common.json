@@ -65,7 +65,7 @@
     "selectLanguage": "Выбери язык"
   },
   "friends": {
-    "title": "Твои друзья",
+    "title": "Друзья",
     "recentWishes_one": "Недавно добавлено {{ count }} новое желание",
     "recentWishes_few": "Недавно добавлены {{ count }} новых желания",
     "recentWishes_many": "Недавно добавлены {{ count }} новых желаний",
@@ -75,7 +75,7 @@
     "birthdayIn_many": "День рождения через {{ count }} дней",
     "birthdayIn_other": "День рождения через {{ count }} дней",
     "tabs": {
-      "friends": "Друзья",
+      "friends": "Твои друзья",
       "reservedWishes": "Зарезервированные желания"
     }
   },
@@ -93,6 +93,7 @@
     "WISH_NOT_FOUND": "Желание не найдено",
     "INVALID_INPUT": "Невалидный ввод",
     "TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME": "Слишком много попыток придумать ник",
+    "CAN_NOT_UPDATE_FOREIGN_WISH": "Упс, ты пытаешься обновить чужое желание",
     "UNKNOWN": "Что-то сломалось, но мы не знаем, что именно :( Попробуй ещё раз.",
     "persistingErrorHint": "Если ошибка повторяется, напиши нам: <email>support@mywishcraft.app</email>."
   },
@@ -125,7 +126,7 @@
   "general": {
     "yes": "Да",
     "no": "Нет",
-    "empty": "Пусто"
+    "empty": "Пусто..."
   },
   "months": {
     "january": "Январь",
@@ -195,6 +196,11 @@
       "reserved": "Зарезервировано",
       "reservedByYou": "Зарезервировано тобой",
       "private": "Приватное"
+    },
+    "headers": {
+      "active": "Активные желания",
+      "fulfilled": "Исполненные желания",
+      "archived": "Архивные желания"
     }
   },
   "wishForm": {

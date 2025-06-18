@@ -134,7 +134,6 @@ function OwnWishlistMobile({ data, showOwnReserved }: { data: WishlistType; show
 function OwnWishlistDesktop({ data, showOwnReserved }: { data: WishlistType; showOwnReserved: boolean }) {
   const [newWishFormVisible, setNewWishFormVisible] = useState(false);
   const queryParams = useSearchParams();
-  const { t } = useTranslation();
   const initialTab = queryParams.get("tab");
   const [tab, setTab] = useState(
     initialTab && ["active", "fulfilled", "archived", "reserved"].includes(initialTab) ? initialTab : "active",
@@ -158,17 +157,6 @@ function OwnWishlistDesktop({ data, showOwnReserved }: { data: WishlistType; sho
   return (
     <>
       <Tabs className="grid grid-cols-[min-content_auto] gap-8 px-8" value={tab} onValueChange={setTab}>
-        <TabsList className="sticky left-0 top-0 flex h-fit min-w-48 flex-col gap-3 pt-8">
-          <TabsTrigger value="active" className="w-full grow justify-start px-4 text-left text-sm">
-            {t("wishlist.tabs.active")}
-          </TabsTrigger>
-          <TabsTrigger value="fulfilled" className="w-full grow justify-start px-4 text-left text-sm">
-            {t("wishlist.tabs.fulfilled")}
-          </TabsTrigger>
-          <TabsTrigger value="archived" className="w-full grow justify-start px-4 text-left text-sm">
-            {t("wishlist.tabs.archived")}
-          </TabsTrigger>
-        </TabsList>
         <TabsContent value="active" className="mx-auto flex w-full grow flex-col">
           {active.length > 0 ? (
             <WishlistItems wishes={active}>

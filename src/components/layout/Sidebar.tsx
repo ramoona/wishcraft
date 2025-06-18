@@ -20,8 +20,20 @@ import { DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdo
 import { User } from "~/services/user/types";
 import { DotsThreeVertical } from "@phosphor-icons/react";
 import { cn } from "~/utils/classnames";
+import { useTranslation } from "react-i18next";
+import { usePathname } from "next/navigation";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { WishForm } from "~/components/wishlist/own/WishForm";
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
 
 export function Sidebar({ user }: { user: User }) {
+  const { t } = useTranslation();
+  const [newWishFormVisible, setNewWishFormVisible] = useState(false);
+  const pathname = usePathname();
+
+  const segments = pathname.split("/").filter(Boolean);
+
   return (
     <SidebarComponent>
       <SidebarHeader className="flex h-20 items-start justify-center px-4">
@@ -30,31 +42,31 @@ export function Sidebar({ user }: { user: User }) {
       <SidebarContent>
         <SidebarMenu className="w-60 px-2 pb-4">
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton isActive={segments[1] === "wishes"} asChild>
               <span>
                 <WishesIcon fill="stroke-black" />
-                Wishes
+                {t("navigation.wishes")}
               </span>
             </SidebarMenuButton>
             <SidebarMenuSub>
               <SidebarMenuSubItem>
-                <SidebarMenuSubButton asChild>
-                  <a href="" className="no-underline">
-                    <span>Active</span>
+                <SidebarMenuSubButton isActive={segments[2] === "active"} asChild>
+                  <a href={`/${user.username}/wishes/active`} className="no-underline">
+                    <span>{t("wishlist.tabs.active")}</span>
                   </a>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
               <SidebarMenuSubItem>
-                <SidebarMenuSubButton asChild>
-                  <a href="" className="no-underline">
-                    <span>Fulfilled</span>
+                <SidebarMenuSubButton isActive={segments[2] === "fulfilled"} asChild>
+                  <a href={`/${user.username}/wishes/fulfilled`} className="no-underline">
+                    <span>{t("wishlist.tabs.fulfilled")}</span>
                   </a>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
               <SidebarMenuSubItem>
-                <SidebarMenuSubButton asChild>
-                  <a href="" className="no-underline">
-                    <span>Archived</span>
+                <SidebarMenuSubButton isActive={segments[2] === "archived"} asChild>
+                  <a href={`/${user.username}/wishes/archived`} className="no-underline">
+                    <span> {t("wishlist.tabs.archived")}</span>
                   </a>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
@@ -63,21 +75,21 @@ export function Sidebar({ user }: { user: User }) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <span>
-                <FriendsIcon fill="stroke-black" /> Friends
+                <FriendsIcon fill="stroke-black" /> {t("navigation.friends")}
               </span>
             </SidebarMenuButton>
             <SidebarMenuSub>
               <SidebarMenuSubItem>
                 <SidebarMenuSubButton asChild>
-                  <a href="" className="no-underline">
-                    <span>Your friends</span>
+                  <a href={`/${user.username}/friends/your-friends`} className="no-underline">
+                    <span>{t("friends.tabs.friends")}</span>
                   </a>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
               <SidebarMenuSubItem>
                 <SidebarMenuSubButton asChild>
-                  <a href="" className="no-underline">
-                    <span>Reserved wishes</span>
+                  <a href={`/${user.username}/friends/reserved-wishes`} className="no-underline">
+                    <span> {t("friends.tabs.reservedWishes")}</span>
                   </a>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
@@ -86,8 +98,23 @@ export function Sidebar({ user }: { user: User }) {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
+        <div className="px-2 pb-4">
+          <Button onClick={() => setNewWishFormVisible(true)} fullWidth>
+            {t("actions.addWish")}
+          </Button>
+        </div>
         <UserNav user={user} />
       </SidebarFooter>
+      <Dialog open={newWishFormVisible} onOpenChange={open => setNewWishFormVisible(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add new wish</DialogTitle>
+            <DialogDescription>
+              <WishForm />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </SidebarComponent>
   );
 }

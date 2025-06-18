@@ -22,7 +22,7 @@ export function WithStickyFooter({
 }: PropsWithChildren<{ footer: ReactNode; backgroundColor?: string }>) {
   return (
     <>
-      <div className="pb-4">{children}</div>
+      <div className="grow pb-4">{children}</div>
       <div className="sticky bottom-4 flex justify-center">{footer}</div>
     </>
   );

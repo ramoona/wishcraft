@@ -149,7 +149,13 @@ export async function updateWish(wishId: string, input: Omit<WishUpdateInput, "i
     throw new WishlistError("CAN_NOT_UPDATE_FOREIGN_WISH");
   }
 
-  await prisma.wish.update({ where: { id: wishId }, data: input });
+  await prisma.wish.update({
+    where: { id: wishId },
+    data: {
+      ...input,
+      reservedById: input.status === "FULFILLED" || input.status === "ARCHIVED" ? null : undefined,
+    },
+  });
   await logUserAction({ action: "wish-updated", changes: input });
 }
 

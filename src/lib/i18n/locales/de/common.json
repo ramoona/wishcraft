@@ -66,13 +66,13 @@
     "selectCurrency": "Währung auswählen"
   },
   "friends": {
-    "title": "Deine Freunde",
+    "title": "Freunde",
     "recentWishes_one": "Hat gerade {{ count }} neuen Wunsch hinzugefügt",
     "recentWishes_other": "Hat gerade {{ count }} neue Wünsche hinzugefügt",
     "birthdayIn_one": "Hat in {{ count }} Tag Geburtstag",
     "birthdayIn_other": "Hat in {{ count }} Tagen Geburtstag",
     "tabs": {
-      "friends": "Freunde",
+      "friends": "Deine Freunde",
       "reservedWishes": "Reservierte Wünsche"
     }
   },
@@ -90,6 +90,7 @@
     "WISH_NOT_FOUND": "Wunsch nicht gefunden",
     "INVALID_INPUT": "Ungültige Eingabe",
     "TOO_MANY_ATTEMPTS_TO_GENERATE_USERNAME": "Zu viele Versuche, einen Nutzernamen zu erstellen",
+    "CAN_NOT_UPDATE_FOREIGN_WISH": "Ups, du versuchst, einen fremden Wunsch zu aktualisieren",
     "UNKNOWN": "Irgendwas ist schiefgelaufen – wir wissen auch nicht genau was :( Versuch’s einfach nochmal.",
     "persistingErrorHint": "Wenn der Fehler bleibt, schreib uns gern an <email>support@mywishcraft.app</email>."
   },
@@ -122,7 +123,7 @@
   "general": {
     "yes": "Ja",
     "no": "Nein",
-    "empty": "Leer"
+    "empty": "Leer..."
   },
   "months": {
     "january": "Januar",
@@ -192,6 +193,11 @@
       "reserved": "Reserviert",
       "reservedByYou": "Von dir reserviert",
       "private": "Privat"
+    },
+    "headers": {
+      "active": "Aktive Wünsche",
+      "fulfilled": "Erfüllte Wünsche",
+      "archived": "Archivierte Wünsche"
     }
   },
   "wishForm": {
