@@ -9,7 +9,7 @@ import {
   Path4Rotated,
 } from "~/components/shapes/Paths";
 import { WishColor, WishShape } from "~/services/wishlist/types";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useId } from "react";
 
 const colors = {
   gray: "#D8D6D6",
@@ -55,6 +55,7 @@ type ConcreteShapeProps = {
 };
 
 function CombinedShape1({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -63,10 +64,10 @@ function CombinedShape1({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path1 fill={color} />
-      <mask id="mask1" width="202" height="202" x="0" y="0" maskUnits="userSpaceOnUse" style={{ maskType: "alpha" }}>
+      <mask id={id} width="202" height="202" x="0" y="0" maskUnits="userSpaceOnUse" style={{ maskType: "alpha" }}>
         <Path1 fill={accent} />
       </mask>
-      <g mask="url(#mask1)">
+      <g mask={`url(#${id})`}>
         <path
           fill={accent}
           fillRule="evenodd"
@@ -79,6 +80,7 @@ function CombinedShape1({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape2({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 208 208"
@@ -87,7 +89,7 @@ function CombinedShape2({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path1Rotated fill={color} />
-      <mask id="mask2" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="208" height="208">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="208" height="208">
         <Path1Rotated fill="#000" />
       </mask>
       <g mask="url(#mask2)">
@@ -103,6 +105,7 @@ function CombinedShape2({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape3({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 207 208"
@@ -111,10 +114,10 @@ function CombinedShape3({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path1Rotated fill={color} />
-      <mask id="mask3" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="2" y="0" width="207" height="208">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="2" y="0" width="207" height="208">
         <Path1Rotated fill="#000" />
       </mask>
-      <g mask="url(#mask3)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -127,6 +130,7 @@ function CombinedShape3({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape4({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 214 196"
@@ -135,10 +139,10 @@ function CombinedShape4({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path2 fill={color} />
-      <mask id="mask4" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
         <Path2 fill="#000" />
       </mask>
-      <g mask="url(#mask4)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -151,6 +155,7 @@ function CombinedShape4({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape5({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 214 196"
@@ -159,10 +164,10 @@ function CombinedShape5({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path2Rotated fill={color} />
-      <mask id="mask5" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
         <Path2Rotated fill="#000" />
       </mask>
-      <g mask="url(#mask5)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -175,6 +180,7 @@ function CombinedShape5({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape6({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 214 196"
@@ -183,10 +189,10 @@ function CombinedShape6({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path2Rotated fill={color} />
-      <mask id="mask6" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="214" height="196">
         <Path2Rotated fill="#000" />
       </mask>
-      <g mask="url(#mask6)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -199,6 +205,7 @@ function CombinedShape6({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape7({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 184 218"
@@ -207,10 +214,10 @@ function CombinedShape7({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path3 fill={color} />
-      <mask id="mask7" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
         <Path3 fill="#000" />
       </mask>
-      <g mask="url(#mask7)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -223,6 +230,7 @@ function CombinedShape7({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape8({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 184 218"
@@ -231,10 +239,10 @@ function CombinedShape8({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path3Rotated fill={color} />
-      <mask id="mask8" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
         <Path3Rotated fill="#000" />
       </mask>
-      <g mask="url(#mask8)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -247,6 +255,7 @@ function CombinedShape8({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape9({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 184 218"
@@ -255,10 +264,10 @@ function CombinedShape9({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path3Rotated fill={color} />
-      <mask id="mask9" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="184" height="218">
         <Path3Rotated fill="#000" />
       </mask>
-      <g mask="url(#mask9)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -271,6 +280,7 @@ function CombinedShape9({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape10({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 172 209"
@@ -279,10 +289,10 @@ function CombinedShape10({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path4 fill={color} />
-      <mask id="mask10" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">
         <Path4 fill="#000" />
       </mask>
-      <g mask="url(#mask10)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -295,6 +305,7 @@ function CombinedShape10({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape11({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 172 209"
@@ -303,10 +314,10 @@ function CombinedShape11({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path4Rotated fill={color} />
-      <mask id="mask11" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">
         <Path4Rotated fill="#000" />
       </mask>
-      <g mask="url(#mask11)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -319,6 +330,7 @@ function CombinedShape11({ color, accent, width }: ConcreteShapeProps) {
 }
 
 function CombinedShape12({ color, accent, width }: ConcreteShapeProps) {
+  const id = useId();
   return (
     <svg
       viewBox="0 0 172 209"
@@ -327,10 +339,10 @@ function CombinedShape12({ color, accent, width }: ConcreteShapeProps) {
       className={width === "sm" ? "w-12" : "h-full"}
     >
       <Path4Rotated fill={color} />
-      <mask id="mask12" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">
+      <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="172" height="209">
         <Path4Rotated fill="#000" />
       </mask>
-      <g mask="url(#mask12)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"
