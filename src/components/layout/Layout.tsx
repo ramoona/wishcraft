@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { OtherUser, User } from "~/services/user/types";
 
 import { Logo } from "~/components/ui/logo";
@@ -68,6 +68,24 @@ export function OnboardingLayout({ children }: PropsWithChildren) {
         </div>
       </header>
       <main className="relative">{children}</main>
+    </div>
+  );
+}
+
+export function ContentLayout({ children, langSwitcher }: PropsWithChildren<{ langSwitcher: ReactNode }>) {
+  return (
+    <div>
+      <header className="fixed left-0 top-0 z-10 h-20 w-screen bg-background">
+        <div className="mx-auto flex h-full max-w-3xl items-center justify-between px-4">
+          <Link href="/" className="h-fit">
+            <Logo />
+          </Link>
+          {langSwitcher}
+        </div>
+      </header>
+      <main id="markdown-content" className="relative mx-auto w-full max-w-3xl px-4 pt-20">
+        {children}
+      </main>
     </div>
   );
 }

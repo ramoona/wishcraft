@@ -6,7 +6,6 @@ import { cn } from "~/utils/classnames";
 import type { Metadata, Viewport } from "next";
 import { Providers } from "~/app/providers";
 import { detectLanguage } from "~/lib/i18n/detect-language";
-import { Shapes } from "~/app/shapes";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 
@@ -31,7 +30,6 @@ export default async function RootLayout({
   return (
     <html lang={language}>
       <body className={cn(inter.className, "relative bg-background")}>
-        <Shapes />
         <Providers language={language}>
           <Toaster position="top-right" />
           <Analytics />
