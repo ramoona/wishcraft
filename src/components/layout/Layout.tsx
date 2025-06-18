@@ -6,7 +6,8 @@ import Link from "next/link";
 import NavBar from "~/components/layout/NavBar";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
 import { AuthenticatedHeader } from "~/components/layout/AuthenticatedHeader";
-import { MobileOnly } from "~/components/MediaComponents";
+import { Sidebar } from "~/components/layout/Sidebar";
+import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 
 export function AuthenticatedLayout({
   user,
@@ -16,6 +17,9 @@ export function AuthenticatedLayout({
   return (
     <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content]">
       <AuthenticatedHeader user={user} otherUser={otherUser} />
+      <DesktopOnly>
+        <Sidebar user={user} />
+      </DesktopOnly>
       <main className="relative mx-auto grid w-full max-w-lg grid-rows-[auto_min-content] overflow-y-auto bg-muted sm:rounded lg:max-w-screen-xl lg:bg-transparent">
         {children}
       </main>

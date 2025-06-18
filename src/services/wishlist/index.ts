@@ -128,6 +128,27 @@ export async function updateWish(wishId: string, input: Omit<WishUpdateInput, "i
     throw new ServerError("INVALID_INPUT");
   }
 
+  const sessionUser = await getSessionUserOrThrow();
+  const wishOwner = await prisma.user.findFirst({
+    where: {
+      wishlists: {
+        some: {
+          wishes: {
+            some: { id: wishId },
+          },
+        },
+      },
+    },
+  });
+
+  if (!wishOwner) {
+    throw new WishlistError("WISH_NOT_FOUND");
+  }
+
+  if (wishOwner.id !== sessionUser.id) {
+    throw new WishlistError("CAN_NOT_UPDATE_FOREIGN_WISH");
+  }
+
   await prisma.wish.update({ where: { id: wishId }, data: input });
   await logUserAction({ action: "wish-updated", changes: input });
 }

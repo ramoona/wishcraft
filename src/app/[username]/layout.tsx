@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "~/styles/globals.css";
 import { getSessionUser } from "~/services/session";
 import { AuthenticatedLayout, NonAuthenticatedLayout } from "~/components/layout/Layout";
 import { getUserByUserName } from "~/services/user";

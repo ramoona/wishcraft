@@ -20,13 +20,13 @@ export function AuthenticatedHeader({ user, otherUser }: { user: User; otherUser
 
   return (
     <>
-      <DesktopOnly>
-        <header className="sticky top-0 mx-auto grid h-20 w-screen max-w-screen-xl grid-cols-[1fr_auto_1fr] items-center justify-center bg-background px-4 lg:justify-between lg:px-8">
-          <LogoLink />
-          {user.isOnboarded && <NavMenu user={user} otherUser={otherUser} />}
-          {user.isOnboarded && <AddNewWish onOpenNewWishForm={() => setNewWishFormVisible(true)} />}
-        </header>
-      </DesktopOnly>
+      {/*<DesktopOnly>*/}
+      {/*  <header className="sticky top-0 mx-auto grid h-20 w-screen max-w-screen-xl grid-cols-[1fr_auto_1fr] items-center justify-center bg-background px-4 lg:justify-between lg:px-8">*/}
+      {/*    <LogoLink />*/}
+      {/*    {user.isOnboarded && <NavMenu user={user} otherUser={otherUser} />}*/}
+      {/*    {user.isOnboarded && <AddNewWish onOpenNewWishForm={() => setNewWishFormVisible(true)} />}*/}
+      {/*  </header>*/}
+      {/*</DesktopOnly>*/}
       <MobileOnly>
         <header className="sticky top-0 flex h-20 w-screen items-center justify-center bg-background px-4">
           <LogoLink />

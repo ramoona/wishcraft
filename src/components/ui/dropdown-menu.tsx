@@ -158,27 +158,31 @@ export function DropdownMenu({
   children,
   ariaLabel,
   onOpenChange,
+  trigger,
   color = "black",
 }: {
   children: React.ReactNode;
   ariaLabel: string;
   onOpenChange?: (open: boolean) => void;
   color?: "white" | "black";
+  trigger?: React.ReactNode;
 }) {
   return (
     <DropdownMenuPrimitive.Root onOpenChange={onOpenChange}>
-      <DropdownMenuPrimitive.Trigger
-        aria-label={ariaLabel}
-        className={cn(
-          buttonVariants({ variant: "outline", minWidth: false, fullWidth: false }),
-          "relative z-10 flex size-10 items-center justify-center gap-1 rounded-full bg-white px-0 hover:bg-[#D8D6D6] lg:size-fit lg:flex-col lg:border-0 lg:bg-transparent lg:px-2 lg:hover:bg-white",
-          color === "white" && "lg:hover:bg-[#333333]",
-        )}
-      >
-        <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
-        <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
-        <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
-      </DropdownMenuPrimitive.Trigger>
+      {trigger || (
+        <DropdownMenuPrimitive.Trigger
+          aria-label={ariaLabel}
+          className={cn(
+            buttonVariants({ variant: "outline", minWidth: false, fullWidth: false }),
+            "relative z-10 flex size-10 items-center justify-center gap-1 rounded-full bg-white px-0 hover:bg-[#D8D6D6] lg:size-fit lg:flex-col lg:border-0 lg:bg-transparent lg:px-2 lg:hover:bg-white",
+            color === "white" && "lg:hover:bg-[#333333]",
+          )}
+        >
+          <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
+          <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
+          <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
+        </DropdownMenuPrimitive.Trigger>
+      )}
       <DropdownMenuContent>{children}</DropdownMenuContent>
     </DropdownMenuPrimitive.Root>
   );
