@@ -9,7 +9,7 @@ import { isErrorKnown, KnownError } from "~/core/errors";
 
 export const metadata: Metadata = {
   title: "Wishcraft",
-  description: "A place for all your wishes",
+  description: "The place for all your wishes",
 };
 
 export default async function UserLayout({
@@ -43,4 +43,13 @@ export default async function UserLayout({
     }
     return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
   }
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
+  const { username } = await params;
+
+  return {
+    title: `${username}'s Wishlist`,
+    description: `Explore ${username}'s wishlist on Wishcraft.`,
+  };
 }

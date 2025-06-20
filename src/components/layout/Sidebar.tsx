@@ -198,7 +198,7 @@ function UserNav({ user }: { user: User }) {
           >
             <div className="flex max-w-lg items-center gap-3">
               <Avatar small>
-                <AvatarImage src={user.image || ""} />
+                <AvatarImage src={user.image || ""} alt={[user.firstName, user.lastName].join(" ")} />
                 <AvatarFallback />
               </Avatar>
               <div className="flex grow flex-col">
@@ -219,7 +219,7 @@ function UserNav({ user }: { user: User }) {
           <DropdownMenuLabel className="p-0 font-normal">
             <div className="flex max-w-lg items-center gap-4 p-2">
               <Avatar small>
-                <AvatarImage src={user.image || ""} />
+                <AvatarImage src={user.image || ""} alt={[user.firstName, user.lastName].join(" ")} />
                 <AvatarFallback />
               </Avatar>
               <div className="flex grow flex-col">

@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Wishcraft",
-  description: "A place for all your wishes",
+  description: "The place for all your wishes",
 };
 
 export const viewport: Viewport = {
