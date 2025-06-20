@@ -7,11 +7,6 @@ import { UserError } from "~/services/user/errors";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { isErrorKnown, KnownError } from "~/core/errors";
 
-export const metadata: Metadata = {
-  title: "Wishcraft",
-  description: "The place for all your wishes",
-};
-
 export default async function UserLayout({
   children,
   params,
