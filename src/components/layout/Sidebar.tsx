@@ -92,21 +92,21 @@ export function Sidebar({ user }: { user: User }) {
             </SidebarMenuSub>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton isActive={segments[1] === "friends"} asChild>
               <span>
                 <FriendsIcon fill="stroke-black" /> {t("navigation.friends")}
               </span>
             </SidebarMenuButton>
             <SidebarMenuSub>
               <SidebarMenuSubItem>
-                <SidebarMenuSubButton asChild>
+                <SidebarMenuSubButton isActive={segments[2] === "your-friends"} asChild>
                   <a href={`/${user.username}/friends/your-friends`} className="no-underline">
                     <span>{t("friends.tabs.friends")}</span>
                   </a>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
               <SidebarMenuSubItem>
-                <SidebarMenuSubButton asChild>
+                <SidebarMenuSubButton isActive={segments[2] === "reserved-wishes"} asChild>
                   <a href={`/${user.username}/friends/reserved-wishes`} className="no-underline">
                     <span> {t("friends.tabs.reservedWishes")}</span>
                   </a>

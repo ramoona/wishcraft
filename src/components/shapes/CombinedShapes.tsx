@@ -92,7 +92,7 @@ function CombinedShape2({ color, accent, width }: ConcreteShapeProps) {
       <mask id={id} style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="208" height="208">
         <Path1Rotated fill="#000" />
       </mask>
-      <g mask="url(#mask2)">
+      <g mask={`url(#${id})`}>
         <path
           fillRule="evenodd"
           clipRule="evenodd"

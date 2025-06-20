@@ -160,14 +160,6 @@ type UserInput = {
 
 export async function getUserByUserName(username: string): Promise<OtherUser> {
   const sessionUser = await getSessionUser();
-  const friends = await prisma.friend.findMany({
-    where: sessionUser ? { OR: [{ friendAId: sessionUser.id }, { friendBId: sessionUser.id }] } : undefined,
-    select: {
-      friendAId: true,
-      friendBId: true,
-    },
-  });
-
   const user = await prisma.user.findUnique({
     where: { username },
     select: {
@@ -183,15 +175,26 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
     },
   });
 
-  if (user?.isProfileHidden && sessionUser?.username !== username && friends.length === 0) {
-    throw new UserError("USER_NOT_FOUND");
-  }
-
   if (!user) {
     throw new UserError("USER_NOT_FOUND");
   }
 
-  return { ...user, isFriend: friends.length > 0 };
+  if (user?.isProfileHidden && sessionUser?.username !== username) {
+    throw new UserError("USER_NOT_FOUND");
+  }
+
+  const friendship = await prisma.friend.findFirst({
+    where: sessionUser
+      ? {
+          OR: [
+            { friendAId: sessionUser.id, friendBId: user.id },
+            { friendAId: user.id, friendBId: sessionUser.id },
+          ],
+        }
+      : undefined,
+  });
+
+  return { ...user, isFriend: !!friendship };
 }
 
 export function toUser(user: PrismaUser): User {

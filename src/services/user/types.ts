@@ -29,7 +29,7 @@ export type FriendUser = Pick<
   User,
   "id" | "username" | "firstName" | "lastName" | "dayOfBirth" | "monthOfBirth" | "image"
 > & {
-  recentWishes: Pick<WishType, "name">[];
+  recentWishes: Pick<WishType, "name" | "id">[];
 };
 
 export const ONBOARDING_STEPS = [

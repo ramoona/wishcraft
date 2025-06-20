@@ -10,10 +10,10 @@ import { WishCard } from "~/components/wishlist/WishCard";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
 import { WishOverlay } from "~/components/wishlist/WishOverlay";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import { WithStickyFooter } from "~/components/ui/scrollable";
 import { useParams } from "next/navigation";
-import Link from "next/link";
+import { TabButton } from "~/components/ui/tab-button";
 
 type Props = {
   wishes: WishType[];
@@ -134,17 +134,3 @@ const STATUS_TO_HINT = {
   FULFILLED: "wishlist.tabHints.fulfilled",
   ARCHIVED: "wishlist.tabHints.archived",
 };
-
-function TabButton({ isActive, route, children }: PropsWithChildren<{ isActive?: boolean; route: string }>) {
-  return (
-    <Link
-      href={route}
-      data-state={isActive ? "active" : "inactive"}
-      className={
-        "inline-flex h-8 grow items-center justify-center whitespace-nowrap rounded-full px-3 py-1 text-sm font-medium no-underline ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground lg:w-full lg:justify-start lg:px-4 lg:text-left"
-      }
-    >
-      {children}
-    </Link>
-  );
-}

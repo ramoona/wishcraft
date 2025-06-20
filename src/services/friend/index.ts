@@ -82,6 +82,6 @@ function toFriend(
     image: user.image,
     dayOfBirth: user.dayOfBirth,
     monthOfBirth: user.monthOfBirth,
-    recentWishes: user.isProfileHidden ? [] : user.wishlists[0].wishes.map(wish => ({ name: wish.name })),
+    recentWishes: user.isProfileHidden ? [] : user.wishlists[0].wishes.map(wish => ({ name: wish.name, id: wish.id })),
   };
 }

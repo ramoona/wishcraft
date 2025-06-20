@@ -15,6 +15,15 @@ const container = cva("rounded bg-background no-underline", {
     sticky: {
       true: "sticky top-0 z-10",
     },
+    context: {
+      friends: "lg:h-24 lg:rounded-xl lg:border",
+      profile: "",
+      wishlist: "",
+      sidebar: "",
+    },
+    link: {
+      true: "transition-colors duration-200 hover:border-primary hover:ring-1 focus-visible:outline-none hover:ring-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+    },
   },
 });
 
@@ -44,7 +53,7 @@ export function UserDetails({
       : null;
 
   const content = (
-    <div className={cn("mx-auto flex max-w-lg items-center gap-4 p-4", context === "sidebar" && "p-0")}>
+    <div className={cn("mx-auto flex max-w-lg items-center gap-4 rounded p-4", context === "sidebar" && "p-0")}>
       <Avatar className="size-16">
         <AvatarImage src={user.image || ""} />
         <AvatarFallback />
@@ -72,13 +81,13 @@ export function UserDetails({
 
   if (isLink) {
     return (
-      <Link href={`/${user.username}`} className={container({ sticky })}>
+      <Link href={`/${user.username}`} className={container({ sticky, context, link: true })}>
         {content}
       </Link>
     );
   }
 
-  return <div className={container({ sticky })}>{content}</div>;
+  return <div className={container({ sticky, context })}>{content}</div>;
 }
 
 function getDaysUntilBirthday(user: Pick<User, "dayOfBirth" | "monthOfBirth">): null | number {
