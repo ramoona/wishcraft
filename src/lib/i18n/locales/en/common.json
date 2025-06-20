@@ -20,7 +20,9 @@
     "moveWishToFulfilled": "Move to Fulfilled",
     "archive": "Archive",
     "back": "Back",
-    "openLink": "Open link"
+    "openLink": "Open link",
+    "close": "Close",
+    "viewActiveWishes": "View active wishes"
   },
   "states": {
     "saving": "Saving...",
@@ -76,8 +78,6 @@
       "reservedWishes": "Reserved wishes"
     }
   },
-  "friends.recentWishes_one": "Recently added {{ count }} new wish",
-  "friends.recentWishes_other": "Recently added {{ count }} new wishes",
   "error": {
     "error": "Error",
     "UNAUTHORIZED": "Oops, you are not authorized to see this page",
@@ -162,7 +162,7 @@
     "birthday": "Birthday",
     "menu": {
       "signOut": "Sign out",
-      "support": "Support & Feedback",
+      "support": "Support & feedback",
       "deleteAccount": "Delete account",
       "profile": "Profile"
     },
@@ -173,7 +173,8 @@
     "deleteAccountModal": {
       "title": "Are you absolutely sure?",
       "description": "This action cannot be undone. This will permanently delete your account and remove all your data.",
-      "confirmButton": "Delete my account"
+      "confirmButton": "Delete my account",
+      "dangerZone": "Danger zone: here you can delete your account."
     },
     "shareWishlist": {
       "copyLink": "Share wishlist",

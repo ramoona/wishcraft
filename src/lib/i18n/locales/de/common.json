@@ -20,7 +20,9 @@
     "moveWishToFulfilled": "Zu Erfüllt verschieben",
     "archive": "Archivieren",
     "back": "Zurück",
-    "openLink": "Link öffnen"
+    "openLink": "Link öffnen",
+    "close": "Schließen",
+    "viewActiveWishes": "Aktive Wünsche ansehen"
   },
   "states": {
     "saving": "Speichere...",
@@ -171,7 +173,8 @@
     "deleteAccountModal": {
       "title": "Bist du dir ganz sicher?",
       "description": "Das lässt sich nicht rückgängig machen. Dein Konto und alle Daten werden gelöscht.",
-      "confirmButton": "Konto löschen"
+      "confirmButton": "Konto löschen",
+      "dangerZone": "Gefahrenzone: Hier kannst du deinen Account löschen."
     },
     "shareWishlist": {
       "copyLink": "Wunschliste teilen",

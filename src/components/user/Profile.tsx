@@ -46,6 +46,45 @@ import { SupportedLanguages } from "~/lib/i18n/settings";
 
 export function Profile({ user }: { user: User }) {
   const { t } = useTranslation();
+  const { copied, copyLink } = useCopyProfileLink({ user });
+
+  return (
+    <>
+      <div className="space-y-4 bg-background">
+        <div className="grid w-full grid-cols-[auto_max-content] items-center pr-4">
+          <UserDetails user={user} email={user.email} context="profile" />
+          <ProfileDropdownMenu />
+        </div>
+      </div>
+      <ProfileForm user={user} />
+      <div className="flex w-full justify-center bg-background p-4 pt-6">
+        <Button size="lg" onClick={copyLink}>
+          {copied ? t("profile.shareWishlist.linkCopied") : t("profile.shareWishlist.copyLink")}
+        </Button>
+      </div>
+    </>
+  );
+}
+
+export function ProfileForm({ user }: { user: User }) {
+  return (
+    <div className="mx-auto max-w-lg px-4 lg:mx-0 lg:px-0">
+      <form className="flex flex-col gap-4" autoComplete="off">
+        <div className="flex flex-col gap-6">
+          <DateOfBirth day={user.dayOfBirth ?? undefined} month={user.monthOfBirth ?? undefined} />
+          <div className="grid w-full grid-cols-2 gap-4">
+            <DefaultCurrency currency={user.defaultCurrency ?? ""} />
+            <PreferredLanguage />
+          </div>
+          <ProfileVisibility isProfileHidden={user.isProfileHidden} />
+          <ReservedWishesVisibility showReserved={user.showReserved ?? false} />
+        </div>
+      </form>
+    </div>
+  );
+}
+
+export function useCopyProfileLink({ user }: { user: User }) {
   const [copied, setCopied] = useState(false);
   const timeout = useRef<number | null>(null);
 
@@ -72,34 +111,7 @@ export function Profile({ user }: { user: User }) {
     };
   }, []);
 
-  return (
-    <>
-      <div className="space-y-4 bg-background">
-        <div className="grid w-full grid-cols-[auto_max-content] items-center pr-4">
-          <UserDetails user={user} email={user.email} context="profile" />
-          <ProfileDropdownMenu />
-        </div>
-        <div className="mx-auto max-w-lg px-4">
-          <form className="flex flex-col gap-4" autoComplete="off">
-            <div className="flex flex-col gap-6">
-              <DateOfBirth day={user.dayOfBirth ?? undefined} month={user.monthOfBirth ?? undefined} />
-              <div className="grid w-full grid-cols-2 gap-4">
-                <DefaultCurrency currency={user.defaultCurrency ?? ""} />
-                <PreferredLanguage />
-              </div>
-              <ProfileVisibility isProfileHidden={user.isProfileHidden} />
-              <ReservedWishesVisibility showReserved={user.showReserved ?? false} />
-            </div>
-          </form>
-        </div>
-      </div>
-      <div className="flex w-full justify-center bg-background p-4 pt-6">
-        <Button size="lg" onClick={copyLink}>
-          {copied ? t("profile.shareWishlist.linkCopied") : t("profile.shareWishlist.copyLink")}
-        </Button>
-      </div>
-    </>
-  );
+  return { copied, copyLink };
 }
 
 function ProfileVisibility({ isProfileHidden: initialValue }: { isProfileHidden?: boolean | null }) {

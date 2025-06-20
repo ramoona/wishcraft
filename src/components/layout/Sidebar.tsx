@@ -32,11 +32,18 @@ import { useState } from "react";
 import { Button, buttonVariants } from "~/components/ui/button";
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { PreferredLanguage, SupportDialog } from "~/components/user/Profile";
+import {
+  AccountDeletionDialog,
+  PreferredLanguage,
+  ProfileForm,
+  SupportDialog,
+  useCopyProfileLink,
+} from "~/components/user/Profile";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { showSuccessToast } from "~/components/ui/toasts";
 import { successMessages } from "~/core/errorMessages";
 import Link from "next/link";
+import { UserDetails } from "~/components/ui/user";
 
 export function Sidebar({ user }: { user: User }) {
   const { t } = useTranslation();
@@ -135,7 +142,7 @@ export function Sidebar({ user }: { user: User }) {
                     href={`/${user.username}/wishes/active`}
                     className={cn("ml-auto no-underline", buttonVariants({ size: "sm", variant: "outline" }))}
                   >
-                    Go to active wishes
+                    {t("actions.viewActiveWishes")}
                   </Link>
                 ) : null,
               );
@@ -177,6 +184,9 @@ function UserNav({ user }: { user: User }) {
   const { t } = useTranslation();
   const router = useRouter();
   const [isSupportSliderOpen, setSupportSliderOpen] = useState(false);
+  const [profileFormVisible, setProfileFormVisible] = useState(false);
+  const [isDeletionSliderOpen, setDeletionSliderOpen] = useState(false);
+  const { copied, copyLink } = useCopyProfileLink({ user });
 
   return (
     <>
@@ -223,9 +233,17 @@ function UserNav({ user }: { user: User }) {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>{t("profile.menu.profile")}</DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setProfileFormVisible(true)}>{t("profile.menu.profile")}</DropdownMenuItem>
           <DropdownMenuItem onSelect={() => setSupportSliderOpen(true)} className="min-w-48">
             {t("profile.menu.support")}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={e => {
+              e.preventDefault();
+              void copyLink();
+            }}
+          >
+            {copied ? t("profile.shareWishlist.linkCopied") : t("profile.shareWishlist.copyLink")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <div className="px-1 py-2">
@@ -238,6 +256,37 @@ function UserNav({ user }: { user: User }) {
         </DropdownMenuContent>
       </DropdownMenuPrimitive.Root>
       <SupportDialog isOpen={isSupportSliderOpen} setOpen={setSupportSliderOpen} />
+      <Dialog open={profileFormVisible} onOpenChange={open => setProfileFormVisible(open)}>
+        <DialogHeader>
+          <VisuallyHidden>
+            <DialogTitle>Edit profile</DialogTitle>
+            <DialogDescription>You can edit your profile here</DialogDescription>
+          </VisuallyHidden>
+        </DialogHeader>
+        <DialogContent className="space-y-4">
+          <UserDetails user={user} email={user.email} context="sidebar" />
+          <ProfileForm user={user} />
+          <div className="flex flex-col items-center gap-4 rounded-lg bg-destructive/10 p-4 text-sm text-destructive">
+            {t("profile.deleteAccountModal.dangerZone")}
+            <Button
+              variant="destructive"
+              onClick={() => {
+                setProfileFormVisible(false);
+                setDeletionSliderOpen(true);
+              }}
+              size="lg"
+            >
+              {t("profile.menu.deleteAccount")}
+            </Button>
+          </div>
+          <div className="flex justify-end pt-4">
+            <Button variant="outline" onClick={() => setProfileFormVisible(false)} size="lg">
+              {t("actions.close")}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <AccountDeletionDialog isOpen={isDeletionSliderOpen} setOpen={setDeletionSliderOpen} />
     </>
   );
 }

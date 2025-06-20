@@ -31,7 +31,7 @@ export function UserDetails({
   isLink?: boolean;
   email?: string;
   sticky?: boolean;
-  context: "friends" | "profile" | "wishlist";
+  context: "friends" | "profile" | "wishlist" | "sidebar";
 }) {
   const daysUntilBirthday = getDaysUntilBirthday(user);
   const { t, i18n } = useTranslation();
@@ -44,7 +44,7 @@ export function UserDetails({
       : null;
 
   const content = (
-    <div className="mx-auto flex max-w-lg items-center gap-4 p-4">
+    <div className={cn("mx-auto flex max-w-lg items-center gap-4 p-4", context === "sidebar" && "p-0")}>
       <Avatar className="size-16">
         <AvatarImage src={user.image || ""} />
         <AvatarFallback />
