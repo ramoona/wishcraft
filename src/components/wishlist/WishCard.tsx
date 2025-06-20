@@ -50,7 +50,7 @@ export function WishCard({
             backgroundPositionY: `${visuals.backgroundPositionY}%`,
             backgroundColor: backgroundColors[visuals.backgroundColor],
           }}
-        ></div>
+        />
       </DesktopOnly>
       <div className="relative mt-12 flex min-h-[400px] flex-col rounded bg-background lg:mt-4 lg:h-fit lg:min-h-fit lg:rounded-xl lg:border">
         <MobileOnly>

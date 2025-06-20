@@ -7,8 +7,17 @@ import { addFriendAction } from "~/services/friend/actions";
 import { useTranslation } from "react-i18next";
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
+import { User } from "~/services/user/types";
 
-export function AddFriendButton({ friendId }: { friendId: string }) {
+export function AddFriendButton({
+  friendId,
+  currentUser,
+  friendUsername,
+}: {
+  friendId: string;
+  currentUser?: User | null;
+  friendUsername: string;
+}) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { t } = useTranslation();
@@ -22,7 +31,7 @@ export function AddFriendButton({ friendId }: { friendId: string }) {
       if (result.error) {
         showErrorToast(getErrorMessage(result.error, t));
       }
-      router.refresh();
+      router.push(`/${currentUser?.username}/friends/your-friends/${friendUsername}`);
     });
   };
   return (

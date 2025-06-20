@@ -9,6 +9,7 @@ import { Cake } from "@phosphor-icons/react";
 import { cn } from "~/utils/classnames";
 import { useTranslation } from "react-i18next";
 import { DateTime } from "luxon";
+import { usePathname } from "next/navigation";
 
 const container = cva("rounded bg-background no-underline", {
   variants: {
@@ -44,6 +45,7 @@ export function UserDetails({
 }) {
   const daysUntilBirthday = getDaysUntilBirthday(user);
   const { t, i18n } = useTranslation();
+  const pathname = usePathname();
 
   const birthday =
     user.dayOfBirth && user.monthOfBirth
@@ -81,7 +83,7 @@ export function UserDetails({
 
   if (isLink) {
     return (
-      <Link href={`/${user.username}`} className={container({ sticky, context, link: true })}>
+      <Link href={`${pathname}/${user.username}`} className={container({ sticky, context, link: true })}>
         {content}
       </Link>
     );

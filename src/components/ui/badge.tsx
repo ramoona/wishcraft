@@ -6,13 +6,13 @@ import { cn } from "~/utils/classnames";
 const badgeVariants = cva("block w-fit rounded-full px-3.5 py-0.5 text-center text-xs", {
   variants: {
     variant: {
-      default: "bg-[#FFEFB3] text-primary-foreground hover:bg-[#FFEFB3CD]",
-      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+      default: "bg-[#FFEFB3] text-primary-foreground",
+      secondary: "bg-secondary text-secondary-foreground ",
       attention: "bg-purple-100 text-purple-800",
-      destructive: "bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+      destructive: "bg-destructive text-destructive-foreground ",
       outline: "bg-background text-foreground",
-      reserved: "bg-secondary text-[#FFEFB3] hover:bg-secondary/80",
-      reservedByYou: "bg-secondary text-primary hover:bg-secondary/80",
+      reserved: "bg-secondary text-[#FFEFB3] ",
+      reservedByYou: "bg-secondary text-primary ",
       birthday: "flex items-center gap-1 bg-[#FFF5A2] text-primary-foreground",
     },
   },

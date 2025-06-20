@@ -41,7 +41,7 @@ function ReservedWishesMobile({ reservedWishes, user }: Props) {
         </div>
         <div className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded">
           {reservedWishes.length > 0 ? (
-            <ForeignWishesWishesMobile wishes={reservedWishes} reservedByCurrentUser />
+            <ForeignWishesWishesMobile wishes={reservedWishes} currentUser={user} />
           ) : (
             <EmptyList shape="3" />
           )}
@@ -51,7 +51,7 @@ function ReservedWishesMobile({ reservedWishes, user }: Props) {
   );
 }
 
-function ReservedWishesDesktop({ reservedWishes }: Props) {
+function ReservedWishesDesktop({ reservedWishes, user }: Props) {
   const { t } = useTranslation();
   return (
     <>
@@ -62,7 +62,7 @@ function ReservedWishesDesktop({ reservedWishes }: Props) {
         </p>
       </div>
       {reservedWishes.length > 0 ? (
-        <ForeignWishesWishesDesktop wishes={reservedWishes} reservedByCurrentUser />
+        <ForeignWishesWishesDesktop wishes={reservedWishes} currentUser={user} />
       ) : (
         <EmptyList shape="4" />
       )}

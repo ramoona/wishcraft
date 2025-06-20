@@ -1,6 +1,7 @@
 import { StatusBadge } from "~/components/wishlist/StatusBadge";
 import React from "react";
 import { WishType } from "~/services/wishlist/types";
+import { usePathname } from "next/navigation";
 
 export function WishStatus({
   isPrivate,
@@ -15,7 +16,10 @@ export function WishStatus({
   isForeign?: boolean;
   username?: string;
 }) {
-  const showReservedBadge = !isPrivate && (showReserved || isForeign) && reservedById;
+  const pathname = usePathname();
+  const isReservedWishesRoute = pathname.includes("reserved-wishes");
+  const showReservedBadge =
+    !isPrivate && reservedById && (showReserved || isForeign) && !(isReservedWishesRoute && reservedByCurrentUser);
 
   if (isPrivate && !username) {
     return <StatusBadge status="PRIVATE" />;

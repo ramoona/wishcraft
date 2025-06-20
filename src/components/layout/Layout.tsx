@@ -39,16 +39,18 @@ export function AuthenticatedLayout({
 
 export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
-    <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content]">
+    <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content] lg:h-fit lg:min-h-dvh lg:bg-muted">
       <header className="relative h-20 w-screen bg-background">
-        <div className="mx-auto flex h-full max-w-lg items-center justify-between px-4">
+        <div className="mx-auto flex h-full max-w-lg items-center justify-between px-4 lg:max-w-screen-2xl lg:px-8">
           <Link href="/" className="h-fit">
             <Logo />
           </Link>
           <LanguageSwitcher contentWidth />
         </div>
       </header>
-      <main className="relative mx-auto w-full max-w-lg bg-muted sm:mb-4 sm:rounded">{children}</main>
+      <main className="relative mx-auto w-full max-w-lg bg-muted sm:mb-4 sm:rounded lg:max-w-screen-2xl lg:overflow-visible lg:bg-transparent lg:pl-8">
+        {children}
+      </main>
     </div>
   );
 }

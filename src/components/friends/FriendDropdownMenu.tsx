@@ -8,8 +8,9 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
 import { DropdownMenu, DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import * as React from "react";
+import { User } from "~/services/user/types";
 
-export function FriendDropdownMenu({ friendId }: { friendId: string }) {
+export function FriendDropdownMenu({ friendId, currentUser }: { friendId: string; currentUser?: User | null }) {
   const router = useRouter();
   const { t } = useTranslation();
   const [isPending, startTransition] = useTransition();
@@ -23,7 +24,7 @@ export function FriendDropdownMenu({ friendId }: { friendId: string }) {
       if (result.error) {
         showErrorToast(getErrorMessage(result.error, t));
       }
-      router.refresh();
+      router.push(`/${currentUser?.username}/friends/your-friends`);
     });
   };
 

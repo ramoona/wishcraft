@@ -5,14 +5,14 @@ import { WishlistItemsDesktop, WishlistItemsMobile } from "~/components/wishlist
 import { WishDetails } from "~/components/wishlist/WishDetails";
 import * as React from "react";
 import { WishCard } from "~/components/wishlist/WishCard";
-import { OtherUser } from "~/services/user/types";
+import { OtherUser, User } from "~/services/user/types";
 
 type Props = {
-  wishes: (WishType & { user: OtherUser })[];
-  reservedByCurrentUser?: boolean;
+  wishes: (WishType & { user?: OtherUser })[];
+  currentUser?: User | null;
 };
 
-export function ForeignWishesWishesMobile({ wishes, reservedByCurrentUser }: Props) {
+export function ForeignWishesWishesMobile({ wishes, currentUser }: Props) {
   return (
     <WishlistItemsMobile>
       {wishes.map(wish => {
@@ -20,11 +20,11 @@ export function ForeignWishesWishesMobile({ wishes, reservedByCurrentUser }: Pro
           <WishDetails
             key={wish.id}
             wish={wish}
-            username={wish.user.username}
-            isForeign
-            reservedByCurrentUser={reservedByCurrentUser}
-            isLoggedIn
+            username={wish.user?.username}
+            reservedByCurrentUser={wish.reservedById === currentUser?.id}
+            isLoggedIn={!!currentUser}
             showUsernameInDetails
+            isForeign
           />
         );
       })}
@@ -32,17 +32,17 @@ export function ForeignWishesWishesMobile({ wishes, reservedByCurrentUser }: Pro
   );
 }
 
-export function ForeignWishesWishesDesktop({ wishes, reservedByCurrentUser }: Props) {
+export function ForeignWishesWishesDesktop({ wishes, currentUser }: Props) {
   return (
     <WishlistItemsDesktop wishes={wishes}>
       {wishes.map(wish => (
         <WishCard
           key={wish.id}
           wish={wish}
-          username={wish.user.username}
+          username={wish.user?.username}
+          reservedByCurrentUser={wish.reservedById === currentUser?.id}
+          isLoggedIn={!!currentUser}
           isForeign
-          reservedByCurrentUser={reservedByCurrentUser}
-          isLoggedIn
         />
       ))}
     </WishlistItemsDesktop>
