@@ -78,10 +78,10 @@ export function UserDetails({
               </Badge>
             )}
           </span>
-          <MobileOnly>{extraContent}</MobileOnly>
+          {extraContent && <MobileOnly>{extraContent}</MobileOnly>}
         </div>
       </div>
-      <DesktopOnly className="px-4 pb-4">{extraContent}</DesktopOnly>
+      {extraContent && <DesktopOnly className="px-4 pb-4">{extraContent}</DesktopOnly>}
     </>
   );
 
