@@ -44,7 +44,7 @@ export function WishDropdownMenu({
           <div className={cn(`size-[3px] rounded-full bg-black`)} />
           <div className={cn(`size-[3px] rounded-full bg-black`)} />
         </DropdownMenuPrimitive.Trigger>
-        <DropdownMenuContent side={side}>
+        <DropdownMenuContent side={side} align="start">
           {wish.status === "ACTIVE" && (
             <DesktopOnly>
               <DropdownMenuItem onSelect={onEdit}>{t("actions.edit")}</DropdownMenuItem>

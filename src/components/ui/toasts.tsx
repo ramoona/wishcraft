@@ -1,4 +1,5 @@
 import { Toaster as Sonner, toast } from "sonner";
+import { ReactNode } from "react";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
@@ -33,6 +34,6 @@ export function showInfoToast(message: string) {
   toast.info(message);
 }
 
-export function showSuccessToast(message: string) {
-  toast.success(message);
+export function showSuccessToast(message: string, actionElement?: ReactNode) {
+  toast.success(message, { action: actionElement });
 }

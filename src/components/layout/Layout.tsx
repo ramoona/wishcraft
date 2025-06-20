@@ -5,9 +5,10 @@ import { Logo } from "~/components/ui/logo";
 import Link from "next/link";
 import NavBar from "~/components/layout/NavBar";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
-import { AuthenticatedHeader } from "~/components/layout/AuthenticatedHeader";
 import { Sidebar } from "~/components/layout/Sidebar";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
+import { LogoLink } from "~/components/layout/LogoLink";
+import * as React from "react";
 
 export function AuthenticatedLayout({
   user,
@@ -17,7 +18,9 @@ export function AuthenticatedLayout({
   return (
     <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content] lg:h-fit lg:min-h-dvh lg:bg-muted">
       <MobileOnly>
-        <AuthenticatedHeader />
+        <header className="sticky top-0 flex h-20 w-screen items-center justify-center bg-background px-4">
+          <LogoLink />
+        </header>
       </MobileOnly>
       <DesktopOnly>
         <Sidebar user={user} />

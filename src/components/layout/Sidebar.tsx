@@ -29,10 +29,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { WishForm } from "~/components/wishlist/own/WishForm";
 import { useState } from "react";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { PreferredLanguage, SupportDialog } from "~/components/user/Profile";
+import { VisuallyHidden } from "~/components/ui/visually-hidden";
+import { showSuccessToast } from "~/components/ui/toasts";
+import { successMessages } from "~/core/errorMessages";
+import Link from "next/link";
 
 export function Sidebar({ user }: { user: User }) {
   const { t } = useTranslation();
@@ -40,6 +44,7 @@ export function Sidebar({ user }: { user: User }) {
   const pathname = usePathname();
 
   const segments = pathname.split("/").filter(Boolean);
+  const isActiveWishes = segments[1] === "wishes" && segments[2] === "active";
 
   return (
     <SidebarComponent>
@@ -113,13 +118,29 @@ export function Sidebar({ user }: { user: User }) {
         <UserNav user={user} />
       </SidebarFooter>
       <Dialog open={newWishFormVisible} onOpenChange={open => setNewWishFormVisible(open)}>
-        <DialogContent>
-          <DialogHeader>
+        <DialogHeader>
+          <VisuallyHidden>
             <DialogTitle>Add new wish</DialogTitle>
-            <DialogDescription>
-              <WishForm />
-            </DialogDescription>
-          </DialogHeader>
+            <DialogDescription>You can add a new wish here</DialogDescription>
+          </VisuallyHidden>
+        </DialogHeader>
+        <DialogContent>
+          <WishForm
+            onActionSuccess={() => {
+              setNewWishFormVisible(false);
+              showSuccessToast(
+                t(successMessages.SAVED),
+                !isActiveWishes ? (
+                  <Link
+                    href={`/${user.username}/wishes/active`}
+                    className={cn("ml-auto no-underline", buttonVariants({ size: "sm", variant: "outline" }))}
+                  >
+                    Go to active wishes
+                  </Link>
+                ) : null,
+              );
+            }}
+          />
         </DialogContent>
       </Dialog>
     </SidebarComponent>
