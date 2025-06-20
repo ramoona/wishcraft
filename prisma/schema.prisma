@@ -51,7 +51,6 @@ model Session {
 
 enum WishStatus {
   ACTIVE
-  RESERVED
   FULFILLED
   ARCHIVED
 }

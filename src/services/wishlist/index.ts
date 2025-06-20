@@ -204,7 +204,7 @@ export async function reserveWish({ wishId, userId }: { wishId: string; userId: 
 
   await prisma.wish.update({
     where: { id: wishId },
-    data: { reservedById: userId, status: WishStatus.RESERVED },
+    data: { reservedById: userId },
   });
   await logUserAction({ action: "wish-reserved", wishId, reservedById: userId });
 }
@@ -220,12 +220,12 @@ export async function releaseWish({ wishId, userId }: { wishId: string; userId: 
     throw new WishlistError("WISH_NOT_FOUND");
   }
 
-  if (wish.reservedById !== userId) {
-    throw new WishlistError("WISH_IS_RESERVED_BY_ANOTHER_USER");
+  if (!wish.reservedById) {
+    throw new WishlistError("WISH_IS_NOT_RESERVED");
   }
 
-  if (wish.status !== WishStatus.RESERVED) {
-    throw new WishlistError("WISH_IS_NOT_RESERVED");
+  if (wish.reservedById !== userId) {
+    throw new WishlistError("WISH_IS_RESERVED_BY_ANOTHER_USER");
   }
 
   await prisma.wish.update({
@@ -246,9 +246,7 @@ export async function getForeignWishlistByUsername(username: string): Promise<Wi
         },
         where: {
           isPrivate: { not: true },
-          status: {
-            notIn: ["ARCHIVED", "FULFILLED"],
-          },
+          status: "ACTIVE",
         },
         select: WISH_FIELDS_SELECT,
       },
@@ -269,7 +267,7 @@ export async function getWishesReservedByCurrentUser(): Promise<(WishType & { us
   const sessionUser = await getSessionUserOrThrow();
 
   const wishes = await prisma.wish.findMany({
-    where: { reservedById: sessionUser.id, isPrivate: false },
+    where: { reservedById: sessionUser.id, isPrivate: false, status: "ACTIVE" },
     select: {
       ...WISH_FIELDS_SELECT,
       wishlist: {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren } from "react";
 import useMasonry from "~/hooks/useMasonry";
 import { WishType } from "~/services/wishlist/types";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
@@ -21,14 +21,7 @@ export function WishlistItems({ children, wishes = [] }: PropsWithChildren<{ wis
 }
 
 export function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildren<{ wishes?: WishType[] }>) {
-  const [mounted, setMounted] = useState(false);
   const { initialized, container } = useMasonry(wishes);
-
-  useEffect(() => {
-    if (!mounted) {
-      setMounted(true);
-    }
-  }, [mounted]);
 
   return (
     <>
@@ -36,7 +29,7 @@ export function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildre
         <div
           className={cn(
             "absolute grid w-full grid-cols-2 flex-wrap items-start gap-8 pr-8 transition-opacity duration-300 xl:grid-cols-3",
-            initialized && mounted && "opacity-0",
+            initialized && "opacity-0",
           )}
         >
           {wishes?.map(({ id, backgroundColor, backgroundPositionY, backgroundPositionX }) => (

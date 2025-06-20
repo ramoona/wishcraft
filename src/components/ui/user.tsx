@@ -10,6 +10,7 @@ import { cn } from "~/utils/classnames";
 import { useTranslation } from "react-i18next";
 import { DateTime } from "luxon";
 import { usePathname } from "next/navigation";
+import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 
 const container = cva("rounded bg-background no-underline", {
   variants: {
@@ -17,7 +18,7 @@ const container = cva("rounded bg-background no-underline", {
       true: "sticky top-0 z-10",
     },
     context: {
-      friends: "lg:h-24 lg:rounded-xl lg:border",
+      friends: "lg:rounded-xl lg:border",
       profile: "",
       wishlist: "",
       sidebar: "",
@@ -55,30 +56,33 @@ export function UserDetails({
       : null;
 
   const content = (
-    <div className={cn("mx-auto flex max-w-lg items-center gap-4 rounded p-4", context === "sidebar" && "p-0")}>
-      <Avatar className="size-16">
-        <AvatarImage src={user.image || ""} />
-        <AvatarFallback />
-      </Avatar>
-      <div className="flex grow flex-col">
-        <span className="text-sm text-foreground/70">@{user.username}</span>
-        <span className={cn("flex items-center gap-1", context === "friends" && "justify-between")}>
-          <span className="flex flex-col text-sm">
-            <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")} </span>
-            {email && <span className="text-xs text-foreground/70">{email}</span>}
+    <>
+      <div className={cn("mx-auto flex max-w-lg items-start gap-4 rounded p-4", context === "sidebar" && "p-0")}>
+        <Avatar className="size-16">
+          <AvatarImage src={user.image || ""} />
+          <AvatarFallback />
+        </Avatar>
+        <div className="flex grow flex-col">
+          <span className="mt-1 text-sm text-foreground/70">@{user.username}</span>
+          <span className={cn("flex items-center gap-1", context === "friends" && "justify-between")}>
+            <span className="flex flex-col text-sm">
+              <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")} </span>
+              {email && <span className="text-xs text-foreground/70">{email}</span>}
+            </span>
+            {context === "friends" && daysUntilBirthday && daysUntilBirthday < 31 && (
+              <Badge variant="birthday">{t("friends.birthdayIn", { count: daysUntilBirthday })}</Badge>
+            )}
+            {context === "wishlist" && birthday && (
+              <Badge variant="birthday">
+                <Cake className="size-4" /> {birthday}
+              </Badge>
+            )}
           </span>
-          {context === "friends" && daysUntilBirthday && daysUntilBirthday < 31 && (
-            <Badge variant="birthday">{t("friends.birthdayIn", { count: daysUntilBirthday })}</Badge>
-          )}
-          {context === "wishlist" && birthday && (
-            <Badge variant="birthday">
-              <Cake className="size-4" /> {birthday}
-            </Badge>
-          )}
-        </span>
-        {extraContent}
+          <MobileOnly>{extraContent}</MobileOnly>
+        </div>
       </div>
-    </div>
+      <DesktopOnly className="px-4 pb-4">{extraContent}</DesktopOnly>
+    </>
   );
 
   if (isLink) {

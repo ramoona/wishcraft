@@ -74,6 +74,7 @@
   },
   "friends": {
     "title": "Friends",
+    "recentWishes": "Recently added: ",
     "recentWishes_one": "Recently added {{ count }} new wish",
     "recentWishes_other": "Recently added {{ count }} new wishes",
     "birthdayIn_one": "Birthday in {{ count }} day",
