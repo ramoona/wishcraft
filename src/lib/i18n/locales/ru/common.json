@@ -163,11 +163,12 @@
     "birthday": "День рождения",
     "menu": {
       "signOut": "Выйти",
-      "support": "Поддержка",
-      "deleteAccount": "Удалить аккаунт"
+      "support": "Поддержка и обратная связь",
+      "deleteAccount": "Удалить аккаунт",
+      "profile": "Профиль"
     },
     "supportModal": {
-      "title": "Нужна помощь?",
+      "title": "Нужна помощь или хочешь поделиться идеей?",
       "description": "Если что-то не работает или хочешь предложить идею, напиши нам: <email>support@mywishcraft.app</email>"
     },
     "deleteAccountModal": {

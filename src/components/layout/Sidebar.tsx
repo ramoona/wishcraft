@@ -14,18 +14,25 @@ import {
 } from "~/components/ui/sidebar";
 import { LogoLink } from "~/components/layout/LogoLink";
 import * as React from "react";
-import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "../ui/dropdown-menu";
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTriggerDots,
+} from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { User } from "~/services/user/types";
-import { DotsThreeVertical } from "@phosphor-icons/react";
 import { cn } from "~/utils/classnames";
 import { useTranslation } from "react-i18next";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { WishForm } from "~/components/wishlist/own/WishForm";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
+
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import { PreferredLanguage, SupportDialog } from "~/components/user/Profile";
 
 export function Sidebar({ user }: { user: User }) {
   const { t } = useTranslation();
@@ -146,16 +153,19 @@ function FriendsIcon({ fill }: { fill?: string }) {
 }
 
 function UserNav({ user }: { user: User }) {
+  const { t } = useTranslation();
+  const router = useRouter();
+  const [isSupportSliderOpen, setSupportSliderOpen] = useState(false);
+
   return (
-    <DropdownMenu
-      ariaLabel="User menu"
-      trigger={
-        <DropdownMenuTrigger asChild>
+    <>
+      <DropdownMenuPrimitive.Root aria-label="User menu">
+        <DropdownMenuPrimitive.Trigger asChild>
           <SidebarMenuButton
             size="lg"
-            className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            className="flex items-center justify-between gap-2 hover:bg-sidebar-accent data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
-            <div className="mx-auto flex max-w-lg items-center gap-3">
+            <div className="flex max-w-lg items-center gap-3">
               <Avatar small>
                 <AvatarImage src={user.image || ""} />
                 <AvatarFallback />
@@ -169,33 +179,44 @@ function UserNav({ user }: { user: User }) {
                 </span>
               </div>
             </div>
-            <DotsThreeVertical className="ml-auto size-6 shrink-0" />
-          </SidebarMenuButton>
-        </DropdownMenuTrigger>
-      }
-    >
-      <DropdownMenuContent className="min-w-56 rounded-lg" side="right" align="end" sideOffset={4}>
-        <DropdownMenuLabel className="p-0 font-normal">
-          <div className="mx-auto flex max-w-lg items-center gap-4 px-2">
-            <Avatar small>
-              <AvatarImage src={user.image || ""} />
-              <AvatarFallback />
-            </Avatar>
-            <div className="flex grow flex-col">
-              <span className="text-sm text-foreground/70">@{user.username}</span>
-              <span className={cn("flex items-center gap-1")}>
-                <span className="flex flex-col text-sm">
-                  {user.email && <span className="text-xs text-foreground/70">{user.email}</span>}
-                </span>
-              </span>
+            <div className="flex shrink-0 flex-col gap-[3px] pr-2">
+              <DropdownMenuTriggerDots />
             </div>
+          </SidebarMenuButton>
+        </DropdownMenuPrimitive.Trigger>
+        <DropdownMenuContent className="min-w-56 rounded-lg" side="right" align="end" sideOffset={4}>
+          <DropdownMenuLabel className="p-0 font-normal">
+            <div className="flex max-w-lg items-center gap-4 p-2">
+              <Avatar small>
+                <AvatarImage src={user.image || ""} />
+                <AvatarFallback />
+              </Avatar>
+              <div className="flex grow flex-col">
+                <span className="text-sm text-foreground/70">@{user.username}</span>
+                <span className={cn("flex items-center gap-1")}>
+                  <span className="flex flex-col text-sm">
+                    {user.email && <span className="text-xs text-foreground/70">{user.email}</span>}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>{t("profile.menu.profile")}</DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setSupportSliderOpen(true)} className="min-w-48">
+            {t("profile.menu.support")}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <div className="px-1 py-2">
+            <PreferredLanguage hideLabel />
           </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onSelect={() => router.push("/api/auth/logout")}>
+            {t("profile.menu.signOut")}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenuPrimitive.Root>
+      <SupportDialog isOpen={isSupportSliderOpen} setOpen={setSupportSliderOpen} />
+    </>
   );
 }

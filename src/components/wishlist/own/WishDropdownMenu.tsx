@@ -16,10 +16,12 @@ export function WishDropdownMenu({
   wish,
   onActionSuccess,
   onEdit,
+  side = "right",
 }: {
   wish: WishType;
   onActionSuccess?: () => void;
   onEdit?: () => void;
+  side?: "left" | "right";
 }) {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [isDeleting, deleteWish] = useDeleteWish();
@@ -42,7 +44,7 @@ export function WishDropdownMenu({
           <div className={cn(`size-[3px] rounded-full bg-black`)} />
           <div className={cn(`size-[3px] rounded-full bg-black`)} />
         </DropdownMenuPrimitive.Trigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent side={side}>
           {wish.status === "ACTIVE" && (
             <DesktopOnly>
               <DropdownMenuItem onSelect={onEdit}>{t("actions.edit")}</DropdownMenuItem>

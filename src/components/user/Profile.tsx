@@ -311,14 +311,14 @@ export function ProfileDropdownMenu() {
   );
 }
 
-function SupportDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
+export function SupportDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
   const { t } = useTranslation();
   return (
     <Dialog open={isOpen} onOpenChange={open => setOpen(open)}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("profile.supportModal.title")}</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="pt-4">
             <Trans
               t={t}
               i18nKey="profile.supportModal.description"
@@ -331,7 +331,7 @@ function SupportDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: b
   );
 }
 
-function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
+export function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (open: boolean) => void }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { t } = useTranslation();
@@ -369,7 +369,7 @@ function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: 
   );
 }
 
-function PreferredLanguage() {
+export function PreferredLanguage({ hideLabel = false }: { hideLabel?: boolean }) {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -385,7 +385,7 @@ function PreferredLanguage() {
 
   return (
     <div className="flex flex-col gap-2">
-      <Label className="pl-2">{t("profile.preferredLanguage")}</Label>
+      {!hideLabel && <Label className="pl-2">{t("profile.preferredLanguage")}</Label>}
       <LanguageSwitcher onChange={trigger} />
     </div>
   );

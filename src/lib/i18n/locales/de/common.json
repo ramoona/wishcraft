@@ -160,11 +160,12 @@
     "birthday": "Geburtstag",
     "menu": {
       "signOut": "Abmelden",
-      "support": "Support",
-      "deleteAccount": "Konto löschen"
+      "support": "Support & Feedback",
+      "deleteAccount": "Konto löschen",
+      "profile": "Profil"
     },
     "supportModal": {
-      "title": "Brauchst du Hilfe?",
+      "title": "Brauchst du Hilfe oder hast du Feedback?",
       "description": "Wenn was nicht läuft oder du eine Idee hast – schreib uns einfach: <email>support@mywishcraft.app</email>"
     },
     "deleteAccountModal": {

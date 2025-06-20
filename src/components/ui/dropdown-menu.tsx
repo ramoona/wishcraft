@@ -16,7 +16,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent",
+      "flex cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent",
       inset && "pl-8",
       className,
     )}
@@ -73,7 +73,7 @@ export const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex h-10 cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-[#d9d9d9c9] focus:text-tertiary-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex h-10 cursor-default select-none items-center rounded px-2 py-1.5 text-sm outline-none transition-colors hover:bg-[#d9d9d9c9] focus:text-tertiary-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       inset && "pl-8",
       className,
     )}
@@ -89,7 +89,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors hover:bg-[#d9d9d9c9] focus:text-secondary-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded py-1.5 pl-8 pr-2 text-sm outline-none transition-colors hover:bg-[#d9d9d9c9] focus:text-secondary-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     checked={checked}
@@ -112,7 +112,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
@@ -159,12 +159,10 @@ export function DropdownMenu({
   ariaLabel,
   onOpenChange,
   trigger,
-  color = "black",
 }: {
   children: React.ReactNode;
   ariaLabel: string;
   onOpenChange?: (open: boolean) => void;
-  color?: "white" | "black";
   trigger?: React.ReactNode;
 }) {
   return (
@@ -175,15 +173,22 @@ export function DropdownMenu({
           className={cn(
             buttonVariants({ variant: "outline", minWidth: false, fullWidth: false }),
             "relative z-10 flex size-10 items-center justify-center gap-[3px] rounded-full bg-white px-0 hover:bg-[#D8D6D6] lg:size-fit lg:flex-col lg:border-0 lg:bg-transparent lg:px-2 lg:hover:bg-white",
-            color === "white" && "lg:hover:bg-[#333333]",
           )}
         >
-          <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`, color === "white" && "lg:bg-white")} />
-          <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`, color === "white" && "lg:bg-white")} />
-          <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`, color === "white" && "lg:bg-white")} />
+          <DropdownMenuTriggerDots />
         </DropdownMenuPrimitive.Trigger>
       )}
       <DropdownMenuContent>{children}</DropdownMenuContent>
     </DropdownMenuPrimitive.Root>
+  );
+}
+
+export function DropdownMenuTriggerDots() {
+  return (
+    <>
+      <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`)} />
+      <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`)} />
+      <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`)} />
+    </>
   );
 }

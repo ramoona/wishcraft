@@ -64,7 +64,7 @@ export function WishCard({
               <div className="flex w-full items-baseline justify-between gap-4">
                 <div className="grow">
                   <DesktopOnly className="float-left mr-1 h-4">
-                    <WishDropdownMenu wish={wish} onEdit={() => setEditModalOpen(true)} />
+                    <WishDropdownMenu side="left" wish={wish} onEdit={() => setEditModalOpen(true)} />
                   </DesktopOnly>
                   <h1 className="text-xl font-bold lg:text-lg lg:font-medium">{name}</h1>
                 </div>
