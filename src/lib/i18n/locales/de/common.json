@@ -22,14 +22,19 @@
     "back": "Zurück",
     "openLink": "Link öffnen",
     "close": "Schließen",
-    "viewActiveWishes": "Aktive Wünsche ansehen"
+    "viewActiveWishes": "Aktive Wünsche ansehen",
+    "reserve": "Reservieren",
+    "cancelReservation": "Reservierung aufheben",
+    "backToFriends": "Zurück zu Freunden"
   },
   "states": {
     "saving": "Speichere...",
     "skipping": "Überspringe...",
     "deleting": "Lösche...",
     "moving": "Verschiebe...",
-    "archiving": "Archiviere..."
+    "archiving": "Archiviere...",
+    "cancelling": "Breche ab...",
+    "reserving": "Reserviere..."
   },
   "onboarding": {
     "defaultCurrency": {
@@ -76,7 +81,9 @@
     "tabs": {
       "friends": "Deine Freunde",
       "reservedWishes": "Reservierte Wünsche"
-    }
+    },
+    "subtitle": "Füge mehr Freunde hinzu, um dich von ihren Wunschlisten inspirieren zu lassen und deine eigenen Wünsche mit ihnen zu teilen.",
+    "reservedWishedSubtitle": "Hier sind die Wünsche, die du von deinen Freunden und anderen Nutzern reserviert hast"
   },
   "error": {
     "error": "Fehler",
@@ -220,5 +227,9 @@
     "titleRequired": "Titel wird benötigt",
     "titleTooLong": "Titel ist zu lang",
     "commentTooLong": "Kommentar ist zu lang"
+  },
+  "loginModal": {
+    "title": "Bitte melde dich an, um fortzufahren",
+    "description": "Um nachzuverfolgen, wer was reserviert hat, bitten wir dich, dich anzumelden. Keine Sorge, wir verraten @{{ username }} nicht, dass du es warst."
   }
 }

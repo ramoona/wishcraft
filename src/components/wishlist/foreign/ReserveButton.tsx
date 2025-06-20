@@ -78,17 +78,16 @@ export function ReserveButton({
   return (
     <>
       <Button onClick={isReserved ? triggerReleaseWishAction : triggerReserveWishAction} size="lg">
-        {isPending && (isReserved ? "Canceling..." : "Reserving...")}
-        {!isPending && (isReserved ? "Cancel reservation" : "Reserve")}
+        {isPending && (isReserved ? t("states.cancelling") : t("states.reserving"))}
+        {!isPending && (isReserved ? t("actions.cancelReservation") : t("actions.reserve"))}
       </Button>
       <Dialog open={isAuthDialogOpen} onOpenChange={open => setAuthDialogOpen(open)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Please sign in to continue</DialogTitle>
+            <DialogTitle>{t("loginModal.title")}</DialogTitle>
             <DialogDescription asChild>
               <div className="mt-4">
-                To keep track of who reserved what we are kindly asking you to sign in. Don&#39;t worry, we won&#39;t
-                tell {username ? `@${username}` : "wishlist owner"} that it was you.
+                {t("loginModal.description", { username })}
                 <div className="mt-8 flex justify-center">
                   <SignInButton wishId={wishId} wishlistOwner={params.username} />
                 </div>

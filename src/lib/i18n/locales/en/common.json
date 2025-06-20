@@ -22,14 +22,19 @@
     "back": "Back",
     "openLink": "Open link",
     "close": "Close",
-    "viewActiveWishes": "View active wishes"
+    "viewActiveWishes": "View active wishes",
+    "reserve": "Reserve",
+    "cancelReservation": "Cancel reservation",
+    "backToFriends": "Back to friends"
   },
   "states": {
     "saving": "Saving...",
     "skipping": "Skipping...",
     "deleting": "Deleting...",
     "moving": "Moving...",
-    "archiving": "Archiving..."
+    "archiving": "Archiving...",
+    "cancelling": "Cancelling...",
+    "reserving": "Reserving..."
   },
   "onboarding": {
     "defaultCurrency": {
@@ -76,7 +81,9 @@
     "tabs": {
       "friends": "Your Friends",
       "reservedWishes": "Reserved wishes"
-    }
+    },
+    "subtitle": "Add more friends to get inspired by their wishlists and share your wishes with them",
+    "reservedWishedSubtitle": "Here are the wishes you reserved from your friends and other users"
   },
   "error": {
     "error": "Error",
@@ -220,5 +227,9 @@
     "titleRequired": "Title is required",
     "titleTooLong": "Title is too long",
     "commentTooLong": "Comment is too long"
+  },
+  "loginModal": {
+    "title": "Please sign in to continue",
+    "description": "To keep track of who reserved what we are kindly asking you to sign in. Don't worry, we won't tell @{{ username }} that it was you."
   }
 }

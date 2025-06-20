@@ -40,6 +40,7 @@ function ReservedWishesMobile({ reservedWishes, user }: Props) {
           </TabButton>
         </div>
         <div className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded">
+          <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">{t("friends.reservedWishedSubtitle")}</p>
           {reservedWishes.length > 0 ? (
             <ForeignWishesWishesMobile wishes={reservedWishes} currentUser={user} />
           ) : (
@@ -57,9 +58,7 @@ function ReservedWishesDesktop({ reservedWishes, user }: Props) {
     <>
       <div className="mb-8 mt-10">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{t("friends.tabs.reservedWishes")}</h1>
-        <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">
-          Here you can find all wishes that your have reserved for your friends.
-        </p>
+        <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">{t("friends.reservedWishedSubtitle")}</p>
       </div>
       {reservedWishes.length > 0 ? (
         <ForeignWishesWishesDesktop wishes={reservedWishes} currentUser={user} />

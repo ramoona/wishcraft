@@ -50,17 +50,19 @@ export function Profile({ user }: { user: User }) {
 
   return (
     <>
-      <div className="space-y-4 bg-background">
-        <div className="grid w-full grid-cols-[auto_max-content] items-center pr-4">
-          <UserDetails user={user} email={user.email} context="profile" />
-          <ProfileDropdownMenu />
+      <div className="flex flex-col gap-4 bg-background">
+        <div className="grow">
+          <div className="grid w-full grid-cols-[auto_max-content] items-center pr-4">
+            <UserDetails user={user} email={user.email} context="profile" />
+            <ProfileDropdownMenu />
+          </div>
+          <ProfileForm user={user} />
         </div>
-      </div>
-      <ProfileForm user={user} />
-      <div className="flex w-full justify-center bg-background p-4 pt-6">
-        <Button size="lg" onClick={copyLink}>
-          {copied ? t("profile.shareWishlist.linkCopied") : t("profile.shareWishlist.copyLink")}
-        </Button>
+        <div className="flex w-full justify-center bg-background p-4 pt-6">
+          <Button size="lg" onClick={copyLink}>
+            {copied ? t("profile.shareWishlist.linkCopied") : t("profile.shareWishlist.copyLink")}
+          </Button>
+        </div>
       </div>
     </>
   );

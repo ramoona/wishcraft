@@ -11,7 +11,6 @@ import { ForeignWishesWishesDesktop, ForeignWishesWishesMobile } from "~/compone
 import { Button } from "~/components/ui/button";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
-import { cn } from "~/utils/classnames";
 import { useTransition } from "react";
 import { addFriendAction, removeFriendAction } from "~/services/friend/actions";
 import { showErrorToast } from "~/components/ui/toasts";
@@ -40,18 +39,27 @@ export function ForeignUser(props: Props) {
 }
 
 function ForeignUserMobile({ wishlistOwner, wishlist, currentUser }: Props) {
+  const router = useRouter();
+  const { t } = useTranslation();
+
+  const footer =
+    (currentUser && wishlistOwner.isFriend && (
+      <Button
+        onClick={() => router.push(`/${currentUser?.username}/friends/your-friends`)}
+        variant="outline"
+        size="lg"
+        className="mt-auto"
+      >
+        {t("actions.backToFriends")}
+      </Button>
+    )) ||
+    (currentUser && !wishlistOwner.isFriend && (
+      <AddFriendButton friendId={wishlistOwner.id} currentUser={currentUser} friendUsername={wishlistOwner.username} />
+    )) ||
+    null;
+
   return (
-    <WithStickyFooter
-      footer={
-        currentUser && !wishlistOwner.isFriend ? (
-          <AddFriendButton
-            friendId={wishlistOwner.id}
-            currentUser={currentUser}
-            friendUsername={wishlistOwner.username}
-          />
-        ) : null
-      }
-    >
+    <WithStickyFooter footer={footer}>
       <div className="flex h-full flex-col pb-4">
         <div className="sticky top-0 z-10 grid w-full grid-cols-[auto_max-content] items-center bg-background pr-4">
           <UserDetails user={wishlistOwner} context="wishlist" />
@@ -123,11 +131,6 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
               </Button>
             ))}
         </div>
-        <p className={cn("mb-4 mt-2 w-full text-left text-xs", currentUser && wishlistOwner.isFriend && "ml-12")}>
-          {currentUser
-            ? `You can anonymously reserve ${wishlistOwner.firstName}'s wishes.`
-            : `Sign in to reserve ${wishlistOwner.firstName}'s wishes.`}
-        </p>
       </div>
       {wishlist.wishes.length > 0 ? (
         <ForeignWishesWishesDesktop currentUser={currentUser} wishes={wishlist.wishes} />

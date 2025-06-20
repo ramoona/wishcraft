@@ -56,7 +56,6 @@ function WishesMobile({ wishes, showOwnReserved, status }: Props) {
           </div>
           <div className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded">
             <TabHint status={status} />
-
             {wishes.length > 0 ? (
               <WishlistItemsMobile>
                 {wishes.map(wish => (
@@ -64,7 +63,7 @@ function WishesMobile({ wishes, showOwnReserved, status }: Props) {
                 ))}
               </WishlistItemsMobile>
             ) : (
-              <EmptyWishlistSection shape="2" />
+              <EmptyWishlistSection shape={STATUS_TO_SHAPE[status]} />
             )}
           </div>
         </div>

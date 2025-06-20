@@ -40,6 +40,7 @@ function FriendsListMobile({ friends, user }: Props) {
           <TabButton route={`/${user.username}/friends/reserved-wishes`}>{t("friends.tabs.reservedWishes")}</TabButton>
         </div>
         <div className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded">
+          <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">{t("friends.subtitle")}</p>
           {friends.length > 0 ? (
             <div className="mx-auto flex w-full max-w-lg flex-col gap-4 pb-4">
               {friends.map(friend => {
@@ -76,9 +77,7 @@ function FriendsListDesktop({ friends }: Props) {
     <>
       <div className="mb-8 mt-10">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{t("friends.tabs.friends")}</h1>
-        <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">
-          Here you can find all your friends and their recent wishes.
-        </p>
+        <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">{t("friends.subtitle")}</p>
       </div>
       {friends.length > 0 ? (
         <div className={cn("grid grid-cols-2 flex-wrap items-start gap-x-8 gap-y-3 pr-8 xl:grid-cols-3")}>

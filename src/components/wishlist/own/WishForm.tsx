@@ -11,7 +11,7 @@ import Link from "next/link";
 import { ArrowSquareOut } from "@phosphor-icons/react";
 import { useCreateWish, useUpdateWish } from "~/components/wishlist/own/hooks";
 import { Badge } from "~/components/ui/badge";
-import { currencies, currencyNames } from "~/lib/i18n/currencies";
+import { currencies, getTranslatedCurrency } from "~/lib/i18n/currencies";
 import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
 import { Scrollable } from "~/components/ui/scrollable";
@@ -166,7 +166,10 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
                         <Select
                           {...field}
                           value={String(field.value) ?? undefined}
-                          options={currencies.map(currency => ({ value: currency, label: currencyNames[currency] }))}
+                          options={currencies.map(currency => ({
+                            value: currency,
+                            label: getTranslatedCurrency(currency, t),
+                          }))}
                           placeholder={t("placeholders.selectCurrency")}
                         />
                       </FormControl>
