@@ -3,22 +3,8 @@
 import React, { PropsWithChildren } from "react";
 import useMasonry from "~/hooks/useMasonry";
 import { WishType } from "~/services/wishlist/types";
-import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { cn } from "~/utils/classnames";
 import { backgroundColors, backgroundUrls } from "~/components/shapes/WishLargeArtwork";
-
-export function WishlistItems({ children, wishes = [] }: PropsWithChildren<{ wishes?: WishType[] }>) {
-  return (
-    <>
-      <DesktopOnly>
-        <WishlistItemsDesktop wishes={wishes}>{children}</WishlistItemsDesktop>
-      </DesktopOnly>
-      <MobileOnly>
-        <WishlistItemsMobile>{children}</WishlistItemsMobile>
-      </MobileOnly>
-    </>
-  );
-}
 
 export function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildren<{ wishes?: WishType[] }>) {
   const { initialized, container } = useMasonry(wishes);
@@ -28,7 +14,7 @@ export function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildre
       <div className="relative">
         <div
           className={cn(
-            "absolute grid w-full grid-cols-2 flex-wrap items-start gap-8 pr-8 transition-opacity duration-300 xl:grid-cols-3",
+            "absolute grid w-full grid-cols-2 flex-wrap items-start gap-x-4 gap-y-8 pr-8 transition-opacity duration-300 xl:grid-cols-3",
             initialized && "opacity-0",
           )}
         >
@@ -53,7 +39,7 @@ export function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildre
       </div>
       <div
         className={cn(
-          "relative grid grid-cols-2 flex-wrap items-start gap-x-8 gap-y-3 pr-8 opacity-0 xl:grid-cols-3",
+          "relative grid grid-cols-2 flex-wrap items-start gap-4 pr-8 opacity-0 xl:grid-cols-3",
           initialized && "opacity-100 transition-opacity duration-300",
         )}
         ref={container}
