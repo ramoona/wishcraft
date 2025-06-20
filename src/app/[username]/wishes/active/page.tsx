@@ -4,7 +4,7 @@ import { ErrorMessage } from "~/components/ErrorMessage";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { redirect } from "next/navigation";
 import { WishStatus } from "@prisma/client";
-import { Wishes } from "~/components/wishlist/own/Wishes";
+import { OwnWishes } from "~/components/wishlist/own/OwnWishes";
 
 export default async function ActiveWishesPage({ params }: { params: Promise<{ username: string }> }) {
   const sessionUser = await getSessionUser();
@@ -15,7 +15,7 @@ export default async function ActiveWishesPage({ params }: { params: Promise<{ u
       const wishlist = await getWishlistByUserId(sessionUser.id);
       const activeWishes = wishlist.wishes.filter(wish => wish.status === WishStatus.ACTIVE);
 
-      return <Wishes wishes={activeWishes} showOwnReserved={sessionUser.showReserved ?? false} status="ACTIVE" />;
+      return <OwnWishes wishes={activeWishes} showOwnReserved={sessionUser.showReserved ?? false} status="ACTIVE" />;
     } catch (e) {
       return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
     }

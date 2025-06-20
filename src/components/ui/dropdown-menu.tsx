@@ -43,7 +43,7 @@ const DropdownMenuSubContent = React.forwardRef<
 ));
 DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayName;
 
-const DropdownMenuContent = React.forwardRef<
+export const DropdownMenuContent = React.forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
 >(({ className, sideOffset = 4, alignOffset = 0, align = "end", ...props }, ref) => (
@@ -174,13 +174,13 @@ export function DropdownMenu({
           aria-label={ariaLabel}
           className={cn(
             buttonVariants({ variant: "outline", minWidth: false, fullWidth: false }),
-            "relative z-10 flex size-10 items-center justify-center gap-1 rounded-full bg-white px-0 hover:bg-[#D8D6D6] lg:size-fit lg:flex-col lg:border-0 lg:bg-transparent lg:px-2 lg:hover:bg-white",
+            "relative z-10 flex size-10 items-center justify-center gap-[3px] rounded-full bg-white px-0 hover:bg-[#D8D6D6] lg:size-fit lg:flex-col lg:border-0 lg:bg-transparent lg:px-2 lg:hover:bg-white",
             color === "white" && "lg:hover:bg-[#333333]",
           )}
         >
-          <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
-          <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
-          <div className={cn(`size-1 rounded-full bg-black`, color === "white" && "lg:bg-white")} />
+          <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`, color === "white" && "lg:bg-white")} />
+          <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`, color === "white" && "lg:bg-white")} />
+          <div className={cn(`size-[3px] rounded-full bg-black lg:bg-black/30`, color === "white" && "lg:bg-white")} />
         </DropdownMenuPrimitive.Trigger>
       )}
       <DropdownMenuContent>{children}</DropdownMenuContent>

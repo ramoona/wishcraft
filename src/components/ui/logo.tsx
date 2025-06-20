@@ -8,3 +8,12 @@ export function Logo() {
     </svg>
   );
 }
+
+export function LogoWithImage() {
+  return (
+    <div className="flex items-center gap-2">
+      <Logo />
+      <span className="text-lg font-bold">WishList</span>
+    </div>
+  );
+}

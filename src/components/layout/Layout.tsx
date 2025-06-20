@@ -22,7 +22,7 @@ export function AuthenticatedLayout({
       <DesktopOnly>
         <Sidebar user={user} />
       </DesktopOnly>
-      <main className="relative mx-auto grid w-full max-w-lg grid-rows-[auto_min-content] overflow-y-auto bg-muted sm:rounded lg:mx-0 lg:max-w-screen-xl lg:overflow-visible lg:bg-transparent lg:pl-80">
+      <main className="relative mx-auto grid w-full max-w-lg grid-rows-[auto_min-content] overflow-y-auto bg-muted sm:rounded lg:mx-0 lg:max-w-screen-2xl lg:overflow-visible lg:bg-transparent lg:pl-80">
         {children}
       </main>
       {user.isOnboarded && (

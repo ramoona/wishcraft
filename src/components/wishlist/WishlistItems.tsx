@@ -19,7 +19,7 @@ export function WishlistItems({ children, wishes = [] }: PropsWithChildren<{ wis
   );
 }
 
-function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildren<{ wishes?: WishType[] }>) {
+export function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildren<{ wishes?: WishType[] }>) {
   const [mounted, setMounted] = useState(false);
   const { initialized, container } = useMasonry(wishes);
 
@@ -32,8 +32,8 @@ function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildren<{ wis
   return (
     <div
       className={cn(
-        "flex flex-col flex-wrap items-start gap-x-8 gap-y-3 opacity-0 lg:grid lg:grid-cols-2 xl:grid-cols-3",
-        initialized && "opacity-100 transition-opacity duration-500",
+        "grid grid-cols-2 flex-wrap items-start gap-x-8 gap-y-3 pr-8 opacity-0 xl:grid-cols-3",
+        initialized && "opacity-100 transition-opacity duration-300",
       )}
       ref={container}
     >
@@ -42,6 +42,6 @@ function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildren<{ wis
   );
 }
 
-function WishlistItemsMobile({ children }: PropsWithChildren) {
+export function WishlistItemsMobile({ children }: PropsWithChildren) {
   return <div className="flex flex-col flex-wrap items-start gap-5">{children}</div>;
 }

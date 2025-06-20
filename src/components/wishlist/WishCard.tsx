@@ -1,8 +1,7 @@
 import { WishType } from "~/services/wishlist/types";
-import { WishLargeArtwork } from "~/components/shapes/WishLargeArtwork";
+import { backgroundColors, backgroundUrls, WishLargeArtwork } from "~/components/shapes/WishLargeArtwork";
 import { Price } from "~/components/wishlist/Price";
 import { WishStatus } from "~/components/wishlist/WishStatus";
-import { TypographyH1 } from "~/components/ui/typography";
 import { Button } from "~/components/ui/button";
 import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import React, { useState } from "react";
@@ -37,27 +36,50 @@ export function WishCard({
   const [editModalOpen, setEditModalOpen] = useState(false);
   const { t } = useTranslation();
 
+  const backgroundUrl = backgroundUrls[visuals.backgroundColor];
+
   return (
-    <div className="w-full max-w-[100vw] px-6 sm:max-w-lg lg:max-w-screen-xl lg:px-0">
-      <div className="relative mt-12 flex min-h-[400px] flex-col rounded bg-background lg:mt-6 lg:h-fit lg:min-h-fit">
-        <WishLargeArtwork {...visuals} />
-        {!isForeign && <WishDropdownMenu wish={wish} onEdit={() => setEditModalOpen(true)} />}
-        <div className="flex grow flex-col p-4 lg:rounded-b-lg lg:border lg:border-t-0">
+    <div className="group relative w-full max-w-[100vw] px-6 sm:max-w-lg lg:max-w-screen-xl lg:px-0">
+      <DesktopOnly>
+        <div
+          className="absolute h-12 w-full border lg:rounded-xl"
+          style={{
+            backgroundImage: `url(${backgroundUrl})`,
+            backgroundSize: "200%",
+            backgroundPositionX: `${visuals.backgroundPositionX}%`,
+            backgroundPositionY: `${visuals.backgroundPositionY}%`,
+            backgroundColor: backgroundColors[visuals.backgroundColor],
+          }}
+        ></div>
+      </DesktopOnly>
+      <div className="relative mt-12 flex min-h-[400px] flex-col rounded bg-background lg:mt-4 lg:h-fit lg:min-h-fit lg:rounded-xl lg:border">
+        <MobileOnly>
+          <WishLargeArtwork {...visuals} />
+          {!isForeign && <WishDropdownMenu wish={wish} onEdit={() => setEditModalOpen(true)} />}
+        </MobileOnly>
+        <div className="flex grow flex-col p-4">
           <div className="grow">
             {username && <span className="mb-2 block">{`@${username}'s wish`}</span>}
-            <div className="mb-1 flex w-full items-baseline justify-between gap-4">
-              <TypographyH1>{name}</TypographyH1>
-              <Price price={price} currency={currency} size="large" />
+            <div className="space-y-1">
+              <div className="flex w-full items-baseline justify-between gap-4">
+                <div className="grow">
+                  <DesktopOnly className="float-left mr-1 h-4">
+                    <WishDropdownMenu wish={wish} onEdit={() => setEditModalOpen(true)} />
+                  </DesktopOnly>
+                  <h1 className="text-xl font-bold lg:text-lg lg:font-medium">{name}</h1>
+                </div>
+                <Price price={price} currency={currency} size="large" />
+              </div>
+              <WishStatus
+                isPrivate={isPrivate}
+                showReserved={showReserved}
+                reservedById={reservedById}
+                reservedByCurrentUser={reservedByCurrentUser}
+                isForeign={isForeign}
+              />
             </div>
-            <WishStatus
-              isPrivate={isPrivate}
-              showReserved={showReserved}
-              reservedById={reservedById}
-              reservedByCurrentUser={reservedByCurrentUser}
-              isForeign={isForeign}
-            />
             {(url || comment) && (
-              <div className="mt-4 space-y-2">
+              <div className="mt-4 space-y-2 lg:text-sm">
                 {url && (
                   <a href={url} target="_blank" className="block truncate">
                     {url.replace(/^(?:https?:\/\/)?/, "")}

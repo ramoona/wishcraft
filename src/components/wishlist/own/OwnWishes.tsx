@@ -1,7 +1,7 @@
 "use client";
 
 import { WishType } from "~/services/wishlist/types";
-import { WishlistItems } from "~/components/wishlist/WishlistItems";
+import { WishlistItemsDesktop, WishlistItemsMobile } from "~/components/wishlist/WishlistItems";
 import { WishDetails } from "~/components/wishlist/WishDetails";
 import * as React from "react";
 import { EmptyList } from "~/components/ui/emptyList";
@@ -21,7 +21,7 @@ type Props = {
   status: "ACTIVE" | "FULFILLED" | "ARCHIVED";
 };
 
-export function Wishes(props: Props) {
+export function OwnWishes(props: Props) {
   return (
     <>
       <DesktopOnly>
@@ -58,11 +58,11 @@ function WishesMobile({ wishes, showOwnReserved, status }: Props) {
             <TabHint status={status} />
 
             {wishes.length > 0 ? (
-              <WishlistItems>
+              <WishlistItemsMobile>
                 {wishes.map(wish => (
                   <WishDetails key={wish.id} wish={wish} showReserved={showOwnReserved} isLoggedIn />
                 ))}
-              </WishlistItems>
+              </WishlistItemsMobile>
             ) : (
               <EmptyWishlistSection shape="2" />
             )}
@@ -90,11 +90,11 @@ function WishesDesktop({ wishes, showOwnReserved, status }: Props) {
         <TabHint status={status} />
       </div>
       {wishes.length > 0 ? (
-        <WishlistItems wishes={wishes}>
+        <WishlistItemsDesktop wishes={wishes}>
           {wishes.map(wish => (
             <WishCard key={wish.id} wish={wish} showReserved={showOwnReserved} isLoggedIn />
           ))}
-        </WishlistItems>
+        </WishlistItemsDesktop>
       ) : (
         <EmptyWishlistSection shape={STATUS_TO_SHAPE[status]} />
       )}

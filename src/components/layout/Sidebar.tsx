@@ -36,7 +36,7 @@ export function Sidebar({ user }: { user: User }) {
 
   return (
     <SidebarComponent>
-      <SidebarHeader className="flex h-20 items-start justify-center px-4">
+      <SidebarHeader className="flex h-16 items-start justify-center px-4">
         <LogoLink />
       </SidebarHeader>
       <SidebarContent>

@@ -7,7 +7,7 @@ export function DesktopOnly({
 }: {
   children: React.ReactNode;
   className?: string;
-  display?: "flex" | "grid" | "block";
+  display?: "flex" | "grid" | "block" | "inline";
 }) {
   return (
     <div
@@ -16,6 +16,7 @@ export function DesktopOnly({
         "hidden",
         display === "grid" && "lg:grid",
         display === "flex" && "lg:flex",
+        display === "inline" && "lg:inline",
         display === "block" && "lg:block",
       )}
     >
@@ -31,7 +32,7 @@ export function MobileOnly({
 }: {
   children: React.ReactNode;
   className?: string;
-  display?: "flex" | "grid" | "block";
+  display?: "flex" | "grid" | "block" | "inline";
 }) {
   return (
     <div
@@ -40,6 +41,7 @@ export function MobileOnly({
         display === "grid" && "grid",
         display === "flex" && "flex",
         display === "block" && "block",
+        display === "inline" && "inline",
         "lg:hidden",
       )}
     >
