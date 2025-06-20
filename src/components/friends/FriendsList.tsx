@@ -108,7 +108,7 @@ function FriendsListDesktop({ friends }: Props) {
           </div>
           <div
             className={cn(
-              "grid grid-cols-2 flex-wrap items-start gap-x-8 gap-y-3 pr-8 opacity-0 xl:grid-cols-3",
+              "relative grid grid-cols-2 flex-wrap items-start gap-x-8 gap-y-3 pr-8 opacity-0 xl:grid-cols-3",
               initialized && "opacity-100 transition-opacity duration-300",
             )}
             ref={container}
