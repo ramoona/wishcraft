@@ -59,7 +59,7 @@ export function UserDetails({
     <>
       <div className={cn("mx-auto flex max-w-lg items-start gap-4 rounded p-4", context === "sidebar" && "p-0")}>
         <Avatar className="size-16">
-          <AvatarImage src={user.image || ""} />
+          <AvatarImage src={user.image || ""} alt={[user.firstName, user.lastName].join(" ")} />
           <AvatarFallback />
         </Avatar>
         <div className="flex grow flex-col">
