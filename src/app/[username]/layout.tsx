@@ -44,11 +44,11 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   const { username } = await params;
 
   return {
-    title: `${username}'s Wishlist`,
-    description: `Explore ${username}'s wishlist on Wishcraft.`,
+    title: `@${username}'s wishlist`,
+    description: `Explore ${username}'s wishes on Wishcraft`,
     openGraph: {
-      title: `${username}'s Wishlist`,
-      description: `Explore ${username}'s wishlist on Wishcraft.`,
+      title: `@${username}'s wishlist`,
+      description: `Explore ${username}'s wishes on Wishcraft`,
       url: `https://mywishcraft.app/${username}`,
       siteName: "Wishcraft",
     },
