@@ -144,7 +144,7 @@ export function WishCard({
 
 function OwnWishActions({ wish, enableEditMode }: { wish: WishType; enableEditMode: () => void }) {
   const [isUpdating, updateWish] = useUpdateWish();
-  const isEditable = wish.status === "ACTIVE" || wish.status === "RESERVED";
+  const isEditable = wish.status === "ACTIVE";
   const { t } = useTranslation();
 
   return (

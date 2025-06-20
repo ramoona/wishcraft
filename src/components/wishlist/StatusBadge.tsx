@@ -5,11 +5,11 @@ import { Badge } from "~/components/ui/badge";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export function StatusBadge({ status }: { status: WishStatus | "RESERVED_BY_CURRENT_USER" | "PRIVATE" }) {
+export function StatusBadge({ status }: { status: WishStatus | "RESERVED" | "RESERVED_BY_CURRENT_USER" | "PRIVATE" }) {
   const { t } = useTranslation();
 
   switch (status) {
-    case WishStatus.RESERVED:
+    case "RESERVED":
       return <Badge variant="reserved">{t("wishlist.wishStatus.reserved")}</Badge>;
     case "RESERVED_BY_CURRENT_USER":
       return <Badge variant="reservedByYou">{t("wishlist.wishStatus.reservedByYou")}</Badge>;
