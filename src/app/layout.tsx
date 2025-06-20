@@ -12,6 +12,12 @@ const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
 export const metadata: Metadata = {
   title: "Wishcraft",
   description: "The place for all your wishes",
+  openGraph: {
+    title: "Wishcraft",
+    description: "The place for all your wishes",
+    url: "https://mywishcraft.app",
+    siteName: "Wishcraft",
+  },
 };
 
 export const viewport: Viewport = {
