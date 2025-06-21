@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { DateTime } from "luxon";
 import { usePathname } from "next/navigation";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
+import { getDaysUntilBirthday } from "~/utils/user";
 
 const container = cva("rounded bg-background no-underline", {
   variants: {
@@ -71,7 +72,7 @@ export function UserDetails({
         </Avatar>
         <div className="flex grow flex-col">
           <span className="mt-1 text-sm text-foreground/70">@{user.username}</span>
-          <span className={cn("flex items-center gap-1", context === "friends" && "justify-between")}>
+          <span className={cn("flex items-center gap-1")}>
             <span className="flex flex-col text-sm">
               <span>{[user.firstName, user.lastName].filter(Boolean).join(" ")} </span>
               {email && <span className="text-xs text-foreground/70">{email}</span>}
@@ -101,18 +102,4 @@ export function UserDetails({
   }
 
   return <div className={container({ sticky, context })}>{content}</div>;
-}
-
-function getDaysUntilBirthday(user: Pick<User, "dayOfBirth" | "monthOfBirth">): null | number {
-  const { dayOfBirth, monthOfBirth } = user;
-
-  if (!dayOfBirth || !monthOfBirth) {
-    return null;
-  }
-
-  const now = new Date();
-  const birthday = new Date(new Date().getFullYear(), monthOfBirth - 1, dayOfBirth, 0, 0, 0, 0);
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
-  const daysUntilBirthday = Math.max(0, Math.floor((birthday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
-  return daysUntilBirthday || null;
 }

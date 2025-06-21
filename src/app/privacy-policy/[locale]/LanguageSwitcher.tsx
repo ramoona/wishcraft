@@ -22,6 +22,7 @@ export function PrivacyPolicyLanguageSwitcher({ lang }: { lang: SupportedLanguag
       options={languageOptions}
       placeholder={t("placeholders.selectLanguage")}
       contentWidth
+      filled
     />
   );
 }

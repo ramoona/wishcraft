@@ -9,6 +9,7 @@ import { Sidebar } from "~/components/layout/Sidebar";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { LogoLink } from "~/components/layout/LogoLink";
 import * as React from "react";
+import { SignInButton } from "~/components/forms/SignInForm";
 
 export function AuthenticatedLayout({
   user,
@@ -40,12 +41,17 @@ export function AuthenticatedLayout({
 export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content] lg:h-fit lg:min-h-dvh lg:bg-muted">
-      <header className="relative h-20 w-screen bg-background">
+      <header className="relative h-20 w-screen bg-background lg:mx-auto lg:mt-4 lg:w-full lg:max-w-screen-2xl lg:rounded-xl">
         <div className="mx-auto flex h-full max-w-lg items-center justify-between px-4 lg:max-w-screen-2xl lg:px-8">
           <Link href="/" className="h-fit">
             <Logo />
           </Link>
-          <LanguageSwitcher contentWidth />
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher contentWidth filled />
+            <DesktopOnly>
+              <SignInButton buttonVariant="default" />
+            </DesktopOnly>
+          </div>
         </div>
       </header>
       <main className="relative mx-auto w-full max-w-lg bg-muted sm:mb-4 sm:rounded lg:max-w-screen-2xl lg:overflow-visible lg:bg-transparent lg:pl-8">

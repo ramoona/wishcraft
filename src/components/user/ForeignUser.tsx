@@ -9,7 +9,7 @@ import { WishlistType } from "~/services/wishlist/types";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { ForeignWishesWishesDesktop, ForeignWishesWishesMobile } from "~/components/wishlist/foreign/ForeignWishes";
 import { Button } from "~/components/ui/button";
-import { ArrowLeft } from "@phosphor-icons/react";
+import { ArrowLeft, Cake } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { addFriendAction, removeFriendAction } from "~/services/friend/actions";
@@ -18,6 +18,10 @@ import { getErrorMessage } from "~/core/errorMessages";
 import { AddFriendButton } from "~/components/friends/AddFriendButton";
 import { UserDetails } from "~/components/ui/user";
 import { FriendDropdownMenu } from "~/components/friends/FriendDropdownMenu";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { DateTime } from "luxon";
+import { Badge } from "~/components/ui/badge";
+import { SignInButton } from "~/components/forms/SignInForm";
 
 type Props = {
   wishlistOwner: OtherUser;
@@ -31,7 +35,7 @@ export function ForeignUser(props: Props) {
       <DesktopOnly>
         <ForeignUserDesktop {...props} />
       </DesktopOnly>
-      <MobileOnly className="flex-col" display="flex">
+      <MobileOnly className="h-full flex-col" display="flex">
         <ForeignUserMobile {...props} />
       </MobileOnly>
     </>
@@ -42,8 +46,8 @@ function ForeignUserMobile({ wishlistOwner, wishlist, currentUser }: Props) {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const footer =
-    (currentUser && wishlistOwner.isFriend && (
+  const footer = (currentUser &&
+    (wishlistOwner.isFriend ? (
       <Button
         onClick={() => router.push(`/${currentUser?.username}/friends/your-friends`)}
         variant="outline"
@@ -52,11 +56,9 @@ function ForeignUserMobile({ wishlistOwner, wishlist, currentUser }: Props) {
       >
         {t("actions.backToFriends")}
       </Button>
-    )) ||
-    (currentUser && !wishlistOwner.isFriend && (
+    ) : (
       <AddFriendButton friendId={wishlistOwner.id} currentUser={currentUser} friendUsername={wishlistOwner.username} />
-    )) ||
-    null;
+    ))) || <SignInButton buttonVariant="default" />;
 
   return (
     <WithStickyFooter footer={footer}>
@@ -80,9 +82,22 @@ function ForeignUserMobile({ wishlistOwner, wishlist, currentUser }: Props) {
 }
 
 function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
-  const { t } = useTranslation();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { t, i18n } = useTranslation();
+
+  const birthday =
+    wishlistOwner.dayOfBirth && wishlistOwner.monthOfBirth
+      ? DateTime.fromObject({ day: wishlistOwner.dayOfBirth, month: wishlistOwner.monthOfBirth })
+          .setLocale(i18n.language)
+          .toLocaleString({ month: "long", day: "2-digit" })
+      : null;
+
+  const goToFriends = () => {
+    if (currentUser) {
+      router.push(`/${currentUser.username}/friends/your-friends`);
+    }
+  };
 
   const handleRemoveFriendAction = () => {
     startTransition(async () => {
@@ -93,7 +108,7 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
       if (result.error) {
         showErrorToast(getErrorMessage(result.error, t));
       }
-      router.push(`/${currentUser?.username}/friends/your-friends`);
+      goToFriends();
     });
   };
 
@@ -106,31 +121,67 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
       if (result.error) {
         showErrorToast(getErrorMessage(result.error, t));
       }
-      router.push(`/${currentUser?.username}/friends/your-friends/${wishlistOwner.username}`);
+
+      if (currentUser) {
+        router.push(`/${currentUser.username}/friends/your-friends/${wishlistOwner.username}`);
+      }
     });
   };
 
   return (
     <>
-      <div className="my-8">
-        <div className="relative flex items-center gap-3">
-          {currentUser && wishlistOwner.isFriend && (
-            <Button variant="ghost" onClick={() => router.back()} className="px-2">
-              <ArrowLeft size={20} />
-            </Button>
-          )}
-          <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">@{wishlistOwner.username}</h1>
-          {currentUser &&
-            (wishlistOwner.isFriend ? (
-              <Button size="xs" variant="tertiary" onClick={handleRemoveFriendAction} disabled={isPending}>
-                {t("actions.removeFriend")}
+      <div className="my-8 pr-8">
+        {!currentUser && (
+          <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+            {t("metadata.username.title", { username: wishlistOwner.username })}
+          </h1>
+        )}
+        {currentUser && (
+          <>
+            {wishlistOwner.isFriend && (
+              <Button variant="ghost" onClick={goToFriends} className="mb-4 flex items-center gap-2 px-2">
+                <ArrowLeft size={20} />
+                {t("actions.backToFriends")}
               </Button>
-            ) : (
-              <Button size="xs" onClick={handleAddFriendAction} disabled={isPending}>
-                {t("actions.addFriend")}
+            )}
+            <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+              {t("metadata.username.title", { username: wishlistOwner.username })}
+            </h1>
+            <div className="relative mt-6 flex w-fit items-start gap-10 rounded-xl border bg-background p-4 pr-8">
+              <div className="flex items-center gap-4">
+                <Avatar className="size-20">
+                  <AvatarImage
+                    src={wishlistOwner.image || ""}
+                    alt={[wishlistOwner.firstName, wishlistOwner.lastName].join(" ")}
+                  />
+                  <AvatarFallback />
+                </Avatar>
+                <div>
+                  <h1 className="scroll-m-20 text-2xl font-bold tracking-tight">
+                    {[wishlistOwner.firstName, wishlistOwner.lastName].filter(Boolean).join(" ")}
+                  </h1>
+                  <p className="mt-1 flex items-center gap-2">
+                    @{wishlistOwner.username}
+                    {birthday && (
+                      <Badge variant="birthday">
+                        <Cake className="size-4" /> {birthday}
+                      </Badge>
+                    )}
+                  </p>
+                </div>
+              </div>
+              <Button
+                size="xs"
+                variant={wishlistOwner.isFriend ? "tertiary" : "default"}
+                onClick={wishlistOwner.isFriend ? handleRemoveFriendAction : handleAddFriendAction}
+                disabled={isPending}
+                className="mt-4"
+              >
+                {wishlistOwner.isFriend ? t("actions.removeFriend") : t("actions.addFriend")}
               </Button>
-            ))}
-        </div>
+            </div>
+          </>
+        )}
       </div>
       {wishlist.wishes.length > 0 ? (
         <ForeignWishesWishesDesktop currentUser={currentUser} wishes={wishlist.wishes} />

@@ -22,6 +22,7 @@ export function TermsOfServiceLanguageSwitcher({ lang }: { lang: SupportedLangua
       options={languageOptions}
       placeholder={t("placeholders.selectLanguage")}
       contentWidth
+      filled
     />
   );
 }

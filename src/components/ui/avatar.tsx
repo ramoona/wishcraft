@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import { User } from "@phosphor-icons/react";
 
 import { cn } from "~/utils/classnames";
 
@@ -32,12 +31,28 @@ const AvatarFallback = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Fallback
     ref={ref}
-    className={cn("flex h-full w-full items-center justify-center rounded-full border text-slate-600", className)}
+    className={cn(
+      "flex h-full w-full items-center justify-center rounded-full border bg-background text-slate-600",
+      className,
+    )}
     {...props}
   >
-    <User className="size-6" />
+    <FriendsIcon />
   </AvatarPrimitive.Fallback>
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
 export { Avatar, AvatarImage, AvatarFallback };
+
+function FriendsIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" className="size-6">
+      <path
+        fill="#777677"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M19.38 18.455H.555A9.404 9.404 0 0 1 7.825 9.3a4.353 4.353 0 1 1 4.38.025 9.405 9.405 0 0 1 7.175 9.13Z"
+      />
+    </svg>
+  );
+}

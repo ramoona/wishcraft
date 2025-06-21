@@ -7,9 +7,11 @@ import { SupportedLanguages } from "~/lib/i18n/settings";
 
 export function LanguageSwitcher({
   contentWidth,
+  filled,
   onChange,
 }: {
   contentWidth?: boolean;
+  filled?: boolean;
   onChange?: (lang: SupportedLanguages) => void;
 }) {
   const { i18n, t } = useTranslation();
@@ -43,6 +45,7 @@ export function LanguageSwitcher({
       options={languageOptions}
       contentWidth={contentWidth}
       placeholder={t("placeholders.selectLanguage")}
+      filled={filled}
     />
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { buttonVariants } from "~/components/ui/button";
+import { ButtonProps, buttonVariants } from "~/components/ui/button";
 
 import { cn } from "~/utils/classnames";
 import { Trans, useTranslation } from "react-i18next";
@@ -40,7 +40,15 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
   );
 }
 
-export function SignInButton({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
+export function SignInButton({
+  wishlistOwner,
+  wishId,
+  buttonVariant = "secondary",
+}: {
+  wishlistOwner?: string;
+  wishId?: string;
+  buttonVariant?: ButtonProps["variant"];
+}) {
   const queryParams = new URLSearchParams();
   const { t, i18n } = useTranslation();
 
@@ -57,7 +65,7 @@ export function SignInButton({ wishlistOwner, wishId }: { wishlistOwner?: string
   return (
     <a
       className={cn(
-        buttonVariants({ variant: "secondary", fullWidth: false, size: "lg" }),
+        buttonVariants({ variant: buttonVariant, fullWidth: false, size: "lg" }),
         "flex items-center gap-2 no-underline",
       )}
       href={`/api/auth/google?${queryParams.toString()}`}

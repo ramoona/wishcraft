@@ -52,7 +52,7 @@ function FriendsListMobile({ friends, user }: Props) {
                     context="friends"
                     extraContent={
                       friend.recentWishes.length > 0 ? (
-                        <div className="mt-1 truncate text-xs text-foreground/60">
+                        <div className="mt-2 truncate text-xs text-foreground/60">
                           {t("friends.recentWishes", { count: friend.recentWishes.length })}
                         </div>
                       ) : undefined

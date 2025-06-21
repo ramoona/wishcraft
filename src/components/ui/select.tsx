@@ -12,6 +12,7 @@ export function Select({
   placeholder,
   disabled,
   contentWidth,
+  filled,
   ...props
 }: {
   value?: string;
@@ -20,6 +21,7 @@ export function Select({
   placeholder?: string;
   disabled?: boolean;
   contentWidth?: boolean;
+  filled?: boolean;
 } & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange">) {
   return (
     <select
@@ -31,6 +33,7 @@ export function Select({
         "px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
         contentWidth ? "w-fit" : "w-full",
+        filled && "rounded-full border-none bg-muted px-4",
       )}
       {...props}
     >
