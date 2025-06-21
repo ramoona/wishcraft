@@ -43,26 +43,44 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
 import { getTranslatedMonth } from "~/lib/i18n/months";
 import { SupportedLanguages } from "~/lib/i18n/settings";
+import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 
 export function Profile({ user }: { user: User }) {
   const { t } = useTranslation();
   const { copied, copyLink } = useCopyProfileLink({ user });
+  const [isDeletionSliderOpen, setDeletionSliderOpen] = useState(false);
 
   return (
     <>
-      <div className="flex flex-col gap-4 bg-background">
+      <div className="flex flex-col gap-4 bg-background lg:bg-transparent lg:p-0">
+        <DesktopOnly>
+          <h1 className="mt-8 scroll-m-20 text-4xl font-bold tracking-tight">Your profile</h1>
+        </DesktopOnly>
         <div className="grow">
-          <div className="grid w-full grid-cols-[auto_max-content] items-center pr-4">
-            <UserDetails user={user} email={user.email} context="profile" />
-            <ProfileDropdownMenu />
-          </div>
+          <MobileOnly>
+            <div className="mb-4 grid w-full grid-cols-[auto_max-content] items-center pr-4">
+              <UserDetails user={user} email={user.email} context="profile" />
+              <ProfileDropdownMenu />
+            </div>
+          </MobileOnly>
           <ProfileForm user={user} />
+          <DesktopOnly>
+            <div className="mt-4 flex max-w-xl flex-col items-center gap-4 rounded-lg border bg-background p-4 text-sm text-destructive">
+              {t("profile.deleteAccountModal.dangerZone")}
+              <Button variant="destructive" onClick={() => setDeletionSliderOpen(true)} size="lg">
+                {t("profile.menu.deleteAccount")}
+              </Button>
+              <AccountDeletionDialog isOpen={isDeletionSliderOpen} setOpen={setDeletionSliderOpen} />
+            </div>
+          </DesktopOnly>
         </div>
-        <div className="flex w-full justify-center bg-background p-4 pt-6">
-          <Button size="lg" onClick={copyLink}>
-            {copied ? t("profile.shareWishlist.linkCopied") : t("profile.shareWishlist.copyLink")}
-          </Button>
-        </div>
+        <MobileOnly>
+          <div className="flex w-full justify-center bg-background p-4 pt-6">
+            <Button size="lg" onClick={copyLink}>
+              {copied ? t("profile.shareWishlist.linkCopied") : t("profile.shareWishlist.copyLink")}
+            </Button>
+          </div>
+        </MobileOnly>
       </div>
     </>
   );
@@ -70,7 +88,10 @@ export function Profile({ user }: { user: User }) {
 
 export function ProfileForm({ user }: { user: User }) {
   return (
-    <div className="mx-auto max-w-lg px-4 lg:mx-0 lg:px-0">
+    <div className="mx-auto max-w-lg bg-background px-4 lg:mx-0 lg:mt-4 lg:max-w-xl lg:rounded-xl lg:border lg:p-4">
+      <DesktopOnly className="mb-8">
+        <UserDetails user={user} email={user.email} context="profile-desktop" />
+      </DesktopOnly>
       <form className="flex flex-col gap-4" autoComplete="off">
         <div className="flex flex-col gap-6">
           <DateOfBirth day={user.dayOfBirth ?? undefined} month={user.monthOfBirth ?? undefined} />
@@ -383,7 +404,13 @@ export function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; se
   );
 }
 
-export function PreferredLanguage({ hideLabel = false }: { hideLabel?: boolean }) {
+export function PreferredLanguage({
+  hideLabel = false,
+  noSuccessToast = false,
+}: {
+  hideLabel?: boolean;
+  noSuccessToast?: boolean;
+}) {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -392,7 +419,10 @@ export function PreferredLanguage({ hideLabel = false }: { hideLabel?: boolean }
     if (error) {
       showErrorToast(getErrorMessage(error, t));
     } else {
-      showSuccessToast(getSuccessMessage("SAVED", t));
+      if (!noSuccessToast) {
+        showSuccessToast(getSuccessMessage("SAVED", t));
+      }
+
       router.refresh();
     }
   };

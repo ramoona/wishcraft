@@ -116,7 +116,7 @@ export function Sidebar({ user }: { user: User }) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="block">
         <div className="px-2 pb-4">
           <Button onClick={() => setNewWishFormVisible(true)} fullWidth>
             {t("actions.addWish")}
@@ -203,11 +203,6 @@ function UserNav({ user }: { user: User }) {
               </Avatar>
               <div className="flex grow flex-col">
                 <span className="text-sm text-foreground/70">@{user.username}</span>
-                <span className={cn("flex items-center gap-1")}>
-                  <span className="flex flex-col text-sm">
-                    {user.email && <span className="text-xs text-foreground/70">{user.email}</span>}
-                  </span>
-                </span>
               </div>
             </div>
             <div className="flex shrink-0 flex-col gap-[3px] pr-2">
@@ -233,7 +228,9 @@ function UserNav({ user }: { user: User }) {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={() => setProfileFormVisible(true)}>{t("profile.menu.profile")}</DropdownMenuItem>
+          <DropdownMenuItem asChild className="no-underline">
+            <Link href={`/${user.username}/profile`}>{t("profile.menu.profile")}</Link>
+          </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => setSupportSliderOpen(true)} className="min-w-48">
             {t("profile.menu.support")}
           </DropdownMenuItem>
@@ -247,11 +244,11 @@ function UserNav({ user }: { user: User }) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <div className="px-1 py-2">
-            <PreferredLanguage hideLabel />
+            <PreferredLanguage hideLabel noSuccessToast />
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={() => router.push("/api/auth/logout")}>
-            {t("profile.menu.signOut")}
+          <DropdownMenuItem asChild className="no-underline">
+            <Link href="/api/auth/logout">{t("profile.menu.signOut")}</Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenuPrimitive.Root>

@@ -6,6 +6,7 @@ import { WishlistError } from "~/services/wishlist/errors";
 import { UserError } from "~/services/user/errors";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { isErrorKnown, KnownError } from "~/core/errors";
+import { getServerTranslations } from "~/lib/i18n/server/translations";
 
 export default async function UserLayout({
   children,
@@ -42,13 +43,14 @@ export default async function UserLayout({
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
+  const { t } = await getServerTranslations();
 
   return {
-    title: `@${username}'s wishlist`,
-    description: `Explore ${username}'s wishes on Wishcraft`,
+    title: t("metadata.username.title", { username }),
+    description: t("metadata.username.description", { username }),
     openGraph: {
-      title: `@${username}'s wishlist`,
-      description: `Explore ${username}'s wishes on Wishcraft`,
+      title: t("metadata.username.title", { username }),
+      description: t("metadata.username.description", { username }),
       url: `https://mywishcraft.app/${username}`,
       siteName: "Wishcraft",
     },

@@ -77,7 +77,7 @@ function FriendsListDesktop({ friends }: Props) {
 
   return (
     <>
-      <div className="mb-8 mt-10">
+      <div className="my-8">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{t("friends.tabs.friends")}</h1>
         <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">{t("friends.subtitle")}</p>
       </div>
@@ -108,7 +108,7 @@ function FriendsListDesktop({ friends }: Props) {
           </div>
           <div
             className={cn(
-              "relative grid grid-cols-2 flex-wrap items-start gap-4 pr-8 opacity-0 xl:grid-cols-3",
+              "relative mb-8 grid grid-cols-2 flex-wrap items-start gap-4 pr-8 opacity-0 xl:grid-cols-3",
               initialized && "opacity-100 transition-opacity duration-300",
             )}
             ref={container}

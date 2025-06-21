@@ -232,5 +232,15 @@
   "loginModal": {
     "title": "Please sign in to continue",
     "description": "To keep track of who reserved what we are kindly asking you to sign in. Don't worry, we won't tell @{{ username }} that it was you."
+  },
+  "metadata": {
+    "app": {
+      "title": "Wishcraft",
+      "description": "The place for all your wishes"
+    },
+    "username": {
+      "title": "Wishlist by @{{ username }}",
+      "description": "Explore @{{ username }}'s wishes on Wishcraft"
+    }
   }
 }

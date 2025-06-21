@@ -112,7 +112,7 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
 
   return (
     <>
-      <div className="mb-8 mt-10">
+      <div className="my-8">
         <div className="relative flex items-center gap-3">
           {currentUser && wishlistOwner.isFriend && (
             <Button variant="ghost" onClick={() => router.back()} className="px-2">

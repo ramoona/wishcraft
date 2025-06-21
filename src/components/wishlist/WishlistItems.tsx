@@ -39,7 +39,7 @@ export function WishlistItemsDesktop({ children, wishes = [] }: PropsWithChildre
       </div>
       <div
         className={cn(
-          "relative grid grid-cols-2 flex-wrap items-start gap-4 pr-8 opacity-0 xl:grid-cols-3",
+          "relative mb-8 grid grid-cols-2 flex-wrap items-start gap-4 pr-8 opacity-0 xl:grid-cols-3",
           initialized && "opacity-100 transition-opacity duration-300",
         )}
         ref={container}

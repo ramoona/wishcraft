@@ -231,5 +231,15 @@
   "loginModal": {
     "title": "Bitte melde dich an, um fortzufahren",
     "description": "Um nachzuverfolgen, wer was reserviert hat, bitten wir dich, dich anzumelden. Keine Sorge, wir verraten @{{ username }} nicht, dass du es warst."
+  },
+  "metadata": {
+    "app": {
+      "title": "Wishcraft",
+      "description": "Der Ort für all deine Wünsche"
+    },
+    "username": {
+      "title": "Wunschliste von @{{ username }}",
+      "description": "Entdecke die Wünsche von @{{ username }} auf Wishcraft"
+    }
   }
 }

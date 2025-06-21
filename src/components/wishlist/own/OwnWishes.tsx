@@ -84,7 +84,7 @@ function WishesDesktop({ wishes, showOwnReserved, status }: Props) {
   const { t } = useTranslation();
   return (
     <>
-      <div className="mb-8 mt-10">
+      <div className="my-8">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{t(STATUS_TO_HEADING[status])}</h1>
         <TabHint status={status} />
       </div>

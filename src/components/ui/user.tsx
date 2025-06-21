@@ -22,6 +22,7 @@ const container = cva("rounded bg-background no-underline", {
       profile: "",
       wishlist: "",
       sidebar: "",
+      "profile-desktop": "",
     },
     link: {
       true: "transition-colors duration-200 hover:border-primary hover:ring-1 focus-visible:outline-none hover:ring-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
@@ -42,7 +43,7 @@ export function UserDetails({
   isLink?: boolean;
   email?: string;
   sticky?: boolean;
-  context: "friends" | "profile" | "wishlist" | "sidebar";
+  context: "friends" | "profile" | "wishlist" | "sidebar" | "profile-desktop";
 }) {
   const daysUntilBirthday = getDaysUntilBirthday(user);
   const { t, i18n } = useTranslation();
@@ -57,8 +58,14 @@ export function UserDetails({
 
   const content = (
     <>
-      <div className={cn("mx-auto flex max-w-lg items-start gap-4 rounded p-4", context === "sidebar" && "p-0")}>
-        <Avatar className="size-16">
+      <div
+        className={cn(
+          "mx-auto flex max-w-lg items-start gap-4 rounded p-4",
+          context === "sidebar" && "p-0",
+          context === "profile-desktop" && "mx-0 p-0",
+        )}
+      >
+        <Avatar className={context.startsWith("profile") ? "size-16" : undefined}>
           <AvatarImage src={user.image || ""} alt={[user.firstName, user.lastName].join(" ")} />
           <AvatarFallback />
         </Avatar>

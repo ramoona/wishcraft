@@ -56,7 +56,7 @@ function ReservedWishesDesktop({ reservedWishes, user }: Props) {
   const { t } = useTranslation();
   return (
     <>
-      <div className="mb-8 mt-10">
+      <div className="my-8">
         <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{t("friends.tabs.reservedWishes")}</h1>
         <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">{t("friends.reservedWishedSubtitle")}</p>
       </div>

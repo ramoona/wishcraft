@@ -6,19 +6,9 @@ import { cn } from "~/utils/classnames";
 import type { Metadata, Viewport } from "next";
 import { Providers } from "~/app/providers";
 import { detectLanguage } from "~/lib/i18n/detect-language";
+import { getServerTranslations } from "~/lib/i18n/server/translations";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" });
-
-export const metadata: Metadata = {
-  title: "Wishcraft",
-  description: "The place for all your wishes",
-  openGraph: {
-    title: "Wishcraft",
-    description: "The place for all your wishes",
-    url: "https://mywishcraft.app",
-    siteName: "Wishcraft",
-  },
-};
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -46,4 +36,20 @@ export default async function RootLayout({
       </body>
     </html>
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getServerTranslations();
+
+  return {
+    title: "Wishcraft",
+    description: t("metadata.app.description"),
+
+    openGraph: {
+      title: "Wishcraft",
+      description: t("metadata.app.description"),
+      url: "https://mywishcraft.app",
+      siteName: "Wishcraft",
+    },
+  };
 }
