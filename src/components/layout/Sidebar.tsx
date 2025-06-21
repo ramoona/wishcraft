@@ -25,7 +25,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { User } from "~/services/user/types";
 import { cn } from "~/utils/classnames";
 import { useTranslation } from "react-i18next";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { WishForm } from "~/components/wishlist/own/WishForm";
 import { useState } from "react";
@@ -182,7 +182,6 @@ function FriendsIcon({ fill }: { fill?: string }) {
 
 function UserNav({ user }: { user: User }) {
   const { t } = useTranslation();
-  const router = useRouter();
   const [isSupportSliderOpen, setSupportSliderOpen] = useState(false);
   const [profileFormVisible, setProfileFormVisible] = useState(false);
   const [isDeletionSliderOpen, setDeletionSliderOpen] = useState(false);
