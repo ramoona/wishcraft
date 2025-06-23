@@ -25,7 +25,9 @@
     "viewActiveWishes": "Посмотреть активные желания",
     "reserve": "Зарезервировать",
     "cancelReservation": "Отменить резервирование",
-    "backToFriends": "К друзьям"
+    "backToFriends": "К друзьям",
+    "accept": "Принять",
+    "decline": "Отклонить"
   },
   "states": {
     "saving": "Сохраняем...",
@@ -83,11 +85,16 @@
     "birthdayIn_other": "День рождения через {{ count }} дней",
     "tabs": {
       "friends": "Твои друзья",
+      "friendsMobile": "Друзья",
       "reservedWishes": "Резерв",
-      "reservedWishesTitle": "Зарезервированные желания"
+      "reservedWishesTitle": "Зарезервированные желания",
+      "requests": "Запросы"
     },
     "subtitle": "Добавляй больше друзей, чтобы вдохновляться их вишлистами и делиться с ними своими желаниями",
-    "reservedWishedSubtitle": "Здесь ты можешь найти желания, зарезервированные тобой у друзей и других пользователей"
+    "reservedWishedSubtitle": "Здесь ты можешь найти желания, зарезервированные тобой у друзей и других пользователей",
+    "requestsTitle": "Запросы в друзья",
+    "requestsSubtitle": "Здесь ты можешь найти запросы в друзья от других пользователей",
+    "pendingFriendRequest": "Запрос в друзья"
   },
   "error": {
     "error": "Ошибка",

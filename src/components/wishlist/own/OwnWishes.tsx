@@ -43,7 +43,7 @@ function WishesMobile({ wishes, showOwnReserved, status }: Props) {
     <WithStickyFooter footer={<AddNewWish onOpenNewWishForm={() => setNewWishFormVisible(true)} />}>
       {!newWishFormVisible && (
         <div className="flex size-full flex-col">
-          <div className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
+          <div className="sticky -top-px z-10 mx-auto flex w-full items-center justify-center border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
             <TabButton isActive={status === "ACTIVE"} route={`/${username}/wishes/active`}>
               {t("wishlist.tabs.active")}
             </TabButton>

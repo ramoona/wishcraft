@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { getSessionUser } from "~/services/session";
 import { AuthenticatedLayout, NonAuthenticatedLayout } from "~/components/layout/Layout";
-import { getUserByUserName } from "~/services/user";
 import { WishlistError } from "~/services/wishlist/errors";
 import { UserError } from "~/services/user/errors";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { getServerTranslations } from "~/lib/i18n/server/translations";
+import { countFriendRequestsForCurrentUser } from "~/services/friend";
 
 export default async function UserLayout({
   children,
@@ -18,18 +18,16 @@ export default async function UserLayout({
   const { username } = await params;
   try {
     const sessionUser = await getSessionUser();
-    const userByUsername = await getUserByUserName(username);
 
-    return sessionUser ? (
-      <AuthenticatedLayout
-        user={sessionUser}
-        otherUser={userByUsername.id !== sessionUser.id ? userByUsername : undefined}
-      >
-        {children}
-      </AuthenticatedLayout>
-    ) : (
-      <NonAuthenticatedLayout>{children}</NonAuthenticatedLayout>
-    );
+    if (sessionUser) {
+      const friendRequestsCount = await countFriendRequestsForCurrentUser();
+      return (
+        <AuthenticatedLayout user={sessionUser} friendRequestsCount={friendRequestsCount}>
+          {children}
+        </AuthenticatedLayout>
+      );
+    }
+    return <NonAuthenticatedLayout>{children}</NonAuthenticatedLayout>;
   } catch (e) {
     if (
       (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||

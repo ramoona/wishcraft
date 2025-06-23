@@ -44,8 +44,9 @@ import { showSuccessToast } from "~/components/ui/toasts";
 import { successMessages } from "~/core/errorMessages";
 import Link from "next/link";
 import { UserDetails } from "~/components/ui/user";
+import { Badge } from "~/components/ui/badge";
 
-export function Sidebar({ user }: { user: User }) {
+export function Sidebar({ user, friendRequestsCount }: { user: User; friendRequestsCount: number }) {
   const { t } = useTranslation();
   const [newWishFormVisible, setNewWishFormVisible] = useState(false);
   const pathname = usePathname();
@@ -59,7 +60,7 @@ export function Sidebar({ user }: { user: User }) {
         <LogoLink />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarMenu className="w-60 px-2 pb-4">
+        <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton isActive={segments[1] === "wishes"} asChild>
               <span>
@@ -106,6 +107,17 @@ export function Sidebar({ user }: { user: User }) {
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
               <SidebarMenuSubItem>
+                <SidebarMenuSubButton isActive={segments[2] === "requests"} asChild>
+                  <a
+                    href={`/${user.username}/friends/requests`}
+                    className="flex justify-between gap-1 pr-1.5 no-underline"
+                  >
+                    <span>{t("friends.tabs.requests")}</span>
+                    {friendRequestsCount > 0 && <Badge className="px-2">{friendRequestsCount}</Badge>}
+                  </a>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+              <SidebarMenuSubItem>
                 <SidebarMenuSubButton isActive={segments[2] === "reserved-wishes"} asChild>
                   <a href={`/${user.username}/friends/reserved-wishes`} className="no-underline">
                     <span> {t("friends.tabs.reservedWishes")}</span>
@@ -133,6 +145,7 @@ export function Sidebar({ user }: { user: User }) {
         </DialogHeader>
         <DialogContent>
           <WishForm
+            onBack={() => setNewWishFormVisible(false)}
             onActionSuccess={() => {
               setNewWishFormVisible(false);
               showSuccessToast(

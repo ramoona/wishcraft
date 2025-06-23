@@ -25,7 +25,9 @@
     "viewActiveWishes": "Aktive Wünsche ansehen",
     "reserve": "Reservieren",
     "cancelReservation": "Reservierung aufheben",
-    "backToFriends": "Zu Freunden"
+    "backToFriends": "Zu Freunden",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen"
   },
   "states": {
     "saving": "Speichere...",
@@ -80,11 +82,16 @@
     "birthdayIn_other": "Hat in {{ count }} Tagen Geburtstag",
     "tabs": {
       "friends": "Deine Freunde",
+      "friendsMobile": "Freunde",
       "reservedWishes": "Reservierte Wünsche",
-      "reservedWishesTitle": "Reservierte Wünsche"
+      "reservedWishesTitle": "Reservierte Wünsche",
+      "requests": "Anfragen"
     },
     "subtitle": "Füge mehr Freunde hinzu, um dich von ihren Wunschlisten inspirieren zu lassen und deine eigenen Wünsche mit ihnen zu teilen.",
-    "reservedWishedSubtitle": "Hier sind die Wünsche, die du von deinen Freunden und anderen Nutzern reserviert hast"
+    "reservedWishedSubtitle": "Hier sind die Wünsche, die du von deinen Freunden und anderen Nutzern reserviert hast",
+    "requestsSubtitle": "Hier siehst du die Freundschaftsanfragen, die du erhalten hast",
+    "requestsTitle": "Freundschaftsanfragen",
+    "pendingFriendRequest": "Freundschaftsanfrage ausstehend"
   },
   "error": {
     "error": "Fehler",

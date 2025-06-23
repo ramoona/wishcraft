@@ -263,7 +263,7 @@ export async function getForeignWishlistByUsername(username: string): Promise<Wi
   };
 }
 
-export async function getWishesReservedByCurrentUser(): Promise<(WishType & { user: OtherUser })[]> {
+export async function getWishesReservedByCurrentUser(): Promise<(WishType & { user: Pick<OtherUser, "username"> })[]> {
   const sessionUser = await getSessionUserOrThrow();
 
   const wishes = await prisma.wish.findMany({

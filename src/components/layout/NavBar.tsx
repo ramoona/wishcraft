@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { OtherUser, User } from "~/services/user/types";
+import { User } from "~/services/user/types";
 import { cn } from "~/utils/classnames";
 import { useTranslation } from "react-i18next";
 import * as React from "react";
 import { FunctionComponent } from "react";
+import { Badge } from "~/components/ui/badge";
 
 const navItems: { label: string; route: string; icon: FunctionComponent<{ className?: string; fill?: string }> }[] = [
   {
@@ -26,7 +27,7 @@ const navItems: { label: string; route: string; icon: FunctionComponent<{ classN
   },
 ];
 
-export default function NavBar({ user, otherUser }: { user: User; otherUser?: OtherUser }) {
+export default function NavBar({ user, friendRequestsCount }: { user: User; friendRequestsCount: number }) {
   const pathname = usePathname();
   const route = pathname.split("/")[2];
   const { t } = useTranslation();
@@ -36,7 +37,7 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
       <div className="mx-auto flex h-full max-w-lg items-center justify-around">
         {navItems.map(item => {
           const Icon = item.icon;
-          const isSelected = route === item.route || (item.route === "friends" && otherUser?.isFriend);
+          const isSelected = route === item.route;
           return (
             <Link
               key={item.route}
@@ -47,7 +48,12 @@ export default function NavBar({ user, otherUser }: { user: User; otherUser?: Ot
               )}
             >
               <Icon fill={isSelected ? "fill-black" : "fill-active"} />
-              {t(item.label)}
+              <div className="flex items-center gap-1">
+                {t(item.label)}
+                {item.route === "friends" && friendRequestsCount > 0 && (
+                  <Badge className="px-2">{friendRequestsCount}</Badge>
+                )}
+              </div>
             </Link>
           );
         })}

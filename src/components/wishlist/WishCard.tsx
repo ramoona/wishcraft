@@ -7,7 +7,7 @@ import { ForeignWishDropdownMenu, OwnWishDropdownMenu } from "~/components/wishl
 import React, { useState } from "react";
 import { useUpdateWish } from "~/components/wishlist/own/hooks";
 import { ReserveButton } from "~/components/wishlist/foreign/ReserveButton";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
@@ -59,7 +59,17 @@ export function WishCard({
         </MobileOnly>
         <div className="flex grow flex-col p-4">
           <div className="grow">
-            {username && <span className="mb-2 block">{`@${username}'s wish`}</span>}
+            {username && (
+              <Trans
+                t={t}
+                i18nKey="wishlist.wishOwnerWithLink"
+                className="mb-2 text-sm underline"
+                values={{ username }}
+                components={{
+                  profile: <a href={`/${username}`} />,
+                }}
+              />
+            )}
             <div className="space-y-1">
               <div className="flex w-full items-baseline justify-between gap-4">
                 <div className="grow">

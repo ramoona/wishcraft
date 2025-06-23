@@ -9,10 +9,12 @@ import * as React from "react";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { TabButton } from "~/components/ui/tab-button";
 import { cn } from "~/utils/classnames";
+import { Badge } from "~/components/ui/badge";
 
 type Props = {
   friends: FriendUser[];
   user: User;
+  friendRequests: FriendUser[];
 };
 
 export function FriendsList(props: Props) {
@@ -28,14 +30,18 @@ export function FriendsList(props: Props) {
   );
 }
 
-function FriendsListMobile({ friends, user }: Props) {
+function FriendsListMobile({ friends, user, friendRequests }: Props) {
   const { t } = useTranslation();
   return (
     <WithStickyFooter footer={null}>
       <div className="flex size-full flex-col">
-        <div className="sticky top-0 z-10 mx-auto flex w-full items-center justify-center border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
+        <div className="sticky top-0 z-10 mx-auto flex w-full max-w-[100vw] items-center justify-center overflow-x-auto border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
           <TabButton isActive route={`/${user.username}/friends/your-friends`}>
-            {t("friends.tabs.friends")}
+            {t("friends.tabs.friendsMobile")}
+          </TabButton>
+          <TabButton route={`/${user.username}/friends/requests`}>
+            {t("friends.tabs.requests")}
+            {friendRequests.length > 0 && <Badge className="ml-2 px-2">{friendRequests.length}</Badge>}
           </TabButton>
           <TabButton route={`/${user.username}/friends/reserved-wishes`}>{t("friends.tabs.reservedWishes")}</TabButton>
         </div>

@@ -8,7 +8,7 @@ import { WishCard } from "~/components/wishlist/WishCard";
 import { OtherUser, User } from "~/services/user/types";
 
 type Props = {
-  wishes: (WishType & { user?: OtherUser })[];
+  wishes: (WishType & { user?: Pick<OtherUser, "username"> })[];
   currentUser?: User | null;
 };
 

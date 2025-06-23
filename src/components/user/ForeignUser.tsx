@@ -12,7 +12,7 @@ import { Button } from "~/components/ui/button";
 import { ArrowLeft, Cake } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { addFriendAction, removeFriendAction } from "~/services/friend/actions";
+import { acceptFriendRequestAction, sendFriendRequestAction } from "~/services/friend/actions";
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
 import { AddFriendButton } from "~/components/friends/AddFriendButton";
@@ -43,28 +43,20 @@ export function ForeignUser(props: Props) {
 }
 
 function ForeignUserMobile({ wishlistOwner, wishlist, currentUser }: Props) {
-  const router = useRouter();
   const { t } = useTranslation();
-
-  const footer = (currentUser &&
-    (wishlistOwner.isFriend ? (
-      <Button
-        onClick={() => router.push(`/${currentUser?.username}/friends/your-friends`)}
-        variant="outline"
-        size="lg"
-        className="mt-auto"
-      >
-        {t("actions.backToFriends")}
-      </Button>
-    ) : (
-      <AddFriendButton friendId={wishlistOwner.id} currentUser={currentUser} friendUsername={wishlistOwner.username} />
-    ))) || <SignInButton buttonVariant="default" />;
-
   return (
-    <WithStickyFooter footer={footer}>
+    <WithStickyFooter footer={<MobileFooter wishlistOwner={wishlistOwner} currentUser={currentUser} />}>
       <div className="flex h-full flex-col pb-4">
         <div className="sticky top-0 z-10 grid w-full grid-cols-[auto_max-content] items-center bg-background pr-4">
-          <UserDetails user={wishlistOwner} context="wishlist" />
+          <UserDetails
+            user={wishlistOwner}
+            context="wishlist"
+            extraContent={
+              <Badge className="mt-1.5 font-normal" variant="attention">
+                {t("friends.pendingFriendRequest")}
+              </Badge>
+            }
+          />
           {currentUser && wishlistOwner.isFriend && (
             <FriendDropdownMenu friendId={wishlistOwner.id} currentUser={currentUser} />
           )}
@@ -78,6 +70,56 @@ function ForeignUserMobile({ wishlistOwner, wishlist, currentUser }: Props) {
         </div>
       </div>
     </WithStickyFooter>
+  );
+}
+
+function MobileFooter({ wishlistOwner, currentUser }: Omit<Props, "wishlist">) {
+  const [isPending, startTransition] = useTransition();
+
+  const handleAcceptFriendRequest = () => {
+    startTransition(async () => {
+      const formData = new FormData();
+      formData.append("friendId", wishlistOwner.id);
+
+      const result = await acceptFriendRequestAction(formData);
+      if (result.error) {
+        showErrorToast(getErrorMessage(result.error, t));
+      } else {
+        router.refresh();
+      }
+    });
+  };
+
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  if (!currentUser) return <SignInButton buttonVariant="default" />;
+
+  if (wishlistOwner.hasPendingOutgoingFriendRequest) return null;
+
+  if (wishlistOwner.isFriend) {
+    return (
+      <Button
+        onClick={() => router.push(`/${currentUser?.username}/friends/your-friends`)}
+        variant="outline"
+        size="lg"
+        className="mt-auto"
+      >
+        {t("actions.backToFriends")}
+      </Button>
+    );
+  }
+
+  if (wishlistOwner.hasPendingIncomingFriendRequest) {
+    return (
+      <Button onClick={handleAcceptFriendRequest} disabled={isPending} className="px-4">
+        {t("actions.acceptFriendRequest")}
+      </Button>
+    );
+  }
+
+  return (
+    <AddFriendButton friendId={wishlistOwner.id} currentUser={currentUser} friendUsername={wishlistOwner.username} />
   );
 }
 
@@ -99,31 +141,30 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
     }
   };
 
-  const handleRemoveFriendAction = () => {
+  const handleSendFriendRequest = () => {
     startTransition(async () => {
       const formData = new FormData();
       formData.append("friendId", wishlistOwner.id);
 
-      const result = await removeFriendAction(formData);
+      const result = await sendFriendRequestAction(formData);
       if (result.error) {
         showErrorToast(getErrorMessage(result.error, t));
+      } else {
+        router.refresh();
       }
-      goToFriends();
     });
   };
 
-  const handleAddFriendAction = () => {
+  const handleAcceptFriendRequest = () => {
     startTransition(async () => {
       const formData = new FormData();
       formData.append("friendId", wishlistOwner.id);
 
-      const result = await addFriendAction(formData);
+      const result = await acceptFriendRequestAction(formData);
       if (result.error) {
         showErrorToast(getErrorMessage(result.error, t));
-      }
-
-      if (currentUser) {
-        router.push(`/${currentUser.username}/friends/your-friends/${wishlistOwner.username}`);
+      } else {
+        router.refresh();
       }
     });
   };
@@ -148,7 +189,7 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
               {t("metadata.username.title", { username: wishlistOwner.username })}
             </h1>
             <div className="relative mt-6 flex w-fit items-start gap-10 rounded-xl border bg-background p-4 pr-8">
-              <div className="flex items-center gap-4">
+              <div className="flex items-start gap-4">
                 <Avatar className="size-20">
                   <AvatarImage
                     src={wishlistOwner.image || ""}
@@ -156,11 +197,16 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
                   />
                   <AvatarFallback />
                 </Avatar>
-                <div>
-                  <h1 className="scroll-m-20 text-2xl font-bold tracking-tight">
+                <div className="mt-3">
+                  <p className="flex scroll-m-20 items-start gap-2 text-2xl font-bold tracking-tight">
                     {[wishlistOwner.firstName, wishlistOwner.lastName].filter(Boolean).join(" ")}
-                  </h1>
-                  <p className="mt-1 flex items-center gap-2">
+                    {wishlistOwner.hasPendingOutgoingFriendRequest && (
+                      <Badge className="mt-1.5 font-normal" variant="attention">
+                        {t("friends.pendingFriendRequest")}
+                      </Badge>
+                    )}
+                  </p>
+                  <p className="flex items-center gap-2">
                     @{wishlistOwner.username}
                     {birthday && (
                       <Badge variant="birthday">
@@ -169,16 +215,22 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
                     )}
                   </p>
                 </div>
+                {!wishlistOwner.hasPendingOutgoingFriendRequest && (
+                  <div className="mt-3">
+                    {wishlistOwner.isFriend ? (
+                      <FriendDropdownMenu friendId={wishlistOwner.id} currentUser={currentUser} />
+                    ) : wishlistOwner.hasPendingIncomingFriendRequest ? (
+                      <Button size="sm" onClick={handleAcceptFriendRequest} disabled={isPending} className="px-4">
+                        {t("actions.acceptFriendRequest")}
+                      </Button>
+                    ) : (
+                      <Button size="sm" onClick={handleSendFriendRequest} disabled={isPending} className="px-4">
+                        {t("actions.addFriend")}
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
-              <Button
-                size="xs"
-                variant={wishlistOwner.isFriend ? "tertiary" : "default"}
-                onClick={wishlistOwner.isFriend ? handleRemoveFriendAction : handleAddFriendAction}
-                disabled={isPending}
-                className="mt-4"
-              >
-                {wishlistOwner.isFriend ? t("actions.removeFriend") : t("actions.addFriend")}
-              </Button>
             </div>
           </>
         )}

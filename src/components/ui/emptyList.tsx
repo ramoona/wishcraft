@@ -9,7 +9,7 @@ export function EmptyList({ shape }: PropsWithChildren<{ shape: "1" | "2" | "3" 
   const Shape = shapes[shape];
   const { t } = useTranslation();
   return (
-    <div className="relative flex grow items-center justify-center px-8 lg:fixed lg:bottom-8 lg:right-8 lg:block lg:w-[40vw] lg:px-0">
+    <div className="relative flex grow items-center justify-center px-8 lg:fixed lg:bottom-8 lg:right-8 lg:block lg:w-[40vw] lg:max-w-[70vh] lg:px-0">
       <Shape fill="#FFFFFF" className="max-w-64 sm:max-w-80 lg:max-w-full" />
 
       <div className="absolute flex size-full items-center justify-center lg:top-1/2 lg:h-fit lg:-translate-y-1/2">

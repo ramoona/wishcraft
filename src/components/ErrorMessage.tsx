@@ -31,7 +31,7 @@ export function ErrorMessage({
   }
 
   return (
-    <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content] bg-primary">
+    <div className="fixed left-0 top-0 z-50 grid h-dvh min-h-screen w-screen grid-rows-[min-content_auto_min-content] bg-primary">
       <header className="relative flex h-20 w-screen items-center justify-center">
         <Link href="/" className="h-fit">
           <Logo />

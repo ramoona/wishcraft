@@ -24,10 +24,12 @@ model User {
   googleId String?
 
   // Relations
-  wishlists Wishlist[]
-  reserved  Wish[]
-  friends   Friend[]   @relation("FriendA")
-  friendOf  Friend[]   @relation("FriendB")
+  wishlists              Wishlist[]
+  reserved               Wish[]
+  friends                Friend[]        @relation("FriendA")
+  friendOf               Friend[]        @relation("FriendB")
+  friendRequestsSent     FriendRequest[] @relation("RequestedBy")
+  friendRequestsReceived FriendRequest[] @relation("ReceivedBy")
 
   // Preferences
   defaultCurrency String?
@@ -103,6 +105,21 @@ model Friend {
   updatedAt DateTime @updatedAt
 
   @@id([friendAId, friendBId])
+  @@unique([friendAId, friendBId])
+}
+
+model FriendRequest {
+  requestedById String
+  receivedById  String
+
+  requestedBy User @relation("RequestedBy", fields: [requestedById], references: [id])
+  receivedBy  User @relation("ReceivedBy", fields: [receivedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([requestedById, receivedById])
+  @@unique([requestedById, receivedById])
 }
 
 model UserActionsLog {

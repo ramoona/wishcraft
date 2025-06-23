@@ -25,7 +25,10 @@
     "viewActiveWishes": "View active wishes",
     "reserve": "Reserve",
     "cancelReservation": "Cancel reservation",
-    "backToFriends": "To friends"
+    "backToFriends": "To friends",
+    "accept": "Accept",
+    "decline": "Decline",
+    "acceptFriendRequest": "Accept friend request"
   },
   "states": {
     "saving": "Saving...",
@@ -81,11 +84,16 @@
     "birthdayIn_other": "Birthday in {{ count }} days",
     "tabs": {
       "friends": "Your friends",
+      "friendsMobile": "Friends",
       "reservedWishes": "Reserved wishes",
-      "reservedWishesTitle": "Reserved wishes"
+      "reservedWishesTitle": "Reserved wishes",
+      "requests": "Requests"
     },
     "subtitle": "Add more friends to get inspired by their wishlists and share your wishes with them",
-    "reservedWishedSubtitle": "Here are the wishes you reserved from your friends and other users"
+    "reservedWishedSubtitle": "Here are the wishes you reserved from your friends and other users",
+    "requestsTitle": "Friends requests",
+    "requestsSubtitle": "Here are the friend requests you received from other users",
+    "pendingFriendRequest": "Pending friend request"
   },
   "error": {
     "error": "Error",
@@ -202,6 +210,7 @@
       "archived": "<b>Only you</b> can see your archived wishes"
     },
     "wishOwner": "@{{ username }}'s wish",
+    "wishOwnerWithLink": "<profile>@{{ username }}'s</profile> wish",
     "wishStatus": {
       "reserved": "Reserved",
       "reservedByYou": "Reserved by you",

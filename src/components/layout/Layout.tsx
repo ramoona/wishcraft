@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactNode } from "react";
-import { OtherUser, User } from "~/services/user/types";
+import { User } from "~/services/user/types";
 
 import { Logo } from "~/components/ui/logo";
 import Link from "next/link";
@@ -14,8 +14,8 @@ import { SignInButton } from "~/components/forms/SignInForm";
 export function AuthenticatedLayout({
   user,
   children,
-  otherUser,
-}: PropsWithChildren<{ user: User; otherUser?: OtherUser }>) {
+  friendRequestsCount,
+}: PropsWithChildren<{ user: User; friendRequestsCount: number }>) {
   return (
     <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content] lg:h-fit lg:min-h-dvh lg:bg-muted">
       <MobileOnly>
@@ -24,14 +24,14 @@ export function AuthenticatedLayout({
         </header>
       </MobileOnly>
       <DesktopOnly>
-        <Sidebar user={user} />
+        <Sidebar user={user} friendRequestsCount={friendRequestsCount} />
       </DesktopOnly>
-      <main className="relative mx-auto grid w-full max-w-lg grid-rows-[auto_min-content] overflow-y-auto bg-muted sm:rounded lg:mx-0 lg:max-w-screen-2xl lg:overflow-visible lg:bg-transparent lg:pl-80">
+      <main className="relative mx-auto grid w-full max-w-lg grid-rows-[auto_min-content] overflow-y-auto bg-muted sm:rounded lg:mx-0 lg:max-w-screen-2xl lg:overflow-visible lg:bg-transparent lg:pl-[21rem]">
         {children}
       </main>
       {user.isOnboarded && (
         <MobileOnly>
-          <NavBar user={user} otherUser={otherUser} />
+          <NavBar user={user} friendRequestsCount={friendRequestsCount} />
         </MobileOnly>
       )}
     </div>

@@ -23,6 +23,8 @@ export type OtherUser = Pick<
   "id" | "username" | "firstName" | "lastName" | "dayOfBirth" | "monthOfBirth" | "image" | "isProfileHidden"
 > & {
   isFriend: boolean;
+  hasPendingOutgoingFriendRequest: boolean;
+  hasPendingIncomingFriendRequest: boolean;
 };
 
 export type FriendUser = Pick<
@@ -54,7 +56,15 @@ export type UserActionPayload =
       changes: Partial<User>;
     }
   | {
-      action: "friend-added";
+      action: "friend-request-sent";
+      friendId: string;
+    }
+  | {
+      action: "friend-request-accepted";
+      friendId: string;
+    }
+  | {
+      action: "friend-request-dismissed";
       friendId: string;
     }
   | {

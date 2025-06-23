@@ -183,18 +183,34 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
     throw new UserError("USER_NOT_FOUND");
   }
 
-  const friendship = await prisma.friend.findFirst({
-    where: sessionUser
-      ? {
-          OR: [
-            { friendAId: sessionUser.id, friendBId: user.id },
-            { friendAId: user.id, friendBId: sessionUser.id },
-          ],
-        }
-      : undefined,
-  });
+  if (sessionUser) {
+    const friendship = await prisma.friend.findFirst({
+      where: sessionUser
+        ? {
+            OR: [
+              { friendAId: sessionUser.id, friendBId: user.id },
+              { friendAId: user.id, friendBId: sessionUser.id },
+            ],
+          }
+        : undefined,
+    });
 
-  return { ...user, isFriend: !!friendship };
+    const outgoingFriendRequest = await prisma.friendRequest.findFirst({
+      where: { requestedById: sessionUser.id, receivedById: user.id },
+    });
+    const incomingFriendRequest = await prisma.friendRequest.findFirst({
+      where: { requestedById: user.id, receivedById: sessionUser.id },
+    });
+
+    return {
+      ...user,
+      isFriend: !!friendship,
+      hasPendingOutgoingFriendRequest: !!outgoingFriendRequest,
+      hasPendingIncomingFriendRequest: !!incomingFriendRequest,
+    };
+  }
+
+  return { ...user, isFriend: false, hasPendingOutgoingFriendRequest: false, hasPendingIncomingFriendRequest: false };
 }
 
 export function toUser(user: PrismaUser): User {
