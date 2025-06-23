@@ -9,7 +9,6 @@ import * as React from "react";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { TabButton } from "~/components/ui/tab-button";
 import { cn } from "~/utils/classnames";
-import useMasonry from "~/hooks/useMasonry";
 
 type Props = {
   friends: FriendUser[];
@@ -73,7 +72,6 @@ function FriendsListMobile({ friends, user }: Props) {
 
 function FriendsListDesktop({ friends }: Props) {
   const { t } = useTranslation();
-  const { initialized, container } = useMasonry(friends);
 
   return (
     <>
@@ -83,36 +81,7 @@ function FriendsListDesktop({ friends }: Props) {
       </div>
       {friends.length > 0 ? (
         <>
-          <div className="relative">
-            <div
-              className={cn(
-                "absolute grid w-full grid-cols-2 flex-wrap items-start gap-4 pr-8 transition-opacity duration-300 xl:grid-cols-3",
-                initialized && "opacity-0",
-              )}
-            >
-              {friends?.map(({ id }) => (
-                <div
-                  key={id}
-                  className="relative flex h-20 animate-pulse flex-col gap-4 rounded-xl border bg-background p-4"
-                >
-                  <div className={cn("flex max-w-lg items-start gap-4")}>
-                    <div className="size-12 rounded-full bg-stone-100" />
-                    <div className="flex grow flex-col">
-                      <span className="mt-1 h-5 w-28 rounded bg-stone-200" />
-                      <span className="mt-0.5 h-5 w-36 rounded bg-stone-100" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div
-            className={cn(
-              "relative mb-8 grid grid-cols-2 flex-wrap items-start gap-4 pr-8 opacity-0 xl:grid-cols-3",
-              initialized && "opacity-100 transition-opacity duration-300",
-            )}
-            ref={container}
-          >
+          <div className={cn("relative mb-8 flex w-full max-w-lg flex-col flex-wrap items-start gap-4 pr-8")}>
             {friends.map(friend => {
               return (
                 <UserDetails

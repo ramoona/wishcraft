@@ -57,7 +57,7 @@ function ReservedWishesDesktop({ reservedWishes, user }: Props) {
   return (
     <>
       <div className="my-8">
-        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{t("friends.tabs.reservedWishes")}</h1>
+        <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{t("friends.tabs.reservedWishesTitle")}</h1>
         <p className="mb-4 w-full text-center text-xs lg:mt-2 lg:text-left">{t("friends.reservedWishedSubtitle")}</p>
       </div>
       {reservedWishes.length > 0 ? (

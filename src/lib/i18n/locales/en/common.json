@@ -80,8 +80,9 @@
     "birthdayIn_one": "Birthday in {{ count }} day",
     "birthdayIn_other": "Birthday in {{ count }} days",
     "tabs": {
-      "friends": "Your Friends",
-      "reservedWishes": "Reserved wishes"
+      "friends": "Your friends",
+      "reservedWishes": "Reserved wishes",
+      "reservedWishesTitle": "Reserved wishes"
     },
     "subtitle": "Add more friends to get inspired by their wishlists and share your wishes with them",
     "reservedWishedSubtitle": "Here are the wishes you reserved from your friends and other users"

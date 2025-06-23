@@ -243,7 +243,7 @@ function UserNav({ user }: { user: User }) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <div className="px-1 py-2">
-            <PreferredLanguage hideLabel noSuccessToast />
+            <PreferredLanguage hideLabel noSuccessToast filled />
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild className="no-underline">

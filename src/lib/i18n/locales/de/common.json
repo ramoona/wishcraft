@@ -80,7 +80,8 @@
     "birthdayIn_other": "Hat in {{ count }} Tagen Geburtstag",
     "tabs": {
       "friends": "Deine Freunde",
-      "reservedWishes": "Reservierte Wünsche"
+      "reservedWishes": "Reservierte Wünsche",
+      "reservedWishesTitle": "Reservierte Wünsche"
     },
     "subtitle": "Füge mehr Freunde hinzu, um dich von ihren Wunschlisten inspirieren zu lassen und deine eigenen Wünsche mit ihnen zu teilen.",
     "reservedWishedSubtitle": "Hier sind die Wünsche, die du von deinen Freunden und anderen Nutzern reserviert hast"

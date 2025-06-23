@@ -3,7 +3,7 @@ import { backgroundColors, backgroundUrls, WishLargeArtwork } from "~/components
 import { Price } from "~/components/wishlist/Price";
 import { WishStatus } from "~/components/wishlist/WishStatus";
 import { Button } from "~/components/ui/button";
-import { WishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
+import { ForeignWishDropdownMenu, OwnWishDropdownMenu } from "~/components/wishlist/own/WishDropdownMenu";
 import React, { useState } from "react";
 import { useUpdateWish } from "~/components/wishlist/own/hooks";
 import { ReserveButton } from "~/components/wishlist/foreign/ReserveButton";
@@ -55,7 +55,7 @@ export function WishCard({
       <div className="relative mt-12 flex min-h-[400px] flex-col rounded bg-background lg:mt-4 lg:h-fit lg:min-h-fit lg:rounded-xl lg:border">
         <MobileOnly>
           <WishLargeArtwork {...visuals} />
-          {!isForeign && <WishDropdownMenu wish={wish} onEdit={() => setEditModalOpen(true)} />}
+          {!isForeign && <OwnWishDropdownMenu wish={wish} onEdit={() => setEditModalOpen(true)} />}
         </MobileOnly>
         <div className="flex grow flex-col p-4">
           <div className="grow">
@@ -63,10 +63,20 @@ export function WishCard({
             <div className="space-y-1">
               <div className="flex w-full items-baseline justify-between gap-4">
                 <div className="grow">
-                  {!isForeign && (
+                  {!isForeign ? (
                     <DesktopOnly className="float-left mr-1 h-4">
-                      <WishDropdownMenu side="right" wish={wish} onEdit={() => setEditModalOpen(true)} />
+                      <OwnWishDropdownMenu side="right" wish={wish} onEdit={() => setEditModalOpen(true)} />
                     </DesktopOnly>
+                  ) : (
+                    (reservedByCurrentUser || !wish.reservedById) && (
+                      <DesktopOnly className="float-left mr-1 h-4">
+                        <ForeignWishDropdownMenu
+                          wish={wish}
+                          isLoggedIn={isLoggedIn}
+                          reservedByCurrentUser={reservedByCurrentUser}
+                        />
+                      </DesktopOnly>
+                    )
                   )}
                   <h1 className="text-xl font-bold lg:text-lg lg:font-medium">{name}</h1>
                 </div>

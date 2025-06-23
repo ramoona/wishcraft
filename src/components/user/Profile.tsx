@@ -407,9 +407,11 @@ export function AccountDeletionDialog({ isOpen, setOpen }: { isOpen: boolean; se
 export function PreferredLanguage({
   hideLabel = false,
   noSuccessToast = false,
+  filled,
 }: {
   hideLabel?: boolean;
   noSuccessToast?: boolean;
+  filled?: boolean;
 }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -430,7 +432,7 @@ export function PreferredLanguage({
   return (
     <div className="flex flex-col gap-2">
       {!hideLabel && <Label className="pl-2">{t("profile.preferredLanguage")}</Label>}
-      <LanguageSwitcher onChange={trigger} />
+      <LanguageSwitcher onChange={trigger} filled={filled} />
     </div>
   );
 }

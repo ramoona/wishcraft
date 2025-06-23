@@ -19,7 +19,7 @@ const container = cva("rounded bg-background no-underline", {
       true: "sticky top-0 z-10",
     },
     context: {
-      friends: "lg:rounded-xl lg:border",
+      friends: "lg:w-full lg:rounded-xl lg:border",
       profile: "",
       wishlist: "",
       sidebar: "",
