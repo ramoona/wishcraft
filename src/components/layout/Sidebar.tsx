@@ -230,7 +230,9 @@ function UserNav({ user }: { user: User }) {
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild className="no-underline">
-            <Link href="/api/auth/logout">{t("profile.menu.signOut")}</Link>
+            <Link href="/api/auth/logout" prefetch={false}>
+              {t("profile.menu.signOut")}
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenuPrimitive.Root>
