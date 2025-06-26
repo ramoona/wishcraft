@@ -179,10 +179,6 @@ export async function getUserByUserName(username: string): Promise<OtherUser> {
     throw new UserError("USER_NOT_FOUND");
   }
 
-  if (user?.isProfileHidden && sessionUser?.username !== username) {
-    throw new UserError("USER_NOT_FOUND");
-  }
-
   if (sessionUser) {
     const friendship = await prisma.friend.findFirst({
       where: sessionUser

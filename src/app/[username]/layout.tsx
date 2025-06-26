@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 
 import { getServerTranslations } from "~/lib/i18n/server/translations";
 
-export default async function UserLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function UserLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return children;
 }
 

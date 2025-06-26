@@ -222,6 +222,11 @@
       "active": "Aktive Wünsche",
       "fulfilled": "Erfüllte Wünsche",
       "archived": "Archivierte Wünsche"
+    },
+    "visibility": {
+      "private": {
+        "description": "Diese Wunschliste ist privat. Nur die Besitzer*in kann sie sehen "
+      }
     }
   },
   "wishForm": {

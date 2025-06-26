@@ -65,13 +65,22 @@ function ForeignUserMobile({ wishlistOwner, wishlist, currentUser }: Props) {
             <FriendDropdownMenu friendId={wishlistOwner.id} currentUser={currentUser} />
           )}
         </div>
-        <div className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded">
-          {wishlist.wishes.length > 0 ? (
-            <ForeignWishesWishesMobile wishes={wishlist.wishes} currentUser={currentUser} />
-          ) : (
-            <EmptyList shape="3" />
-          )}
-        </div>
+        {!wishlistOwner.isProfileHidden && (
+          <div className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded">
+            {wishlist.wishes.length > 0 ? (
+              <ForeignWishesWishesMobile wishes={wishlist.wishes} currentUser={currentUser} />
+            ) : (
+              <EmptyList shape="3" />
+            )}
+          </div>
+        )}
+        {wishlistOwner.isProfileHidden && (
+          <div className="flex h-full items-center">
+            <p className="px-8 py-4 text-center">
+              <span className="text-foreground/70">{t("wishlist.visibility.private.description")}</span> 👀
+            </p>
+          </div>
+        )}
       </div>
     </WithStickyFooter>
   );
@@ -259,10 +268,16 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
           </>
         )}
       </div>
-      {wishlist.wishes.length > 0 ? (
-        <ForeignWishesWishesDesktop currentUser={currentUser} wishes={wishlist.wishes} />
-      ) : (
-        <EmptyList shape="4" />
+      {!wishlistOwner.isProfileHidden &&
+        (wishlist.wishes.length > 0 ? (
+          <ForeignWishesWishesDesktop currentUser={currentUser} wishes={wishlist.wishes} />
+        ) : (
+          <EmptyList shape="4" />
+        ))}
+      {wishlistOwner.isProfileHidden && (
+        <p className="ml-2">
+          <span className="text-foreground/70">{t("wishlist.visibility.private.description")}</span> 👀
+        </p>
       )}
     </>
   );

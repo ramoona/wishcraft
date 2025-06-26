@@ -223,6 +223,11 @@
       "active": "Active Wishes",
       "fulfilled": "Fulfilled Wishes",
       "archived": "Archived Wishes"
+    },
+    "visibility": {
+      "private": {
+        "description": "This wishlist is private. Only the owner can see it "
+      }
     }
   },
   "wishForm": {
