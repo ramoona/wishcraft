@@ -1,7 +1,5 @@
 import { getSessionUser } from "~/services/session";
 import { AuthenticatedLayout } from "~/components/layout/Layout";
-import { WishlistError } from "~/services/wishlist/errors";
-import { UserError } from "~/services/user/errors";
 import { ErrorMessage } from "~/components/ErrorMessage";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { countFriendRequestsForCurrentUser } from "~/services/friend";
@@ -19,17 +17,15 @@ export default async function UserLayout({
   try {
     sessionUser = await getSessionUser();
   } catch (e) {
-    if (
-      (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||
-      (e instanceof UserError && e.errorCode === "USER_NOT_FOUND")
-    ) {
-      return <ErrorMessage errorCode={e.errorCode} context={{ username }} />;
-    }
     return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
   }
 
-  if (!sessionUser) {
+  if (!sessionUser || sessionUser.username !== username) {
     redirect("/");
+  }
+
+  if (sessionUser && !sessionUser.isOnboarded) {
+    redirect(`/${sessionUser.username}/onboarding`);
   }
 
   const friendRequestsCount = await countFriendRequestsForCurrentUser();

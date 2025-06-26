@@ -1,31 +1,13 @@
 import type { Metadata } from "next";
-import { getSessionUser } from "~/services/session";
-import { WishlistError } from "~/services/wishlist/errors";
-import { UserError } from "~/services/user/errors";
-import { ErrorMessage } from "~/components/ErrorMessage";
-import { isErrorKnown, KnownError } from "~/core/errors";
+
 import { getServerTranslations } from "~/lib/i18n/server/translations";
 
 export default async function UserLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ username: string }>;
 }>) {
-  const { username } = await params;
-  try {
-    await getSessionUser();
-    return children;
-  } catch (e) {
-    if (
-      (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||
-      (e instanceof UserError && e.errorCode === "USER_NOT_FOUND")
-    ) {
-      return <ErrorMessage errorCode={e.errorCode} context={{ username }} />;
-    }
-    return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
-  }
+  return children;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
