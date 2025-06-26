@@ -69,9 +69,7 @@ export function SignInLayout({ children }: PropsWithChildren) {
           <TextOnlyLogo />
         </Link>
       </header>
-      <main className="relative h-dvh overflow-auto px-11 pt-20">
-        <div className="mx-auto size-full">{children}</div>
-      </main>
+      <main className="relative h-dvh overflow-auto px-11 pb-10 pt-20 lg:pb-20">{children}</main>
     </div>
   );
 }

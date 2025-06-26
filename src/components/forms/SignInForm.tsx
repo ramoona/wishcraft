@@ -10,9 +10,10 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
   const { t, i18n } = useTranslation();
 
   return (
-    <div className="flex min-h-full flex-col items-center py-10 sm:mx-auto lg:flex-row lg:items-center lg:justify-center lg:gap-20 lg:pb-32">
+    <div className="flex min-h-full flex-col items-center justify-center gap-7 sm:mx-auto md:gap-12 lg:grid lg:grid-cols-2 lg:items-center lg:justify-center lg:gap-20">
       <div
-        className="aspect-[0.94] w-full shrink-0 sm:mx-auto sm:w-[306px] sm:grow-0 lg:mx-0 lg:w-[580px]"
+        // className="aspect-[0.94] w-full shrink-0 sm:mx-auto sm:w-[306px] sm:grow-0 lg:mx-0 lg:w-[30vw] xl:w-[580px]"
+        className="aspect-[0.94] w-full shrink-0 sm:mx-auto sm:w-[38dvh] lg:mx-0 lg:h-fit lg:w-full lg:max-w-[580px] lg:justify-self-end"
         style={{
           backgroundImage: "url('/images/art-3.png')",
           backgroundSize: "contain",
@@ -20,9 +21,26 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
           backgroundRepeat: "no-repeat",
         }}
       />
-      <div className="sm:text-center lg:mb-10 lg:max-w-lg lg:text-left">
-        <TypographyExtraLargeHeader>{t("login.heading")}</TypographyExtraLargeHeader>
-        <p className="mt-4 text-foreground/80 lg:max-w-lg">{t("login.description")}</p>
+      <div className="max-w-xl sm:text-center lg:text-left">
+        <TypographyExtraLargeHeader>
+          <Trans
+            t={t}
+            i18nKey="login.heading"
+            components={{
+              br: <br className="hidden md:inline-block" />,
+            }}
+          />
+        </TypographyExtraLargeHeader>
+        <p className="mt-4 text-foreground/80 lg:max-w-xl">
+          <Trans
+            t={t}
+            i18nKey="login.description"
+            components={{
+              b: <b className="font-bold" />,
+              italic: <span className="italic" />,
+            }}
+          />
+        </p>
         <div className="mt-6 flex flex-col items-center lg:mt-10 lg:items-start">
           <SignInButton wishlistOwner={wishlistOwner} wishId={wishId} />
           <p className="mt-4 text-sm text-foreground/70">
@@ -35,7 +53,6 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
               }}
             />
           </p>
-          <p className="mt-4 text-sm text-foreground/70 sm:mt-1">{t("login.loginAgreement2")}</p>
         </div>
       </div>
     </div>

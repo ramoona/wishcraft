@@ -20,6 +20,10 @@ export default async function UserPage({ params }: { params: Promise<{ username:
     const wishlistOwner = await getUserByUserName(username);
     const wishlist = await getForeignWishlistByUsername(username);
 
+    if (sessionUser && wishlistOwner.isFriend) {
+      redirect(`/${sessionUser.username}/friends/your-friends/${wishlistOwner.username}`);
+    }
+
     return <ForeignUser wishlist={wishlist} wishlistOwner={wishlistOwner} currentUser={sessionUser} />;
   } catch (e) {
     if (

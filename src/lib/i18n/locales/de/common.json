@@ -157,8 +157,10 @@
     "december": "Dezember"
   },
   "login": {
-    "heading": "Mach deine Wünsche wahr!",
-    "loginAgreement": "Mit der Anmeldung stimmst du unseren <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzrichtlinie</privacy> zu.",
+    "heading": "Mach deine <br />Wünsche wahr!",
+    "description": "<b>Wishcraft</b> ist eine einfache Wunschliste-App, mit der du deine Wünsche speichern, mit Freunden teilen und ihre Wünsche schnappen kannst, bevor es jemand anders tut. <italic>Kein AI, keine Werbung, keine Empfehlungen</italic> – nur Platz für deine eigene Wunsch-Magie.",
+    "loginAgreement": "Mit der Anmeldung stimmst du unseren <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzrichtlinie</privacy> von Wishcraft zu. Wir nutzen Google Sign-In nur, um dich zu erkennen und dir Zugriff auf deine persönliche Wunschliste und Reservierungen zu geben.",
+    "loginAgreement2": "Wir nutzen Google Sign-In nur, um dich zu erkennen und dir Zugriff auf deine persönliche Wunschliste und Reservierungen zu geben.",
     "privacyPolicy": "Datenschutz",
     "termsOfService": "Nutzungsbedingungen"
   },
