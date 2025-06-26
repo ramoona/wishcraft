@@ -11,7 +11,7 @@ We collect the following personal data from you when you use our service:
 - **Email address, first name, and last name**: For account sign-in and identification purposes.
 - **Wishlist items**: User-generated content you add to your wishlist.
 - **IP address**: Collected via server logs for security and analytics purposes.
-- **Cookies**: We use session cookies to manage your login state and ensure the functionality of the website.
+- **Cookies**: We use session cookies for your login state and language preference to ensure the functionality of the website.
 
 ## Why We Collect Your Data
 
@@ -47,7 +47,7 @@ Under the General Data Protection Regulation (GDPR), you have the following righ
 
 ## Cookies
 
-We use cookies to manage your sign-in state and ensure the functionality of the website. These cookies are essential for accessing your account and wishlist features. The authentication cookie is a persistent cookie that remains stored in your browser for 30 days, unless you log out manually. It does not track you across other sites and is used solely for authentication purposes.
+We use cookies to manage your sign-in state and ensure the functionality of the website. These cookies are essential for accessing your account and wishlist features as well as persisting your preferred language. The authentication cookie is a persistent cookie that remains stored in your browser for 30 days, unless you log out manually. It does not track you across other sites and is used solely for authentication purposes.
 
 ## Contact Information
 

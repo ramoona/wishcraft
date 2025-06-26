@@ -11,7 +11,7 @@ Wir erheben folgende personenbezogene Daten, wenn Sie unseren Dienst nutzen:
 - **E-Mail-Adresse, Vorname und Nachname**: Zur Anmeldung und Identifikation Ihres Kontos.
 - **Wunschlisteneinträge**: Von Ihnen erstellte Inhalte in Ihrer Wunschliste.
 - **IP-Adresse**: Wird über Server-Logs zur Sicherheit und Analysezwecken erfasst.
-- **Cookies**: Wir verwenden Session-Cookies, um Ihren Login-Status zu verwalten und die Funktionalität der Website sicherzustellen.
+- **Cookies**: Wir verwenden Session-Cookies für deinen Login-Status und deine Spracheinstellung, damit die Website richtig funktioniert.
 
 ## Zweck der Datenerhebung
 
@@ -47,7 +47,7 @@ Gemäß der Datenschutz-Grundverordnung (DSGVO) stehen Ihnen folgende Rechte zu:
 
 ## Cookies
 
-Wir verwenden Cookies, um Ihren Anmeldestatus zu verwalten und die Funktionalität der Website sicherzustellen. Diese Cookies sind erforderlich, um auf Ihr Konto und Ihre Wunschliste zugreifen zu können. Das Authentifizierungs-Cookie ist ein dauerhaftes Cookie, das für 30 Tage in Ihrem Browser gespeichert bleibt, es sei denn, Sie melden sich manuell ab. Es dient ausschließlich der Authentifizierung und verfolgt Sie nicht über andere Websites hinweg.
+Wir verwenden Cookies, um Ihren Anmeldestatus zu verwalten und die Funktionalität der Website sicherzustellen. Diese Cookies sind notwendig, damit du auf deinen Account und die Wunschlisten-Funktionen zugreifen kannst und deine bevorzugte Sprache gespeichert bleibt. Das Authentifizierungs-Cookie ist ein dauerhaftes Cookie, das für 30 Tage in Ihrem Browser gespeichert bleibt, es sei denn, Sie melden sich manuell ab. Es dient ausschließlich der Authentifizierung und verfolgt Sie nicht über andere Websites hinweg.
 
 ## Kontakt
 
