@@ -7,24 +7,22 @@ import { getUserByUserName } from "~/services/user";
 import { isErrorKnown, KnownError } from "~/core/errors";
 import { redirect } from "next/navigation";
 import { ForeignUser } from "~/components/user/ForeignUser";
+import { NonAuthenticatedLayout, AuthenticatedLayout } from "~/components/layout/Layout";
+import { countFriendRequestsForCurrentUser } from "~/services/friend";
 
 export default async function UserPage({ params }: { params: Promise<{ username: string }> }) {
   const sessionUser = await getSessionUser();
   const { username } = await params;
+  let wishlistOwner;
+  let wishlist;
 
   if (sessionUser && sessionUser.username === username) {
     redirect(`/${username}/wishes`);
   }
 
   try {
-    const wishlistOwner = await getUserByUserName(username);
-    const wishlist = await getForeignWishlistByUsername(username);
-
-    if (sessionUser && wishlistOwner.isFriend) {
-      redirect(`/${sessionUser.username}/friends/your-friends/${wishlistOwner.username}`);
-    }
-
-    return <ForeignUser wishlist={wishlist} wishlistOwner={wishlistOwner} currentUser={sessionUser} />;
+    wishlistOwner = await getUserByUserName(username);
+    wishlist = await getForeignWishlistByUsername(username);
   } catch (e) {
     if (
       (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||
@@ -34,4 +32,23 @@ export default async function UserPage({ params }: { params: Promise<{ username:
     }
     return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
   }
+
+  if (sessionUser) {
+    if (wishlistOwner.isFriend) {
+      redirect(`/${sessionUser.username}/friends/your-friends/${wishlistOwner.username}`);
+    } else {
+      const friendRequestsCount = await countFriendRequestsForCurrentUser();
+      return (
+        <AuthenticatedLayout user={sessionUser} friendRequestsCount={friendRequestsCount}>
+          <ForeignUser wishlist={wishlist} wishlistOwner={wishlistOwner} currentUser={sessionUser} />
+        </AuthenticatedLayout>
+      );
+    }
+  }
+
+  return (
+    <NonAuthenticatedLayout>
+      <ForeignUser wishlist={wishlist} wishlistOwner={wishlistOwner} currentUser={sessionUser} />
+    </NonAuthenticatedLayout>
+  );
 }

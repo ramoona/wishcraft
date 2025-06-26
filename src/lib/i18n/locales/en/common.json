@@ -26,6 +26,7 @@
     "reserve": "Reserve",
     "cancelReservation": "Cancel reservation",
     "backToFriends": "To friends",
+    "backToFriendRequests": "To friend requests",
     "accept": "Accept",
     "decline": "Decline",
     "acceptFriendRequest": "Accept friend request"
@@ -90,7 +91,7 @@
       "requests": "Requests"
     },
     "subtitle": "Add more friends to get inspired by their wishlists and share your wishes with them",
-    "reservedWishedSubtitle": "Here are the wishes you reserved from your friends and other users",
+    "reservedWishesSubtitle": "Here are the wishes you reserved from your friends and other users",
     "requestsTitle": "Friends requests",
     "requestsSubtitle": "Here are the friend requests you received from other users",
     "pendingFriendRequest": "Pending friend request"
@@ -169,6 +170,7 @@
     "backToSafety": "Back to safety"
   },
   "profile": {
+    "heading": "Your profile",
     "privateWishlist": "Private wishlist",
     "publicWishlistEnabled": "Your wishlist is <bold>private</bold>. Only your friends can see your wishes.",
     "publicWishlistDisabled": "Your wishlist is <bold>public</bold>. Others can see your wishes.",
@@ -224,7 +226,7 @@
     }
   },
   "wishForm": {
-    "reservedHint": "This wish is reserved by someone else",
+    "reservedHint": "This wish is reserved by someone",
     "labels": {
       "title": "Title",
       "comment": "Comment",

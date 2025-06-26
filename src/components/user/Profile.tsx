@@ -54,7 +54,7 @@ export function Profile({ user }: { user: User }) {
     <>
       <div className="flex flex-col gap-4 bg-background lg:bg-transparent lg:p-0">
         <DesktopOnly>
-          <h1 className="mt-8 scroll-m-20 text-4xl font-bold tracking-tight">Your profile</h1>
+          <h1 className="mt-8 scroll-m-20 text-4xl font-bold tracking-tight">{t("profile.heading")}</h1>
         </DesktopOnly>
         <div className="grow">
           <MobileOnly>
@@ -88,7 +88,7 @@ export function Profile({ user }: { user: User }) {
 
 export function ProfileForm({ user }: { user: User }) {
   return (
-    <div className="mx-auto max-w-lg bg-background px-4 lg:mx-0 lg:mt-4 lg:max-w-xl lg:rounded-xl lg:border lg:p-4">
+    <div className="mx-auto max-w-lg bg-background px-4 lg:mx-0 lg:mt-4 lg:max-w-xl lg:rounded-xl lg:border lg:p-5">
       <DesktopOnly className="mb-8">
         <UserDetails user={user} email={user.email} context="profile-desktop" />
       </DesktopOnly>
@@ -353,7 +353,7 @@ export function SupportDialog({ isOpen, setOpen }: { isOpen: boolean; setOpen: (
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("profile.supportModal.title")}</DialogTitle>
-          <DialogDescription className="pt-4">
+          <DialogDescription>
             <Trans
               t={t}
               i18nKey="profile.supportModal.description"

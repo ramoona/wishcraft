@@ -8,9 +8,9 @@ import * as React from "react";
 import { WishlistType } from "~/services/wishlist/types";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { ForeignWishesWishesDesktop, ForeignWishesWishesMobile } from "~/components/wishlist/foreign/ForeignWishes";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { ArrowLeft, Cake } from "@phosphor-icons/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { acceptFriendRequestAction, sendFriendRequestAction } from "~/services/friend/actions";
 import { showErrorToast } from "~/components/ui/toasts";
@@ -22,6 +22,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { DateTime } from "luxon";
 import { Badge } from "~/components/ui/badge";
 import { SignInButton } from "~/components/forms/SignInForm";
+import Link from "next/link";
+import { cn } from "~/utils/classnames";
 
 type Props = {
   wishlistOwner: OtherUser;
@@ -35,7 +37,7 @@ export function ForeignUser(props: Props) {
       <DesktopOnly>
         <ForeignUserDesktop {...props} />
       </DesktopOnly>
-      <MobileOnly className="h-full flex-col" display="flex">
+      <MobileOnly className="h-full flex-col pb-4" display="flex">
         <ForeignUserMobile {...props} />
       </MobileOnly>
     </>
@@ -52,9 +54,11 @@ function ForeignUserMobile({ wishlistOwner, wishlist, currentUser }: Props) {
             user={wishlistOwner}
             context="wishlist"
             extraContent={
-              <Badge className="mt-1.5 font-normal" variant="attention">
-                {t("friends.pendingFriendRequest")}
-              </Badge>
+              wishlistOwner.hasPendingOutgoingFriendRequest && (
+                <Badge className="mt-1.5 font-normal" variant="attention">
+                  {t("friends.pendingFriendRequest")}
+                </Badge>
+              )
             }
           />
           {currentUser && wishlistOwner.isFriend && (
@@ -92,12 +96,14 @@ function MobileFooter({ wishlistOwner, currentUser }: Omit<Props, "wishlist">) {
 
   const { t } = useTranslation();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromRoute = searchParams.get("from");
 
   if (!currentUser) return <SignInButton buttonVariant="default" />;
 
   if (wishlistOwner.hasPendingOutgoingFriendRequest) return null;
 
-  if (wishlistOwner.isFriend) {
+  if (wishlistOwner.isFriend && fromRoute === "friends") {
     return (
       <Button
         onClick={() => router.push(`/${currentUser?.username}/friends/your-friends`)}
@@ -127,6 +133,10 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const { t, i18n } = useTranslation();
+  const pathname = usePathname();
+  const pathSegments = pathname.split("/");
+  const searchParams = useSearchParams();
+  const fromRoute = searchParams.get("from");
 
   const birthday =
     wishlistOwner.dayOfBirth && wishlistOwner.monthOfBirth
@@ -179,12 +189,26 @@ function ForeignUserDesktop({ wishlistOwner, wishlist, currentUser }: Props) {
         )}
         {currentUser && (
           <>
-            {wishlistOwner.isFriend && (
-              <Button variant="ghost" onClick={goToFriends} className="mb-4 flex items-center gap-2 px-2">
+            {(wishlistOwner.isFriend && (fromRoute === "friends" || pathSegments[2] === "friends") && (
+              <Link
+                href={`/${currentUser.username}/friends/your-friends`}
+                onClick={goToFriends}
+                className={cn(buttonVariants({ variant: "ghost" }), "mb-4 flex items-center gap-2 px-2 no-underline")}
+              >
                 <ArrowLeft size={20} />
                 {t("actions.backToFriends")}
-              </Button>
-            )}
+              </Link>
+            )) ||
+              (wishlistOwner.hasPendingIncomingFriendRequest && fromRoute === "requests" && (
+                <Link
+                  href={`/${currentUser.username}/friends/requests`}
+                  onClick={goToFriends}
+                  className={cn(buttonVariants({ variant: "ghost" }), "mb-4 flex items-center gap-2 px-2 no-underline")}
+                >
+                  <ArrowLeft size={20} />
+                  {t("actions.backToFriendRequests")}
+                </Link>
+              ))}
             <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
               {t("metadata.username.title", { username: wishlistOwner.username })}
             </h1>

@@ -76,7 +76,7 @@ export function WishModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={open => onOpenChange(open)}>
-      <DialogContent className={cn(firstWish ? "h-dvh" : "h-[calc(100dvh-5rem)]")}>
+      <DialogContent className={cn(firstWish || !isLoggedIn ? "h-dvh" : "h-[calc(100dvh-5rem)]")}>
         <VisuallyHidden>
           <DialogHeader>
             <DialogTitle>Add new wish</DialogTitle>

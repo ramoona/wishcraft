@@ -26,6 +26,7 @@
     "reserve": "Reservieren",
     "cancelReservation": "Reservierung aufheben",
     "backToFriends": "Zu Freunden",
+    "backToFriendRequests": "Zu Freundschaftsanfragen",
     "accept": "Akzeptieren",
     "decline": "Ablehnen"
   },
@@ -88,7 +89,7 @@
       "requests": "Anfragen"
     },
     "subtitle": "Füge mehr Freunde hinzu, um dich von ihren Wunschlisten inspirieren zu lassen und deine eigenen Wünsche mit ihnen zu teilen.",
-    "reservedWishedSubtitle": "Hier sind die Wünsche, die du von deinen Freunden und anderen Nutzern reserviert hast",
+    "reservedWishesSubtitle": "Hier sind die Wünsche, die du von deinen Freunden und anderen Nutzern reserviert hast",
     "requestsSubtitle": "Hier siehst du die Freundschaftsanfragen, die du erhalten hast",
     "requestsTitle": "Freundschaftsanfragen",
     "pendingFriendRequest": "Freundschaftsanfrage ausstehend"
@@ -168,6 +169,7 @@
     "backToSafety": "Zurück zur Übersicht"
   },
   "profile": {
+    "heading": "Dein Profil",
     "privateWishlist": "Private Wunschliste",
     "publicWishlistEnabled": "Deine Liste ist <bold>privat</bold>. Nur deine Freunde sehen sie.",
     "publicWishlistDisabled": "Deine Liste ist <bold>öffentlich</bold>. Jeder kann sie sehen.",
@@ -223,7 +225,7 @@
     }
   },
   "wishForm": {
-    "reservedHint": "Dieser Wunsch wurde schon von jemand anderem reserviert",
+    "reservedHint": "Dieser Wunsch wurde schon von jemand reserviert",
     "labels": {
       "title": "Titel",
       "comment": "Kommentar",

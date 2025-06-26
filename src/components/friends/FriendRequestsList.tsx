@@ -130,7 +130,7 @@ function FriendRequests({ friendRequests }: Omit<Props, "user">) {
         <AvatarFallback />
       </Avatar>
       <div className="flex grow flex-col">
-        <Link href={`/${user.username}`} className="mt-1 text-sm text-foreground/70">
+        <Link href={`/${user.username}?from=requests`} className="mt-1 text-sm text-foreground/70">
           @{user.username}
         </Link>
         <span className={cn("flex items-center gap-1")}>

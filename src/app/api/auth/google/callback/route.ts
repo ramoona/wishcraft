@@ -55,7 +55,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       return new Response(null, {
         status: 302,
         headers: {
-          Location: wishId ? `/wishes/${existingUser.username}?tab=reserved` : "/",
+          Location: wishId ? `/${existingUser.username}/friends/reserved-wishes` : "/",
           "Cache-Control": "no-store, max-age=0",
         },
       });
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: wishId ? `/wishes/${createdUser.username}?tab=reserved` : "/",
+        Location: wishId ? `/${createdUser.username}/friends/reserved-wishes` : "/",
         "Cache-Control": "no-store, max-age=0",
       },
     });

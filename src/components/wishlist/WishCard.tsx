@@ -76,7 +76,7 @@ export function WishCard({
               <div className="flex w-full items-baseline justify-between gap-4">
                 <div className="grow">
                   {!isForeign ? (
-                    <DesktopOnly className="float-left mr-1 h-4">
+                    <DesktopOnly className="float-left mr-2 h-4">
                       <OwnWishDropdownMenu side="right" wish={wish} onEdit={() => setEditModalOpen(true)} />
                     </DesktopOnly>
                   ) : (

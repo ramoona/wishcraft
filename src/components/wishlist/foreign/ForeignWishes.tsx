@@ -10,9 +10,10 @@ import { OtherUser, User } from "~/services/user/types";
 type Props = {
   wishes: (WishType & { user?: Pick<OtherUser, "username"> })[];
   currentUser?: User | null;
+  withOwnerUsername?: boolean;
 };
 
-export function ForeignWishesWishesMobile({ wishes, currentUser }: Props) {
+export function ForeignWishesWishesMobile({ wishes, currentUser, withOwnerUsername }: Props) {
   return (
     <WishlistItemsMobile>
       {wishes.map(wish => {
@@ -22,8 +23,9 @@ export function ForeignWishesWishesMobile({ wishes, currentUser }: Props) {
             wish={wish}
             username={currentUser?.username || ""}
             reservedByCurrentUser={wish.reservedById === currentUser?.id}
+            showReserved
             isLoggedIn={!!currentUser}
-            withOwnerUsername
+            withOwnerUsername={withOwnerUsername}
             isForeign
           />
         );
