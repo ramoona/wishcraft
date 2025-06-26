@@ -16,6 +16,10 @@ export default async function FriendsPage({ params }: { params: Promise<{ friend
     redirect(`/${friend}`);
   }
 
+  if (sessionUser && !sessionUser.isOnboarded) {
+    redirect(`/${sessionUser.username}/onboarding`);
+  }
+
   const friendUser = await getUserByUserName(friend);
   const wishlist = await getForeignWishlistByUsername(friend);
 

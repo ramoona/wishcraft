@@ -8,7 +8,6 @@ import { currencies, getTranslatedCurrency } from "~/lib/i18n/currencies";
 import { Select } from "~/components/ui/select";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
-import { TypographyMuted } from "~/components/ui/typography";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
 import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
 
@@ -37,6 +36,7 @@ export function OnboardingWizardCurrencyStep() {
       step="default-currency"
       onSubmit={trigger}
       isSubmitting={isPending}
+      description={t("onboarding.defaultCurrency.description")}
       isSkippable
     >
       <Select
@@ -44,7 +44,6 @@ export function OnboardingWizardCurrencyStep() {
         onChange={setCurrency}
         options={currencies.map(currency => ({ value: currency, label: getTranslatedCurrency(currency, t) }))}
       />
-      <TypographyMuted>{t("onboarding.defaultCurrency.description")}</TypographyMuted>
     </OnboardingWizardStep>
   );
 }

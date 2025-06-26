@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 
-import { TypographyHeader } from "~/components/ui/typography";
-import { WishOverlay } from "~/components/wishlist/WishOverlay";
+import { TypographyH2 } from "~/components/ui/typography";
+import { WishModal } from "~/components/wishlist/WishModal";
 
 export function OnboardingWizardFirstWishStep({ username }: { username: string }) {
   const router = useRouter();
@@ -18,34 +18,29 @@ export function OnboardingWizardFirstWishStep({ username }: { username: string }
     router.prefetch(`${username}/wishes`);
   }, [router, username]);
 
-  return isFormOpen ? (
-    <WishOverlay
-      isLoggedIn
-      firstWish
-      onBack={() => {
-        setIsFormOpen(false);
-      }}
-    />
-  ) : (
-    <OnboardingWizardStep
-      title={t("onboarding.fistWish.title")}
-      step="first-wish"
-      onSubmit={() => setIsFormOpen(true)}
-      isSubmitting={false}
-      isSkippable
-    >
-      <div className="flex h-full flex-col items-center pb-4">
-        <TypographyHeader>{t("onboarding.fistWish.subTitle")}</TypographyHeader>
-        <div
-          className="w-full grow sm:mt-10 sm:h-[284px] sm:w-[306px] sm:grow-0 sm:p-0"
-          style={{
-            backgroundImage: "url('/images/art-3.png')",
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
-      </div>
-    </OnboardingWizardStep>
+  return (
+    <>
+      <OnboardingWizardStep
+        title={t("onboarding.fistWish.title")}
+        step="first-wish"
+        onSubmit={() => setIsFormOpen(true)}
+        isSubmitting={false}
+        isSkippable
+      >
+        <div className="flex h-full flex-col items-center pb-4 lg:w-full">
+          <TypographyH2 className="-mt-4">{t("onboarding.fistWish.subTitle")}</TypographyH2>
+          <div
+            className="aspect-[0.94] w-full grow sm:mt-10 sm:w-[306px] sm:grow-0 sm:p-0 lg:mt-0 lg:w-[200px] lg:scale-[1.4]"
+            style={{
+              backgroundImage: "url('/images/art-3.png')",
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+        </div>
+      </OnboardingWizardStep>
+      <WishModal username={username} isOpen={isFormOpen} onOpenChange={setIsFormOpen} firstWish />
+    </>
   );
 }

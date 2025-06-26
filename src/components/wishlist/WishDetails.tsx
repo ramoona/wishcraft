@@ -5,8 +5,8 @@ import { Price } from "~/components/wishlist/Price";
 import { WishSmallArtwork } from "~/components/shapes/WishSmallArtwork";
 import React, { useState } from "react";
 import { WishStatus } from "~/components/wishlist/WishStatus";
-import { WishOverlay } from "~/components/wishlist/WishOverlay";
 import { useTranslation } from "react-i18next";
+import { WishModal } from "~/components/wishlist/WishModal";
 
 export function WishDetails({
   reservedByCurrentUser,
@@ -15,15 +15,15 @@ export function WishDetails({
   isForeign,
   wish,
   isLoggedIn,
-  showUsernameInDetails = false,
+  withOwnerUsername = false,
 }: {
   wish: WishType;
   reservedByCurrentUser?: boolean;
   showReserved?: boolean;
-  username?: string;
+  username: string;
   isForeign?: boolean;
   isLoggedIn?: boolean;
-  showUsernameInDetails?: boolean;
+  withOwnerUsername?: boolean;
 }) {
   const [isSelected, setIsSelected] = useState(false);
   const { name, isPrivate, price, currency, reservedById, ...visuals } = wish;
@@ -38,13 +38,14 @@ export function WishDetails({
       >
         <WishSmallArtwork {...visuals} />
         <div className="grid justify-start space-y-2 py-4">
-          {showUsernameInDetails && username && (
-            <span className="text-sm text-foreground/70">{t("wishlist.wishOwner", { username })}</span>
+          {withOwnerUsername && (
+            <span className="text-sm text-foreground/70">
+              {t("wishlist.wishOwner", { username: wish.owner.username })}
+            </span>
           )}
           <span className="max-h-8 truncate text-sm">{name}</span>
-          {!showUsernameInDetails && (
+          {!withOwnerUsername && (
             <WishStatus
-              username={username}
               isPrivate={isPrivate}
               showReserved={showReserved}
               reservedById={reservedById}
@@ -55,17 +56,17 @@ export function WishDetails({
         </div>
         <Price price={price} currency={currency} />
       </button>
-      {isSelected && (
-        <WishOverlay
-          wish={wish}
-          onBack={() => setIsSelected(false)}
-          showReserved={showReserved}
-          isForeign={isForeign}
-          reservedByCurrentUser={reservedByCurrentUser}
-          username={username}
-          isLoggedIn={isLoggedIn}
-        />
-      )}
+      <WishModal
+        isOpen={isSelected}
+        wish={wish}
+        onOpenChange={setIsSelected}
+        showReserved={showReserved}
+        isForeign={isForeign}
+        reservedByCurrentUser={reservedByCurrentUser}
+        username={username}
+        isLoggedIn={isLoggedIn}
+        withOwnerUsername={withOwnerUsername}
+      />
     </>
   );
 }

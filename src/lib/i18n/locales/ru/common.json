@@ -211,6 +211,7 @@
       "archived": "<b>Только ты</b> видишь свои архивные желания"
     },
     "wishOwner": "Желание @{{ username }}",
+    "wishOwnerLink": "Желание <profile>@{{ username }}</profile>",
     "wishStatus": {
       "reserved": "Зарезервировано",
       "reservedByYou": "Зарезервировано тобой",

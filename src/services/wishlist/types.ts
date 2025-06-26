@@ -1,5 +1,6 @@
 import { WishStatus } from "@prisma/client";
 import { WISH_COLORS } from "~/services/wishlist/consts";
+import { OtherUser } from "~/services/user/types";
 
 export type WishlistType = {
   wishes: WishType[];
@@ -23,6 +24,7 @@ export type WishType = {
   backgroundColor: WishColor;
   backgroundPositionX: number;
   backgroundPositionY: number;
+  owner: Pick<OtherUser, "username">;
 };
 
 export type WishCreateInput = {

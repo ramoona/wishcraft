@@ -10,12 +10,23 @@ export default async function ActiveWishesPage({ params }: { params: Promise<{ u
   const sessionUser = await getSessionUser();
   const { username } = await params;
 
+  if (sessionUser && !sessionUser.isOnboarded) {
+    redirect(`/${sessionUser.username}/onboarding`);
+  }
+
   if (sessionUser && sessionUser.username === username) {
     try {
       const wishlist = await getWishlistByUserId(sessionUser.id);
       const activeWishes = wishlist.wishes.filter(wish => wish.status === WishStatus.ACTIVE);
 
-      return <OwnWishes wishes={activeWishes} showOwnReserved={sessionUser.showReserved ?? false} status="ACTIVE" />;
+      return (
+        <OwnWishes
+          wishes={activeWishes}
+          showOwnReserved={sessionUser.showReserved ?? false}
+          status="ACTIVE"
+          currentUser={sessionUser}
+        />
+      );
     } catch (e) {
       return <ErrorMessage errorCode={isErrorKnown(e as Error) ? (e as KnownError).errorCode : undefined} />;
     }

@@ -1,13 +1,17 @@
 import { createWishAction, deleteWishAction, updateWishAction } from "~/services/wishlist/actions";
 import { WishCreationFormData, WishDeletionFormData, WishUpdateFormData } from "~/services/wishlist/formData";
 import { useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { WishCreateInput, WishUpdateInput } from "~/services/wishlist/types";
-import { showErrorToast } from "~/components/ui/toasts";
+import { showErrorToast, showSuccessToast } from "~/components/ui/toasts";
 import { useTranslation } from "react-i18next";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage, successMessages } from "~/core/errorMessages";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
 import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
+import Link from "next/link";
+import { cn } from "~/utils/classnames";
+import { buttonVariants } from "~/components/ui/button";
+import * as React from "react";
 
 export function useDeleteWish(): [boolean, (id: string, onSuccess?: () => void) => void] {
   const router = useRouter();
@@ -54,11 +58,17 @@ export function useUpdateWish(): [
 }
 
 export function useCreateWish(
+  username: string,
   firstWish?: boolean,
 ): [boolean, (input: WishCreateInput, onSuccess?: () => void) => void] {
   const router = useRouter();
   const [isUpdating, startUpdateTransition] = useTransition();
   const { t } = useTranslation();
+
+  const pathname = usePathname();
+
+  const segments = pathname.split("/").filter(Boolean);
+  const isActiveWishes = segments[1] === "wishes" && segments[2] === "active";
 
   const trigger = (input: WishCreateInput, onSuccess?: () => void) => {
     startUpdateTransition(async () => {
@@ -78,6 +88,18 @@ export function useCreateWish(
 
       if (error) {
         showErrorToast(getErrorMessage(error, t));
+      } else {
+        showSuccessToast(
+          t(successMessages.SAVED),
+          !isActiveWishes || firstWish ? (
+            <Link
+              href={`/${username}/wishes/active`}
+              className={cn("ml-auto no-underline", buttonVariants({ size: "sm", variant: "outline" }))}
+            >
+              {t("actions.viewActiveWishes")}
+            </Link>
+          ) : null,
+        );
       }
       onSuccess?.();
       router.refresh();

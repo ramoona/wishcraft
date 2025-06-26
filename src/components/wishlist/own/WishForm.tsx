@@ -42,10 +42,11 @@ type WishFormProps = {
   showReserved?: boolean;
   onBack?: () => void;
   firstWish?: boolean;
+  username: string;
 };
 
-export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWish }: WishFormProps) {
-  const [isCreating, createWish] = useCreateWish(firstWish);
+export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWish, username }: WishFormProps) {
+  const [isCreating, createWish] = useCreateWish(username, firstWish);
   const [isUpdating, updateWish] = useUpdateWish();
   const { t } = useTranslation();
 
@@ -89,7 +90,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
 
   return (
     <Form control={control} reset={reset} formState={formState} {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="h-full px-4 pt-4 lg:px-0">
         <Scrollable
           footer={
             firstWish ? (
@@ -99,7 +100,7 @@ export function WishForm({ wish, onActionSuccess, showReserved, onBack, firstWis
             )
           }
         >
-          <div className="mx-auto max-w-lg px-4">
+          <div className="mx-auto max-w-lg px-1">
             {showReserved && wish?.reservedById && (
               <div className="flex justify-center">
                 <Badge variant="attention">{t("wishForm.reservedHint")}</Badge>
@@ -261,13 +262,23 @@ function FirstWishFormButtons({
   };
 
   return (
-    <div className="flex flex-col items-center gap-5 pb-12">
-      <Button size="lg" onClick={skip} variant="ghost">
-        {isPending ? t("states.skipping") : t("actions.skip")}
-      </Button>
-      <Button type="submit" disabled={disabled} isLoading={isLoading} size="lg" fullWidth minWidth={false}>
-        {wish ? t("actions.save") : t("actions.addWish")}
-      </Button>
+    <div className="w-full">
+      <MobileOnly className="mb-16 flex-col items-center gap-5" display="flex">
+        <Button size="lg" onClick={skip} variant="ghost">
+          {isPending ? t("states.skipping") : t("actions.skip")}
+        </Button>
+        <Button type="submit" disabled={disabled} isLoading={isLoading} size="lg">
+          {wish ? t("actions.save") : t("actions.addWish")}
+        </Button>
+      </MobileOnly>
+      <DesktopOnly className="-mb-4 mt-8 w-full justify-end gap-3" display="flex">
+        <Button size="lg" onClick={skip} variant="outline">
+          {isPending ? t("states.skipping") : t("actions.skip")}
+        </Button>
+        <Button type="submit" disabled={disabled} isLoading={isLoading} size="lg" minWidth={false}>
+          {wish ? t("actions.save") : t("actions.addWish")}
+        </Button>
+      </DesktopOnly>
     </div>
   );
 }

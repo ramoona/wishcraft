@@ -160,7 +160,9 @@
   },
   "login": {
     "heading": "Make your wishes come true!",
+    "description": " Wishcraft is a simple wishlist app for saving what you want, sharing it with friends, and grabbing their wishes before someone else does. No AI, no ads, no suggestions—just the space for your own wish magic.",
     "loginAgreement": "By signing in, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+    "loginAgreement2": "We use Google Sign-In only to identify you and give access to your personal wishlist and reservations.",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service"
   },

@@ -258,6 +258,7 @@ export async function logUserAction(payload: UserActionPayload) {
 }
 
 export function isUserOnboarded(user: PrismaUser) {
+  // Exclude "reserved-wishes-visibility" step if the profile is hidden
   const stepsToComplete = ONBOARDING_STEPS.filter(
     step => !(step === "reserved-wishes-visibility" && user.isProfileHidden),
   );

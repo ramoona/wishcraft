@@ -208,6 +208,7 @@
       "archived": "<b>Nur du</b> siehst deine archivierten Wünsche"
     },
     "wishOwner": "Wunsch von @{{ username }}",
+    "wishOwnerWithLink": "Wunsch von <profile>@{{ username }}</profile>",
     "wishStatus": {
       "reserved": "Reserviert",
       "reservedByYou": "Von dir reserviert",

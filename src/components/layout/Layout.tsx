@@ -1,7 +1,7 @@
 import { PropsWithChildren, ReactNode } from "react";
 import { User } from "~/services/user/types";
 
-import { Logo } from "~/components/ui/logo";
+import { TextOnlyLogo } from "~/components/ui/logo";
 import Link from "next/link";
 import NavBar from "~/components/layout/NavBar";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
@@ -40,11 +40,11 @@ export function AuthenticatedLayout({
 
 export function NonAuthenticatedLayout({ children }: PropsWithChildren) {
   return (
-    <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content] lg:h-fit lg:min-h-dvh lg:bg-muted">
+    <div className="relative grid h-dvh grid-rows-[min-content_auto_min-content] lg:h-fit lg:min-h-dvh lg:bg-muted lg:px-5">
       <header className="relative h-20 w-screen bg-background lg:mx-auto lg:mt-4 lg:w-full lg:max-w-screen-2xl lg:rounded-xl">
         <div className="mx-auto flex h-full max-w-lg items-center justify-between px-4 lg:max-w-screen-2xl lg:px-8">
           <Link href="/" className="h-fit">
-            <Logo />
+            <TextOnlyLogo />
           </Link>
           <div className="flex items-center gap-4">
             <LanguageSwitcher contentWidth filled />
@@ -65,12 +65,12 @@ export function SignInLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative min-h-screen bg-primary">
       <header className="fixed left-0 top-0 z-10 flex w-screen items-center justify-center gap-4 p-8">
-        <Link href="/" className="h-fit">
-          <Logo />
+        <Link href="/" className="h-fit rounded-full bg-primary p-2">
+          <TextOnlyLogo />
         </Link>
       </header>
       <main className="relative h-dvh overflow-auto px-11 pt-20">
-        <div className="mx-auto size-full max-w-lg">{children}</div>
+        <div className="mx-auto size-full">{children}</div>
       </main>
     </div>
   );
@@ -78,13 +78,13 @@ export function SignInLayout({ children }: PropsWithChildren) {
 
 export function OnboardingLayout({ children }: PropsWithChildren) {
   return (
-    <div className="grid h-dvh grid-rows-[min-content_auto_min-content]">
-      <header className="relative h-20 w-screen bg-background">
-        <div className="mx-auto flex h-full max-w-lg items-center justify-between px-4">
+    <div className="grid h-dvh grid-rows-[min-content_auto_min-content] lg:bg-muted">
+      <header className="relative h-20 w-screen bg-background lg:mx-auto lg:mt-4 lg:w-full lg:max-w-3xl lg:rounded-xl lg:px-4">
+        <div className="mx-auto flex h-full max-w-xl items-center justify-between px-4 lg:w-full lg:max-w-3xl lg:px-0">
           <Link href="/" className="h-fit">
-            <Logo />
+            <TextOnlyLogo />
           </Link>
-          <LanguageSwitcher contentWidth />
+          <LanguageSwitcher contentWidth filled />
         </div>
       </header>
       <main className="relative">{children}</main>
@@ -98,7 +98,7 @@ export function ContentLayout({ children, langSwitcher }: PropsWithChildren<{ la
       <header className="fixed left-0 top-0 z-10 h-20 w-screen bg-background">
         <div className="mx-auto flex h-full max-w-3xl items-center justify-between px-4">
           <Link href="/" className="h-fit">
-            <Logo />
+            <TextOnlyLogo />
           </Link>
           {langSwitcher}
         </div>

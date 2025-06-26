@@ -20,10 +20,10 @@ export function ForeignWishesWishesMobile({ wishes, currentUser }: Props) {
           <WishDetails
             key={wish.id}
             wish={wish}
-            username={wish.user?.username}
+            username={currentUser?.username || ""}
             reservedByCurrentUser={wish.reservedById === currentUser?.id}
             isLoggedIn={!!currentUser}
-            showUsernameInDetails
+            withOwnerUsername
             isForeign
           />
         );

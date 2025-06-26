@@ -9,19 +9,17 @@ export function WishStatus({
   isForeign,
   reservedByCurrentUser,
   reservedById,
-  username,
 }: Pick<WishType, "isPrivate" | "reservedById"> & {
   reservedByCurrentUser?: boolean;
   showReserved?: boolean;
   isForeign?: boolean;
-  username?: string;
 }) {
   const pathname = usePathname();
   const isReservedWishesRoute = pathname.includes("reserved-wishes");
   const showReservedBadge =
     !isPrivate && reservedById && (showReserved || isForeign) && !(isReservedWishesRoute && reservedByCurrentUser);
 
-  if (isPrivate && !username) {
+  if (isPrivate) {
     return <StatusBadge status="PRIVATE" />;
   }
 

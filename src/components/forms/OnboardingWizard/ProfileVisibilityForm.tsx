@@ -6,7 +6,6 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
-import { TypographyMuted } from "~/components/ui/typography";
 import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
@@ -37,6 +36,7 @@ export function OnboardingWizardProfileVisibilityStep() {
       step="profile-visibility"
       title={t("onboarding.profileVisibility.title")}
       isSubmitting={isPending}
+      description={t("onboarding.profileVisibility.description")}
       isSkippable
     >
       <div className="w-full">
@@ -59,7 +59,6 @@ export function OnboardingWizardProfileVisibilityStep() {
           </div>
         </RadioGroup>
       </div>
-      <TypographyMuted>{t("onboarding.profileVisibility.description")}</TypographyMuted>
     </OnboardingWizardStep>
   );
 }

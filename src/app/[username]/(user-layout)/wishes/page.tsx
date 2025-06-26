@@ -5,6 +5,10 @@ export default async function WishesPage({ params }: { params: Promise<{ usernam
   const sessionUser = await getSessionUser();
   const { username } = await params;
 
+  if (sessionUser && !sessionUser.isOnboarded) {
+    redirect(`/${sessionUser.username}/onboarding`);
+  }
+
   if (sessionUser && sessionUser.username === username) {
     redirect(`/${username}/wishes/active`);
   }

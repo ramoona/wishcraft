@@ -6,7 +6,7 @@ export function TypographyExtraLargeHeader({ children }: PropsWithChildren) {
 }
 
 export function TypographyHeader({ children }: PropsWithChildren) {
-  return <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">{children}</h1>;
+  return <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">{children}</h1>;
 }
 
 export function TypographyH1({
@@ -21,8 +21,16 @@ export function TypographyH1({
   );
 }
 
-export function TypographyH2({ children }: PropsWithChildren) {
-  return <h1 className="text-lg font-bold">{children}</h1>;
+export function TypographyH2({
+  children,
+  style,
+  className,
+}: PropsWithChildren<{ className?: string; style?: React.CSSProperties }>) {
+  return (
+    <h2 className={cn("text-3xl font-bold", className)} style={style}>
+      {children}
+    </h2>
+  );
 }
 
 export function TypographyLeadBody({ children }: PropsWithChildren) {

@@ -60,6 +60,7 @@ export async function getWishlistByUserId(userId: string): Promise<WishlistType>
           createdAt: "desc",
         },
       },
+      owner: { select: { username: true } },
     },
   });
 
@@ -69,7 +70,7 @@ export async function getWishlistByUserId(userId: string): Promise<WishlistType>
 
   return {
     ...wishlist,
-    wishes: wishlist.wishes.map(convertWish),
+    wishes: wishlist.wishes.map(wish => convertWish(wish, wishlist.owner)),
   };
 }
 
@@ -250,6 +251,7 @@ export async function getForeignWishlistByUsername(username: string): Promise<Wi
         },
         select: WISH_FIELDS_SELECT,
       },
+      owner: { select: { username: true } },
     },
   });
 
@@ -259,7 +261,7 @@ export async function getForeignWishlistByUsername(username: string): Promise<Wi
 
   return {
     ...wishlist,
-    wishes: wishlist.wishes.map(convertWish),
+    wishes: wishlist.wishes.map(wish => convertWish(wish, wishlist.owner)),
   };
 }
 
@@ -298,7 +300,7 @@ export async function getWishesReservedByCurrentUser(): Promise<(WishType & { us
     const { friends, ...user } = wishlist.owner;
 
     return {
-      ...convertWish(wishData),
+      ...convertWish(wishData, wishlist.owner),
       user: {
         ...user,
         isFriend: friends.length > 0,
@@ -307,7 +309,7 @@ export async function getWishesReservedByCurrentUser(): Promise<(WishType & { us
   });
 }
 
-function convertWish(record: PrismaWish) {
+function convertWish(record: PrismaWish, owner: Pick<OtherUser, "username">): WishType {
   return {
     ...record,
     shape: record.shape as WishShape,
@@ -316,5 +318,6 @@ function convertWish(record: PrismaWish) {
     backgroundColor: record.backgroundColor as WishColor,
     backgroundPositionX: record.backgroundPositionX!,
     backgroundPositionY: record.backgroundPositionY!,
+    owner,
   };
 }

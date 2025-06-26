@@ -23,6 +23,7 @@ export function WishCard({
   wish,
   onEnableEditMode,
   isLoggedIn,
+  withOwnerUsername,
 }: {
   wish: WishType;
   reservedByCurrentUser?: boolean;
@@ -31,6 +32,7 @@ export function WishCard({
   isForeign?: boolean;
   onEnableEditMode?: () => void;
   isLoggedIn?: boolean;
+  withOwnerUsername?: boolean;
 }) {
   const { name, isPrivate, price, currency, reservedById, url, comment, ...visuals } = wish;
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -59,14 +61,14 @@ export function WishCard({
         </MobileOnly>
         <div className="flex grow flex-col p-4">
           <div className="grow">
-            {username && (
+            {withOwnerUsername && (
               <Trans
                 t={t}
                 i18nKey="wishlist.wishOwnerWithLink"
                 className="mb-2 text-sm underline"
-                values={{ username }}
+                values={{ username: wish.owner.username }}
                 components={{
-                  profile: <a href={`/${username}`} />,
+                  profile: <a href={`/${wish.owner.username}`} />,
                 }}
               />
             )}
@@ -143,6 +145,7 @@ export function WishCard({
                   </VisuallyHidden>
                   <DialogContent>
                     <WishForm
+                      username={username || ""}
                       wish={wish}
                       showReserved={showReserved}
                       onBack={() => setEditModalOpen(false)}

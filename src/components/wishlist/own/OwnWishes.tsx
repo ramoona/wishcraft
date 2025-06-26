@@ -9,16 +9,18 @@ import { Trans, useTranslation } from "react-i18next";
 import { WishCard } from "~/components/wishlist/WishCard";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 import { AddNewWish } from "~/components/wishlist/own/AddNewWish";
-import { WishOverlay } from "~/components/wishlist/WishOverlay";
 import { useState } from "react";
 import { WithStickyFooter } from "~/components/ui/scrollable";
 import { useParams } from "next/navigation";
 import { TabButton } from "~/components/ui/tab-button";
+import { WishModal } from "~/components/wishlist/WishModal";
+import { User } from "~/services/user/types";
 
 type Props = {
   wishes: WishType[];
   showOwnReserved: boolean;
   status: "ACTIVE" | "FULFILLED" | "ARCHIVED";
+  currentUser: User;
 };
 
 export function OwnWishes(props: Props) {
@@ -34,53 +36,49 @@ export function OwnWishes(props: Props) {
   );
 }
 
-function WishesMobile({ wishes, showOwnReserved, status }: Props) {
+function WishesMobile({ wishes, showOwnReserved, status, currentUser }: Props) {
   const [newWishFormVisible, setNewWishFormVisible] = useState(false);
   const { t } = useTranslation();
   const { username } = useParams<{ username: string }>();
 
   return (
     <WithStickyFooter footer={<AddNewWish onOpenNewWishForm={() => setNewWishFormVisible(true)} />}>
-      {!newWishFormVisible && (
-        <div className="flex size-full flex-col">
-          <div className="sticky -top-px z-10 mx-auto flex w-full items-center justify-center border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
-            <TabButton isActive={status === "ACTIVE"} route={`/${username}/wishes/active`}>
-              {t("wishlist.tabs.active")}
-            </TabButton>
-            <TabButton isActive={status === "FULFILLED"} route={`/${username}/wishes/fulfilled`}>
-              {t("wishlist.tabs.fulfilled")}
-            </TabButton>
-            <TabButton isActive={status === "ARCHIVED"} route={`/${username}/wishes/archived`}>
-              {t("wishlist.tabs.archived")}
-            </TabButton>
-          </div>
-          <div className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded">
-            <TabHint status={status} />
-            {wishes.length > 0 ? (
-              <WishlistItemsMobile>
-                {wishes.map(wish => (
-                  <WishDetails key={wish.id} wish={wish} showReserved={showOwnReserved} isLoggedIn />
-                ))}
-              </WishlistItemsMobile>
-            ) : (
-              <EmptyWishlistSection shape={STATUS_TO_SHAPE[status]} />
-            )}
-          </div>
+      <div className="flex size-full flex-col">
+        <div className="sticky -top-px z-10 mx-auto flex w-full items-center justify-center border-b border-b-muted bg-background px-4 py-5 sm:border-b-0">
+          <TabButton isActive={status === "ACTIVE"} route={`/${username}/wishes/active`}>
+            {t("wishlist.tabs.active")}
+          </TabButton>
+          <TabButton isActive={status === "FULFILLED"} route={`/${username}/wishes/fulfilled`}>
+            {t("wishlist.tabs.fulfilled")}
+          </TabButton>
+          <TabButton isActive={status === "ARCHIVED"} route={`/${username}/wishes/archived`}>
+            {t("wishlist.tabs.archived")}
+          </TabButton>
         </div>
-      )}
-      {newWishFormVisible && (
-        <WishOverlay
-          isLoggedIn
-          onBack={() => {
-            setNewWishFormVisible(false);
-          }}
-        />
-      )}
+        <div className="mx-auto flex w-full max-w-lg grow flex-col bg-muted p-4 shadow-[0_-10px_0_5px_#fff] sm:rounded">
+          <TabHint status={status} />
+          {wishes.length > 0 ? (
+            <WishlistItemsMobile>
+              {wishes.map(wish => (
+                <WishDetails key={wish.id} username={username} wish={wish} showReserved={showOwnReserved} isLoggedIn />
+              ))}
+            </WishlistItemsMobile>
+          ) : (
+            <EmptyWishlistSection shape={STATUS_TO_SHAPE[status]} />
+          )}
+        </div>
+      </div>
+      <WishModal
+        username={currentUser.username}
+        isOpen={newWishFormVisible}
+        isLoggedIn
+        onOpenChange={setNewWishFormVisible}
+      />
     </WithStickyFooter>
   );
 }
 
-function WishesDesktop({ wishes, showOwnReserved, status }: Props) {
+function WishesDesktop({ wishes, showOwnReserved, status, currentUser }: Props) {
   const { t } = useTranslation();
   return (
     <>
@@ -91,7 +89,13 @@ function WishesDesktop({ wishes, showOwnReserved, status }: Props) {
       {wishes.length > 0 ? (
         <WishlistItemsDesktop wishes={wishes}>
           {wishes.map(wish => (
-            <WishCard key={wish.id} wish={wish} showReserved={showOwnReserved} isLoggedIn />
+            <WishCard
+              username={currentUser.username}
+              key={wish.id}
+              wish={wish}
+              showReserved={showOwnReserved}
+              isLoggedIn
+            />
           ))}
         </WishlistItemsDesktop>
       ) : (

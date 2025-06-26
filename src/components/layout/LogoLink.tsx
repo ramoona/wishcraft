@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "~/components/ui/logo";
+import { TextOnlyLogo } from "~/components/ui/logo";
 
 export function LogoLink() {
   return (
@@ -8,7 +8,7 @@ export function LogoLink() {
       aria-label="Go to homepage"
       className="h-fit rounded ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
     >
-      <Logo />
+      <TextOnlyLogo />
     </Link>
   );
 }

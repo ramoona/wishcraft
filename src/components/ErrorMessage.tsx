@@ -8,7 +8,7 @@ import { WishlistErrorCode } from "~/services/wishlist/errors";
 import { Trans, useTranslation } from "react-i18next";
 import { getErrorMessage } from "~/core/errorMessages";
 import Link from "next/link";
-import { Logo } from "~/components/ui/logo";
+import { TextOnlyLogo } from "~/components/ui/logo";
 import Image from "next/image";
 import { TypographyExtraLargeHeader } from "~/components/ui/typography";
 import { buttonVariants } from "~/components/ui/button";
@@ -34,7 +34,7 @@ export function ErrorMessage({
     <div className="fixed left-0 top-0 z-50 grid h-dvh min-h-screen w-screen grid-rows-[min-content_auto_min-content] bg-primary">
       <header className="relative flex h-20 w-screen items-center justify-center">
         <Link href="/" className="h-fit">
-          <Logo />
+          <TextOnlyLogo />
         </Link>
       </header>
       <main className="relative mx-auto w-full max-w-lg px-4 sm:text-center">

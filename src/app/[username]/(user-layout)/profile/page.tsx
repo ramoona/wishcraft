@@ -1,5 +1,6 @@
 import { getSessionUser } from "~/services/session";
 import { redirect } from "next/navigation";
+import { Profile } from "~/components/user/Profile";
 
 export default async function FriendsPage() {
   const sessionUser = await getSessionUser();
@@ -8,5 +9,9 @@ export default async function FriendsPage() {
     redirect("/");
   }
 
-  redirect(`/${sessionUser.username}/friends/your-friends`);
+  if (sessionUser && !sessionUser.isOnboarded) {
+    redirect(`/${sessionUser.username}/onboarding`);
+  }
+
+  return <Profile user={sessionUser} />;
 }

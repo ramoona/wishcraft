@@ -6,7 +6,6 @@ import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { useTranslation, Trans } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
-import { TypographyMuted } from "~/components/ui/typography";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Label } from "~/components/ui/label";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
@@ -37,6 +36,15 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
       onSubmit={trigger}
       isSubmitting={isPending}
       step="reserved-wishes-visibility"
+      description={
+        <Trans
+          t={t}
+          i18nKey="onboarding.reservedWishesVisibility.description"
+          components={{
+            badge: <span className="rounded-full bg-secondary px-2 text-sm text-secondary-foreground" />,
+          }}
+        />
+      }
       isSkippable
     >
       <div className="w-full">
@@ -57,16 +65,6 @@ export function OnboardingWizardReservedWishesVisibilityStep() {
           </div>
         </RadioGroup>
       </div>
-
-      <TypographyMuted>
-        <Trans
-          t={t}
-          i18nKey="onboarding.reservedWishesVisibility.description"
-          components={{
-            badge: <span className="rounded-full bg-secondary px-2 text-sm text-secondary-foreground" />,
-          }}
-        />
-      </TypographyMuted>
     </OnboardingWizardStep>
   );
 }

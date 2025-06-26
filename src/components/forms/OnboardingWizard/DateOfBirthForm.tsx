@@ -8,7 +8,6 @@ import { Select } from "~/components/ui/select";
 import { DAYS_IN_MONTHS } from "~/core/consts";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
-import { TypographyMuted } from "~/components/ui/typography";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
 import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
 import { getTranslatedMonth } from "~/lib/i18n/months";
@@ -40,6 +39,7 @@ export function OnboardingWizardDateOfBirthStep() {
       isSubmitting={isPending}
       title={t("onboarding.dateOfBirth.title")}
       isSubmissionDisabled={!!month && !day}
+      description={t("onboarding.dateOfBirth.description")}
       isSkippable
     >
       <div className="grid w-full grid-cols-2 gap-4">
@@ -70,7 +70,6 @@ export function OnboardingWizardDateOfBirthStep() {
           }
         />
       </div>
-      <TypographyMuted>{t("onboarding.dateOfBirth.description")}</TypographyMuted>
     </OnboardingWizardStep>
   );
 }

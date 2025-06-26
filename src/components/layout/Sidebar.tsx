@@ -27,9 +27,8 @@ import { cn } from "~/utils/classnames";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
-import { WishForm } from "~/components/wishlist/own/WishForm";
 import { useState } from "react";
-import { Button, buttonVariants } from "~/components/ui/button";
+import { Button } from "~/components/ui/button";
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import {
@@ -40,19 +39,16 @@ import {
   useCopyProfileLink,
 } from "~/components/user/Profile";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
-import { showSuccessToast } from "~/components/ui/toasts";
-import { successMessages } from "~/core/errorMessages";
 import Link from "next/link";
 import { UserDetails } from "~/components/ui/user";
 import { Badge } from "~/components/ui/badge";
+import { WishModal } from "~/components/wishlist/WishModal";
 
 export function Sidebar({ user, friendRequestsCount }: { user: User; friendRequestsCount: number }) {
   const { t } = useTranslation();
   const [newWishFormVisible, setNewWishFormVisible] = useState(false);
   const pathname = usePathname();
-
   const segments = pathname.split("/").filter(Boolean);
-  const isActiveWishes = segments[1] === "wishes" && segments[2] === "active";
 
   return (
     <SidebarComponent>
@@ -136,33 +132,7 @@ export function Sidebar({ user, friendRequestsCount }: { user: User; friendReque
         </div>
         <UserNav user={user} />
       </SidebarFooter>
-      <Dialog open={newWishFormVisible} onOpenChange={open => setNewWishFormVisible(open)}>
-        <DialogHeader>
-          <VisuallyHidden>
-            <DialogTitle>Add new wish</DialogTitle>
-            <DialogDescription>You can add a new wish here</DialogDescription>
-          </VisuallyHidden>
-        </DialogHeader>
-        <DialogContent>
-          <WishForm
-            onBack={() => setNewWishFormVisible(false)}
-            onActionSuccess={() => {
-              setNewWishFormVisible(false);
-              showSuccessToast(
-                t(successMessages.SAVED),
-                !isActiveWishes ? (
-                  <Link
-                    href={`/${user.username}/wishes/active`}
-                    className={cn("ml-auto no-underline", buttonVariants({ size: "sm", variant: "outline" }))}
-                  >
-                    {t("actions.viewActiveWishes")}
-                  </Link>
-                ) : null,
-              );
-            }}
-          />
-        </DialogContent>
-      </Dialog>
+      <WishModal username={user.username} isOpen={newWishFormVisible} onOpenChange={setNewWishFormVisible} />
     </SidebarComponent>
   );
 }
