@@ -18,7 +18,6 @@ export default async function UserLayout({
     await getSessionUser();
     return children;
   } catch (e) {
-    console.error("Error in UserLayout:", e);
     if (
       (e instanceof WishlistError && e.errorCode === "WISHLIST_NOT_FOUND") ||
       (e instanceof UserError && e.errorCode === "USER_NOT_FOUND")
