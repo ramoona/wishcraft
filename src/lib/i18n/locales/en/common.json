@@ -164,7 +164,8 @@
     "description": "<b>Wishcraft</b> is a simple wishlist app for saving what you want, sharing it with friends, and grabbing their wishes before someone else does. <italic>No AI, no ads, no suggestions</italic>—just the space for your own wish magic.",
     "loginAgreement": "By signing in, you agree to Wishcraft's <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>. We use Google Sign-In only to identify you and give access to your personal wishlist and reservations.",
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "example": "Not sure what to wish for? Check out <example>Frodo's picks</example>."
   },
   "buttons": {
     "backToSafety": "Back to safety"

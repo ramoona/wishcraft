@@ -5,6 +5,7 @@ import { ButtonProps, buttonVariants } from "~/components/ui/button";
 import { cn } from "~/utils/classnames";
 import { Trans, useTranslation } from "react-i18next";
 import { TypographyExtraLargeHeader } from "~/components/ui/typography";
+import Link from "next/link";
 
 export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; wishId?: string }) {
   const { t, i18n } = useTranslation();
@@ -12,7 +13,6 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
   return (
     <div className="flex min-h-full flex-col items-center justify-center gap-7 sm:mx-auto md:gap-12 lg:grid lg:grid-cols-2 lg:items-center lg:justify-center lg:gap-20">
       <div
-        // className="aspect-[0.94] w-full shrink-0 sm:mx-auto sm:w-[306px] sm:grow-0 lg:mx-0 lg:w-[30vw] xl:w-[580px]"
         className="aspect-[0.94] w-full shrink-0 sm:mx-auto sm:w-[38dvh] lg:mx-0 lg:h-fit lg:w-full lg:max-w-[580px] lg:justify-self-end"
         style={{
           backgroundImage: "url('/images/art-3.png')",
@@ -38,6 +38,15 @@ export function SignInForm({ wishlistOwner, wishId }: { wishlistOwner?: string; 
             components={{
               b: <b className="font-bold" />,
               italic: <span className="italic" />,
+            }}
+          />
+        </p>
+        <p className="mt-4 text-foreground/80 lg:max-w-xl">
+          <Trans
+            t={t}
+            i18nKey="login.example"
+            components={{
+              example: <Link href="/frodo-baggins" />,
             }}
           />
         </p>

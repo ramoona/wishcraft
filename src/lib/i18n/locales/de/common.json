@@ -163,7 +163,8 @@
     "loginAgreement": "Mit der Anmeldung stimmst du unseren <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzrichtlinie</privacy> von Wishcraft zu. Wir nutzen Google Sign-In nur, um dich zu erkennen und dir Zugriff auf deine persönliche Wunschliste und Reservierungen zu geben.",
     "loginAgreement2": "Wir nutzen Google Sign-In nur, um dich zu erkennen und dir Zugriff auf deine persönliche Wunschliste und Reservierungen zu geben.",
     "privacyPolicy": "Datenschutz",
-    "termsOfService": "Nutzungsbedingungen"
+    "termsOfService": "Nutzungsbedingungen",
+    "example": "Du weißt nicht, was du dir wünschen sollst? Schau dir <example>Frodos Favoriten</example> an."
   },
   "buttons": {
     "backToSafety": "Zurück zur Übersicht"
