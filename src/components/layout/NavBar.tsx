@@ -8,8 +8,11 @@ import { useTranslation } from "react-i18next";
 import * as React from "react";
 import { FunctionComponent } from "react";
 import { Badge } from "~/components/ui/badge";
+import { WishesIcon } from "~/components/ui/icons/WishesIcon";
+import { FriendsIcon } from "~/components/ui/icons/FriendsIcon";
+import { ProfileIcon } from "~/components/ui/icons/ProfileIcon";
 
-const navItems: { label: string; route: string; icon: FunctionComponent<{ className?: string; fill?: string }> }[] = [
+const navItems: { label: string; route: string; icon: FunctionComponent<{ isSelected?: boolean }> }[] = [
   {
     label: "navigation.wishes",
     route: "wishes",
@@ -47,7 +50,7 @@ export default function NavBar({ user, friendRequestsCount }: { user: User; frie
                 isSelected && "text-black",
               )}
             >
-              <Icon fill={isSelected ? "fill-black" : "fill-active"} />
+              <Icon isSelected={isSelected} />
               <div className="flex items-center gap-1">
                 {t(item.label)}
                 {item.route === "friends" && friendRequestsCount > 0 && (
@@ -59,44 +62,5 @@ export default function NavBar({ user, friendRequestsCount }: { user: User; frie
         })}
       </div>
     </nav>
-  );
-}
-
-function WishesIcon({ fill }: { fill?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" className="size-5">
-      <path
-        className={fill}
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M8.465 1.161a1.517 1.517 0 0 1 2.945-.022c1.015 3.927 3.492 6.368 7.43 7.323a1.52 1.52 0 0 1 .02 2.95c-3.92 1.012-6.358 3.489-7.315 7.429a1.518 1.518 0 0 1-2.945.022c-1.015-3.927-3.492-6.368-7.43-7.323a1.52 1.52 0 0 1-.025-2.95C5.07 7.579 7.51 5.102 8.465 1.16Z"
-      />
-    </svg>
-  );
-}
-
-function FriendsIcon({ fill }: { fill?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" className="size-5">
-      <path
-        className={fill}
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M8.54 1.332a1.98 1.98 0 0 1 2.955.012 4.456 4.456 0 0 0 3.735 1.57 1.974 1.974 0 0 1 2.075 2.077 4.494 4.494 0 0 0 1.555 3.78 1.959 1.959 0 0 1-.015 2.926 4.41 4.41 0 0 0-1.56 3.726 1.971 1.971 0 0 1-2.1 2.07A4.368 4.368 0 0 0 11.48 19a1.986 1.986 0 0 1-2.96-.011 4.45 4.45 0 0 0-3.735-1.571 1.967 1.967 0 0 1-2.07-2.077 4.493 4.493 0 0 0-1.555-3.78 1.958 1.958 0 0 1 .015-2.926A4.408 4.408 0 0 0 2.73 4.911a1.971 1.971 0 0 1 2.1-2.07 4.372 4.372 0 0 0 3.71-1.51Z"
-      />
-    </svg>
-  );
-}
-
-function ProfileIcon({ fill }: { fill?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" className="size-5">
-      <path
-        className={fill}
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M19.38 18.455H.555A9.404 9.404 0 0 1 7.825 9.3a4.353 4.353 0 1 1 4.38.025 9.405 9.405 0 0 1 7.175 9.13Z"
-      />
-    </svg>
   );
 }
