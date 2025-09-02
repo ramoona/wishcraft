@@ -128,15 +128,3 @@ model UserActionsLog {
   createdAt DateTime @default(now())
 }
 
-model AnalyticsEvents {
-  id             String   @id @default(cuid())
-  createdAt      DateTime @default(now())
-  url            String?
-  userAgent      String?
-  browser        String?
-  browserVersion String?
-  os             String?
-  osVersion      String?
-  deviceType     String?
-  ipHash         String?
-}
