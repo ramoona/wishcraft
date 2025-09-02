@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { skipOnboardingStepAction } from "~/services/onboarding/actions";
 import { SkipOnboardingStepFormData } from "~/services/onboarding/form-data";
 import { showErrorToast } from "~/components/ui/toasts";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import { cn } from "~/utils/classnames";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";
 export function OnboardingWizardStep({

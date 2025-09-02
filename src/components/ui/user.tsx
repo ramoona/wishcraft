@@ -26,7 +26,7 @@ const container = cva("rounded bg-background no-underline", {
       "profile-desktop": "",
     },
     link: {
-      true: "transition-colors duration-200 hover:border-primary hover:ring-1 focus-visible:outline-none hover:ring-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+      true: "transition-colors duration-200 hover:border-primary hover:ring-1 hover:ring-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
     },
   },
 });

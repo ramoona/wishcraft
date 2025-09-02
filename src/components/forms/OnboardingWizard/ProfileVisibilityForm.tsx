@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";

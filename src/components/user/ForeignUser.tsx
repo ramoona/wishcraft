@@ -1,7 +1,7 @@
 "use client";
 
 import { OtherUser, User } from "~/services/user/types";
-import { EmptyList } from "~/components/ui/emptyList";
+import { EmptyList } from "~/components/ui/empty-list";
 import { WithStickyFooter } from "~/components/ui/scrollable";
 import { useTranslation } from "react-i18next";
 import * as React from "react";
@@ -14,7 +14,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { acceptFriendRequestAction, sendFriendRequestAction } from "~/services/friend/actions";
 import { showErrorToast } from "~/components/ui/toasts";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import { AddFriendButton } from "~/components/friends/AddFriendButton";
 import { UserDetails } from "~/components/ui/user";
 import { FriendDropdownMenu } from "~/components/friends/FriendDropdownMenu";

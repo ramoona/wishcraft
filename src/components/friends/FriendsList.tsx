@@ -2,7 +2,7 @@
 
 import { FriendUser, User } from "~/services/user/types";
 import { UserDetails } from "~/components/ui/user";
-import { EmptyList } from "~/components/ui/emptyList";
+import { EmptyList } from "~/components/ui/empty-list";
 import { WithStickyFooter } from "~/components/ui/scrollable";
 import { useTranslation } from "react-i18next";
 import * as React from "react";

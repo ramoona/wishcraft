@@ -4,7 +4,7 @@ import React, { useCallback, useDeferredValue, useEffect, useState, useTransitio
 import { checkUsernameUniquenessAction } from "~/services/user/actions";
 import { Input } from "~/components/ui/input";
 import { UsernameFormData } from "~/services/user/form-data";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
 import { clsx } from "clsx";

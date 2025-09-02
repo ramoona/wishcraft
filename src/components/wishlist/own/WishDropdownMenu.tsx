@@ -15,7 +15,7 @@ import { useParams, useRouter } from "next/navigation";
 import { releaseWishAction, reserveWishAction } from "~/services/wishlist/actions";
 import { WishlistReservationFormData } from "~/services/wishlist/form-data";
 import { showErrorToast } from "~/components/ui/toasts";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { SignInButton } from "~/components/forms/SignInForm";
 

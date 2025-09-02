@@ -4,7 +4,7 @@ import { OtherUser, User, UserActionPayload, UserOnboardingStep, ONBOARDING_STEP
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
 import { deleteSessionTokenCookie, getSessionUser, getSessionUserOrThrow } from "~/services/session";
-import { generateUniqueUsername } from "~/utils/uniqueUsername";
+import { generateUniqueUsername } from "~/utils/unique-username";
 import { SupportedLanguages } from "~/lib/i18n/settings";
 
 export async function updateUsername(username: string): Promise<User> {

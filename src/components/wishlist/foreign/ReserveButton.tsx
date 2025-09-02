@@ -8,7 +8,7 @@ import { SignInButton } from "~/components/forms/SignInForm";
 import { WishlistReservationFormData } from "~/services/wishlist/form-data";
 
 import { showErrorToast } from "~/components/ui/toasts";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 

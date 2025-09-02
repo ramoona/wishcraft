@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useTransition } from "react";
 import { removeFriendAction } from "~/services/friend/actions";
 import { showErrorToast } from "~/components/ui/toasts";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import { DropdownMenu, DropdownMenuItem } from "~/components/ui/dropdown-menu";
 import * as React from "react";
 import { User } from "~/services/user/types";

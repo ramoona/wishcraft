@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { sendFriendRequestAction } from "~/services/friend/actions";
 import { useTranslation } from "react-i18next";
 import { showErrorToast } from "~/components/ui/toasts";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import { User } from "~/services/user/types";
 
 export function AddFriendButton({

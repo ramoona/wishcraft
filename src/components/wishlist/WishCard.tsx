@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import { WishForm } from "~/components/wishlist/own/WishForm";
 import { showSuccessToast } from "~/components/ui/toasts";
-import { successMessages } from "~/core/errorMessages";
+import { successMessages } from "~/core/error-messages";
 
 export function WishCard({
   reservedByCurrentUser,

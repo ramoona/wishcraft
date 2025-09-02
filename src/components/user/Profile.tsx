@@ -21,7 +21,7 @@ import {
   ReservedWishesVisibilityFormData,
 } from "~/services/user/form-data";
 import { showErrorToast, showSuccessToast } from "~/components/ui/toasts";
-import { getErrorMessage, getSuccessMessage } from "~/core/errorMessages";
+import { getErrorMessage, getSuccessMessage } from "~/core/error-messages";
 import { Select } from "~/components/ui/select";
 import { currencies, getTranslatedCurrency } from "~/lib/i18n/currencies";
 import { DAYS_IN_MONTHS } from "~/core/consts";

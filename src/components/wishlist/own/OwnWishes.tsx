@@ -4,7 +4,7 @@ import { WishType } from "~/services/wishlist/types";
 import { WishlistItemsDesktop, WishlistItemsMobile } from "~/components/wishlist/WishlistItems";
 import { WishDetails } from "~/components/wishlist/WishDetails";
 import * as React from "react";
-import { EmptyList } from "~/components/ui/emptyList";
+import { EmptyList } from "~/components/ui/empty-list";
 import { Trans, useTranslation } from "react-i18next";
 import { WishCard } from "~/components/wishlist/WishCard";
 import { DesktopOnly, MobileOnly } from "~/components/MediaComponents";

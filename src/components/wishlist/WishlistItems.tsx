@@ -1,7 +1,7 @@
 "use client";
 
 import React, { PropsWithChildren } from "react";
-import useMasonry from "~/hooks/useMasonry";
+import useMasonry from "~/hooks/use-masonry";
 import { WishType } from "~/services/wishlist/types";
 import { cn } from "~/utils/classnames";
 import { backgroundColors, backgroundUrls } from "~/components/shapes/WishLargeArtwork";

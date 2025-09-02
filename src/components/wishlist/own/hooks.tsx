@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { WishCreateInput, WishUpdateInput } from "~/services/wishlist/types";
 import { showErrorToast, showSuccessToast } from "~/components/ui/toasts";
 import { useTranslation } from "react-i18next";
-import { getErrorMessage, successMessages } from "~/core/errorMessages";
+import { getErrorMessage, successMessages } from "~/core/error-messages";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
 import { ProcessOnboardingStepFormData } from "~/services/onboarding/form-data";
 import Link from "next/link";

@@ -6,7 +6,7 @@ import { ServerErrorCode } from "~/services/errors";
 import { UserErrorCode } from "~/services/user/errors";
 import { WishlistErrorCode } from "~/services/wishlist/errors";
 import { Trans, useTranslation } from "react-i18next";
-import { getErrorMessage } from "~/core/errorMessages";
+import { getErrorMessage } from "~/core/error-messages";
 import Link from "next/link";
 import { TextOnlyLogo } from "~/components/ui/logo";
 import Image from "next/image";
