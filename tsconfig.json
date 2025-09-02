@@ -16,7 +16,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": ["node", "jest"],
     "baseUrl": ".",
     "downlevelIteration": true,
     "paths": {
