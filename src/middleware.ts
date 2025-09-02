@@ -1,48 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-// import { UAParser } from "ua-parser-js";
+import { fallbackLanguage, languages } from "~/lib/i18n/settings";
 
-// The default locale to use if no locale is detected
-export const defaultLocale = "en";
-// All supported locales
-export const locales = ["en", "ru"];
-// The cookie name used by i18next
 const COOKIE_NAME = "i18next";
 
 // Get the preferred locale from cookie, header, or default
 function getLocale(request: NextRequest) {
-  // Check if there is a cookie with the locale
   const cookieLocale = request.cookies.get(COOKIE_NAME)?.value;
-  if (cookieLocale && locales.includes(cookieLocale)) {
+  if (cookieLocale && languages.includes(cookieLocale as (typeof languages)[number])) {
     return cookieLocale;
   }
 
-  // If no cookie, try to get the locale from the Accept-Language header
   const acceptLang = request.headers.get("Accept-Language");
   if (acceptLang) {
     const parsedLocale = parseAcceptLanguage(acceptLang);
-    if (parsedLocale && locales.includes(parsedLocale)) {
+    if (parsedLocale && languages.includes(parsedLocale as (typeof languages)[number])) {
       return parsedLocale;
     }
   }
 
-  // If no locale is detected, use the default
-  return defaultLocale;
+  return fallbackLanguage;
 }
 
 // Parse the Accept-Language header to get the preferred locale
+// Example header: "en-US,en;q=0.9,ru;q=0.8"
 function parseAcceptLanguage(header: string): string | null {
-  // Example header: "en-US,en;q=0.9,ru;q=0.8"
   try {
-    // Split by comma to get language-priority pairs
     const languages = header.split(",");
-
-    // Get the first language (highest priority)
     const primaryLang = languages[0].split(";")[0].trim();
 
-    // Extract just the language code (e.g., "en" from "en-US")
-    const langCode = primaryLang.split("-")[0];
-
-    return langCode;
+    return primaryLang.split("-")[0];
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Error parsing Accept-Language header:", error);
@@ -60,39 +46,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // const sessionCookie = request.cookies.get("session")?.value;
-
-  // Only track authenticated users
-  // if (sessionCookie) {
-  //   const userAgent = request.headers.get("user-agent");
-  //   const parser = new UAParser();
-  //   const result = parser.setUA(userAgent || "").getResult();
-  //
-  //   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  //   const ipHash = ip ? await hashIP(ip) : undefined;
-  //
-  //   await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/track`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       ...(process.env.OWN_API_KEY && { "x-api-key": process.env.OWN_API_KEY }),
-  //     },
-  //     body: JSON.stringify({
-  //       deviceType: result.device.type,
-  //       os: result.os.name,
-  //       osVersion: result.os.version,
-  //       browser: result.browser.name,
-  //       browserVersion: result.browser.version,
-  //       url: request.url,
-  //       ipHash: ipHash,
-  //     }),
-  //   });
-  // }
-
   // Get the locale from the request
   const locale = getLocale(request);
 
-  // Create a response
   const response = NextResponse.next();
 
   // Set the locale cookie if it doesn't exist or is different
@@ -117,13 +73,3 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|locales).*)"],
 };
-
-// async function hashIP(ip: string) {
-//   const encoder = new TextEncoder();
-//   const data = encoder.encode(ip + process.env.HASH_SALT);
-//   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-//
-//   // Convert ArrayBuffer to hex manually
-//   const hashArray = Array.from(new Uint8Array(hashBuffer));
-//   return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
-// }

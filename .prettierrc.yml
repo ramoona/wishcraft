@@ -6,7 +6,6 @@ plugins:
 importOrder:
   - <THIRD_PARTY_MODULES>
   - "^(prisma|types)/(.*)$"
-  - "^(emails|types)/(.*)$"
   - "^~/(.*)$"
   - '^\.{1,2}(.*)\/(?!\S+\.(json|css|svg|jpg|webp)).*$'
   - '^(.*)\.(json|css|svg|jpg|webp)$'

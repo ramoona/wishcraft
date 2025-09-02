@@ -3,5 +3,4 @@ node_modules/
 *.log
 ./public/
 pnpm-lock.yaml
-types/react-email.d.ts
 
