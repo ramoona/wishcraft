@@ -118,5 +118,10 @@
   },
   "prisma": {
     "seed": "ts-node -r tsconfig-paths/register --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": ">=18 <=22",
+    "pnpm": ">=9"
   }
 }
