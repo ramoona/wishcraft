@@ -58,6 +58,10 @@ export function OnboardingWizardUsernameStep() {
     [t],
   );
 
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value.replace(/[^a-zA-Z0-9-_]/g, ""));
+  };
+
   useEffect(() => {
     if (deferredValue) {
       void checkUniqueness(deferredValue);
@@ -78,7 +82,7 @@ export function OnboardingWizardUsernameStep() {
         name="username"
         placeholder={t("placeholders.username")}
         value={username}
-        onChange={e => setUsername(e.target.value)}
+        onChange={handleUsernameChange}
         className={clsx(
           username && isUnique === false && "border-destructive/70",
           username && isUnique === true && "border-emerald-500",
