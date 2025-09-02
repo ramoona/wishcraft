@@ -14,7 +14,7 @@ import {
   WishDeletionFormData,
   WishlistReservationFormData,
   WishUpdateFormData,
-} from "./formData";
+} from "./form-data";
 import { omit } from "ramda";
 import { WishlistError, WishlistErrorCode } from "~/services/wishlist/errors";
 import { getSessionUserOrThrow } from "~/services/session";

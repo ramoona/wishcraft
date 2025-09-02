@@ -13,7 +13,7 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { buttonVariants } from "~/components/ui/button";
 import { useParams, useRouter } from "next/navigation";
 import { releaseWishAction, reserveWishAction } from "~/services/wishlist/actions";
-import { WishlistReservationFormData } from "~/services/wishlist/formData";
+import { WishlistReservationFormData } from "~/services/wishlist/form-data";
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";

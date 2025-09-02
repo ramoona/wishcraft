@@ -16,7 +16,7 @@ import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
 import { Scrollable } from "~/components/ui/scrollable";
 import { skipOnboardingStepAction } from "~/services/onboarding/actions";
-import { SkipOnboardingStepFormData } from "~/services/onboarding/formData";
+import { SkipOnboardingStepFormData } from "~/services/onboarding/form-data";
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
 import { useRouter } from "next/navigation";

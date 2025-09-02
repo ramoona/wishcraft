@@ -46,6 +46,8 @@ const errors: Record<ServerErrorCode | UserErrorCode | WishlistErrorCode, string
   UNKNOWN: "error.UNKNOWN",
   CAN_NOT_RESERVE_OWN_WISH: "error.CAN_NOT_RESERVE_OWN_WISH",
   CAN_NOT_UPDATE_FOREIGN_WISH: "error.CAN_NOT_UPDATE_FOREIGN_WISH",
+  // @TODO: add translation
+  FORM_DATA_VALIDATION_ERROR: "error.FORM_DATA_VALIDATION_ERROR",
 };
 
 export const successMessages: Record<SuccessMessageCode, string> = {

@@ -1,5 +1,5 @@
 import { createWishAction, deleteWishAction, updateWishAction } from "~/services/wishlist/actions";
-import { WishCreationFormData, WishDeletionFormData, WishUpdateFormData } from "~/services/wishlist/formData";
+import { WishCreationFormData, WishDeletionFormData, WishUpdateFormData } from "~/services/wishlist/form-data";
 import { useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { WishCreateInput, WishUpdateInput } from "~/services/wishlist/types";
@@ -7,7 +7,7 @@ import { showErrorToast, showSuccessToast } from "~/components/ui/toasts";
 import { useTranslation } from "react-i18next";
 import { getErrorMessage, successMessages } from "~/core/errorMessages";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
-import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/form-data";
 import Link from "next/link";
 import { cn } from "~/utils/classnames";
 import { buttonVariants } from "~/components/ui/button";

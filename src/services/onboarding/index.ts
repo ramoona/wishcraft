@@ -1,14 +1,6 @@
 import { getSessionUserOrThrow } from "~/services/session";
 import { prisma } from "prisma/db";
-import {
-  isDateOfBirthInput,
-  isDefaultCurrencyInput,
-  isProfileVisibilityInput,
-  isReservedWishesVisibilityInput,
-  isUsernameInput,
-  OnboardingStepInput,
-  OnboardingStepType,
-} from "~/services/onboarding/types";
+import { OnboardingStepInput, SkipOnboardingStepInput } from "~/services/onboarding/types";
 import {
   toUser,
   updateDateOfBirth,
@@ -22,24 +14,22 @@ import { User } from "~/services/user/types";
 export async function processOnboardingStep(input: OnboardingStepInput): Promise<User> {
   const sessionUser = await getSessionUserOrThrow();
 
-  if (isUsernameInput(input)) {
-    await updateUsername(input.username);
-  }
-
-  if (isDateOfBirthInput(input)) {
-    await updateDateOfBirth(input);
-  }
-
-  if (isReservedWishesVisibilityInput(input)) {
-    await updateReservedWishedVisibility(input.showReserved);
-  }
-
-  if (isDefaultCurrencyInput(input)) {
-    await updateDefaultCurrency(input.currency);
-  }
-
-  if (isProfileVisibilityInput(input)) {
-    await updateProfileVisibility(input.isProfileHidden);
+  switch (input.type) {
+    case "username":
+      await updateUsername(input.username);
+      break;
+    case "date-of-birth":
+      await updateDateOfBirth(input);
+      break;
+    case "profile-visibility":
+      await updateProfileVisibility(input.isProfileHidden);
+      break;
+    case "reserved-wishes-visibility":
+      await updateReservedWishedVisibility(input.showReserved);
+      break;
+    case "default-currency":
+      await updateDefaultCurrency(input.currency);
+      break;
   }
 
   const updated = await prisma.user.update({
@@ -50,7 +40,7 @@ export async function processOnboardingStep(input: OnboardingStepInput): Promise
   return toUser(updated);
 }
 
-export async function skipOnboardingStep({ type }: { type: OnboardingStepType }) {
+export async function skipOnboardingStep({ type }: SkipOnboardingStepInput) {
   const sessionUser = await getSessionUserOrThrow();
 
   const updated = await prisma.user.update({

@@ -20,7 +20,7 @@ import {
   DefaultCurrencyFormData,
   ProfileVisibilityFormData,
   LanguageFormData,
-} from "~/services/user/formData";
+} from "~/services/user/form-data";
 import { User } from "~/services/user/types";
 
 type ActionState = { error: ServerErrorCode | UserErrorCode; user: undefined } | { error: undefined; user: User };

@@ -3,7 +3,7 @@
 import React, { useCallback, useDeferredValue, useEffect, useState, useTransition } from "react";
 import { checkUsernameUniquenessAction } from "~/services/user/actions";
 import { Input } from "~/components/ui/input";
-import { UsernameFormData } from "~/services/user/formData";
+import { UsernameFormData } from "~/services/user/form-data";
 import { getErrorMessage } from "~/core/errorMessages";
 import { showErrorToast } from "~/components/ui/toasts";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ import { clsx } from "clsx";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
-import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/form-data";
 
 export function OnboardingWizardUsernameStep() {
   const router = useRouter();

@@ -9,7 +9,7 @@ import { ONBOARDING_STEPS } from "~/services/user/types";
 import { TypographyHeader, TypographyMuted } from "~/components/ui/typography";
 import { useRouter } from "next/navigation";
 import { skipOnboardingStepAction } from "~/services/onboarding/actions";
-import { SkipOnboardingStepFormData } from "~/services/onboarding/formData";
+import { SkipOnboardingStepFormData } from "~/services/onboarding/form-data";
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";
 import { cn } from "~/utils/classnames";

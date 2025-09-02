@@ -9,7 +9,7 @@ import { Select } from "~/components/ui/select";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
-import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/form-data";
 
 export function OnboardingWizardCurrencyStep() {
   const router = useRouter();

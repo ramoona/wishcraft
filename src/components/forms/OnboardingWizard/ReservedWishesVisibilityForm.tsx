@@ -9,7 +9,7 @@ import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepFo
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Label } from "~/components/ui/label";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
-import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/form-data";
 
 export function OnboardingWizardReservedWishesVisibilityStep() {
   const router = useRouter();

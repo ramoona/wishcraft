@@ -9,7 +9,7 @@ import { DAYS_IN_MONTHS } from "~/core/consts";
 import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
-import { ProcessOnboardingStepFormData } from "~/services/onboarding/formData";
+import { ProcessOnboardingStepFormData } from "~/services/onboarding/form-data";
 import { getTranslatedMonth } from "~/lib/i18n/months";
 
 export function OnboardingWizardDateOfBirthStep() {

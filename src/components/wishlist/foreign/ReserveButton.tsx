@@ -5,7 +5,7 @@ import React, { useState, useTransition } from "react";
 import { reserveWishAction, releaseWishAction } from "~/services/wishlist/actions";
 import { Button } from "~/components/ui/button";
 import { SignInButton } from "~/components/forms/SignInForm";
-import { WishlistReservationFormData } from "~/services/wishlist/formData";
+import { WishlistReservationFormData } from "~/services/wishlist/form-data";
 
 import { showErrorToast } from "~/components/ui/toasts";
 import { getErrorMessage } from "~/core/errorMessages";

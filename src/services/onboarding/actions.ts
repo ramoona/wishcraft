@@ -5,7 +5,7 @@ import { UserError, UserErrorCode } from "~/services/user/errors";
 
 import { User } from "~/services/user/types";
 import { processOnboardingStep, skipOnboardingStep } from "~/services/onboarding/index";
-import { ProcessOnboardingStepFormData, SkipOnboardingStepFormData } from "~/services/onboarding/formData";
+import { ProcessOnboardingStepFormData, SkipOnboardingStepFormData } from "~/services/onboarding/form-data";
 
 type ActionState = { error: ServerErrorCode | UserErrorCode; user: undefined } | { error: undefined; user: User };
 

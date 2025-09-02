@@ -19,7 +19,7 @@ import {
   LanguageFormData,
   ProfileVisibilityFormData,
   ReservedWishesVisibilityFormData,
-} from "~/services/user/formData";
+} from "~/services/user/form-data";
 import { showErrorToast, showSuccessToast } from "~/components/ui/toasts";
 import { getErrorMessage, getSuccessMessage } from "~/core/errorMessages";
 import { Select } from "~/components/ui/select";
