@@ -1,6 +1,6 @@
 import { getSessionUser } from "~/services/session";
 import { redirect } from "next/navigation";
-import { Profile } from "~/components/user/Profile";
+import { Profile } from "~/components/profile/Profile";
 
 export default async function FriendsPage() {
   const sessionUser = await getSessionUser();

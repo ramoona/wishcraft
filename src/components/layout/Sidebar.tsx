@@ -31,18 +31,16 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import {
-  AccountDeletionDialog,
-  PreferredLanguage,
-  ProfileForm,
-  SupportDialog,
-  useCopyProfileLink,
-} from "~/components/user/Profile";
 import { VisuallyHidden } from "~/components/ui/visually-hidden";
 import Link from "next/link";
 import { UserDetails } from "~/components/ui/user";
 import { Badge } from "~/components/ui/badge";
 import { WishModal } from "~/components/wishlist/WishModal";
+import { ProfileForm } from "~/components/profile/ProfileForm";
+import { useCopyProfileLink } from "~/components/profile/hooks";
+import { SupportDialog } from "~/components/profile/SupportDialog";
+import { PreferredLanguageForm } from "~/components/profile/PreferredLanguageForm";
+import { AccountDeletionDialog } from "~/components/profile/AccountDeletionDialog";
 
 export function Sidebar({ user, friendRequestsCount }: { user: User; friendRequestsCount: number }) {
   const { t } = useTranslation();
@@ -226,7 +224,7 @@ function UserNav({ user }: { user: User }) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <div className="px-1 py-2">
-            <PreferredLanguage hideLabel noSuccessToast filled />
+            <PreferredLanguageForm hideLabel noSuccessToast filled />
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild className="no-underline">

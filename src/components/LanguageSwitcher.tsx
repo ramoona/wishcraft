@@ -18,7 +18,6 @@ export function LanguageSwitcher({
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Mark component as mounted
     setIsMounted(true);
   }, [i18n]);
 
@@ -33,7 +32,6 @@ export function LanguageSwitcher({
     { value: "de", label: "Deutsch" },
   ];
 
-  // Don't render anything until the component has mounted on the client
   if (!isMounted) {
     return null;
   }

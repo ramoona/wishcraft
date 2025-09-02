@@ -34,6 +34,7 @@ export function AddFriendButton({
       router.push(`/${currentUser?.username}/friends/your-friends/${friendUsername}`);
     });
   };
+
   return (
     <Button onClick={handleFriendAction} size="lg" disabled={isPending}>
       {t("actions.addFriend")}
