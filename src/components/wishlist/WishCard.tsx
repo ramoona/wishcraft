@@ -90,7 +90,7 @@ export function WishCard({
                       </DesktopOnly>
                     )
                   )}
-                  <h1 className="text-xl font-bold lg:text-lg lg:font-medium">{name}</h1>
+                  <h2 className="text-xl font-bold lg:text-lg lg:font-medium">{name}</h2>
                 </div>
                 <Price price={price} currency={currency} size="large" />
               </div>

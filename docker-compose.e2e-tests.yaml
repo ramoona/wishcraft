@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  e2e_tests_db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    env_file:
+      - .env.test
+    volumes:
+      - e2e_tests_pg15_data:/var/lib/postgresql/data
+    ports:
+      - "5445:5432"
+
+volumes:
+  e2e_tests_pg15_data:
+    driver: local
