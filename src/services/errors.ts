@@ -2,6 +2,7 @@ export type ServerErrorCode =
   | "UNAUTHORIZED"
   | "UNKNOWN"
   | "INVALID_INPUT"
+  | "INPUT_IS_REQUIRED"
   | "INTERNAL_SERVER_ERROR"
   | "OAUTH_ERROR"
   | "PRISMA_ERROR"

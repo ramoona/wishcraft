@@ -12,13 +12,16 @@ import { useTranslation } from "react-i18next";
 import { OnboardingWizardStep } from "~/components/forms/OnboardingWizard/StepForm";
 import { processOnboardingStepAction } from "~/services/onboarding/actions";
 import { ProcessOnboardingStepFormData } from "~/services/onboarding/form-data";
+import { isValidUsername } from "~/utils/username";
 
-export function OnboardingWizardUsernameStep() {
+export function OnboardingWizardUsernameStep({ username: initialUsername }: { username: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(initialUsername);
   const [isUnique, setIsUnique] = useState<boolean | undefined>(true);
+  const [isValid, setIsValid] = useState<boolean | undefined>(true);
+
   const { t } = useTranslation();
 
   const deferredValue = useDeferredValue(username);
@@ -59,7 +62,11 @@ export function OnboardingWizardUsernameStep() {
   );
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value.replace(/[^a-zA-Z0-9-_]/g, ""));
+    const value = e.target.value.trim().toLowerCase();
+    const valid = isValidUsername(value);
+
+    setUsername(value);
+    setIsValid(valid);
   };
 
   useEffect(() => {
@@ -75,19 +82,30 @@ export function OnboardingWizardUsernameStep() {
       isSubmitting={isPending}
       onSubmit={trigger}
       description={t("onboarding.username.description")}
-      isSubmissionDisabled={!username || !isUnique}
+      isSubmissionDisabled={!username || !isUnique || !isValid}
     >
-      <Input
-        type="text"
-        name="username"
-        placeholder={t("placeholders.username")}
-        value={username}
-        onChange={handleUsernameChange}
-        className={clsx(
-          username && isUnique === false && "border-destructive/70",
-          username && isUnique === true && "border-emerald-500",
-        )}
-      />
+      <div className="w-full">
+        <Input
+          type="text"
+          name="username"
+          placeholder={t("placeholders.username")}
+          value={username}
+          onChange={handleUsernameChange}
+          className={clsx(
+            ((username && !isUnique) || !isValid) && "border-destructive/70",
+            username && isUnique && isValid && "border-emerald-500",
+          )}
+        />
+        <div className="mt-4 text-xs text-muted-foreground">
+          <p>Your username must:</p>
+          <ul className="list-disc pl-4">
+            <li>Be 2–40 characters long</li>
+            <li>Start with a letter</li>
+            <li>Use only letters, numbers, and hyphens</li>
+            <li>Not have “--” in a row</li>
+          </ul>
+        </div>
+      </div>
     </OnboardingWizardStep>
   );
 }

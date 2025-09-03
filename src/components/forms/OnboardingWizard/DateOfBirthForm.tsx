@@ -38,7 +38,7 @@ export function OnboardingWizardDateOfBirthStep() {
       step="date-of-birth"
       isSubmitting={isPending}
       title={t("onboarding.dateOfBirth.title")}
-      isSubmissionDisabled={!!month && !day}
+      isSubmissionDisabled={!month || !day || (!!month && !day)}
       description={t("onboarding.dateOfBirth.description")}
       isSkippable
     >

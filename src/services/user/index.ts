@@ -4,14 +4,19 @@ import { OtherUser, User, UserActionPayload, UserOnboardingStep, ONBOARDING_STEP
 import { isNil } from "ramda";
 import { User as PrismaUser } from "@prisma/client";
 import { deleteSessionTokenCookie, getSessionUser, getSessionUserOrThrow } from "~/services/session";
-import { generateUniqueUsername } from "~/utils/unique-username";
+import { generateUniqueUsername, isValidUsername } from "~/utils/username";
 import { SupportedLanguages } from "~/lib/i18n/settings";
+import { ServerError } from "~/services/errors";
 
 export async function updateUsername(username: string): Promise<User> {
   const sessionUser = await getSessionUserOrThrow();
 
   if (!username) {
-    throw new UserError("INPUT_IS_REQUIRED");
+    throw new ServerError("INPUT_IS_REQUIRED");
+  }
+
+  if (!isValidUsername(username)) {
+    throw new ServerError("INVALID_INPUT");
   }
 
   const isUsernameExists = await isUserNameTaken(username, sessionUser.id);
@@ -32,7 +37,7 @@ export async function checkUsernameUniqueness({ username }: { username: string }
   const sessionUser = await getSessionUserOrThrow();
 
   if (!username) {
-    throw new UserError("INPUT_IS_REQUIRED");
+    throw new ServerError("INPUT_IS_REQUIRED");
   }
 
   const isUsernameExists = await isUserNameTaken(username, sessionUser.id);
@@ -44,7 +49,7 @@ export async function updateDateOfBirth({ dayOfBirth, monthOfBirth }: { dayOfBir
   const sessionUser = await getSessionUserOrThrow();
 
   if (!dayOfBirth || !monthOfBirth) {
-    throw new UserError("INPUT_IS_REQUIRED");
+    throw new ServerError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
@@ -59,7 +64,7 @@ export async function updateReservedWishedVisibility(showReserved: boolean) {
   const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(showReserved)) {
-    throw new UserError("INPUT_IS_REQUIRED");
+    throw new ServerError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
@@ -75,7 +80,7 @@ export async function updateDefaultCurrency(currency: string) {
   const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(currency)) {
-    throw new UserError("INPUT_IS_REQUIRED");
+    throw new ServerError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
@@ -91,7 +96,7 @@ export async function updateProfileVisibility(isProfileHidden: boolean) {
   const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(isProfileHidden)) {
-    throw new UserError("INPUT_IS_REQUIRED");
+    throw new ServerError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
@@ -107,7 +112,7 @@ export async function updateLanguage(language: SupportedLanguages) {
   const sessionUser = await getSessionUserOrThrow();
 
   if (isNil(language)) {
-    throw new UserError("INPUT_IS_REQUIRED");
+    throw new ServerError("INPUT_IS_REQUIRED");
   }
 
   const updated = await prisma.user.update({
