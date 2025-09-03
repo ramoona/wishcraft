@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# <img src="public/favicon.svg" width="24"> [Wishcraft](https://mywishcraft.app/)
 
-## Getting Started
+Wishcraft is a lightweight wishlist app built by @ramoona. It's made for anyone who likes keeping their wishes neat, tidy, and free from ads, trackers or “smart” suggestions.
 
-First, run the development server:
+## What you can do with Wishcraft
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Sign in with your Google account
+- Add and edit wishes (with links, prices, and comments), private or public
+- Set your entire wishlist to public or private
+- Add friends and see their wishes
+- Reserve wishes from other users’ lists
+- Pick your preferred language (English, German, or Russian)
+- Delete your account 💔
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js** with server actions (no API endpoints besides OAuth)
+- **Database**: `PostgreSQL` + `Prisma ORM`
+- **Auth**: Google OAuth with custom session management
+- **UI**: `Tailwind CSS` + `shadcn` components with custom styles
+- **Testing**: `Jest` (unit), `Playwright` (E2E)
+- **i18n**: `I18Next`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## V2 (in the works)
 
-## Learn More
+- Image uploads for wishes
+- More language options
+- More login options (other OAuth providers / email magic links)
 
-To learn more about Next.js, take a look at the following resources:
+## V3 (someday...)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Multiple wishlists per user
