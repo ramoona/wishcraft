@@ -44,8 +44,8 @@ export const getSessionUser = cache(async () => {
   try {
     if (!session) {
       const token = generateSessionToken();
-      const session = await createSession(token, user.id);
-      await setSessionTokenCookie(sessionToken, session.expiresAt);
+      const newSession = await createSession(token, user.id);
+      await setSessionTokenCookie(token, newSession.expiresAt);
     } else if (extended) {
       await setSessionTokenCookie(sessionToken, session.expiresAt);
     }
