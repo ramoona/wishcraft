@@ -66,21 +66,23 @@ export async function countFriendRequestsForCurrentUser(): Promise<number> {
   });
 }
 
-export async function sendFriendRequest({ userId, friendId }: { userId: string; friendId: string }) {
+export async function sendFriendRequest(friendId: string) {
+  const sessionUser = await getSessionUserOrThrow();
   await prisma.friendRequest.create({
     data: {
-      requestedById: userId,
+      requestedById: sessionUser.id,
       receivedById: friendId,
     },
   });
   await logUserAction({ action: "friend-request-sent", friendId });
 }
 
-export async function acceptFriendRequest({ userId, friendId }: { userId: string; friendId: string }) {
+export async function acceptFriendRequest(friendId: string) {
+  const sessionUser = await getSessionUserOrThrow();
   await prisma.$transaction(async client => {
     await client.friend.create({
       data: {
-        friendAId: userId,
+        friendAId: sessionUser.id,
         friendBId: friendId,
       },
     });
@@ -88,7 +90,7 @@ export async function acceptFriendRequest({ userId, friendId }: { userId: string
       where: {
         requestedById_receivedById: {
           requestedById: friendId,
-          receivedById: userId,
+          receivedById: sessionUser.id,
         },
       },
     });
@@ -96,24 +98,26 @@ export async function acceptFriendRequest({ userId, friendId }: { userId: string
   await logUserAction({ action: "friend-request-accepted", friendId });
 }
 
-export async function declineFriendRequest({ userId, friendId }: { userId: string; friendId: string }) {
+export async function declineFriendRequest(friendId: string) {
+  const sessionUser = await getSessionUserOrThrow();
   await prisma.friendRequest.delete({
     where: {
       requestedById_receivedById: {
         requestedById: friendId,
-        receivedById: userId,
+        receivedById: sessionUser.id,
       },
     },
   });
   await logUserAction({ action: "friend-request-dismissed", friendId });
 }
 
-export async function removeFriend({ userId, friendId }: { userId: string; friendId: string }) {
+export async function removeFriend(friendId: string) {
+  const sessionUser = await getSessionUserOrThrow();
   await prisma.friend.deleteMany({
     where: {
       OR: [
-        { friendAId: userId, friendBId: friendId },
-        { friendAId: friendId, friendBId: userId },
+        { friendAId: sessionUser.id, friendBId: friendId },
+        { friendAId: friendId, friendBId: sessionUser.id },
       ],
     },
   });

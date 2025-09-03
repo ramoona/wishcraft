@@ -1,18 +1,16 @@
 "use server";
 
 import { sendFriendRequest, removeFriend, acceptFriendRequest, declineFriendRequest } from "~/services/friend/index";
-import { ServerError, ServerErrorCode } from "~/services/errors";
-import { getSessionUserOrThrow } from "~/services/session";
 import { FriendFormData } from "~/services/friend/form-data";
+import { getErrorCode, KnownError } from "~/core/errors";
 
-type ActionState = { error?: ServerErrorCode };
+type ActionState = { error?: KnownError["errorCode"] };
 
 export const sendFriendRequestAction = async (formData: FormData): Promise<ActionState> => {
   try {
-    const sessionUser = await getSessionUserOrThrow();
     const friendId = FriendFormData.toObject(formData).friendId;
 
-    await sendFriendRequest({ userId: sessionUser.id, friendId });
+    await sendFriendRequest(friendId);
     return { error: undefined };
   } catch (e) {
     return {
@@ -23,10 +21,9 @@ export const sendFriendRequestAction = async (formData: FormData): Promise<Actio
 
 export const acceptFriendRequestAction = async (formData: FormData): Promise<ActionState> => {
   try {
-    const sessionUser = await getSessionUserOrThrow();
     const friendId = FriendFormData.toObject(formData).friendId;
 
-    await acceptFriendRequest({ userId: sessionUser.id, friendId });
+    await acceptFriendRequest(friendId);
     return { error: undefined };
   } catch (e) {
     return {
@@ -37,10 +34,9 @@ export const acceptFriendRequestAction = async (formData: FormData): Promise<Act
 
 export const declineFriendRequestAction = async (formData: FormData): Promise<ActionState> => {
   try {
-    const sessionUser = await getSessionUserOrThrow();
     const friendId = FriendFormData.toObject(formData).friendId;
 
-    await declineFriendRequest({ userId: sessionUser.id, friendId });
+    await declineFriendRequest(friendId);
     return { error: undefined };
   } catch (e) {
     return {
@@ -51,10 +47,9 @@ export const declineFriendRequestAction = async (formData: FormData): Promise<Ac
 
 export const removeFriendAction = async (formData: FormData): Promise<ActionState> => {
   try {
-    const sessionUser = await getSessionUserOrThrow();
     const friendId = FriendFormData.toObject(formData).friendId;
 
-    await removeFriend({ userId: sessionUser.id, friendId });
+    await removeFriend(friendId);
     return { error: undefined };
   } catch (e) {
     return {
@@ -62,7 +57,3 @@ export const removeFriendAction = async (formData: FormData): Promise<ActionStat
     };
   }
 };
-
-function getErrorCode(e: unknown) {
-  return e instanceof ServerError ? e.errorCode : "UNKNOWN";
-}

@@ -1,13 +1,11 @@
 "use server";
 
-import { ServerError, ServerErrorCode } from "~/services/errors";
-import { UserError, UserErrorCode } from "~/services/user/errors";
-
 import { User } from "~/services/user/types";
 import { processOnboardingStep, skipOnboardingStep } from "~/services/onboarding/index";
 import { ProcessOnboardingStepFormData, SkipOnboardingStepFormData } from "~/services/onboarding/form-data";
+import { getErrorCode, KnownError } from "~/core/errors";
 
-type ActionState = { error: ServerErrorCode | UserErrorCode; user: undefined } | { error: undefined; user: User };
+type ActionState = { error: KnownError["errorCode"]; user: undefined } | { error: undefined; user: User };
 
 export const processOnboardingStepAction = async (formData: FormData): Promise<ActionState> => {
   try {
@@ -26,7 +24,3 @@ export const skipOnboardingStepAction = async (formData: FormData): Promise<Acti
     return { error: getErrorCode(e), user: undefined };
   }
 };
-
-function getErrorCode(e: unknown) {
-  return e instanceof ServerError || e instanceof UserError ? e.errorCode : "UNKNOWN";
-}

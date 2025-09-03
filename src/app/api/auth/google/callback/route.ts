@@ -45,7 +45,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       cookiesMgmt.delete("wishId");
 
       if (wishId) {
-        await reserveWish({ wishId, userId: existingUser.id });
+        await reserveWish(wishId);
       }
 
       cookiesMgmt.delete("wishlistOwner");
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     cookiesMgmt.delete("wishId");
 
     if (wishId) {
-      await reserveWish({ wishId, userId: createdUser.id });
+      await reserveWish(wishId);
     }
 
     cookiesMgmt.delete("wishlistOwner");

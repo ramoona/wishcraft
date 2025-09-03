@@ -14,7 +14,7 @@ import { ServerError } from "~/services/errors";
 import { getSessionUserOrThrow } from "~/services/session";
 import { logUserAction } from "~/services/user";
 import { OtherUser } from "~/services/user/types";
-import { MAX_NUMBER_OF_WISH_SHAPES, WISH_COLORS } from "~/services/wishlist/consts";
+import { generateWishVisuals } from "~/services/wishlist/utils";
 
 export const WISH_FIELDS_SELECT = {
   id: true,
@@ -74,36 +74,9 @@ export async function getWishlistByUserId(userId: string): Promise<WishlistType>
   };
 }
 
-function generateWishVisuals(): Pick<
-  WishType,
-  "shape" | "mainColor" | "accentColor" | "backgroundColor" | "backgroundPositionX" | "backgroundPositionY"
-> {
-  const MAX_BG_SHIFT = 80;
-
-  const backgroundPositionX = Math.floor(Math.random() * MAX_BG_SHIFT);
-  const backgroundPositionY = Math.floor(Math.random() * MAX_BG_SHIFT);
-  const shape = `shape-${Math.floor(Math.random() * MAX_NUMBER_OF_WISH_SHAPES + 1)}` as WishShape;
-  const mainColor = WISH_COLORS[Math.floor(Math.random() * WISH_COLORS.length)];
-
-  const accentColorOptions = WISH_COLORS.filter(color => color !== mainColor);
-  const accentColor = accentColorOptions[Math.floor(Math.random() * accentColorOptions.length)];
-
-  const backgroundColorOptions = accentColorOptions.filter(color => color !== accentColor);
-  const backgroundColor = backgroundColorOptions.filter(color => color !== mainColor && color !== accentColor)[
-    Math.floor(Math.random() * backgroundColorOptions.length)
-  ];
-
-  return {
-    shape,
-    mainColor,
-    accentColor,
-    backgroundColor,
-    backgroundPositionX,
-    backgroundPositionY,
-  };
-}
-
-export async function createWish(wishlistId: string, input: WishCreateInput) {
+export async function createWish(input: WishCreateInput) {
+  const sessionUser = await getSessionUserOrThrow();
+  const wishlistId = await getWishlistIdByUserId(sessionUser.id);
   const visuals = generateWishVisuals();
   const wish = prisma.wishlist.update({
     where: { id: wishlistId },
@@ -124,7 +97,6 @@ export async function createWish(wishlistId: string, input: WishCreateInput) {
 }
 
 export async function updateWish(wishId: string, input: Omit<WishUpdateInput, "id">) {
-  // TODO: validate input with schema
   if (!wishId || !input) {
     throw new ServerError("INVALID_INPUT");
   }
@@ -169,7 +141,8 @@ export async function deleteWish(wishId: string) {
   await logUserAction({ action: "wish-deleted", wishId });
 }
 
-export async function reserveWish({ wishId, userId }: { wishId: string; userId: string }) {
+export async function reserveWish(wishId: string) {
+  const sessionUser = await getSessionUserOrThrow();
   if (!wishId) {
     throw new ServerError("INVALID_INPUT");
   }
@@ -199,18 +172,19 @@ export async function reserveWish({ wishId, userId }: { wishId: string; userId: 
     throw new WishlistError("WISH_IS_NOT_RESERVABLE");
   }
 
-  if (wishOwner?.id === userId) {
+  if (wishOwner?.id === sessionUser.id) {
     throw new WishlistError("CAN_NOT_RESERVE_OWN_WISH");
   }
 
   await prisma.wish.update({
     where: { id: wishId },
-    data: { reservedById: userId },
+    data: { reservedById: sessionUser.id },
   });
-  await logUserAction({ action: "wish-reserved", wishId, reservedById: userId });
+  await logUserAction({ action: "wish-reserved", wishId, reservedById: sessionUser.id });
 }
 
-export async function releaseWish({ wishId, userId }: { wishId: string; userId: string }) {
+export async function releaseWish(wishId: string) {
+  const sessionUser = await getSessionUserOrThrow();
   if (!wishId) {
     throw new ServerError("INVALID_INPUT");
   }
@@ -225,7 +199,7 @@ export async function releaseWish({ wishId, userId }: { wishId: string; userId: 
     throw new WishlistError("WISH_IS_NOT_RESERVED");
   }
 
-  if (wish.reservedById !== userId) {
+  if (wish.reservedById !== sessionUser.id) {
     throw new WishlistError("WISH_IS_RESERVED_BY_ANOTHER_USER");
   }
 
@@ -234,7 +208,7 @@ export async function releaseWish({ wishId, userId }: { wishId: string; userId: 
     data: { reservedById: null, status: WishStatus.ACTIVE },
   });
 
-  await logUserAction({ action: "wish-released", wishId, reservedById: userId });
+  await logUserAction({ action: "wish-released", wishId, reservedById: sessionUser.id });
 }
 
 export async function getForeignWishlistByUsername(username: string): Promise<WishlistType> {

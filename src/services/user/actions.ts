@@ -2,7 +2,6 @@
 
 import {
   updateDateOfBirth,
-  updateUsername,
   updateReservedWishedVisibility,
   updateDefaultCurrency,
   checkUsernameUniqueness,
@@ -10,9 +9,6 @@ import {
   updateProfileVisibility,
   updateLanguage,
 } from "~/services/user/index";
-import { ServerError, ServerErrorCode } from "~/services/errors";
-import { getSessionUserOrThrow } from "~/services/session";
-import { UserError, UserErrorCode } from "~/services/user/errors";
 import {
   DateOfBirthFormData,
   UsernameFormData,
@@ -22,21 +18,13 @@ import {
   LanguageFormData,
 } from "~/services/user/form-data";
 import { User } from "~/services/user/types";
+import { getErrorCode, KnownError } from "~/core/errors";
 
-type ActionState = { error: ServerErrorCode | UserErrorCode; user: undefined } | { error: undefined; user: User };
+type ActionState = { error: KnownError["errorCode"]; user: undefined } | { error: undefined; user: User };
 type UsernameUniquenessActionState =
-  | { error: ServerErrorCode | UserErrorCode; isUnique: undefined }
+  | { error: KnownError["errorCode"]; isUnique: undefined }
   | { error: undefined; isUnique: boolean };
-type DeleteUserActionState = { error?: ServerErrorCode | UserErrorCode };
-
-export const updateUsernameAction = async (formData: FormData): Promise<ActionState> => {
-  try {
-    const user = await updateUsername(UsernameFormData.toObject(formData).username);
-    return { user, error: undefined };
-  } catch (e) {
-    return { error: getErrorCode(e), user: undefined };
-  }
-};
+type DeleteUserActionState = { error?: KnownError["errorCode"] };
 
 export const checkUsernameUniquenessAction = async (formData: FormData): Promise<UsernameUniquenessActionState> => {
   try {
@@ -94,14 +82,9 @@ export const updateLanguageAction = async (formData: FormData): Promise<ActionSt
 
 export const deleteUserAccountAction = async (): Promise<DeleteUserActionState> => {
   try {
-    await getSessionUserOrThrow();
     await deleteCurrentUser();
     return { error: undefined };
   } catch (e) {
     return { error: getErrorCode(e) };
   }
 };
-
-function getErrorCode(e: unknown) {
-  return e instanceof ServerError || e instanceof UserError ? e.errorCode : "UNKNOWN";
-}
