@@ -1,6 +1,6 @@
 # <img src="public/favicon.svg" width="24"> [Wishcraft](https://mywishcraft.app/)
 
-Wishcraft is a lightweight wishlist app built by @ramoona. It's made for anyone who likes keeping their wishes neat, tidy, and free from ads, trackers or “smart” suggestions.
+Wishcraft is a lightweight wishlist app built by [@ramoona](https://github.com/ramoona). It's made for anyone who likes keeping their wishes neat, tidy, and free from ads, trackers or “smart” suggestions.
 
 ## What you can do with Wishcraft
 
